@@ -59,7 +59,7 @@ namespace LJG
 		D3D11_VIEWPORT          mViewport;                  /** 렌더링 뷰포트 */
 		D3D_FEATURE_LEVEL       mFeatureLevel;              /** DX기능 수준 레벨 */
 		int32_t                 mVideoCardMemory;           /** 비디오카드 메모리 용량 */
-		char                    mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
+		WCHAR                   mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
 		FWindowData             mWindowData;                /** 윈도우 프로퍼티 */
 	};
 }

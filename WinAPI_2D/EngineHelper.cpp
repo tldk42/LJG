@@ -27,4 +27,9 @@ namespace LJG
 			PostQuitMessage(GetLastError());
 		}
 	}
+
+	HWND EngineHelper::GetWindowHandle(void* WindowHandle)
+	{
+		return Window::GetWindow(WindowHandle)->GetHandle();
+	}
 }

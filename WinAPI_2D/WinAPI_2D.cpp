@@ -1,7 +1,8 @@
-﻿#include "Window.h"
+﻿#include "App.h"
 
 #pragma region Graphic Initialize
 #include <d3d11.h>
+
 
 /* 링커 연결
 * 1. 속성 -> 링커 -> 입력 -> 추가종속성
@@ -71,12 +72,18 @@ int main()
 {
 	using namespace LJG;
 
-	Window* TestWindow = new Window(L"Test Window", {1600, 900, false, true});
+	FWindowData testWindowData;
+	testWindowData.Width       = 900;
+	testWindowData.Height      = 600;
+	testWindowData.bFullScreen = false;
+	testWindowData.bVsync      = true;
 
-	if (TestWindow)
+	App* testApp = new App(L"Test Window", testWindowData);
+	if (testApp)
 	{
-		TestWindow->Run();
+		testApp->Start();
 	}
+
 
 	return 0;
 }

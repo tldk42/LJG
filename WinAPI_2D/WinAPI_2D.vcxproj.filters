@@ -30,6 +30,12 @@
     <Filter Include="소스 파일\DirectX">
       <UniqueIdentifier>{75672e10-943a-49ec-a5e1-5d9474b01a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Utils">
+      <UniqueIdentifier>{8323e233-dd66-48da-a033-4124db7f8513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{9a63433f-34aa-478c-b193-56d52262b88f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPI_2D.cpp" />
@@ -47,6 +53,15 @@
     </ClCompile>
     <ClCompile Include="Context.cpp">
       <Filter>소스 파일\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>소스 파일\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +85,27 @@
     </ClInclude>
     <ClInclude Include="Context.h">
       <Filter>소스 파일\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathFwd.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathUtility.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>소스 파일\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>소스 파일\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

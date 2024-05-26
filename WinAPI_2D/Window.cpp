@@ -2,6 +2,7 @@
 
 #include "Context.h"
 #include "EngineHelper.h"
+#include "InputManager.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
@@ -64,28 +65,31 @@ namespace LJG
 		}
 	}
 
-	Window::~Window()
-	{
-	}
+	Window::~Window() {}
 
 	bool Window::Initialize()
 	{
 		Logger::Initialize();
 		LOG_CORE_INFO("윈도우 초기화 시작...");
 
+		// Hinstance를 가져온다.
+		// (원래는 winMain에서 첫번째 인자로 넘겨 받지만 링커에서 제공하는 __ImageBase 식별자를 이용하여 이런식으로 구할 수도 있다.
+		// mInstanceHandle = reinterpret_cast<HINSTANCE>(GetModuleHandle(nullptr)); 이 방법도 존재한다.
 		mInstanceHandle = reinterpret_cast<HINSTANCE>(&__ImageBase);
+
 
 		WNDCLASS winClass{};
 		winClass.hInstance     = mInstanceHandle;
 		winClass.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 		winClass.lpfnWndProc   = static_cast<WNDPROC>(WndProc);
-		winClass.lpszClassName = L"Cobra Engine";
+		winClass.lpszClassName = L"Jacob Window";
 		winClass.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 		winClass.hIcon         = LoadIcon(nullptr, IDI_WINLOGO);
 
+
+		// WNDCLASS 커널 등록
 		if (FAILED(RegisterClass(&winClass)))
 		{
-			EngineHelper::ShowErrorMessageBox(mWindowHandle, true);
 			LOG_CORE_ERROR("%s %s", __FILE__, __LINE__);
 
 			return false;
@@ -95,40 +99,45 @@ namespace LJG
 		RECT  size  = {0, 0, mWindowData.Width, mWindowData.Height};
 		DWORD style = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
 
+		// 윈도우의 크기가 클라이언트 영역이 되도록 조정
 		AdjustWindowRect(&size, style, false);
-		// TODO: 한글 처리 
+
 		mWindowHandle = CreateWindowEx(
 			WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,
 			winClass.lpszClassName,
 			mWindowTitle,
 			WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-			GetSystemMetrics(SM_CXSCREEN) / 2 - mWindowData.Width / 2,
-			GetSystemMetrics(SM_CYSCREEN) / 2 - mWindowData.Height / 2 - 40,
-			// TODO: This requires some... attention
-			size.right + (-size.left), size.bottom + (-size.top),
+			// GetSystemMetrics는 시스템 설정 정보를 반환 nIndex에는 SM_으로 시작하는 상수값을 넣는다. ex) 2560 x 1600 (정중앙에 생성됨)
+			GetSystemMetrics(SM_CXSCREEN) / 2 - mWindowData.Width / 2,	// 1280 - 450 = 830 (좌)
+			GetSystemMetrics(SM_CYSCREEN) / 2 - mWindowData.Height / 2 - 40, // 800 - 300 = 500 (상)
+			size.right + (-size.left), // 윈도우 폭: 900
+			size.bottom + (-size.top),  // 윈도우 높이: 600
 			nullptr,
 			nullptr,
 			mInstanceHandle,
 			nullptr
 		);
 
+		
+
 		if (!mWindowHandle)
 		{
+			EngineHelper::ShowErrorMessageBox(mWindowHandle, true);
 			LOG_CORE_ERROR("%s %s", __FILE__, __LINE__);
 			return false;
 		}
 
 		RegisterWindowClass(mWindowHandle, this);
-
 		LOG_CORE_INFO("윈도우 생성 완료");
+
+		Context::Create(mWindowData, mWindowHandle);
 
 		ShowWindow(mWindowHandle, SW_SHOW);
 		SetFocus(mWindowHandle);
 
+		InputManager::Initialize();
+
 		SetTitle(mWindowTitle);
-
-
-		Context::Create(mWindowData, mWindowHandle);
 
 		return true;
 	}
@@ -148,15 +157,6 @@ namespace LJG
 		return s_WindowHandles[WindowHandle];
 	}
 
-	void Window::Run()
-	{
-		while (!bClosed)
-		{
-			Update();
-			Context::Get()->Present();
-		}
-	}
-
 	void Window::Update()
 	{
 		MSG message;
@@ -172,13 +172,12 @@ namespace LJG
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
+
+		InputManager::Update();
+		Context::Get()->Present();
 	}
 
-	void Window::Clear()
-	{
-	}
+	void Window::Clear() {}
 
-	void ResizeCallback(Window* Window, int Width, int Height)
-	{
-	}
+	void ResizeCallback(Window* Window, int Width, int Height) {}
 }

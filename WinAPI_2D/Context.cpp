@@ -43,7 +43,7 @@ namespace LJG
 	{
 		if (mSwapChain)
 		{
-			float clearColor[] = {.1f, .2f, .3f, 1.f};
+			constexpr float clearColor[] = {.1f, .2f, .3f, 1.f};
 			mDeviceContext->ClearRenderTargetView(mRenderTargetView, clearColor);
 
 			if (FAILED(mSwapChain->Present(mWindowData.bVsync, 0)))
@@ -57,23 +57,26 @@ namespace LJG
 	{
 		LOG_DX_INFO("DX 초기화 시작...");
 
+		// Step 1. SwapChain 정보 구조체 채워넣기 (스왑체인을 생성하기 위해 필요)
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
 		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+		{
+			swapChainDesc.BufferCount = 1;
+			swapChainDesc.BufferDesc.Width = 1600;                            // Buffer Width
+			swapChainDesc.BufferDesc.Height = 900;                             // Buffer Height
+			swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;      // 색상 출력 형식
+			swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;                              // FPS 분자
+			swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;                               // FPS 분모
+			swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
+			swapChainDesc.OutputWindow = Hwnd;                            // 출력될 윈도우 핸들
+			swapChainDesc.SampleDesc.Count = 1;                               // 멀티 샘플링 개수
+			swapChainDesc.SampleDesc.Quality = 0;                               // 멀티 샘플링 품질
+			swapChainDesc.Windowed = !(mWindowData.bFullScreen);      // 창 전체 화면 모드
+			swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
+			swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
+		}
 
-		swapChainDesc.BufferCount                        = 1;
-		swapChainDesc.BufferDesc.Width                   = 1600;                            // Buffer Width
-		swapChainDesc.BufferDesc.Height                  = 900;                             // Buffer Height
-		swapChainDesc.BufferDesc.Format                  = DXGI_FORMAT_R8G8B8A8_UNORM;      // 색상 출력 형식
-		swapChainDesc.BufferDesc.RefreshRate.Numerator   = 60;                              // FPS 분자
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;                               // FPS 분모
-		swapChainDesc.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
-		swapChainDesc.OutputWindow                       = Hwnd;                            // 출력될 윈도우 핸들
-		swapChainDesc.SampleDesc.Count                   = 1;                               // 멀티 샘플링 개수
-		swapChainDesc.SampleDesc.Quality                 = 0;                               // 멀티 샘플링 품질
-		swapChainDesc.Windowed                           = !(mWindowData.bFullScreen);      // 창 전체 화면 모드
-		swapChainDesc.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD;
-		swapChainDesc.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
+		// Step 2. Direct3D Device, Context, SwapChain을 한번에 생성(시도)
 		if (FAILED(D3D11CreateDeviceAndSwapChain(
 			NULL,                               // pAdapter (모니터) : null이면 주 모니터 사용
 			D3D_DRIVER_TYPE_HARDWARE,           // 하드웨어 가속 사용
@@ -93,6 +96,18 @@ namespace LJG
 			EngineHelper::ShowErrorMessageBox(Hwnd, true);
 		}
 		LOG_DX_INFO("Device & SwapChain 생성완료");
+
+		IDXGIFactory* factory;
+		IDXGIAdapter* adapter;
+
+		if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&factory)))) {}
+		if (FAILED(factory->EnumAdapters(0, &adapter))) {}
+
+		DXGI_ADAPTER_DESC desc;
+		adapter->GetDesc(&desc);
+		// mVideoCardDescription = desc.Description;
+		factory->Release();
+		adapter->Release();
 
 		Resize(); // 렌더 타겟 뷰 생성
 	}

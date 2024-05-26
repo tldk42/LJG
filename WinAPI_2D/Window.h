@@ -16,7 +16,7 @@ namespace LJG
 		 * @param WindowData 윈도우데이터 구조체
 		 */
 		Window(LPCWSTR WindowTitle, const FWindowData& WindowData);
-		~Window();
+		virtual ~Window();
 
 	private:
 		bool Initialize();
@@ -26,7 +26,6 @@ namespace LJG
 		static Window* GetWindow(void* WindowHandle = nullptr);
 
 	public:
-		void Run();
 		void Update();
 		void Clear();
 
