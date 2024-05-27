@@ -3,10 +3,10 @@
 /** 키의 세부 상태 */
 enum class EKeyState
 {
-	None,
-	Down,
-	Pressed,
-	Up
+	None,    // 기본
+	Down,    // 눌림
+	Pressed, // 눌린 상태
+	Up       // 떼어짐
 };
 
 /** 키보드로 입력될 수 있는 키 목록 */
@@ -47,4 +47,3 @@ enum class EKeyCode
 	RButton,
 	End
 };
-

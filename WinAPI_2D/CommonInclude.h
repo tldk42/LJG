@@ -19,3 +19,20 @@
 // Custom Classes
 #include "Structs.h"
 #include "Logger.h"
+
+
+namespace LJG
+{
+	namespace DX
+	{
+		template <typename T>
+		void ReleaseCOM(T* ComPtr)
+		{
+			if (ComPtr)
+			{
+				ComPtr->Release();
+				ComPtr = nullptr;
+			}
+		}
+	}
+}

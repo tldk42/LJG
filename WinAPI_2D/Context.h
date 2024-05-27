@@ -4,18 +4,7 @@
 
 namespace LJG
 {
-	namespace DX
-	{
-		template <typename T>
-		void ReleaseCOM(T* ComPtr)
-		{
-			if (ComPtr)
-			{
-				ComPtr->Release();
-				ComPtr = nullptr;
-			}
-		}
-	}
+	class Write;
 
 	class Context
 	{
@@ -31,6 +20,7 @@ namespace LJG
 
 	private:
 		void InitD3D(HWND Hwnd);
+		void InitFont();
 		bool Resize();
 
 	public:
@@ -44,7 +34,7 @@ namespace LJG
 		inline static ID3D11RenderTargetView* GetRTV() { return Get()->mRenderTargetView; }
 		inline static ID3D11DepthStencilView* GetDepthStencilView() { return Get()->mDepthStencilView; }
 
-		inline static const char*        GetVideoCardDesc() { return Get()->mVideoCardDescription; }
+		inline static WCHAR*             GetVideoCardDesc() { return Get()->mVideoCardDescription; }
 		inline static const FWindowData& GetWindowData() { return Get()->mWindowData; }
 #pragma endregion
 
@@ -61,5 +51,26 @@ namespace LJG
 		int32_t                 mVideoCardMemory;           /** 비디오카드 메모리 용량 */
 		WCHAR                   mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
 		FWindowData             mWindowData;                /** 윈도우 프로퍼티 */
+
+		Write*         mFont;
+		IDXGISurface1* mSurfaceBackBuffer;
 	};
+
+	/**
+	 * DirectX11부터는 Device와 Context가 분리됨 (멀티 스레딩 가능)
+	 *			Device  	 < - >    Context (Immediate, Deferred)
+	 *		Free Thread				Rendering Thread
+	 *		리소스 생성				리소스 제어 및 렌더링
+	 *
+	 *
+	 * SwapChain
+	 *	전면 및 후면 버퍼(들)을 생성하고 제어
+	 *	SwapChain을 생성하기 위해선 SWAP_CHAIN_DESC구조체를 이용해 버퍼 정보를 채워주어야 한다
+	 *
+	 * RenderTargetView
+	 *	렌더링 될 버퍼의 메모리
+	 *	이전에 생성된 SwapChain Buffer에서 GetBuffer를 통해 생성한다.
+	 *	swapChain->GetBuffer(// BufferIndex, // ID3D11Texture2D고유ID, // 백버퍼 포인터 주소)
+	 *
+	 */
 }
