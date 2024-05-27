@@ -33,7 +33,7 @@ namespace LJG
 	public:
 #pragma region Set
 		HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
-		HRESULT SetFont(wchar_t* InFontFamily);
+		HRESULT SetFont(const wchar_t* InFontFamily);
 		HRESULT SetFontSize(const float InSize);
 		HRESULT SetBold(const bool bEnable);
 		HRESULT SetItalic(const bool bEnable);

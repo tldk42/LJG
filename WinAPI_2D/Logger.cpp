@@ -15,6 +15,6 @@ namespace LJG
 		s_CoreLogger->set_level(spdlog::level::trace);
 
 		s_DXLogger = spdlog::stdout_color_mt("Jacob DX:");
-		s_DXLogger->set_level(spdlog::level::debug);
+		s_DXLogger->set_level(spdlog::level::trace);
 	}
 }

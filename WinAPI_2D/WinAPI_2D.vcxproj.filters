@@ -63,6 +63,9 @@
     <ClCompile Include="App.cpp">
       <Filter>소스 파일\Application</Filter>
     </ClCompile>
+    <ClCompile Include="Write.cpp">
+      <Filter>소스 파일\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="App.h">
       <Filter>소스 파일\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Write.h">
+      <Filter>소스 파일\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

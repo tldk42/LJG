@@ -158,16 +158,16 @@ namespace LJG
 
 	void Write::DiscardDeviceIndependentResources()
 	{
-		DX::ReleaseCOM(mD2DFactory);
-		DX::ReleaseCOM(mWriteFactory);
-		DX::ReleaseCOM(mTextFormat);
-		DX::ReleaseCOM(mTextLayout);
+		ReleaseCOM(mD2DFactory);
+		ReleaseCOM(mWriteFactory);
+		ReleaseCOM(mTextFormat);
+		ReleaseCOM(mTextLayout);
 	}
 
 	void Write::DiscardDeviceResources()
 	{
-		DX::ReleaseCOM(mRenderTarget);
-		DX::ReleaseCOM(mBlackBrush);
+		ReleaseCOM(mRenderTarget);
+		ReleaseCOM(mBlackBrush);
 	}
 
 #pragma region Set Brush
@@ -180,7 +180,7 @@ namespace LJG
 		mText.clear();
 		mText = InText;
 
-		DX::ReleaseCOM(mTextLayout);
+		ReleaseCOM(mTextLayout);
 
 		if (SUCCEEDED(result))
 		{
@@ -222,11 +222,11 @@ namespace LJG
 		{
 			result = mTextLayout->SetUnderline(bEnableFontUnderline, textRange);
 		}
-		DX::ReleaseCOM(pTypography);
+		ReleaseCOM(pTypography);
 		return result;
 	}
 
-	HRESULT Write::SetFont(wchar_t* InFontFamily)
+	HRESULT Write::SetFont(const wchar_t* InFontFamily)
 	{
 		const DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 		const HRESULT           result    = mTextLayout->SetFontFamilyName(InFontFamily, textRange);

@@ -179,5 +179,8 @@ namespace LJG
 
 	void Window::Clear() {}
 
-	void ResizeCallback(Window* Window, int Width, int Height) {}
+	void ResizeCallback(Window* Window, int Width, int Height)
+	{
+		
+	}
 }
