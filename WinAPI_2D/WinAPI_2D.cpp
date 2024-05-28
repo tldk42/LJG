@@ -1,7 +1,9 @@
-﻿#include "App.h"
+﻿#include "Application_Base.h"
 
 #pragma region Graphic Initialize
 #include <d3d11.h>
+
+#include "EngineCore.h"
 
 
 /* 링커 연결
@@ -78,9 +80,10 @@ int main()
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = true;
 
-	App* testApp = new App(L"Test Window", testWindowData);
+	Application_Base* testApp = new Application_Base(L"Test Window", testWindowData);
 	if (testApp)
 	{
+		testApp->Initialize();
 		testApp->Start();
 	}
 

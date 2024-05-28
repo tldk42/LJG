@@ -65,11 +65,12 @@ namespace LJG
 		}
 	}
 
-	Window::~Window() {}
+	Window::~Window()
+	{
+	}
 
 	bool Window::Initialize()
 	{
-		Logger::Initialize();
 		LOG_CORE_INFO("윈도우 초기화 시작...");
 
 		// Hinstance를 가져온다.
@@ -108,17 +109,16 @@ namespace LJG
 			mWindowTitle,
 			WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 			// GetSystemMetrics는 시스템 설정 정보를 반환 nIndex에는 SM_으로 시작하는 상수값을 넣는다. ex) 2560 x 1600 (정중앙에 생성됨)
-			GetSystemMetrics(SM_CXSCREEN) / 2 - mWindowData.Width / 2,	// 1280 - 450 = 830 (좌)
+			GetSystemMetrics(SM_CXSCREEN) / 2 - mWindowData.Width / 2,       // 1280 - 450 = 830 (좌)
 			GetSystemMetrics(SM_CYSCREEN) / 2 - mWindowData.Height / 2 - 40, // 800 - 300 = 500 (상)
-			size.right + (-size.left), // 윈도우 폭: 900
-			size.bottom + (-size.top),  // 윈도우 높이: 600
+			size.right + (-size.left),                                       // 윈도우 폭: 900
+			size.bottom + (-size.top),                                       // 윈도우 높이: 600
 			nullptr,
 			nullptr,
 			mInstanceHandle,
 			nullptr
 		);
 
-		
 
 		if (!mWindowHandle)
 		{
@@ -130,12 +130,8 @@ namespace LJG
 		RegisterWindowClass(mWindowHandle, this);
 		LOG_CORE_INFO("윈도우 생성 완료");
 
-		Context::Create(mWindowData, mWindowHandle);
-
 		ShowWindow(mWindowHandle, SW_SHOW);
 		SetFocus(mWindowHandle);
-
-		InputManager::Initialize();
 
 		SetTitle(mWindowTitle);
 
@@ -172,15 +168,13 @@ namespace LJG
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
-
-		InputManager::Update();
-		Context::Get()->Present();
 	}
 
-	void Window::Clear() {}
+	void Window::Clear()
+	{
+	}
 
 	void ResizeCallback(Window* Window, int Width, int Height)
 	{
-		
 	}
 }

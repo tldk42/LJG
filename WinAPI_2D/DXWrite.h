@@ -7,24 +7,37 @@
 
 namespace LJG
 {
-	class Write
+	class DXWrite : public ICoreAPI
 	{
 	public:
-		Write();
-		~Write();
+		DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		~DXWrite();
 
 	public:
-		bool Initialize();
-		bool Set(HWND Hwnd, int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		static void            Create( int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		inline static DXWrite* Get() { return s_Writer; }
 
-		bool Begin();
-		bool End();
+#pragma region Core Interface
+		void Initialize() override;
+		void Update() override;
+		void Render() override;
+		void Release() override;
+#pragma endregion
+
+		bool Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+
+		bool    Begin();
+		bool    End();
+		HRESULT Draw(RECT InRect, TCHAR* InText, D2D1::ColorF = D2D1::ColorF::Green);
 		HRESULT DrawText_A(RECT InRect, TCHAR* InText, D2D1::ColorF = D2D1::ColorF::DarkGreen);
 		HRESULT DrawText_A(D2D1_POINT_2F InOrigin, D2D1::ColorF = D2D1::ColorF::DarkGreen);
 
-		bool Release();
 
 		HRESULT CreateDeviceIndependentResources();
+		/**
+		 * SurfaceRenderTarget생성
+		 * @param InSurface 백버퍼(렌더 타깃)
+		 */
 		HRESULT CreateDeviceResources(IDXGISurface1* InSurface);
 
 		void DiscardDeviceIndependentResources();
@@ -44,15 +57,13 @@ namespace LJG
 		void OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface);
 
 	public:
-		HWND mWindowHandle;
+		ID2D1Factory*         mD2DFactory;
+		ID2D1RenderTarget*    mRenderTarget;
+		ID2D1SolidColorBrush* mBrush;
 
-		ID2D1RenderTarget* mRenderTarget;
-		ID2D1Factory*      mD2DFactory; // Direct2D 리소스 생성 및 사용에 필요
-
-		ID2D1SolidColorBrush* mBlackBrush;
-		IDWriteFactory*       mWriteFactory;
-		IDWriteTextFormat*    mTextFormat;
-		IDWriteTextLayout*    mTextLayout;
+		IDWriteFactory*    mWriteFactory;
+		IDWriteTextFormat* mTextFormat;
+		IDWriteTextLayout* mTextLayout;
 
 		float_t mDPI;
 		float_t mDPI_Scale;
@@ -65,5 +76,8 @@ namespace LJG
 
 		std::wstring mFontFamily;
 		std::wstring mText;
+
+	private:
+		static DXWrite* s_Writer;
 	};
 }

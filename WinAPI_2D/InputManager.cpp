@@ -6,14 +6,29 @@
 
 namespace LJG
 {
-	std::vector<Key> InputManager::s_Keys          = {};
-	FVector2D        InputManager::s_MousePosition = {};
+	InputManager* InputManager::s_InputManager = nullptr;
+
+	InputManager::InputManager()
+		: mMousePosition()
+	{
+	}
+
+	void InputManager::Create()
+	{
+		if (!s_InputManager)
+		{
+			s_InputManager = new InputManager;
+			assert(s_InputManager);
+
+			s_InputManager->Initialize();
+		}
+	}
 
 	void InputManager::Initialize()
 	{
 		CreateKeys();
-		// ClearKeys();
-		// ClearMouse();
+		ClearKeys();
+		ClearMouse();
 	}
 
 	void InputManager::Update()
@@ -22,22 +37,32 @@ namespace LJG
 		UpdateMouseWindowPosition();
 	}
 
-	void InputManager::SetMousePosition(const FVector2D& Position) {}
+	void InputManager::Render()
+	{
+	}
+
+	void InputManager::Release()
+	{
+	}
+
+	void InputManager::SetMousePosition(const FVector2D& Position)
+	{
+	}
 
 	void InputManager::CreateKeys()
 	{
-		s_Keys.clear();
-		s_Keys.reserve(static_cast<UINT>(EKeyCode::End));
+		mKeys.clear();
+		mKeys.reserve(static_cast<UINT>(EKeyCode::End));
 
 		for (size_t i = 0; i < static_cast<UINT>(EKeyCode::End); ++i)
 		{
-			s_Keys.emplace_back(static_cast<EKeyCode>(i), EKeyState::None, false);
+			mKeys.emplace_back(static_cast<EKeyCode>(i), EKeyState::None, false);
 		}
 	}
 
 	void InputManager::UpdateKeys()
 	{
-		for (Key& key : s_Keys)
+		for (Key& key : mKeys)
 		{
 			UpdateKey(key);
 		}
@@ -77,16 +102,16 @@ namespace LJG
 		}
 
 		POINT mousePoint;
-		GetCursorPos(&mousePoint); // 커서 좌표 받아오기
+		GetCursorPos(&mousePoint);                 // 커서 좌표 받아오기
 		ScreenToClient(WindowHandle, &mousePoint); // 커서의 좌표를 클라이언트 윈도우 기준으로 잡아준다.
 
-		s_MousePosition.X = mousePoint.x;
-		s_MousePosition.Y = mousePoint.y;
+		mMousePosition.X = mousePoint.x;
+		mMousePosition.Y = mousePoint.y;
 	}
 
 	void InputManager::ClearKeys()
 	{
-		for (Key& key : s_Keys)
+		for (Key& key : mKeys)
 		{
 			switch (key.State)
 			{
@@ -104,7 +129,9 @@ namespace LJG
 		}
 	}
 
-	void InputManager::ClearMouse() {}
+	void InputManager::ClearMouse()
+	{
+	}
 
 	bool InputManager::IsKeyDown_Implements(const EKeyCode InKey)
 	{

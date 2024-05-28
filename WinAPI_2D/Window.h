@@ -6,15 +6,7 @@ namespace LJG
 	class Window
 	{
 	public:
-		/**
-		 * 기본 생성자로는 윈도우를 만들지 못하게 막아둔다.
-		 */
 		Window() = delete;
-		/**
-		 * 새로운 윈도우 생성을 시도
-		 * @param WindowTitle 새 윈도우 제목
-		 * @param WindowData 윈도우데이터 구조체
-		 */
 		Window(LPCWSTR WindowTitle, const FWindowData& WindowData);
 		virtual ~Window();
 

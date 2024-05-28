@@ -1,45 +1,55 @@
 #pragma once
 #include "CommonInclude.h"
-#include "Math/MathFwd.h"
+#include "Math/Vector2D.h"
 
 namespace LJG
 {
-	class InputManager
+	class InputManager : public ICoreAPI
 	{
 	public:
-		static void Initialize();
+		InputManager();
+
+		static void Create();
+		static InputManager* Get() { return s_InputManager; }
+
+#pragma region Core Interface
+		void Initialize() override;
+		void Update() override;
+		void Render() override;
+		void Release() override;
+#pragma endregion
 
 	public:
-		static void Update();
+		inline bool IsKeyDown(EKeyCode& Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Down; }
+		inline bool IsKeyUp(EKeyCode& Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Up; }
 
-		inline static bool IsKeyDown(EKeyCode& Key) { return s_Keys[static_cast<UINT>(Key)].State == EKeyState::Down; }
-		inline static bool IsKeyUp(EKeyCode& Key) { return s_Keys[static_cast<UINT>(Key)].State == EKeyState::Up; }
-
-		inline static bool IsKeyPressed(EKeyCode& Key)
+		inline bool IsKeyPressed(EKeyCode& Key) const
 		{
-			return s_Keys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
+			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
 
-		inline static const FVector2D& GetMousePosition() { return s_MousePosition; }
-		inline void                    SetMousePosition(const FVector2D& Position);
+		inline const FVector2D& GetMousePosition() { return mMousePosition; }
+		inline void             SetMousePosition(const FVector2D& Position);
 
 	private:
-		static void CreateKeys();
+		void CreateKeys();
 
-		static void UpdateKeys();
-		static void UpdateKey(Key& InKey);
-		static void UpdateKeyDown(Key& InKey);
-		static void UpdateKeyUp(Key& InKey);
+		void UpdateKeys();
+		void UpdateKey(Key& InKey);
+		void UpdateKeyDown(Key& InKey);
+		void UpdateKeyUp(Key& InKey);
 
-		static void UpdateMouseWindowPosition();
+		void UpdateMouseWindowPosition();
 
-		static void ClearKeys();
-		static void ClearMouse();
+		void ClearKeys();
+		void ClearMouse();
 
-		static bool IsKeyDown_Implements(const EKeyCode InKey);
+		bool IsKeyDown_Implements(const EKeyCode InKey);
 
 	private:
-		static std::vector<Key> s_Keys;
-		static FVector2D        s_MousePosition;
+		std::vector<Key> mKeys;
+		FVector2D        mMousePosition;
+
+		static InputManager* s_InputManager;
 	};
 }

@@ -1,19 +1,27 @@
-#include "App.h"
+#include "Application_Base.h"
 
+#include "Context.h"
+#include "InputManager.h"
+#include "Renderer.h"
 #include "Timer.h"
 
 namespace LJG
 {
-	App::App(LPCWSTR WindowTitle, const FWindowData& WindowData)
+	Application_Base::Application_Base(LPCWSTR WindowTitle, const FWindowData& WindowData)
 		: mWindowTitle(WindowTitle),
 		  mWindowData(WindowData),
 		  mWindow(nullptr),
 		  mTimer(nullptr),
+		  mDeltaTime(0),
+		  mFramesPerSec(0),
+		  mUpdatesPerSec(0),
 		  bIsInitialized(false),
 		  bIsRunning(false),
-		  bIsPaused(false) {}
+		  bIsPaused(false)
+	{
+	}
 
-	App::~App()
+	Application_Base::~Application_Base()
 	{
 		if (mWindow)
 		{
@@ -23,7 +31,30 @@ namespace LJG
 		}
 	}
 
-	void App::Initialize()
+	void Application_Base::Initialize()
+	{
+		Logger::Initialize();
+
+		Initialize_Application();
+
+		InputManager::Create();
+		Renderer::Create(mWindowData, mWindow->GetHandle());
+	}
+
+	void Application_Base::Update()
+	{
+	}
+
+	void Application_Base::Render()
+	{
+		Renderer::GetRenderer()->Render();
+	}
+
+	void Application_Base::Release()
+	{
+	}
+
+	void Application_Base::Initialize_Application()
 	{
 		if (!bIsInitialized)
 		{
@@ -32,32 +63,30 @@ namespace LJG
 		}
 	}
 
-	void App::Start()
+	void Application_Base::Start()
 	{
-		Initialize();
-
 		bIsRunning = true;
 		bIsPaused  = false;
 
 		Run();
 	}
 
-	void App::Pause()
+	void Application_Base::Pause()
 	{
 		bIsPaused = true;
 	}
 
-	void App::Resume()
+	void Application_Base::Resume()
 	{
 		bIsPaused = false;
 	}
 
-	void App::Stop()
+	void Application_Base::Stop()
 	{
 		bIsRunning = true;
 	}
 
-	void App::Run()
+	void Application_Base::Run()
 	{
 		if (bIsInitialized)
 		{
@@ -79,6 +108,7 @@ namespace LJG
 				if (currentTime - updateTimer > Utils::TickFrequency)
 				{
 					// TODO: Update
+					Update();
 
 					updateCounter++;
 					updateTimer += Utils::TickFrequency;
@@ -87,6 +117,7 @@ namespace LJG
 				{
 					Utils::Timer frameTimer;
 					// TODO: Render
+					Render();
 
 					frameCounter++;
 					mDeltaTime = frameTimer.ElapsedMillis();

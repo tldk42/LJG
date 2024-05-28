@@ -9,88 +9,94 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Helper">
-      <UniqueIdentifier>{d533b46a-d989-4dbe-b1ff-901d08c27402}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Common">
-      <UniqueIdentifier>{5d59f626-ec9e-425f-9c6c-047c09ab8a08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Logger">
-      <UniqueIdentifier>{f16b93a0-57d9-470b-b169-62bae92e430e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Input">
-      <UniqueIdentifier>{5a3dcbf7-b6eb-4878-925b-c36025e1d405}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Application">
       <UniqueIdentifier>{f0581cdb-5aa8-40ed-bf25-0e64231896ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Data">
-      <UniqueIdentifier>{29e53753-7fd4-4000-9108-05367550d111}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\DirectX">
-      <UniqueIdentifier>{75672e10-943a-49ec-a5e1-5d9474b01a67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Utils">
-      <UniqueIdentifier>{8323e233-dd66-48da-a033-4124db7f8513}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{9a63433f-34aa-478c-b193-56d52262b88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core">
+      <UniqueIdentifier>{647b1985-4dff-434c-92c2-80fa6426e30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Utils">
+      <UniqueIdentifier>{8323e233-dd66-48da-a033-4124db7f8513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Logger">
+      <UniqueIdentifier>{f16b93a0-57d9-470b-b169-62bae92e430e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Input">
+      <UniqueIdentifier>{5a3dcbf7-b6eb-4878-925b-c36025e1d405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Helper">
+      <UniqueIdentifier>{d533b46a-d989-4dbe-b1ff-901d08c27402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\DirectX">
+      <UniqueIdentifier>{75672e10-943a-49ec-a5e1-5d9474b01a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Data">
+      <UniqueIdentifier>{29e53753-7fd4-4000-9108-05367550d111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Common">
+      <UniqueIdentifier>{5d59f626-ec9e-425f-9c6c-047c09ab8a08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPI_2D.cpp" />
     <ClCompile Include="EngineHelper.cpp">
-      <Filter>소스 파일\Helper</Filter>
+      <Filter>소스 파일\Core\Helper</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>소스 파일\Input</Filter>
+      <Filter>소스 파일\Core\Input</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>소스 파일\Application</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>소스 파일\Logger</Filter>
+      <Filter>소스 파일\Core\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Context.cpp">
-      <Filter>소스 파일\DirectX</Filter>
+      <Filter>소스 파일\Core\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>소스 파일\Core\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="Application_Base.cpp">
       <Filter>소스 파일\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Write.cpp">
-      <Filter>소스 파일\DirectX</Filter>
+    <ClCompile Include="DXWrite.cpp">
+      <Filter>소스 파일\Core\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>소스 파일\Core\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
-      <Filter>소스 파일\Common</Filter>
+      <Filter>소스 파일\Core\Common</Filter>
     </ClInclude>
     <ClInclude Include="EngineHelper.h">
-      <Filter>소스 파일\Helper</Filter>
+      <Filter>소스 파일\Core\Helper</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>소스 파일\Input</Filter>
+      <Filter>소스 파일\Core\Input</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>소스 파일\Application</Filter>
     </ClInclude>
     <ClInclude Include="Structs.h">
-      <Filter>소스 파일\Data</Filter>
+      <Filter>소스 파일\Core\Data</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>소스 파일\Logger</Filter>
+      <Filter>소스 파일\Core\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Context.h">
-      <Filter>소스 파일\DirectX</Filter>
+      <Filter>소스 파일\Core\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>소스 파일\Core\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2D.h">
       <Filter>Math</Filter>
@@ -105,13 +111,16 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
-      <Filter>소스 파일\Data</Filter>
+      <Filter>소스 파일\Core\Data</Filter>
     </ClInclude>
-    <ClInclude Include="App.h">
+    <ClInclude Include="Application_Base.h">
       <Filter>소스 파일\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Write.h">
-      <Filter>소스 파일\DirectX</Filter>
+    <ClInclude Include="DXWrite.h">
+      <Filter>소스 파일\Core\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>소스 파일\Core\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

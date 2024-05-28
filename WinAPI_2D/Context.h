@@ -4,29 +4,39 @@
 
 namespace LJG
 {
-	class Write;
+	class DXWrite;
 
-	class Context
+	class Context : ICoreAPI
 	{
-	public:
-		Context() = delete;
+	private:
 		Context(const FWindowData& WinData, void* DeviceContext);
+
+	public:
 		~Context();
 
 	public:
 		static void Create(const FWindowData& WinData, void* DeviceContext);
 
+#pragma region Core Interface
+		void Initialize() override;
+		void Update() override;
+		void Render() override;
+		void Release() override;
+#pragma endregion
+
 		void Present();
 
+		void ReleaseContext();
+
 	private:
-		void    InitD3D(HWND Hwnd);
-		void    InitFont();
-		HRESULT Resize(UINT InWidth, UINT InHeight);
-		HRESULT CreateSwapChain(HWND Hwnd);
-		void    CreateDeviceAndSwapChain(HWND Hwnd);
+		bool    InitD3D(HWND Hwnd);
+		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
+		HRESULT CreateSwapChain(HWND Hwnd);
+		HRESULT Resize(UINT InWidth, UINT InHeight);
 		HRESULT SetViewport();
 		HRESULT SetRenderTarget();
+		HRESULT InitFont();
 
 	public:
 #pragma region Get
@@ -48,7 +58,7 @@ namespace LJG
 		ID3D11Device*           mDevice;                    /** 디바이스 포인터 (리소스 생성) */
 		ID3D11DeviceContext*    mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
 		IDXGISwapChain*         mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
-		DXGI_SWAP_CHAIN_DESC    mSwapChainDesc; /** 스왑체인 구조체 */
+		DXGI_SWAP_CHAIN_DESC    mSwapChainDesc;             /** 스왑체인 구조체 */
 		ID3D11RenderTargetView* mRenderTargetView;          /** 화면에 보여지는 버퍼 개체 (RTV) */
 		ID3D11DepthStencilView* mDepthStencilView;          /** 깊이/스텐실 정보 기반 뷰 관리 개체 */
 		ID3D11Texture2D*        mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
@@ -60,10 +70,8 @@ namespace LJG
 
 		IDXGIFactory* mGIFactory;
 
-		Write*         mFont;
+		DXWrite*         mFont;
 		IDXGISurface1* mSurfaceBackBuffer;
-
-		friend class Window;
 	};
 
 	/**

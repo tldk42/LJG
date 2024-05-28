@@ -1,53 +1,75 @@
-#include "Write.h"
+#include "DXWrite.h"
+
+#include "EngineHelper.h"
 
 namespace LJG
 {
-	Write::Write(): mWindowHandle(nullptr),
-	                mRenderTarget(nullptr),
-	                mD2DFactory(nullptr),
-	                mBlackBrush(nullptr),
-	                mWriteFactory(nullptr),
-	                mTextFormat(nullptr),
-	                mTextLayout(nullptr),
-	                mDPI(0.f),
-	                mDPI_Scale(0.f),
-	                bEnableFontUnderline(false),
-	                mFontSize(72.f),
-	                mTextLength(0),
-	                mFontWeight(DWRITE_FONT_WEIGHT_NORMAL),
-	                mFontStyle(DWRITE_FONT_STYLE_NORMAL)
+	DXWrite* DXWrite::s_Writer;
+
+	DXWrite::DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
+		: mD2DFactory(nullptr),
+		  mRenderTarget(nullptr),
+		  mBrush(nullptr),
+		  mWriteFactory(nullptr),
+		  mTextFormat(nullptr),
+		  mTextLayout(nullptr),
+		  mDPI(0.f),
+		  mDPI_Scale(0.f),
+		  bEnableFontUnderline(false),
+		  mFontSize(72.f),
+		  mTextLength(0),
+		  mFontWeight(DWRITE_FONT_WEIGHT_NORMAL),
+		  mFontStyle(DWRITE_FONT_STYLE_NORMAL)
+	{
+		Set(InWidth, InHeight, InSurface);
+	}
+
+	DXWrite::~DXWrite()
 	{
 	}
 
-	Write::~Write()
+	void DXWrite::Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
 	{
+		s_Writer = new DXWrite(InWidth, InHeight, InSurface);
 	}
 
-	bool Write::Initialize()
+	void DXWrite::Initialize()
 	{
 		const wchar_t defaultText[] = L"Times New Roman";
 		mFontFamily                 = defaultText;
-		return true;
+
+		CreateDeviceIndependentResources();
 	}
 
-	bool Write::Set(HWND Hwnd, int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
+	void DXWrite::Update()
 	{
-		HRESULT result = S_OK;
+	}
 
-		if (!Initialize())
-		{
-			return false;
-		}
-		mWindowHandle = Hwnd;
+	void DXWrite::Render()
+	{
+	}
 
-		result = CreateDeviceIndependentResources();
-		result = CreateDeviceResources(InSurface);
+	void DXWrite::Release()
+	{
+		mText.clear();
+		mFontFamily.clear();
+		DiscardDeviceIndependentResources();
+		DiscardDeviceResources();
+	}
+
+	bool DXWrite::Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
+	{
+		Initialize();
+
+		CreateDeviceResources(InSurface);
+
+
 		SetText(D2D1::Point2F((float_t)InWidth, (float_t)InHeight), L"HELLO, World", D2D1::ColorF(1, 1, 1, 1));
 
 		return true;
 	}
 
-	bool Write::Begin()
+	bool DXWrite::Begin()
 	{
 		if (mRenderTarget)
 		{
@@ -58,7 +80,7 @@ namespace LJG
 		return true;
 	}
 
-	bool Write::End()
+	bool DXWrite::End()
 	{
 		if (mRenderTarget && FAILED(mRenderTarget->EndDraw()))
 		{
@@ -68,9 +90,21 @@ namespace LJG
 		return true;
 	}
 
-	HRESULT Write::DrawText_A(RECT InRect, TCHAR* InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::Draw(RECT InRect, TCHAR* InText, D2D1::ColorF InColor)
 	{
-		if (mRenderTarget && mBlackBrush)
+		if (Begin())
+		{
+			if (SUCCEEDED(DrawText_A(InRect, InText, InColor)))
+			{
+				return End();
+			}
+		}
+		return 0;
+	}
+
+	HRESULT DXWrite::DrawText_A(RECT InRect, TCHAR* InText, D2D1::ColorF InColor)
+	{
+		if (mRenderTarget && mBrush)
 		{
 			D2D1_RECT_F layoutRect = D2D1::RectF(
 				static_cast<FLOAT>(InRect.left) / mDPI_Scale,
@@ -78,63 +112,61 @@ namespace LJG
 				static_cast<FLOAT>(InRect.right) / mDPI_Scale,
 				static_cast<FLOAT>(InRect.bottom) / mDPI_Scale);
 
-			mBlackBrush->SetColor(InColor);
-			mRenderTarget->DrawText(InText, wcslen(InText), mTextFormat, layoutRect, mBlackBrush);
+			mBrush->SetColor(InColor);
+			mRenderTarget->DrawText(InText, wcslen(InText), mTextFormat, layoutRect, mBrush);
 		}
 
 		return S_OK;
 	}
 
-	HRESULT Write::DrawText_A(D2D1_POINT_2F InOrigin, D2D1::ColorF InColor)
+	HRESULT DXWrite::DrawText_A(D2D1_POINT_2F InOrigin, D2D1::ColorF InColor)
 	{
 		D2D1_POINT_2F origin = D2D1::Point2F(InOrigin.x / mDPI_Scale, InOrigin.y / mDPI_Scale);
 
-		mBlackBrush->SetColor(InColor);
-		mRenderTarget->DrawTextLayout(InOrigin, mTextLayout, mBlackBrush);
+		mBrush->SetColor(InColor);
+		mRenderTarget->DrawTextLayout(InOrigin, mTextLayout, mBrush);
 		return S_OK;
 	}
 
-	bool Write::Release()
+
+	HRESULT DXWrite::CreateDeviceIndependentResources()
 	{
-		mText.clear();
-		mFontFamily.clear();
-		DiscardDeviceIndependentResources();
-		DiscardDeviceResources();
-
-		return true;
-	}
-
-	HRESULT Write::CreateDeviceIndependentResources()
-	{
-		// thread type, return value => 리턴되는 factory개체는 여러 스레에서 안전하게 액세스
-		HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &mD2DFactory);
-
-		mDPI       = GetDpiForWindow(mWindowHandle);
+		// Set DPI
+		mDPI       = GetDpiForWindow(EngineHelper::GetWindowHandle());
 		mDPI_Scale = mDPI / 96.f;
 
-		if (SUCCEEDED(result))
+
+		// Create D2 Factory
+		HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &mD2DFactory);
+		if (FAILED(result))
 		{
-			result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
-			                             reinterpret_cast<IUnknown**>(&mWriteFactory));
 		}
 
-		if (SUCCEEDED(result))
+		// Create  DWrite Factory
+		result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
+		                             reinterpret_cast<IUnknown**>(&mWriteFactory));
+		if (FAILED(result))
 		{
-			result = mWriteFactory->CreateTextFormat(
-				mFontFamily.c_str(),
-				nullptr,
-				mFontWeight,
-				mFontStyle,
-				DWRITE_FONT_STRETCH_NORMAL,
-				20,
-				L"en-us",
-				&mTextFormat);
+		}
+
+		// Create TextFormat
+		result = mWriteFactory->CreateTextFormat(
+			mFontFamily.c_str(),
+			nullptr,
+			mFontWeight,
+			mFontStyle,
+			DWRITE_FONT_STRETCH_NORMAL,
+			20,
+			L"en-us",
+			&mTextFormat);
+		if (FAILED(result))
+		{
 		}
 
 		return result;
 	}
 
-	HRESULT Write::CreateDeviceResources(IDXGISurface1* InSurface)
+	HRESULT DXWrite::CreateDeviceResources(IDXGISurface1* InSurface)
 	{
 		HRESULT result = S_OK;
 
@@ -150,13 +182,13 @@ namespace LJG
 		result = mD2DFactory->CreateDxgiSurfaceRenderTarget(InSurface, &props, &mRenderTarget);
 		if (SUCCEEDED(result))
 		{
-			result = mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &mBlackBrush);
+			result = mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &mBrush);
 		}
 
 		return result;
 	}
 
-	void Write::DiscardDeviceIndependentResources()
+	void DXWrite::DiscardDeviceIndependentResources()
 	{
 		ReleaseCOM(mD2DFactory);
 		ReleaseCOM(mWriteFactory);
@@ -164,14 +196,14 @@ namespace LJG
 		ReleaseCOM(mTextLayout);
 	}
 
-	void Write::DiscardDeviceResources()
+	void DXWrite::DiscardDeviceResources()
 	{
 		ReleaseCOM(mRenderTarget);
-		ReleaseCOM(mBlackBrush);
+		ReleaseCOM(mBrush);
 	}
 
 #pragma region Set Brush
-	HRESULT Write::SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor)
 	{
 		HRESULT result = S_OK;
 
@@ -226,7 +258,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT Write::SetFont(const wchar_t* InFontFamily)
+	HRESULT DXWrite::SetFont(const wchar_t* InFontFamily)
 	{
 		const DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 		const HRESULT           result    = mTextLayout->SetFontFamilyName(InFontFamily, textRange);
@@ -239,7 +271,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT Write::SetFontSize(const float InSize)
+	HRESULT DXWrite::SetFontSize(const float InSize)
 	{
 		const DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 
@@ -253,7 +285,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT Write::SetBold(const bool bEnable)
+	HRESULT DXWrite::SetBold(const bool bEnable)
 	{
 		DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 
@@ -264,7 +296,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT Write::SetItalic(const bool bEnable)
+	HRESULT DXWrite::SetItalic(const bool bEnable)
 	{
 		DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 
@@ -275,7 +307,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT Write::SetUnderline(const bool bEnable)
+	HRESULT DXWrite::SetUnderline(const bool bEnable)
 	{
 		DWRITE_TEXT_RANGE textRange = {0, mTextLength};
 
@@ -287,7 +319,7 @@ namespace LJG
 	}
 #pragma endregion
 
-	void Write::OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface)
+	void DXWrite::OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface)
 	{
 		DiscardDeviceResources();
 		CreateDeviceResources(InSurface);
