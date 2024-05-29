@@ -9,10 +9,8 @@ namespace LJG
 
 
 	Renderer::Renderer(const FWindowData& InWinData, HWND InWindowHandle)
-		: mWindowHandle(InWindowHandle),
-		  mWindowData(InWinData)
-	{
-	}
+		: mWindowData(InWinData),
+		  mWindowHandle(InWindowHandle) {}
 
 	void Renderer::Create(const FWindowData& WinData, void* DeviceContext)
 	{
@@ -29,21 +27,16 @@ namespace LJG
 		Context::Create(mWindowData, mWindowHandle);
 
 		IDXGISurface1* surface = nullptr;
-		Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), (void**)&surface);
-
+		Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), reinterpret_cast<void**>(&surface));
 
 		DXWrite::Create(mWindowData.Width, mWindowData.Height, surface);
 
 		surface->Release();
 	}
 
-	void Renderer::Update()
-	{
-	}
+	void Renderer::Update() {}
 
-	void Renderer::Release()
-	{
-	}
+	void Renderer::Release() {}
 
 	Renderer* Renderer::GetRenderer()
 	{
@@ -52,7 +45,10 @@ namespace LJG
 
 	void Renderer::Render()
 	{
-		Context::Get()->Present();
+		Clear();
+
+		DXWrite::Get()->Render();
+		Context::Get()->Render();
 	}
 
 	void Renderer::Clear()

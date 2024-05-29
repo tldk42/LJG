@@ -26,14 +26,15 @@ namespace LJG
 
 		void Present();
 
+
 		void ReleaseContext();
+		void Resize(UINT InWidth, UINT InHeight);
 
 	private:
 		bool    InitD3D(HWND Hwnd);
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
 		HRESULT CreateSwapChain(HWND Hwnd);
-		HRESULT Resize(UINT InWidth, UINT InHeight);
 		HRESULT SetViewport();
 		HRESULT SetRenderTarget();
 		HRESULT InitFont();
@@ -70,7 +71,7 @@ namespace LJG
 
 		IDXGIFactory* mGIFactory;
 
-		DXWrite*         mFont;
+		DXWrite*       mFont;
 		IDXGISurface1* mSurfaceBackBuffer;
 	};
 

@@ -14,7 +14,7 @@ namespace LJG
 		~DXWrite();
 
 	public:
-		static void            Create( int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		static void            Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
 		inline static DXWrite* Get() { return s_Writer; }
 
 #pragma region Core Interface
@@ -28,24 +28,24 @@ namespace LJG
 
 		bool    Begin();
 		bool    End();
-		HRESULT Draw(RECT InRect, TCHAR* InText, D2D1::ColorF = D2D1::ColorF::Green);
-		HRESULT DrawText_A(RECT InRect, TCHAR* InText, D2D1::ColorF = D2D1::ColorF::DarkGreen);
-		HRESULT DrawText_A(D2D1_POINT_2F InOrigin, D2D1::ColorF = D2D1::ColorF::DarkGreen);
+		HRESULT Draw(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::Green);
+		HRESULT DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::DarkGreen);
+		HRESULT DrawText_Immediately(const std::wstring& InText, D2D1_RECT_F Rect,
+		                             D2D1::ColorF         = D2D1::ColorF::DarkGreen);
 
 
 		HRESULT CreateDeviceIndependentResources();
-		/**
-		 * SurfaceRenderTarget»ý¼º
-		 * @param InSurface ¹é¹öÆÛ(·»´õ Å¸±ê)
-		 */
 		HRESULT CreateDeviceResources(IDXGISurface1* InSurface);
 
 		void DiscardDeviceIndependentResources();
 		void DiscardDeviceResources();
 
 	public:
+		static void AddText(const FWriteData& InWriteData);
+		static void UpdateText(const FWriteData& WriteToUpdate, const std::wstring& NewText);
+		static FWriteData& FindText(const FWriteData& WriteToFind);
 #pragma region Set
-		HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
+		// HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
 		HRESULT SetFont(const wchar_t* InFontFamily);
 		HRESULT SetFontSize(const float InSize);
 		HRESULT SetBold(const bool bEnable);
@@ -56,7 +56,7 @@ namespace LJG
 	private:
 		void OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface);
 
-	public:
+	private:
 		ID2D1Factory*         mD2DFactory;
 		ID2D1RenderTarget*    mRenderTarget;
 		ID2D1SolidColorBrush* mBrush;
@@ -77,7 +77,10 @@ namespace LJG
 		std::wstring mFontFamily;
 		std::wstring mText;
 
+		std::vector<FWriteData> TextArray;
+
 	private:
 		static DXWrite* s_Writer;
+
 	};
 }

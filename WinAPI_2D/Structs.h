@@ -14,30 +14,39 @@ namespace LJG
 		bool    bVsync;
 	};
 
-	struct Key
+	struct FKeyData
 	{
 		EKeyCode  KeyCode;
 		EKeyState State;
 		bool      bPressed;
 	};
 
-	//=========================== »ó¼ö ==============================
-
-	constexpr int ASCII[static_cast<UINT>(EKeyCode::End)] =
+	struct FWriteData
 	{
-		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-		'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-		'Z', 'X', 'C', 'V', 'B', 'N', 'M',
-		VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
-		VK_LBUTTON, VK_MBUTTON, VK_RBUTTON
-	};
+		RECT         RectSize;
+		std::wstring Text;
+		int32_t      ID;
 
-	constexpr const char* ASCIIString[static_cast<UINT>(EKeyCode::End)] =
-	{
-		"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-		"A", "S", "D", "F", "G", "H", "J", "K", "L",
-		"Z", "X", "C", "V", "B", "N", "M",
-		"LEFT", "RIGHT", "DOWN", "UP",
-		"LBUTTON", "MBUTTON", "RBUTTON"
+		FWriteData()
+			: RectSize(),
+			  Text(),
+			  ID(_GenerateUniqueID()) {}
+
+		FWriteData(const RECT& InRectSize, std::wstring InText)
+			: RectSize(InRectSize),
+			  Text(std::move(InText)),
+			  ID(_GenerateUniqueID()) {}
+
+
+		static int32_t _GenerateUniqueID()
+		{
+			static int currentID = 0;
+			return ++currentID;
+		}
+
+		bool operator==(const FWriteData& WriteData) const
+		{
+			return ID == WriteData.ID;
+		}
 	};
 }

@@ -24,11 +24,33 @@
 #include "Math/MathFwd.h"
 
 
-
 namespace LJG
 {
+	//=========================== 상수 ==============================
+
+	constexpr int ASCII[static_cast<UINT>(EKeyCode::End)] =
+	{
+		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+		'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
+		'Z', 'X', 'C', 'V', 'B', 'N', 'M',
+		VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
+		VK_LBUTTON, VK_MBUTTON, VK_RBUTTON
+	};
+
+	constexpr const char* ASCIIString[static_cast<UINT>(EKeyCode::End)] =
+	{
+		"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
+		"A", "S", "D", "F", "G", "H", "J", "K", "L",
+		"Z", "X", "C", "V", "B", "N", "M",
+		"LEFT", "RIGHT", "DOWN", "UP",
+		"LBUTTON", "MBUTTON", "RBUTTON"
+	};
+
+
+	// =========================== 인라인 함수 =============================
+
 	template <typename T>
-	void ReleaseCOM(T* ComPtr)
+	inline void ReleaseCOM(T* ComPtr)
 	{
 		if (ComPtr)
 		{
@@ -36,6 +58,8 @@ namespace LJG
 			ComPtr = nullptr;
 		}
 	}
+
+	// ======================== 인터페이스 ==================================
 
 	class ICoreAPI
 	{
@@ -45,4 +69,7 @@ namespace LJG
 		virtual void Render() = 0;
 		virtual void Release() = 0;
 	};
+
+
+	using ResizeDelegate = std::function<void(UINT, UINT)>;
 }

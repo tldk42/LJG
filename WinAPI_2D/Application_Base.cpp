@@ -1,6 +1,7 @@
 #include "Application_Base.h"
 
 #include "Context.h"
+#include "DXWrite.h"
 #include "InputManager.h"
 #include "Renderer.h"
 #include "Timer.h"
@@ -17,9 +18,7 @@ namespace LJG
 		  mUpdatesPerSec(0),
 		  bIsInitialized(false),
 		  bIsRunning(false),
-		  bIsPaused(false)
-	{
-	}
+		  bIsPaused(false) {}
 
 	Application_Base::~Application_Base()
 	{
@@ -41,18 +40,14 @@ namespace LJG
 		Renderer::Create(mWindowData, mWindow->GetHandle());
 	}
 
-	void Application_Base::Update()
-	{
-	}
+	void Application_Base::Update() {}
 
 	void Application_Base::Render()
 	{
 		Renderer::GetRenderer()->Render();
 	}
 
-	void Application_Base::Release()
-	{
-	}
+	void Application_Base::Release() {}
 
 	void Application_Base::Initialize_Application()
 	{
@@ -99,6 +94,14 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
+			FWriteData IntroText;
+			IntroText.RectSize = RECT(0, 0, mWindowData.Width, mWindowData.Height);
+
+			std::wstring fpsText = L"FPS: ";
+
+
+			DXWrite::AddText(IntroText);
+
 			while (bIsRunning)
 			{
 				mWindow->Clear();
@@ -129,8 +132,10 @@ namespace LJG
 				{
 					timer += 1.f;
 
-					mFramesPerSec  = frameCounter;
-					mUpdatesPerSec = updateCounter;
+					mFramesPerSec          = frameCounter;
+					mUpdatesPerSec         = updateCounter;
+					std::wstring fpsString = fpsText + std::to_wstring(mFramesPerSec);
+					DXWrite::UpdateText(IntroText, fpsString);
 
 					frameCounter  = 0;
 					updateCounter = 0;

@@ -1,5 +1,6 @@
 #include "DXWrite.h"
 
+#include "Context.h"
 #include "EngineHelper.h"
 
 namespace LJG
@@ -24,9 +25,7 @@ namespace LJG
 		Set(InWidth, InHeight, InSurface);
 	}
 
-	DXWrite::~DXWrite()
-	{
-	}
+	DXWrite::~DXWrite() {}
 
 	void DXWrite::Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
 	{
@@ -41,12 +40,30 @@ namespace LJG
 		CreateDeviceIndependentResources();
 	}
 
-	void DXWrite::Update()
-	{
-	}
+	void DXWrite::Update() {}
 
 	void DXWrite::Render()
 	{
+#pragma region Font Test
+		if (mTextFormat)
+		{
+			D2D1_SIZE_F rtSize = mRenderTarget->GetSize();
+			//Draw a grid background.
+			int width  = static_cast<int>(rtSize.width);
+			int height = static_cast<int>(rtSize.height);
+
+			for (FWriteData& text : TextArray)
+			{
+				Draw(text.RectSize, text.Text);
+			}
+
+			// // 클라이언트 좌표계를 사용하여 RECT를 구성한다.
+			// RECT rc1 = {0, 0, width, height};
+			// Draw(rc1, (TCHAR*)L"FPS: ");
+
+			// DrawText_Immediately({900, 600});
+		}
+#pragma endregion
 	}
 
 	void DXWrite::Release()
@@ -64,7 +81,18 @@ namespace LJG
 		CreateDeviceResources(InSurface);
 
 
-		SetText(D2D1::Point2F((float_t)InWidth, (float_t)InHeight), L"HELLO, World", D2D1::ColorF(1, 1, 1, 1));
+		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
+
+		Window::GetWindow()->AddResizeCallback([this](UINT Width, UINT Height){
+			IDXGISurface1* backBuffer = nullptr;
+			Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), reinterpret_cast<void**>(&backBuffer));
+
+			OnResizeCallback(Width, Height, backBuffer);
+			backBuffer->Release();
+		});
+
+		TextArray.clear();
+		TextArray.reserve(10);
 
 		return true;
 	}
@@ -90,7 +118,7 @@ namespace LJG
 		return true;
 	}
 
-	HRESULT DXWrite::Draw(RECT InRect, TCHAR* InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::Draw(RECT InRect, const std::wstring& InText, D2D1::ColorF InColor)
 	{
 		if (Begin())
 		{
@@ -102,7 +130,7 @@ namespace LJG
 		return 0;
 	}
 
-	HRESULT DXWrite::DrawText_A(RECT InRect, TCHAR* InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF InColor)
 	{
 		if (mRenderTarget && mBrush)
 		{
@@ -113,18 +141,20 @@ namespace LJG
 				static_cast<FLOAT>(InRect.bottom) / mDPI_Scale);
 
 			mBrush->SetColor(InColor);
-			mRenderTarget->DrawText(InText, wcslen(InText), mTextFormat, layoutRect, mBrush);
+			mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat, &layoutRect, mBrush);
 		}
 
 		return S_OK;
 	}
 
-	HRESULT DXWrite::DrawText_A(D2D1_POINT_2F InOrigin, D2D1::ColorF InColor)
+	HRESULT DXWrite::DrawText_Immediately(const std::wstring& InText, D2D1_RECT_F Rect, D2D1::ColorF InColor)
 	{
-		D2D1_POINT_2F origin = D2D1::Point2F(InOrigin.x / mDPI_Scale, InOrigin.y / mDPI_Scale);
+		Begin();
 
 		mBrush->SetColor(InColor);
-		mRenderTarget->DrawTextLayout(InOrigin, mTextLayout, mBrush);
+		mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat, &Rect, mBrush);
+
+		End();
 		return S_OK;
 	}
 
@@ -138,16 +168,12 @@ namespace LJG
 
 		// Create D2 Factory
 		HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &mD2DFactory);
-		if (FAILED(result))
-		{
-		}
+		if (FAILED(result)) {}
 
 		// Create  DWrite Factory
 		result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
 		                             reinterpret_cast<IUnknown**>(&mWriteFactory));
-		if (FAILED(result))
-		{
-		}
+		if (FAILED(result)) {}
 
 		// Create TextFormat
 		result = mWriteFactory->CreateTextFormat(
@@ -159,9 +185,7 @@ namespace LJG
 			20,
 			L"en-us",
 			&mTextFormat);
-		if (FAILED(result))
-		{
-		}
+		if (FAILED(result)) {}
 
 		return result;
 	}
@@ -202,8 +226,34 @@ namespace LJG
 		ReleaseCOM(mBrush);
 	}
 
+	void DXWrite::AddText(const FWriteData& InWriteData)
+	{
+		Get()->TextArray.emplace_back(InWriteData);
+	}
+
+	void DXWrite::UpdateText(const FWriteData& WriteToUpdate, const std::wstring& NewText)
+	{
+		FWriteData& DataToUpdate = FindText(WriteToUpdate);
+
+		DataToUpdate.Text = NewText;
+	}
+
+	FWriteData& DXWrite::FindText(const FWriteData& WriteToFind)
+	{
+		FWriteData returnValue{};
+
+		for (FWriteData& textData : Get()->TextArray)
+		{
+			if (textData == WriteToFind)
+			{
+				return textData;
+			}
+		}
+		return returnValue;
+	}
+
 #pragma region Set Brush
-	HRESULT DXWrite::SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor)
+	/*HRESULT DXWrite::SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor)
 	{
 		HRESULT result = S_OK;
 
@@ -256,7 +306,7 @@ namespace LJG
 		}
 		ReleaseCOM(pTypography);
 		return result;
-	}
+	}*/
 
 	HRESULT DXWrite::SetFont(const wchar_t* InFontFamily)
 	{
@@ -321,9 +371,9 @@ namespace LJG
 
 	void DXWrite::OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface)
 	{
+		// RenderTarget, Brush 해제 
 		DiscardDeviceResources();
+		// 새로운 BackBuffer로 재생성
 		CreateDeviceResources(InSurface);
-		SetText(D2D1::Point2F(static_cast<FLOAT>(InWidth), static_cast<FLOAT>(InHeight)), L"Resizing!!",
-		        D2D1::ColorF(1, 1, 1, 1));
 	}
 }

@@ -35,9 +35,9 @@ namespace LJG
 		void CreateKeys();
 
 		void UpdateKeys();
-		void UpdateKey(Key& InKey);
-		void UpdateKeyDown(Key& InKey);
-		void UpdateKeyUp(Key& InKey);
+		void UpdateKey(FKeyData& InKey);
+		void UpdateKeyDown(FKeyData& InKey);
+		void UpdateKeyUp(FKeyData& InKey);
 
 		void UpdateMouseWindowPosition();
 
@@ -47,7 +47,7 @@ namespace LJG
 		bool IsKeyDown_Implements(const EKeyCode InKey);
 
 	private:
-		std::vector<Key> mKeys;
+		std::vector<FKeyData> mKeys;
 		FVector2D        mMousePosition;
 
 		static InputManager* s_InputManager;

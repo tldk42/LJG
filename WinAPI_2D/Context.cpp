@@ -41,19 +41,21 @@ namespace LJG
 
 	void Context::Initialize()
 	{
+		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
+
+		Window::GetWindow()->AddResizeCallback([this](UINT Width, UINT Height){
+			Resize(Width, Height);
+		});
 	}
 
-	void Context::Update()
-	{
-	}
+	void Context::Update() {}
 
 	void Context::Render()
 	{
+		Present();
 	}
 
-	void Context::Release()
-	{
-	}
+	void Context::Release() {}
 
 	bool Context::InitD3D(HWND Hwnd)
 	{
@@ -171,8 +173,8 @@ namespace LJG
 		ZeroMemory(&mSwapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 		{
 			mSwapChainDesc.BufferCount = 1;
-			mSwapChainDesc.BufferDesc.Width = 1600; // Buffer Width
-			mSwapChainDesc.BufferDesc.Height = 900; // Buffer Height
+			mSwapChainDesc.BufferDesc.Width = mWindowData.Width; // Buffer Width
+			mSwapChainDesc.BufferDesc.Height = mWindowData.Height; // Buffer Height
 			mSwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
 			mSwapChainDesc.BufferDesc.RefreshRate.Numerator = 60; // FPS 분자
 			mSwapChainDesc.BufferDesc.RefreshRate.Denominator = 1; // FPS 분모
@@ -188,16 +190,16 @@ namespace LJG
 		return mGIFactory->CreateSwapChain(mDevice, &mSwapChainDesc, &mSwapChain);
 	}
 
-	HRESULT Context::Resize(UINT InWidth, UINT InHeight)
+	void Context::Resize(UINT InWidth, UINT InHeight)
 	{
 		HRESULT result = E_FAIL;
+
 		if (mDevice)
 		{
 			mDeviceContext->OMSetRenderTargets(0, nullptr, nullptr);
-			if (mRenderTargetView)
-			{
-				ReleaseCOM(mRenderTargetView);
-			}
+
+			ReleaseCOM(mRenderTargetView);
+
 
 			mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
 			                          InWidth, InHeight,
@@ -206,7 +208,6 @@ namespace LJG
 			result = SetRenderTarget();
 			result = SetViewport();
 		}
-		return result;
 	}
 
 	HRESULT Context::SetRenderTarget()
@@ -262,24 +263,6 @@ namespace LJG
 	{
 		if (mSwapChain)
 		{
-			// TODO: Clear below code
-			constexpr float clearColor[] = {.1f, .2f, .3f, 1.f};
-			mDeviceContext->ClearRenderTargetView(mRenderTargetView, clearColor);
-
-// #pragma region Font Test
-// 			if (mFont->mTextFormat)
-// 			{
-// 				D2D1_SIZE_F rtSize = mFont->mRenderTarget->GetSize();
-// 				//Draw a grid background.
-// 				int width  = static_cast<int>(rtSize.width);
-// 				int height = static_cast<int>(rtSize.height);
-//
-// 				// 클라이언트 좌표계를 사용하여 RECT를 구성한다.
-// 				RECT rc1 = {0, 0, width, height};
-// 				mFont->Draw(rc1, (TCHAR*)L"FPS: ");
-// 			}
-// #pragma endregion
-
 			if (FAILED(mSwapChain->Present(mWindowData.bVsync, 0)))
 			{
 				LOG_DX_ERROR("SwapChain Present Failed");

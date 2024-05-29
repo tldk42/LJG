@@ -62,13 +62,13 @@ namespace LJG
 
 	void InputManager::UpdateKeys()
 	{
-		for (Key& key : mKeys)
+		for (FKeyData& key : mKeys)
 		{
 			UpdateKey(key);
 		}
 	}
 
-	void InputManager::UpdateKey(Key& InKey)
+	void InputManager::UpdateKey(FKeyData& InKey)
 	{
 		if (GetFocus()) // 현재 윈도우에 포커싱 중?
 		{
@@ -80,13 +80,13 @@ namespace LJG
 		}
 	}
 
-	void InputManager::UpdateKeyDown(Key& InKey)
+	void InputManager::UpdateKeyDown(FKeyData& InKey)
 	{
 		InKey.State    = (InKey.State == EKeyState::Pressed) ? EKeyState::Pressed : EKeyState::Down;
 		InKey.bPressed = true;
 	}
 
-	void InputManager::UpdateKeyUp(Key& InKey)
+	void InputManager::UpdateKeyUp(FKeyData& InKey)
 	{
 		InKey.State    = (InKey.State == EKeyState::Pressed) ? EKeyState::Up : EKeyState::None;
 		InKey.bPressed = false;
@@ -111,7 +111,7 @@ namespace LJG
 
 	void InputManager::ClearKeys()
 	{
-		for (Key& key : mKeys)
+		for (FKeyData& key : mKeys)
 		{
 			switch (key.State)
 			{

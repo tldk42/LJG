@@ -65,9 +65,7 @@ namespace LJG
 		}
 	}
 
-	Window::~Window()
-	{
-	}
+	Window::~Window() {}
 
 	bool Window::Initialize()
 	{
@@ -153,6 +151,11 @@ namespace LJG
 		return s_WindowHandles[WindowHandle];
 	}
 
+	void Window::AddResizeCallback(ResizeDelegate Function)
+	{
+		OnResize.emplace_back(std::move(Function));
+	}
+
 	void Window::Update()
 	{
 		MSG message;
@@ -170,11 +173,16 @@ namespace LJG
 		}
 	}
 
-	void Window::Clear()
-	{
-	}
+	void Window::Clear() {}
 
-	void ResizeCallback(Window* Window, int Width, int Height)
+	void ResizeCallback(Window* Window, UINT Width, UINT Height)
 	{
+		if (!Window->OnResize.empty())
+		{
+			for (ResizeDelegate& delegate : Window->OnResize)
+			{
+				delegate(Width, Height);
+			}
+		}
 	}
 }

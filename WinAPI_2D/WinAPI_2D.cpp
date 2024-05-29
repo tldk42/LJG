@@ -3,6 +3,7 @@
 #pragma region Graphic Initialize
 #include <d3d11.h>
 
+#include "DXWrite.h"
 #include "EngineCore.h"
 
 
@@ -80,7 +81,7 @@ int main()
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = true;
 
-	Application_Base* testApp = new Application_Base(L"Test Window", testWindowData);
+	Application_Base* testApp = new Application_Base(L"Sample Renderer", testWindowData);
 	if (testApp)
 	{
 		testApp->Initialize();

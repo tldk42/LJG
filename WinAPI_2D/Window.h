@@ -13,9 +13,12 @@ namespace LJG
 	private:
 		bool Initialize();
 
+	private:
+		static void RegisterWindowClass(void* Handle, Window* Window);
+
 	public:
-		static void    RegisterWindowClass(void* Handle, Window* Window);
 		static Window* GetWindow(void* WindowHandle = nullptr);
+		void           AddResizeCallback(ResizeDelegate Function);
 
 	public:
 		void Update();
@@ -44,6 +47,8 @@ namespace LJG
 		FWindowData mWindowData;
 		bool        bClosed;
 
+		std::vector<ResizeDelegate> OnResize;
+
 		int mResolutionWidth;
 		int mResolutionHeight;
 
@@ -51,6 +56,6 @@ namespace LJG
 		static std::map<void*, Window*> s_WindowHandles;
 
 		friend LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-		friend void             ResizeCallback(Window* Window, int Width, int Height);
+		friend void             ResizeCallback(Window* Window, UINT Width, UINT Height);
 	};
 }
