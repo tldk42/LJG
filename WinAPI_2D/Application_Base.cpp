@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "Renderer.h"
 #include "Timer.h"
+#include "Vertex.h"
 
 namespace LJG
 {
@@ -18,7 +19,10 @@ namespace LJG
 		  mUpdatesPerSec(0),
 		  bIsInitialized(false),
 		  bIsRunning(false),
-		  bIsPaused(false) {}
+		  bIsPaused(false)
+	{
+		Application_Base::Initialize();
+	}
 
 	Application_Base::~Application_Base()
 	{
@@ -34,7 +38,7 @@ namespace LJG
 	{
 		Logger::Initialize();
 
-		Initialize_Application();
+		Initialize_Internal();
 
 		InputManager::Create();
 		Renderer::Create(mWindowData, mWindow->GetHandle());
@@ -44,12 +48,15 @@ namespace LJG
 
 	void Application_Base::Render()
 	{
+		std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
+		FpsText.Text           = frameInfo;
+
 		Renderer::GetRenderer()->Render();
 	}
 
 	void Application_Base::Release() {}
 
-	void Application_Base::Initialize_Application()
+	void Application_Base::Initialize_Internal()
 	{
 		if (!bIsInitialized)
 		{
@@ -87,20 +94,18 @@ namespace LJG
 		{
 			mTimer = new Utils::Timer;
 
-			float timer       = 0.f;
-			float updateTimer = mTimer->ElapsedMillis();
-			float currentTime;
+			timer       = 0.f;
+			updateTimer = mTimer->ElapsedMillis();
 
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			FWriteData IntroText;
-			IntroText.RectSize = RECT(0, 0, mWindowData.Width, mWindowData.Height);
+			FpsText.RectSize = {0, 0, mWindowData.Width, mWindowData.Height};
 
-			std::wstring fpsText = L"FPS: ";
+			DXWrite::AddText(FpsText);
 
-
-			DXWrite::AddText(IntroText);
+			Vertex testVert;
+			testVert.Initialize();
 
 			while (bIsRunning)
 			{
@@ -111,6 +116,7 @@ namespace LJG
 				if (currentTime - updateTimer > Utils::TickFrequency)
 				{
 					// TODO: Update
+					testVert.Update();
 					Update();
 
 					updateCounter++;
@@ -120,6 +126,8 @@ namespace LJG
 				{
 					Utils::Timer frameTimer;
 					// TODO: Render
+					Renderer::GetRenderer()->Clear();
+					testVert.Render();
 					Render();
 
 					frameCounter++;
@@ -132,16 +140,13 @@ namespace LJG
 				{
 					timer += 1.f;
 
-					mFramesPerSec          = frameCounter;
-					mUpdatesPerSec         = updateCounter;
-					std::wstring fpsString = fpsText + std::to_wstring(mFramesPerSec);
-					DXWrite::UpdateText(IntroText, fpsString);
+					mFramesPerSec  = frameCounter;
+					mUpdatesPerSec = updateCounter;
 
 					frameCounter  = 0;
 					updateCounter = 0;
 
 					// TODO: Tick
-					LOG_CORE_TRACE("Å¸ÀÌ¸Ó: {:1.0f}", timer);
 				}
 
 				if (mWindow->IsClosed())

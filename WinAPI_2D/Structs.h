@@ -16,8 +16,8 @@ namespace LJG
 
 	struct FKeyData
 	{
-		EKeyCode  KeyCode;
-		EKeyState State;
+		EKeyCode  KeyCode;// 고유 Key
+		EKeyState State; // 키 상태
 		bool      bPressed;
 	};
 

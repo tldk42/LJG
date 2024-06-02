@@ -19,13 +19,15 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+#pragma region Application Handle
 		void Start();
 		void Pause();
 		void Resume();
 		void Stop();
+#pragma endregion
 
 	protected:
-		virtual void Initialize_Application();
+		virtual void Initialize_Internal();
 		virtual void Run();
 
 	protected:
@@ -37,12 +39,17 @@ namespace LJG
 
 #pragma region Time
 		Utils::Timer* mTimer;
-		float_t       mDeltaTime;
-		int32_t       mFramesPerSec;
-		int32_t       mUpdatesPerSec;
+		FWriteData    FpsText;
+
+		float_t mDeltaTime;
+		float_t timer;
+		float_t updateTimer;
+		float_t currentTime;
+		int32_t mFramesPerSec;
+		int32_t mUpdatesPerSec;
 #pragma endregion
 
-#pragma region Properties
+#pragma region flag
 		bool bIsInitialized;
 		bool bIsRunning;
 		bool bIsPaused;

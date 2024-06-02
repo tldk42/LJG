@@ -22,6 +22,7 @@
 #include "Logger.h"
 
 #include "Math/MathFwd.h"
+#include "Math/Vector.h"
 
 
 namespace LJG
@@ -64,6 +65,7 @@ namespace LJG
 	class ICoreAPI
 	{
 	public:
+		virtual      ~ICoreAPI() = default;
 		virtual void Initialize() = 0;
 		virtual void Update() = 0;
 		virtual void Render() = 0;

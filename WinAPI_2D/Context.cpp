@@ -43,7 +43,7 @@ namespace LJG
 	{
 		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
 
-		Window::GetWindow()->AddResizeCallback([this](UINT Width, UINT Height){
+		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
 			Resize(Width, Height);
 		});
 	}

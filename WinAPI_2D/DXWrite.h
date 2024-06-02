@@ -41,9 +41,8 @@ namespace LJG
 		void DiscardDeviceResources();
 
 	public:
-		static void AddText(const FWriteData& InWriteData);
-		static void UpdateText(const FWriteData& WriteToUpdate, const std::wstring& NewText);
-		static FWriteData& FindText(const FWriteData& WriteToFind);
+		static void AddText(FWriteData& InWriteData);
+		static bool RemoveText(const FWriteData& WriteDataToRemove);
 #pragma region Set
 		// HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
 		HRESULT SetFont(const wchar_t* InFontFamily);
@@ -77,10 +76,9 @@ namespace LJG
 		std::wstring mFontFamily;
 		std::wstring mText;
 
-		std::vector<FWriteData> TextArray;
+		std::vector<FWriteData*> TextArray;
 
 	private:
 		static DXWrite* s_Writer;
-
 	};
 }

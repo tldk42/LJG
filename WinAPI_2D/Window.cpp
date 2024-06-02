@@ -12,42 +12,25 @@ namespace LJG
 
 	LRESULT CALLBACK WndProc(HWND HWnd, UINT Message, WPARAM WParam, LPARAM LParam)
 	{
-		LRESULT result = NULL;
-
 		Window* window = Window::GetWindow(HWnd);
 
 		if (window == nullptr)
 			return DefWindowProc(HWnd, Message, WParam, LParam);
 		switch (Message)
 		{
-		case WM_SETFOCUS:
-			break;
-		case WM_KILLFOCUS:
-			break;
-		case WM_CLOSE:
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
-		case WM_KEYDOWN:
-		case WM_KEYUP:
-		case WM_SYSKEYDOWN:
-		case WM_SYSKEYUP:
-			break;
-		case WM_LBUTTONDOWN:
-		case WM_LBUTTONUP:
-		case WM_RBUTTONDOWN:
-		case WM_RBUTTONUP:
-		case WM_MBUTTONDOWN:
-		case WM_MBUTTONUP:
-			break;
 		case WM_SIZE:
 			ResizeCallback(window, LOWORD(LParam), HIWORD(LParam));
 			break;
-		default:
-			result = DefWindowProc(HWnd, Message, WParam, LParam);
+		case WM_CLOSE:
+			DestroyWindow(HWnd);
+			UnregisterClass(L"Jacob Window", nullptr);
+			return 0;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
 		}
 
-		return result;
+		return DefWindowProc(HWnd, Message, WParam, LParam);
 	}
 
 	Window::Window(LPCWSTR WindowTitle, const FWindowData& WindowData)
@@ -56,9 +39,6 @@ namespace LJG
 		  mWindowData(WindowData),
 		  bClosed(false)
 	{
-		mResolutionWidth  = mWindowData.Width;
-		mResolutionHeight = mWindowData.Height;
-
 		if (!Initialize())
 		{
 			return;
@@ -149,11 +129,6 @@ namespace LJG
 		}
 
 		return s_WindowHandles[WindowHandle];
-	}
-
-	void Window::AddResizeCallback(ResizeDelegate Function)
-	{
-		OnResize.emplace_back(std::move(Function));
 	}
 
 	void Window::Update()

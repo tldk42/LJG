@@ -45,8 +45,6 @@ namespace LJG
 
 	void Renderer::Render()
 	{
-		Clear();
-
 		DXWrite::Get()->Render();
 		Context::Get()->Render();
 	}

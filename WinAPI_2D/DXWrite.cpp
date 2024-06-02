@@ -52,9 +52,9 @@ namespace LJG
 			int width  = static_cast<int>(rtSize.width);
 			int height = static_cast<int>(rtSize.height);
 
-			for (FWriteData& text : TextArray)
+			for (FWriteData*& text : TextArray)
 			{
-				Draw(text.RectSize, text.Text);
+				Draw(text->RectSize, text->Text);
 			}
 
 			// // 클라이언트 좌표계를 사용하여 RECT를 구성한다.
@@ -83,7 +83,7 @@ namespace LJG
 
 		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
 
-		Window::GetWindow()->AddResizeCallback([this](UINT Width, UINT Height){
+		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
 			IDXGISurface1* backBuffer = nullptr;
 			Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), reinterpret_cast<void**>(&backBuffer));
 
@@ -226,30 +226,23 @@ namespace LJG
 		ReleaseCOM(mBrush);
 	}
 
-	void DXWrite::AddText(const FWriteData& InWriteData)
+	void DXWrite::AddText(FWriteData& InWriteData)
 	{
-		Get()->TextArray.emplace_back(InWriteData);
+		Get()->TextArray.emplace_back(&InWriteData);
 	}
 
-	void DXWrite::UpdateText(const FWriteData& WriteToUpdate, const std::wstring& NewText)
+	bool DXWrite::RemoveText(const FWriteData& WriteDataToRemove)
 	{
-		FWriteData& DataToUpdate = FindText(WriteToUpdate);
-
-		DataToUpdate.Text = NewText;
-	}
-
-	FWriteData& DXWrite::FindText(const FWriteData& WriteToFind)
-	{
-		FWriteData returnValue{};
-
-		for (FWriteData& textData : Get()->TextArray)
+		for (auto it = Get()->TextArray.begin(); it != Get()->TextArray.end(); ++it)
 		{
-			if (textData == WriteToFind)
+			if (*it == &WriteDataToRemove)
 			{
-				return textData;
+				Get()->TextArray.erase(it);
+				return true;
 			}
 		}
-		return returnValue;
+
+		return false;
 	}
 
 #pragma region Set Brush

@@ -123,7 +123,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;d2d1.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d2d1.lib;dwrite.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,21 +143,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Application_Base.cpp" />
     <ClCompile Include="Context.cpp" />
+    <ClCompile Include="DXWrite.cpp" />
     <ClCompile Include="EngineHelper.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Math\Math.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UDXHelper.cpp" />
+    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WinAPI_2D.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
+    <ClInclude Include="Application_Base.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="DXWrite.h" />
     <ClInclude Include="EngineHelper.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="InputManager.h" />
@@ -166,10 +170,27 @@
     <ClInclude Include="Math\MathUtility.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector2D.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UDXHelper.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="Write.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="sample_vert.vsh">
+      <FileType>Document</FileType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">vs</EntryPointName>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="sample_frag.psh">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ps</EntryPointName>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
