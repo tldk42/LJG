@@ -5,8 +5,8 @@
 
 namespace LJG
 {
-	ID3D11VertexShader* UDXHelper::LoadVertexFile(ID3D11Device* Device, const wchar_t* VertexFileName,
-	                                              ID3DBlob**    OutBlob, LPCSTR        FunctionName, bool bBinary)
+	ID3D11VertexShader* UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t* VertexFileName,
+	                                                    ID3DBlob**    OutBlob, LPCSTR        FunctionName, bool bBinary)
 	{
 		HRESULT result = S_OK;
 
@@ -54,8 +54,8 @@ namespace LJG
 		return vertexShader;
 	}
 
-	ID3D11PixelShader* UDXHelper::LoadPixelShaderFile(ID3D11Device* Device, const wchar_t* PixelFileName,
-	                                                  const wchar_t* FunctionName, bool bBinary, ID3DBlob** OutBlob)
+	ID3D11PixelShader* UDXHelper::LoadPixelShaderFile(ID3D11Device*  Device, const wchar_t* PixelFileName,
+	                                                  const wchar_t* FunctionName, bool     bBinary, ID3DBlob** OutBlob)
 	{
 		HRESULT result = S_OK;
 
@@ -116,15 +116,16 @@ namespace LJG
 		ID3DBlob* errorBlob;
 
 		result = D3DCompileFromFile(
-			FileName,
-			nullptr,
-			nullptr,
-			EntryPoint,
-			ShaderModel,
-			ShaderFlag,
-			0,
-			OutBlob,
-			&errorBlob);
+			FileName,    // 셰이더 파일명
+			nullptr,     // 코드 안 매크로 배열 주소
+			nullptr,     // ID3DInclude 인터페이스
+			EntryPoint,  // main 진입점
+			ShaderModel, // 셰이더 프로필
+			ShaderFlag,  // 셰이더 컴파일 플래그
+			0,           // 이펙트 옵션 컴파일 플래그
+			OutBlob,     // 반환 될 blob
+			&errorBlob   // 컴파일 오류 및 경고 목록 저장
+		);
 
 		if (FAILED(result))
 		{

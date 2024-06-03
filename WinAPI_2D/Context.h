@@ -41,7 +41,6 @@ namespace LJG
 
 	public:
 #pragma region Get
-		inline static Context* GetContext() { return s_Context; }
 		inline static Context* Get() { return s_Context; }
 
 		inline static ID3D11Device*           GetDevice() { return Get()->mDevice; }

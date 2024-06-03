@@ -44,7 +44,9 @@ namespace LJG
 		Renderer::Create(mWindowData, mWindow->GetHandle());
 	}
 
-	void Application_Base::Update() {}
+	void Application_Base::Update()
+	{
+	}
 
 	void Application_Base::Render()
 	{
@@ -54,7 +56,9 @@ namespace LJG
 		Renderer::GetRenderer()->Render();
 	}
 
-	void Application_Base::Release() {}
+	void Application_Base::Release()
+	{
+	}
 
 	void Application_Base::Initialize_Internal()
 	{
@@ -154,6 +158,8 @@ namespace LJG
 					bIsRunning = false;
 				}
 			}
+
+			testVert.Release();
 		}
 	}
 }

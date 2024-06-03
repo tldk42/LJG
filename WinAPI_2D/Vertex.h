@@ -3,19 +3,8 @@
 
 #include "CommonInclude.h"
 
-namespace LJG::Utils
-{
-	class Timer;
-}
-
 namespace LJG
 {
-	struct SimpleVertex
-	{
-		float x;
-		float y;
-	};
-
 	class Vertex : ICoreAPI
 	{
 	public:
@@ -29,21 +18,26 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-	public:
+	private:
 		HRESULT CreateTriangle();
-		HRESULT LoadShaderAndInputLayout();
 		HRESULT CreateVertexBuffer();
 		HRESULT CreateIndexBuffer();
+		HRESULT LoadShaderAndInputLayout();
 		HRESULT CreateConstantBuffer();
 
 	protected:
+#pragma region Buffer & Layout
 		ID3D11InputLayout* mVertexLayout;
 		ID3D11Buffer*      mVertexBuffer;
 		ID3D11Buffer*      mIndexBuffer;
 		ID3D11Buffer*      mConstantBuffer;
+#pragma endregion
 
-		ID3D11VertexShader*    mVertexShader;
-		ID3D11PixelShader*     mPixelShader;
+#pragma region Shader
+		ID3D11VertexShader* mVertexShader;
+		ID3D11PixelShader*  mPixelShader;
+#pragma endregion
+
 		D3D_PRIMITIVE_TOPOLOGY mPrimType;
 	};
 }
