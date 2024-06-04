@@ -36,6 +36,11 @@ namespace LJG
 
 	void Application_Base::Initialize()
 	{
+		// ID3D11Resource*           resource;
+		// ID3D11ShaderResourceView* srv;
+		// ID3D11Resource*           texture;
+		//
+		// DirectX::CreateWICTextureFromFile(Context::GetDevice(), L"", &resource, &srv);
 		Logger::Initialize();
 
 		Initialize_Internal();

@@ -5,6 +5,7 @@
 #include "Context.h"
 #include "EngineHelper.h"
 #include "UDXHelper.h"
+#include "directxtk/WICTextureLoader.h"
 
 
 namespace LJG
@@ -26,9 +27,16 @@ namespace LJG
 
 	void Vertex::Initialize()
 	{
+		if (FAILED(
+			DirectX::CreateWICTextureFromFile(Context::GetDevice(), L"jacob.jpg", &mTextureResource, &
+				mShaderResourceView)))
+		{
+			EngineHelper::ShowErrorMessageBox(Window::GetWindow()->GetHandle(), false);
+		}
+
 		if (FAILED(CreateTriangle()))
 		{
-			EngineHelper::ShowErrorMessageBox(Window::GetWindow()->GetHandle(), true);
+			EngineHelper::ShowErrorMessageBox(Window::GetWindow()->GetHandle(), false);
 		}
 		if (FAILED(CreateConstantBuffer()))
 		{
@@ -49,13 +57,14 @@ namespace LJG
 		Context::GetDeviceContext()->IASetInputLayout(mVertexLayout);
 
 		// hardcoded
-		constexpr UINT stride = 8;
+		constexpr UINT stride = sizeof(FTexVertex);
 		constexpr UINT offset = 0;
 
 		Context::GetDeviceContext()->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
 		Context::GetDeviceContext()->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 		Context::GetDeviceContext()->VSSetConstantBuffers(0, 1, &mConstantBuffer);
 		Context::GetDeviceContext()->IASetPrimitiveTopology(mPrimType);
+
 		Context::GetDeviceContext()->DrawIndexed(6, 0, 0);
 	}
 
@@ -67,6 +76,8 @@ namespace LJG
 		ReleaseCOM(mConstantBuffer);
 		ReleaseCOM(mVertexShader);
 		ReleaseCOM(mPixelShader);
+		ReleaseCOM(mTextureResource);
+		ReleaseCOM(mShaderResourceView);
 	}
 
 	HRESULT Vertex::CreateTriangle()
@@ -85,21 +96,21 @@ namespace LJG
 	HRESULT Vertex::CreateVertexBuffer()
 	{
 		// 정점 정보
-		const FVector2f vertices[] =
+		const FTexVertex vertices[] =
 		{
-			{-0.5f, 0.5f},
-			{0.5f, 0.5f},
-			{0.5f, -0.5f},
-			{-0.5f, -0.5f}
+			{{-0.6f * 0.67f, 0.8f}, {0, 0}},
+			{{0.6f * 0.67f, 0.8f}, {1, 0}},
+			{{0.6f * 0.67f, -0.8f}, {1, 1}},
+			{{-0.6f * 0.67f, -0.8f}, {0, 1}}
 		};
 
 		D3D11_BUFFER_DESC bufferDesc;
 		{
-			bufferDesc.ByteWidth      = std::size(vertices) * sizeof(FVector2f); // 버퍼크기
-			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                     // 버퍼의 읽기/쓰기 방법 지정
-			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                // 파이프라인에 바인딩될 방법
-			bufferDesc.CPUAccessFlags = 0;                                       // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
-			bufferDesc.MiscFlags      = 0;                                       // 추가적인 옵션 플래그
+			bufferDesc.ByteWidth      = std::size(vertices) * sizeof(FTexVertex); // 버퍼크기
+			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // 버퍼의 읽기/쓰기 방법 지정
+			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // 파이프라인에 바인딩될 방법
+			bufferDesc.CPUAccessFlags = 0;                                        // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
+			bufferDesc.MiscFlags      = 0;                                        // 추가적인 옵션 플래그
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;
@@ -162,7 +173,7 @@ namespace LJG
 
 		if (!mVertexShader || !mPixelShader)
 		{
-			LOG_DX_ERROR("Failed to load, compile ShaderFile");
+			LOG_DX_ERROR("Failed to load, compile ShaderFile or 릴리즈모드(경로수정하시오)?");
 			return E_FAIL;
 		}
 
@@ -177,14 +188,25 @@ namespace LJG
 				D3D11_INPUT_PER_VERTEX_DATA, // 단일 입력 슬롯 입력 데이터 클래스
 				0                            // 정점 버퍼에서 렌더링 되는 인스턴스의 수 (D3D11_INPUT_PER_VERTEX_DATA -> 0)
 			},
+			{
+				"TEX",
+				0,
+				DXGI_FORMAT_R32G32_FLOAT,
+				0,
+				D3D11_APPEND_ALIGNED_ELEMENT,
+				D3D11_INPUT_PER_VERTEX_DATA,
+				0
+			}
 		};
 
 		result = Context::GetDevice()->CreateInputLayout(
 			layout,
-			1,
+			2,
 			vertexShaderBuf->GetBufferPointer(),
 			vertexShaderBuf->GetBufferSize(),
 			&mVertexLayout);
+
+		Context::GetDeviceContext()->PSSetShaderResources(0, 1, &mShaderResourceView);
 
 		ReleaseCOM(vertexShaderBuf);
 		ReleaseCOM(pixelShaderBuf);
