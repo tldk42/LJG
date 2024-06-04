@@ -5,6 +5,12 @@
 
 namespace LJG
 {
+	struct FTexVertex
+	{
+		FVector2f Pos;
+		FVector2f Tex;
+	};
+
 	class Vertex : ICoreAPI
 	{
 	public:
@@ -36,6 +42,11 @@ namespace LJG
 #pragma region Shader
 		ID3D11VertexShader* mVertexShader;
 		ID3D11PixelShader*  mPixelShader;
+#pragma endregion
+
+#pragma region Texture
+		ID3D11Resource*           mTextureResource;
+		ID3D11ShaderResourceView* mShaderResourceView;
 #pragma endregion
 
 		D3D_PRIMITIVE_TOPOLOGY mPrimType;
