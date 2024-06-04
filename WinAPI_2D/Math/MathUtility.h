@@ -3,3 +3,14 @@
 #define M_KINDA_SMALL_NUMBER (0.0001)
 #define M_BIG_NUMBER (340000000000000000000000000000000000000)
 #define M_INVERSE_SQRT_2	(0.70710678118654752440084436210485f)
+
+#pragma once
+class FMath
+{
+	[[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
+	{
+		return abs(A - B) <= ErrorTolerance;
+	}
+
+
+};

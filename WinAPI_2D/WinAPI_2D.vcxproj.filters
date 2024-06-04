@@ -47,7 +47,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinAPI_2D.cpp" />
+    <ClCompile Include="Engine_Entry.cpp" />
     <ClCompile Include="EngineHelper.cpp">
       <Filter>소스 파일\Helper</Filter>
     </ClCompile>
@@ -83,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="UDXHelper.cpp">
       <Filter>소스 파일\DirectX\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="MathUtility.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="UDXHelper.h">
       <Filter>소스 파일\DirectX\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2D.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

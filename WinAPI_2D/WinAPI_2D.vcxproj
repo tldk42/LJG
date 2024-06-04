@@ -144,21 +144,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application_Base.cpp" />
+    <ClCompile Include="Box2D.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="DXWrite.cpp" />
     <ClCompile Include="EngineHelper.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Math\Math.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UDXHelper.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="WinAPI_2D.cpp" />
+    <ClCompile Include="Engine_Entry.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application_Base.h" />
+    <ClInclude Include="Box2D.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="DXWrite.h" />
