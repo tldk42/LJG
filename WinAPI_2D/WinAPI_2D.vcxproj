@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -121,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,10 +166,13 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Math\Math.cpp" />
+    <ClCompile Include="UObject.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UDXHelper.cpp" />
-    <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="UTexture.cpp" />
     <ClCompile Include="Engine_Entry.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -186,11 +190,14 @@
     <ClInclude Include="Math\MathUtility.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector2D.h" />
+    <ClInclude Include="UObject.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UDXHelper.h" />
-    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="UTexture.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

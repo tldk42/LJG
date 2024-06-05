@@ -19,10 +19,12 @@ namespace LJG
 
 #pragma region Core Interface
 		void Initialize() override;
-		void Update() override;
+		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
 #pragma endregion
+
+		static bool Initialized();
 
 		bool Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
 
@@ -56,13 +58,13 @@ namespace LJG
 		void OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface);
 
 	private:
-		ID2D1Factory*         mD2DFactory;
-		ID2D1RenderTarget*    mRenderTarget;
-		ID2D1SolidColorBrush* mBrush;
+		ComPtr<ID2D1Factory>         mD2DFactory;
+		ComPtr<ID2D1RenderTarget>    mRenderTarget;
+		ComPtr<ID2D1SolidColorBrush> mBrush;
 
-		IDWriteFactory*    mWriteFactory;
-		IDWriteTextFormat* mTextFormat;
-		IDWriteTextLayout* mTextLayout;
+		ComPtr<IDWriteFactory>    mWriteFactory;
+		ComPtr<IDWriteTextFormat> mTextFormat;
+		ComPtr<IDWriteTextLayout> mTextLayout;
 
 		float_t mDPI;
 		float_t mDPI_Scale;
@@ -77,6 +79,8 @@ namespace LJG
 		std::wstring mText;
 
 		std::vector<FWriteData*> TextArray;
+
+		bool bInitialized;
 
 	private:
 		static DXWrite* s_Writer;

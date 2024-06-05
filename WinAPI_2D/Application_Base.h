@@ -1,4 +1,5 @@
 #pragma once
+#include "CommonInclude.h"
 #include "Timer.h"
 #include "Window.h"
 
@@ -14,7 +15,7 @@ namespace LJG
 	public:
 #pragma region Core Interface
 		void Initialize() override;
-		void Update() override;
+		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
 #pragma endregion
@@ -54,5 +55,6 @@ namespace LJG
 		bool bIsRunning;
 		bool bIsPaused;
 #pragma endregion
+
 	};
 }

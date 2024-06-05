@@ -35,6 +35,7 @@ namespace LJG
 #pragma region Set
 		inline void SetTitle(LPCTSTR InTitle) { mWindowTitle = InTitle; }
 		inline void SetVSync(const bool bEnable) { mWindowData.bVsync = bEnable; }
+		inline void SetWindowSize(UINT InWidth, UINT InHeight);
 #pragma endregion
 
 	public:

@@ -14,16 +14,16 @@ namespace LJG
 
 #pragma region Core Interface
 		void Initialize() override;
-		void Update() override;
+		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
 #pragma endregion
 
 	public:
-		inline bool IsKeyDown(EKeyCode& Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Down; }
-		inline bool IsKeyUp(EKeyCode& Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Up; }
+		inline bool IsKeyDown(EKeyCode Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Down; }
+		inline bool IsKeyUp(EKeyCode Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Up; }
 
-		inline bool IsKeyPressed(EKeyCode& Key) const
+		inline bool IsKeyPressed(EKeyCode Key) const
 		{
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}

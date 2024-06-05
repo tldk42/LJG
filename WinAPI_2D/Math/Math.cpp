@@ -24,8 +24,8 @@ template<> const FVector3d FVector3d::YAxisVector(0, 1, 0);
 template<> const FVector3d FVector3d::ZAxisVector(0, 0, 1);
 
 
-template<> const FVector2f FVector2f::ZeroVector(0, 0);
-template<> const FVector2f FVector2f::UnitVector(1, 1);
+template<> const FVector2f FVector2f::ZeroVector(0.f, 0.f);
+template<> const FVector2f FVector2f::UnitVector(1.f, 1.f);
 template<> const FVector2f FVector2f::Unit45Deg(M_INVERSE_SQRT_2, M_INVERSE_SQRT_2);
 template<> const FVector2d FVector2d::ZeroVector(0, 0);
 template<> const FVector2d FVector2d::UnitVector(1, 1);

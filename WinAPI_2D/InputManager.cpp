@@ -31,7 +31,7 @@ namespace LJG
 		ClearMouse();
 	}
 
-	void InputManager::Update()
+	void InputManager::Update(float DeltaTime)
 	{
 		UpdateKeys();
 		UpdateMouseWindowPosition();

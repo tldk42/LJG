@@ -1,18 +1,26 @@
 ﻿#include "Application_Base.h"
+#include "InputManager.h"
+#include "UObject.h"
+#include "ObjectManager.h"
+#include "PlayerController.h"
+
 
 int main()
 {
 	using namespace LJG;
 
 	FWindowData testWindowData;
-	testWindowData.Width       = 900;
-	testWindowData.Height      = 600;
+	testWindowData.Width       = 1024;
+	testWindowData.Height      = 768;
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = false;
 
-	Application_Base* testApp = new Application_Base(L"Sample Renderer", testWindowData);
-	if (testApp)
+
+	if (Application_Base* testApp = new Application_Base(L"Sample Renderer", testWindowData))
 	{
+		ObjectManager::AddObject(new UObject(L"background.jpg"));
+		ObjectManager::AddObject(new PlayerController(L"jacob.jpg"));
+
 		testApp->Start();
 	}
 

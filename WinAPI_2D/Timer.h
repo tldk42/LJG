@@ -7,9 +7,9 @@ namespace LJG
 {
 	namespace Utils
 	{
-		using namespace std::chrono;
+		constexpr float TickFrequency = 60 / 1000.f;
 
-		constexpr float TickFrequency = 1000.f / 60.f;
+		using namespace std::chrono;
 
 		class Timer
 		{

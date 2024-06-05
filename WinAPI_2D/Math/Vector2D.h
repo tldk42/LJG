@@ -39,19 +39,19 @@ namespace LJG
 			TVector2() = default;
 			TVector2(T InX, T InY);
 			explicit TVector2(T InF);
-			explicit TVector2(const TVector<T>& V);
+			// explicit TVector2(const TVector<T>& V);
 
 			inline TVector2 operator+(const TVector2& V) const;
 			inline TVector2 operator-(const TVector2& V) const;
 			inline TVector2 operator*(const TVector2& V) const;
-			inline T operator|(const TVector2& V) const;
-			inline T operator^(const TVector2& V) const;
-			TVector2 operator/(const TVector2& V) const;
+			inline T        operator|(const TVector2& V) const;
+			inline T        operator^(const TVector2& V) const;
+			TVector2        operator/(const TVector2& V) const;
 
 			inline TVector2 operator+(T A) const;
 			inline TVector2 operator-(T A) const;
 			inline TVector2 operator*(T Scale) const;
-			TVector2 operator/(T Scale) const;
+			TVector2        operator/(T Scale) const;
 
 			inline bool operator==(const TVector2& V) const;
 			inline bool operator!=(const TVector2& V) const;
@@ -64,10 +64,10 @@ namespace LJG
 			inline TVector2 operator+=(const TVector2& Other);
 			inline TVector2 operator-=(const TVector2& Other);
 			inline TVector2 operator*=(const TVector2& Other);
-			TVector2 operator/=(const TVector2& Other);
+			TVector2        operator/=(const TVector2& Other);
 
 			inline TVector2 operator*=(T Scale);
-			TVector2 operator/=(T V);
+			TVector2        operator/=(T V);
 
 		public:
 			inline static T Distance(const TVector2& A, const TVector2& B);
@@ -88,7 +88,7 @@ namespace LJG
 			inline T GetLength() const;
 			inline T GetLengthSquared() const;
 
-			bool Normalize(T Tolerance = M_SMALL_NUMBER);
+			bool     Normalize(T Tolerance = M_SMALL_NUMBER);
 			TVector2 GetSafeNormal(T Tolerance = M_SMALL_NUMBER) const;
 
 			bool IsNearlyZero(T Tolerance = M_KINDA_SMALL_NUMBER) const;
@@ -100,24 +100,20 @@ namespace LJG
 		template <typename T>
 		TVector2<T>::TVector2(T InX, T InY)
 			: X(InX),
-			  Y(InY)
-		{
-		}
+			  Y(InY) {}
 
 		template <typename T>
 		TVector2<T>::TVector2(T InF)
 			: X(InF),
-			  Y(InF)
-		{
-		}
+			  Y(InF) {}
 
-		template <typename T>
-		TVector2<T>::TVector2(const TVector<T>& V)
-			: X(V.X),
-			  Y(V.Y)
-
-		{
-		}
+		// template <typename T>
+		// TVector2<T>::TVector2(const TVector<T>& V)
+		// 	: X(V.X),
+		// 	  Y(V.Y)
+		//
+		// {
+		// }
 
 		template <typename T>
 		TVector2<T> TVector2<T>::operator+(const TVector2& V) const

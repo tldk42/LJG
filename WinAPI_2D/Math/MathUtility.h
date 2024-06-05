@@ -7,10 +7,26 @@
 #pragma once
 class FMath
 {
-	[[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
+	// [[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
+	// {
+	// 	return abs(A - B) <= ErrorTolerance;
+	// }
+public:
+	template <typename T>
+	[[nodiscard]] static constexpr inline T Max(const T A, const T B)
 	{
-		return abs(A - B) <= ErrorTolerance;
+		return (B < A) ? A : B;
 	}
 
+	template <typename T>
+	[[nodiscard]] static constexpr inline T Max3(const T A, const T B, const T C)
+	{
+		return Max(Max(A, B), C);
+	}
 
+	template <typename T>
+	[[nodiscard]] static constexpr inline T Min(const T A, const T B)
+	{
+		return (B > A) ? A : B;
+	}
 };

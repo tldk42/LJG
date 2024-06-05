@@ -40,7 +40,7 @@ namespace LJG
 		CreateDeviceIndependentResources();
 	}
 
-	void DXWrite::Update() {}
+	void DXWrite::Update(float DeltaTime) {}
 
 	void DXWrite::Render()
 	{
@@ -72,6 +72,13 @@ namespace LJG
 		mFontFamily.clear();
 		DiscardDeviceIndependentResources();
 		DiscardDeviceResources();
+	}
+
+	bool DXWrite::Initialized()
+	{
+		if (s_Writer)
+			return s_Writer->bInitialized;
+		return false;
 	}
 
 	bool DXWrite::Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
@@ -141,7 +148,7 @@ namespace LJG
 				static_cast<FLOAT>(InRect.bottom) / mDPI_Scale);
 
 			mBrush->SetColor(InColor);
-			mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat, &layoutRect, mBrush);
+			mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat.Get(), &layoutRect, mBrush.Get());
 		}
 
 		return S_OK;
@@ -152,7 +159,7 @@ namespace LJG
 		Begin();
 
 		mBrush->SetColor(InColor);
-		mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat, &Rect, mBrush);
+		mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat.Get(), &Rect, mBrush.Get());
 
 		End();
 		return S_OK;
@@ -167,12 +174,12 @@ namespace LJG
 
 
 		// Create D2 Factory
-		HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &mD2DFactory);
+		HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mD2DFactory.GetAddressOf());
 		if (FAILED(result)) {}
 
 		// Create  DWrite Factory
 		result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
-		                             reinterpret_cast<IUnknown**>(&mWriteFactory));
+		                             reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
 		if (FAILED(result)) {}
 
 		// Create TextFormat
@@ -184,8 +191,11 @@ namespace LJG
 			DWRITE_FONT_STRETCH_NORMAL,
 			20,
 			L"en-us",
-			&mTextFormat);
-		if (FAILED(result)) {}
+			mTextFormat.GetAddressOf());
+		if (SUCCEEDED(result))
+		{
+			bInitialized = true;
+		}
 
 		return result;
 	}
@@ -203,10 +213,10 @@ namespace LJG
 		props.usage       = D2D1_RENDER_TARGET_USAGE_NONE;
 		props.minLevel    = D2D1_FEATURE_LEVEL_DEFAULT;
 
-		result = mD2DFactory->CreateDxgiSurfaceRenderTarget(InSurface, &props, &mRenderTarget);
+		result = mD2DFactory->CreateDxgiSurfaceRenderTarget(InSurface, &props, mRenderTarget.GetAddressOf());
 		if (SUCCEEDED(result))
 		{
-			result = mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &mBrush);
+			result = mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), mBrush.GetAddressOf());
 		}
 
 		return result;
@@ -214,16 +224,16 @@ namespace LJG
 
 	void DXWrite::DiscardDeviceIndependentResources()
 	{
-		ReleaseCOM(mD2DFactory);
-		ReleaseCOM(mWriteFactory);
-		ReleaseCOM(mTextFormat);
-		ReleaseCOM(mTextLayout);
+		mD2DFactory.Reset();
+		mWriteFactory.Reset();
+		mTextFormat.Reset();
+		mTextLayout.Reset();
 	}
 
 	void DXWrite::DiscardDeviceResources()
 	{
-		ReleaseCOM(mRenderTarget);
-		ReleaseCOM(mBrush);
+		mRenderTarget.Reset();
+		mBrush.Reset();
 	}
 
 	void DXWrite::AddText(FWriteData& InWriteData)

@@ -56,7 +56,6 @@ namespace LJG
 		// mInstanceHandle = reinterpret_cast<HINSTANCE>(GetModuleHandle(nullptr)); 이 방법도 존재한다.
 		mInstanceHandle = reinterpret_cast<HINSTANCE>(&__ImageBase);
 
-
 		WNDCLASS winClass{};
 		winClass.hInstance     = mInstanceHandle;
 		winClass.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -113,6 +112,10 @@ namespace LJG
 
 		SetTitle(mWindowTitle);
 
+		OnResize.emplace_back([this](UINT Width, UINT Height){
+			SetWindowSize(Width, Height);
+		});
+
 		return true;
 	}
 
@@ -149,6 +152,16 @@ namespace LJG
 	}
 
 	void Window::Clear() {}
+
+	void Window::SetWindowSize(UINT InWidth, UINT InHeight)
+	{
+		mWindowData.Width  = InWidth;
+		mWindowData.Height = InHeight;
+
+		RECT  size  = {0, 0, mWindowData.Width, mWindowData.Height};
+		DWORD style = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
+		AdjustWindowRect(&size, style, false);
+	}
 
 	void ResizeCallback(Window* Window, UINT Width, UINT Height)
 	{

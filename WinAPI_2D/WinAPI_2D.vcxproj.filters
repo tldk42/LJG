@@ -45,6 +45,12 @@
     <Filter Include="소스 파일\DirectX\Helper">
       <UniqueIdentifier>{216397d1-4d85-4f73-ae82-4463f9180429}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object">
+      <UniqueIdentifier>{0106954b-c3a2-4e8c-9154-0ed5bad735a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Player">
+      <UniqueIdentifier>{61547867-eae6-4ea3-9df8-57535576b711}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine_Entry.cpp" />
@@ -78,7 +84,7 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>소스 파일\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Vertex.cpp">
+    <ClCompile Include="UTexture.cpp">
       <Filter>소스 파일\DirectX\Vertex</Filter>
     </ClCompile>
     <ClCompile Include="UDXHelper.cpp">
@@ -89,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="MathUtility.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="UObject.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>소스 파일\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +131,6 @@
     <ClInclude Include="Timer.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector2D.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="Math\MathFwd.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -140,7 +152,7 @@
     <ClInclude Include="Renderer.h">
       <Filter>소스 파일\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="UTexture.h">
       <Filter>소스 파일\DirectX\Vertex</Filter>
     </ClInclude>
     <ClInclude Include="UDXHelper.h">
@@ -148,6 +160,18 @@
     </ClInclude>
     <ClInclude Include="Box2D.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="UObject.h">
+      <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>소스 파일\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,7 @@ namespace LJG
 
 #pragma region Core Interface
 		void Initialize() override;
-		void Update() override;
+		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
 #pragma endregion
@@ -37,41 +37,37 @@ namespace LJG
 		HRESULT CreateSwapChain(HWND Hwnd);
 		HRESULT SetViewport();
 		HRESULT SetRenderTarget();
-		HRESULT InitFont();
 
 	public:
 #pragma region Get
 		inline static Context* Get() { return s_Context; }
 
-		inline static ID3D11Device*           GetDevice() { return Get()->mDevice; }
-		inline static ID3D11DeviceContext*    GetDeviceContext() { return Get()->mDeviceContext; }
-		inline static IDXGISwapChain*         GetSwapChain() { return Get()->mSwapChain; }
-		inline static ID3D11RenderTargetView* GetRTV() { return Get()->mRenderTargetView; }
-		inline static ID3D11DepthStencilView* GetDepthStencilView() { return Get()->mDepthStencilView; }
+		inline static ID3D11Device*           GetDevice() { return Get()->mDevice.Get(); }
+		inline static ID3D11DeviceContext*    GetDeviceContext() { return Get()->mDeviceContext.Get(); }
+		inline static IDXGISwapChain*         GetSwapChain() { return Get()->mSwapChain.Get(); }
+		inline static ID3D11RenderTargetView* GetRTV() { return Get()->mRenderTargetView.Get(); }
+		inline static ID3D11DepthStencilView* GetDepthStencilView() { return Get()->mDepthStencilView.Get(); }
 
 		inline static CHAR*              GetVideoCardDesc() { return Get()->mVideoCardDescription; }
 		inline static const FWindowData& GetWindowData() { return Get()->mWindowData; }
 #pragma endregion
 
 	private:
-		static Context*         s_Context;                  /** DX Context 스태틱 개체 */
-		ID3D11Device*           mDevice;                    /** 디바이스 포인터 (리소스 생성) */
-		ID3D11DeviceContext*    mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
-		IDXGISwapChain*         mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
-		DXGI_SWAP_CHAIN_DESC    mSwapChainDesc;             /** 스왑체인 구조체 */
-		ID3D11RenderTargetView* mRenderTargetView;          /** 화면에 보여지는 버퍼 개체 (RTV) */
-		ID3D11DepthStencilView* mDepthStencilView;          /** 깊이/스텐실 정보 기반 뷰 관리 개체 */
-		ID3D11Texture2D*        mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
-		D3D11_VIEWPORT          mViewport;                  /** 렌더링 뷰포트 */
-		D3D_FEATURE_LEVEL       mFeatureLevel;              /** DX기능 수준 레벨 */
-		int32_t                 mVideoCardMemory;           /** 비디오카드 메모리 용량 */
-		CHAR                    mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
-		FWindowData             mWindowData;                /** 윈도우 프로퍼티 */
+		static Context*                s_Context;                  /** DX Context 스태틱 개체 */
+		ComPtr<ID3D11Device>           mDevice;					/** 디바이스 포인터 (리소스 생성) */
+		ComPtr<ID3D11DeviceContext>    mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
+		ComPtr<IDXGISwapChain>         mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
+		DXGI_SWAP_CHAIN_DESC           mSwapChainDesc;             /** 스왑체인 구조체 */
+		ComPtr<ID3D11RenderTargetView> mRenderTargetView;          /** 화면에 보여지는 버퍼 개체 (RTV) */
+		ComPtr<ID3D11DepthStencilView> mDepthStencilView;          /** 깊이/스텐실 정보 기반 뷰 관리 개체 */
+		ComPtr<ID3D11Texture2D>        mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
+		D3D11_VIEWPORT                 mViewport;                  /** 렌더링 뷰포트 */
+		D3D_FEATURE_LEVEL              mFeatureLevel;              /** DX기능 수준 레벨 */
+		int32_t                        mVideoCardMemory;           /** 비디오카드 메모리 용량 */
+		CHAR                           mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
+		FWindowData                    mWindowData;                /** 윈도우 프로퍼티 */
 
-		IDXGIFactory* mGIFactory;
-
-		DXWrite*       mFont;
-		IDXGISurface1* mSurfaceBackBuffer;
+		ComPtr<IDXGIFactory> mGIFactory;
 	};
 
 	/**

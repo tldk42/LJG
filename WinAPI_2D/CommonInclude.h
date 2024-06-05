@@ -22,7 +22,9 @@
 #include "Logger.h"
 
 #include "Math/MathFwd.h"
-#include "Math/Vector.h"
+#include "Math/Vector2D.h"
+
+#include "UDXHelper.h"
 
 
 namespace LJG
@@ -51,7 +53,7 @@ namespace LJG
 	// =========================== 인라인 함수 =============================
 
 	template <typename T>
-	inline void ReleaseCOM(T* ComPtr)
+	inline void ReleaseCOM(T*& ComPtr)
 	{
 		if (ComPtr)
 		{
@@ -66,7 +68,7 @@ namespace LJG
 	{
 	public:
 		virtual void Initialize() = 0;
-		virtual void Update() = 0;
+		virtual void Update(float DeltaTime) = 0;
 		virtual void Render() = 0;
 		virtual void Release() = 0;
 	};

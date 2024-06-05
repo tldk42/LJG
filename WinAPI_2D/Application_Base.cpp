@@ -1,11 +1,11 @@
 #include "Application_Base.h"
 
-#include "Context.h"
 #include "DXWrite.h"
 #include "InputManager.h"
+#include "ObjectManager.h"
 #include "Renderer.h"
-#include "Timer.h"
-#include "Vertex.h"
+#include "UObject.h"
+#include "Window.h"
 
 namespace LJG
 {
@@ -32,37 +32,42 @@ namespace LJG
 			delete mWindow;
 			mWindow = nullptr;
 		}
+
+		Application_Base::Release();
 	}
 
 	void Application_Base::Initialize()
 	{
-		// ID3D11Resource*           resource;
-		// ID3D11ShaderResourceView* srv;
-		// ID3D11Resource*           texture;
-		//
-		// DirectX::CreateWICTextureFromFile(Context::GetDevice(), L"", &resource, &srv);
 		Logger::Initialize();
 
 		Initialize_Internal();
 
 		InputManager::Create();
 		Renderer::Create(mWindowData, mWindow->GetHandle());
+
+		ObjectManager::Initialize();
 	}
 
-	void Application_Base::Update()
+	void Application_Base::Update(float DeltaTime)
 	{
+		InputManager::Get()->Update(DeltaTime);
+
+		ObjectManager::Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
 	{
-		std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
-		FpsText.Text           = frameInfo;
+		const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
+		FpsText.Text                 = frameInfo;
 
+
+		ObjectManager::Render();
 		Renderer::GetRenderer()->Render();
 	}
 
 	void Application_Base::Release()
 	{
+		ObjectManager::Release();
 	}
 
 	void Application_Base::Initialize_Internal()
@@ -113,8 +118,10 @@ namespace LJG
 
 			DXWrite::AddText(FpsText);
 
-			Vertex testVert;
-			testVert.Initialize();
+			FWriteData TestWriteData;
+			TestWriteData.RectSize = {300, 300, mWindowData.Width, mWindowData.Height};
+			TestWriteData.Text     = L"HELLO WORLD";
+			// DXWrite::AddText(TestWriteData);
 
 			while (bIsRunning)
 			{
@@ -125,8 +132,6 @@ namespace LJG
 				if (currentTime - updateTimer > Utils::TickFrequency)
 				{
 					// TODO: Update
-					testVert.Update();
-					Update();
 
 					updateCounter++;
 					updateTimer += Utils::TickFrequency;
@@ -134,9 +139,11 @@ namespace LJG
 
 				{
 					Utils::Timer frameTimer;
+
+					Update(mDeltaTime);
+
 					// TODO: Render
 					Renderer::GetRenderer()->Clear();
-					testVert.Render();
 					Render();
 
 					frameCounter++;
@@ -163,8 +170,6 @@ namespace LJG
 					bIsRunning = false;
 				}
 			}
-
-			testVert.Release();
 		}
 	}
 }
