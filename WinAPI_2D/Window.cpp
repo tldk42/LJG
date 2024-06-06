@@ -45,7 +45,10 @@ namespace LJG
 		}
 	}
 
-	Window::~Window() {}
+	Window::~Window()
+	{
+		
+	}
 
 	bool Window::Initialize()
 	{

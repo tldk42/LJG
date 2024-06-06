@@ -5,18 +5,23 @@
 
 namespace LJG
 {
-	Renderer* Renderer::s_Renderer;
+	RendererUPtr Renderer::s_Renderer = nullptr;
 
 
 	Renderer::Renderer(const FWindowData& InWinData, HWND InWindowHandle)
 		: mWindowData(InWinData),
 		  mWindowHandle(InWindowHandle) {}
 
+	Renderer::~Renderer()
+	{
+		Renderer::Release();
+	}
+
 	void Renderer::Create(const FWindowData& WinData, void* DeviceContext)
 	{
 		if (!s_Renderer)
 		{
-			s_Renderer = new Renderer(WinData, static_cast<HWND>(DeviceContext));
+			s_Renderer.reset(new Renderer(WinData, static_cast<HWND>(DeviceContext)));
 
 			s_Renderer->Initialize();
 		}
@@ -36,17 +41,16 @@ namespace LJG
 
 	void Renderer::Update(float DeltaTime) {}
 
-	void Renderer::Release() {}
-
-	Renderer* Renderer::GetRenderer()
+	void Renderer::Release()
 	{
-		return s_Renderer;
+		DXWrite::Get()->Release();
+		Context::Get()->Release();
 	}
 
 	void Renderer::Render()
 	{
 		DXWrite::Get()->Render();
-		Context::Get()->Render(); 
+		Context::Get()->Render();
 	}
 
 	void Renderer::Clear()

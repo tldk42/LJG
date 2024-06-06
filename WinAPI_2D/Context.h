@@ -4,7 +4,7 @@
 
 namespace LJG
 {
-	class DXWrite;
+	CLASS_PTR(Context)
 
 	class Context : ICoreAPI
 	{
@@ -25,9 +25,6 @@ namespace LJG
 #pragma endregion
 
 		void Present();
-
-
-		void ReleaseContext();
 		void Resize(UINT InWidth, UINT InHeight);
 
 	private:
@@ -40,7 +37,7 @@ namespace LJG
 
 	public:
 #pragma region Get
-		inline static Context* Get() { return s_Context; }
+		inline static Context* Get() { return s_Context.get(); }
 
 		inline static ID3D11Device*           GetDevice() { return Get()->mDevice.Get(); }
 		inline static ID3D11DeviceContext*    GetDeviceContext() { return Get()->mDeviceContext.Get(); }
@@ -53,8 +50,8 @@ namespace LJG
 #pragma endregion
 
 	private:
-		static Context*                s_Context;                  /** DX Context 스태틱 개체 */
-		ComPtr<ID3D11Device>           mDevice;					/** 디바이스 포인터 (리소스 생성) */
+		static ContextUPtr             s_Context;                  /** DX Context 스태틱 개체 */
+		ComPtr<ID3D11Device>           mDevice;					   /** 디바이스 포인터 (리소스 생성) */
 		ComPtr<ID3D11DeviceContext>    mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
 		ComPtr<IDXGISwapChain>         mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
 		DXGI_SWAP_CHAIN_DESC           mSwapChainDesc;             /** 스왑체인 구조체 */

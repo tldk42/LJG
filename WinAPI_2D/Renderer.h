@@ -3,14 +3,19 @@
 
 namespace LJG
 {
+	CLASS_PTR(Renderer)
+
 	class Renderer : ICoreAPI
 	{
 	private:
 		Renderer(const FWindowData& InWinData, HWND InWindowHandle);
 
 	public:
-		static void      Create(const FWindowData& WinData, void* DeviceContext);
-		static Renderer* GetRenderer();
+		~Renderer();
+
+	public:
+		static void             Create(const FWindowData& WinData, void* DeviceContext);
+		inline static Renderer* Get() { return s_Renderer.get(); }
 
 	public:
 #pragma region Core Interface
@@ -23,7 +28,7 @@ namespace LJG
 		void Clear();
 
 	private:
-		static Renderer* s_Renderer;
+		static RendererUPtr s_Renderer;
 
 		FWindowData mWindowData;
 		HWND        mWindowHandle;

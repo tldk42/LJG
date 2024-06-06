@@ -5,7 +5,7 @@
 
 namespace LJG
 {
-	Context* Context::s_Context = nullptr;
+	ContextUPtr Context::s_Context = nullptr;
 
 	Context::Context(const FWindowData& WinData, void* DeviceContext)
 		: mDevice(nullptr),
@@ -29,20 +29,18 @@ namespace LJG
 
 	Context::~Context()
 	{
-		ReleaseContext();
+		Context::Release();
 	}
 
 	void Context::Create(const FWindowData& WinData, void* DeviceContext)
 	{
-		s_Context = new Context(WinData, DeviceContext);
+		s_Context.reset(new Context(WinData, DeviceContext));
 
 		s_Context->Initialize();
 	}
 
 	void Context::Initialize()
 	{
-		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
-
 		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
 			Resize(Width, Height);
 		});
@@ -55,7 +53,22 @@ namespace LJG
 		Present();
 	}
 
-	void Context::Release() {}
+	void Context::Release()
+	{
+		mDepthStencilBuffer = nullptr;
+		mDepthStencilView   = nullptr;
+		mRenderTargetView   = nullptr;
+		mSwapChain          = nullptr;
+		mGIFactory          = nullptr;
+		mDeviceContext      = nullptr;
+
+		ComPtr<ID3D11Debug> debug;
+		if (mDevice.Get() && SUCCEEDED(mDevice->QueryInterface(IID_PPV_ARGS(&debug))))
+		{
+			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		}
+		mDevice = nullptr;
+	}
 
 	bool Context::InitD3D(HWND Hwnd)
 	{
@@ -111,14 +124,14 @@ namespace LJG
 			D3D_FEATURE_LEVEL_10_0,
 		};
 
-		HRESULT result = D3D11CreateDevice(
+		const HRESULT result = D3D11CreateDevice(
 			nullptr,                  // 주 모니터 사용
 			D3D_DRIVER_TYPE_HARDWARE, // 하드웨어 가속 사용
 			nullptr,                  // 하드웨어 사용
 #ifdef _DEBUG
 			D3D11_CREATE_DEVICE_DEBUG | // 디버그 활성화
 #endif
-			D3D11_CREATE_DEVICE_SINGLETHREADED | D3D11_CREATE_DEVICE_BGRA_SUPPORT, // flags
+			D3D11_CREATE_DEVICE_BGRA_SUPPORT, // flags
 			featureLevels,                                                         // 기능 수준
 			ARRAYSIZE(featureLevels),                                              // 기능 배열 개수
 			D3D11_SDK_VERSION,                                                     // DX Version
@@ -128,8 +141,8 @@ namespace LJG
 
 		if (FAILED(result) || mFeatureLevel < D3D_FEATURE_LEVEL_11_0)
 		{
-			mDeviceContext.Reset();
-			mDevice.Reset();
+			mDeviceContext = nullptr;
+			mDevice        = nullptr;
 			LOG_DX_ERROR("Failed to Create Device");
 			EngineHelper::ShowErrorMessageBox(nullptr, true);
 		}
@@ -162,8 +175,8 @@ namespace LJG
 			LOG_DX_TRACE("그래픽카드: {}, 메모리: {:d}", mVideoCardDescription, desc.DedicatedVideoMemory / (1 << 20));
 		}
 
-		DXGIDevice.Reset();
-		DXGIAdapter.Reset();
+		DXGIDevice  = nullptr;
+		DXGIAdapter = nullptr;
 
 		return result;
 	}
@@ -200,12 +213,12 @@ namespace LJG
 			}
 			mDeviceContext->OMSetRenderTargets(0, nullptr, nullptr);
 
-			mRenderTargetView.Reset();
+			mRenderTargetView = nullptr;
 
-			HRESULT result = mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
-			                                           InWidth, InHeight,
-			                                           mSwapChainDesc.BufferDesc.Format,
-			                                           mSwapChainDesc.Flags);
+			const HRESULT result = mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
+			                                                 InWidth, InHeight,
+			                                                 mSwapChainDesc.BufferDesc.Format,
+			                                                 mSwapChainDesc.Flags);
 			mSwapChain->GetDesc(&mSwapChainDesc);
 
 			if (result != S_OK)
@@ -237,7 +250,7 @@ namespace LJG
 			EngineHelper::ShowErrorMessageBox(nullptr, false);
 		}
 
-		backBuffer.Reset();
+		backBuffer = nullptr;
 
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
 		return result;
@@ -265,16 +278,5 @@ namespace LJG
 				LOG_DX_ERROR("SwapChain Present Failed");
 			}
 		}
-	}
-
-	void Context::ReleaseContext()
-	{
-		// ReleaseCOM(mDevice.);
-		// ReleaseCOM(mDeviceContext);
-		// ReleaseCOM(mSwapChain);
-		// ReleaseCOM(mRenderTargetView);
-		// ReleaseCOM(mDepthStencilView);
-		// ReleaseCOM(mDepthStencilBuffer);
-		// ReleaseCOM(mDepthStencilView);
 	}
 }

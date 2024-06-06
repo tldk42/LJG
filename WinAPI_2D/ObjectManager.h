@@ -3,10 +3,15 @@
 
 namespace LJG
 {
+	CLASS_PTR(ObjectManager)
+
 	class ObjectManager
 	{
 	private:
 		ObjectManager();
+
+	public:
+		~ObjectManager();
 
 	public:
 		static void Initialize();
@@ -20,9 +25,9 @@ namespace LJG
 		void AddObject_Internal(UObject* Object);
 
 	private:
-		std::vector<class UObject*> mObjects;
+		std::vector<UObjectSPtr> mObjects;
 
 	private:
-		static ObjectManager* s_ObjectManager;
+		static ObjectManagerUPtr s_ObjectManager;
 	};
 }

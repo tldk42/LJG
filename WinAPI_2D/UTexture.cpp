@@ -69,17 +69,16 @@ namespace LJG
 
 	void UTexture::Release()
 	{
-		// ComPtr 대체
-		// ReleaseCOM(mVertexLayout);
-		// ReleaseCOM(mVertexBuffer);
-		// ReleaseCOM(mIndexBuffer);
-		// ReleaseCOM(mConstantBuffer);
-		// ReleaseCOM(mVertexShader);
-		// ReleaseCOM(mPixelShader);
-		// ReleaseCOM(mTextureResource);
-		// ReleaseCOM(mSRV);
-		// ReleaseCOM(mTexture);
-		// ReleaseCOM(mSamplerState);
+		mVertexLayout    = nullptr;
+		mVertexBuffer    = nullptr;
+		mIndexBuffer     = nullptr;
+		mConstantBuffer  = nullptr;
+		mVertexShader    = nullptr;
+		mPixelShader     = nullptr;
+		mTextureResource = nullptr;
+		mSRV             = nullptr;
+		mTexture         = nullptr;
+		mSamplerState    = nullptr;
 	}
 
 	HRESULT UTexture::LoadTextureFromFile(const std::wstring& TextureFile)
@@ -213,13 +212,13 @@ namespace LJG
 		 *	GetBufferPointer	: 데이터 포인터
 		 *	GetBufferSize		: 데이터 크기
 		 */
-		ComPtr<ID3DBlob> vertexShaderBuf;
-		ComPtr<ID3DBlob> pixelShaderBuf = nullptr;
+		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
-		mVertexShader = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"sample_vert.vsh", &vertexShaderBuf);
-		mPixelShader  = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"sample_frag.psh");
+		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"sample_vert.vsh",
+		                                         vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
+		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"sample_frag.psh", mPixelShader.GetAddressOf());
 
-		if (!mVertexShader || !mPixelShader)
+		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
 			LOG_DX_ERROR("Failed to load, compile ShaderFile or 릴리즈모드(경로수정하시오)?");
 			return E_FAIL;
@@ -254,8 +253,7 @@ namespace LJG
 			vertexShaderBuf->GetBufferSize(),
 			mVertexLayout.GetAddressOf());
 
-		vertexShaderBuf.Reset();
-		pixelShaderBuf.Reset();
+		vertexShaderBuf = nullptr;
 
 		return result;
 	}

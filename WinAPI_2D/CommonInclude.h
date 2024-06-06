@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <memory>
 
 // STL
 #include <vector>
@@ -25,7 +26,6 @@
 #include "Math/Vector2D.h"
 
 #include "UDXHelper.h"
-
 
 namespace LJG
 {
@@ -75,4 +75,16 @@ namespace LJG
 
 
 	using ResizeDelegate = std::function<void(UINT, UINT)>;
+
+#define CLASS_PTR(klassName)\
+	class klassName;\
+	using klassName##UPtr = std::unique_ptr<klassName>;\
+	using klassName##SPtr = std::shared_ptr<klassName>;\
+	using klassName##WPtr = std::weak_ptr<klassName>;
+
+	CLASS_PTR(FWriteData)
+	CLASS_PTR(UTimer)
+	CLASS_PTR(Window)
+	CLASS_PTR(UTexture)
+	CLASS_PTR(UObject)
 }

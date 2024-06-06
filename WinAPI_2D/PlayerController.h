@@ -1,4 +1,5 @@
 #pragma once
+#include "CommonInclude.h"
 #include "UObject.h"
 
 namespace LJG
@@ -17,10 +18,7 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		inline void AddMovementInput(const FVector2f& MovementInputAmount) const
-		{
-			mVertexMesh->AddWorldLocation(MovementInputAmount);
-		}
+		void AddMovementInput(const FVector2f& MovementInputAmount) const;
 
 	private:
 	};

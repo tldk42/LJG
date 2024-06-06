@@ -7,6 +7,9 @@
 
 namespace LJG
 {
+	CLASS_PTR(DXWrite);
+	CLASS_PTR(FWriteData);
+
 	class DXWrite : public ICoreAPI
 	{
 	public:
@@ -15,7 +18,7 @@ namespace LJG
 
 	public:
 		static void            Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
-		inline static DXWrite* Get() { return s_Writer; }
+		inline static DXWrite* Get() { return s_Writer.get(); }
 
 #pragma region Core Interface
 		void Initialize() override;
@@ -43,7 +46,7 @@ namespace LJG
 		void DiscardDeviceResources();
 
 	public:
-		static void AddText(FWriteData& InWriteData);
+		static void AddText(FWriteDataUPtr InWriteData);
 		static bool RemoveText(const FWriteData& WriteDataToRemove);
 #pragma region Set
 		// HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
@@ -78,11 +81,11 @@ namespace LJG
 		std::wstring mFontFamily;
 		std::wstring mText;
 
-		std::vector<FWriteData*> TextArray;
-
 		bool bInitialized;
 
+		std::vector<FWriteDataUPtr> TextArray;
+
 	private:
-		static DXWrite* s_Writer;
+		static DXWriteUPtr s_Writer;
 	};
 }

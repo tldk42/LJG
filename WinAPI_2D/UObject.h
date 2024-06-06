@@ -1,6 +1,5 @@
 #pragma once
 #include "CommonInclude.h"
-#include "UTexture.h"
 
 namespace LJG
 {
@@ -19,13 +18,13 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		inline void      SetLocation(const FVector2f& NewLocation) const { mVertexMesh->SetWorldLocation(NewLocation); }
-		inline FVector2f GetLocation() const { return mVertexMesh->GetWorldLocation(); }
+		void      SetLocation(const FVector2f& NewLocation) const;
+		FVector2f GetLocation() const;
 
 	public:
 		void SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify);
 
 	protected:
-		class UTexture* mVertexMesh;
+		UTextureUPtr mVertexMesh;
 	};
 }

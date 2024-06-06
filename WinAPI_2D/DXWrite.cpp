@@ -5,7 +5,7 @@
 
 namespace LJG
 {
-	DXWrite* DXWrite::s_Writer;
+	DXWriteUPtr DXWrite::s_Writer = nullptr;
 
 	DXWrite::DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
 		: mD2DFactory(nullptr),
@@ -25,17 +25,20 @@ namespace LJG
 		Set(InWidth, InHeight, InSurface);
 	}
 
-	DXWrite::~DXWrite() {}
+	DXWrite::~DXWrite()
+	{
+		DXWrite::Release();
+	}
 
 	void DXWrite::Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
 	{
-		s_Writer = new DXWrite(InWidth, InHeight, InSurface);
+		s_Writer.reset(new DXWrite(InWidth, InHeight, InSurface));
 	}
 
 	void DXWrite::Initialize()
 	{
-		const wchar_t defaultText[] = L"Times New Roman";
-		mFontFamily                 = defaultText;
+		constexpr wchar_t defaultText[] = L"Times New Roman";
+		mFontFamily                     = defaultText;
 
 		CreateDeviceIndependentResources();
 	}
@@ -45,33 +48,27 @@ namespace LJG
 	void DXWrite::Render()
 	{
 #pragma region Font Test
-		if (mTextFormat)
+		if (mTextFormat.Get())
 		{
 			D2D1_SIZE_F rtSize = mRenderTarget->GetSize();
 			//Draw a grid background.
 			int width  = static_cast<int>(rtSize.width);
 			int height = static_cast<int>(rtSize.height);
 
-			for (FWriteData*& text : TextArray)
+			for (const FWriteDataUPtr& text : TextArray)
 			{
-				Draw(text->RectSize, text->Text);
+				Draw(text.get()->RectSize, text.get()->Text);
 			}
-
-			// // 클라이언트 좌표계를 사용하여 RECT를 구성한다.
-			// RECT rc1 = {0, 0, width, height};
-			// Draw(rc1, (TCHAR*)L"FPS: ");
-
-			// DrawText_Immediately({900, 600});
 		}
 #pragma endregion
 	}
 
 	void DXWrite::Release()
 	{
-		mText.clear();
-		mFontFamily.clear();
 		DiscardDeviceIndependentResources();
 		DiscardDeviceResources();
+		mText.clear();
+		mFontFamily.clear();
 	}
 
 	bool DXWrite::Initialized()
@@ -169,7 +166,7 @@ namespace LJG
 	HRESULT DXWrite::CreateDeviceIndependentResources()
 	{
 		// Set DPI
-		mDPI       = GetDpiForWindow(EngineHelper::GetWindowHandle());
+		mDPI       = static_cast<float_t>(GetDpiForWindow(EngineHelper::GetWindowHandle()));
 		mDPI_Scale = mDPI / 96.f;
 
 
@@ -224,28 +221,28 @@ namespace LJG
 
 	void DXWrite::DiscardDeviceIndependentResources()
 	{
-		mD2DFactory.Reset();
-		mWriteFactory.Reset();
-		mTextFormat.Reset();
-		mTextLayout.Reset();
+		mD2DFactory   = nullptr;
+		mWriteFactory = nullptr;
+		mTextFormat   = nullptr;
+		mTextLayout   = nullptr;
 	}
 
 	void DXWrite::DiscardDeviceResources()
 	{
-		mRenderTarget.Reset();
-		mBrush.Reset();
+		mRenderTarget = nullptr;
+		mBrush        = nullptr;
 	}
 
-	void DXWrite::AddText(FWriteData& InWriteData)
+	void DXWrite::AddText(FWriteDataUPtr InWriteData)
 	{
-		Get()->TextArray.emplace_back(&InWriteData);
+		Get()->TextArray.emplace_back(std::move(InWriteData));
 	}
 
 	bool DXWrite::RemoveText(const FWriteData& WriteDataToRemove)
 	{
 		for (auto it = Get()->TextArray.begin(); it != Get()->TextArray.end(); ++it)
 		{
-			if (*it == &WriteDataToRemove)
+			if (it->get() == &WriteDataToRemove)
 			{
 				Get()->TextArray.erase(it);
 				return true;

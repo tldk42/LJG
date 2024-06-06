@@ -11,7 +11,7 @@ namespace LJG
 	{
 		if (!InTextureFile.empty())
 		{
-			mVertexMesh = new UTexture(InTextureFile);
+			mVertexMesh.reset(new UTexture(InTextureFile));
 		}
 	}
 
@@ -37,11 +37,21 @@ namespace LJG
 		mVertexMesh->Release();
 	}
 
+	void UObject::SetLocation(const FVector2f& NewLocation) const
+	{
+		mVertexMesh->SetWorldLocation(NewLocation);
+	}
+
+	FVector2f UObject::GetLocation() const
+	{
+		return mVertexMesh->GetWorldLocation();
+	}
+
 	void UObject::SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify)
 	{
 		if (!mVertexMesh || bForceModify)
 		{
-			mVertexMesh = new UTexture(InTextureFile);
+			mVertexMesh.reset(new UTexture(InTextureFile));
 		}
 	}
 }

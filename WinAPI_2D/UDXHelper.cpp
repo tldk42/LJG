@@ -5,22 +5,23 @@
 
 namespace LJG
 {
-	ID3D11VertexShader* UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t* VertexFileName,
-	                                                    ID3DBlob**    OutBlob, LPCSTR        FunctionName, bool bBinary)
+	HRESULT UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t* VertexFileName,
+	                                        ID3DBlob** OutBlob, ID3D11VertexShader** VertexShader, LPCSTR FunctionName,
+	                                        bool bBinary)
 	{
 		HRESULT result = S_OK;
 
-		ID3D11VertexShader* vertexShader;
-		ID3DBlob*           blob;
-		DWORD               size;
-		LPCVOID             data;
+		ID3DBlob* blob;
+		DWORD     size;
+		LPCVOID   data;
 
 		if (!bBinary)
 		{
-			result = CompileShaderFromFile(VertexFileName, FunctionName ? FunctionName : "vs", "vs_5_0", &blob);
+			result = CompileShaderFromFile(VertexFileName, FunctionName ? FunctionName : "vs", "vs_5_0",
+			                               &blob);
 			if (FAILED(result))
 			{
-				return nullptr;
+				return result;
 			}
 
 			size = blob->GetBufferSize();
@@ -31,38 +32,39 @@ namespace LJG
 			blob = *OutBlob;
 			if (!blob)
 			{
-				return nullptr;
+				return E_FAIL;
 			}
 			size = blob->GetBufferSize();
 			data = blob->GetBufferPointer();
 		}
 
-		if (FAILED(result = Device->CreateVertexShader(data, size, nullptr, &vertexShader)))
+		if (FAILED(result = Device->CreateVertexShader(data, size, nullptr, VertexShader)))
 		{
-			blob->Release();
-			return nullptr;
+			blob = nullptr;
+			return result;
 		}
 
 		if (!OutBlob)
 		{
-			blob->Release();
+			blob = nullptr;
 		}
 		else
 		{
 			*OutBlob = blob;
 		}
-		return vertexShader;
+		return result;
 	}
 
-	ID3D11PixelShader* UDXHelper::LoadPixelShaderFile(ID3D11Device*  Device, const wchar_t* PixelFileName,
-	                                                  const wchar_t* FunctionName, bool     bBinary, ID3DBlob** OutBlob)
+	HRESULT UDXHelper::LoadPixelShaderFile(ID3D11Device*       Device, const wchar_t* PixelFileName,
+	                                       ID3D11PixelShader** pixelShader,
+	                                       const wchar_t*      FunctionName, bool bBinary,
+	                                       ID3DBlob**          OutBlob)
 	{
 		HRESULT result = S_OK;
 
-		ID3D11PixelShader* pixelShader;
-		ID3DBlob*          blob;
-		DWORD              size;
-		LPCVOID            data;
+		ID3DBlob* blob;
+		DWORD     size;
+		LPCVOID   data;
 
 		if (!bBinary)
 		{
@@ -70,7 +72,7 @@ namespace LJG
 			                               &blob);
 			if (FAILED(result))
 			{
-				return nullptr;
+				return result;
 			}
 
 			size = blob->GetBufferSize();
@@ -81,27 +83,27 @@ namespace LJG
 			blob = *OutBlob;
 			if (!blob)
 			{
-				return nullptr;
+				return E_FAIL;
 			}
 			size = blob->GetBufferSize();
 			data = blob->GetBufferPointer();
 		}
 
-		if (FAILED(result = Device->CreatePixelShader(data, size, nullptr, &pixelShader)))
+		if (FAILED(result = Device->CreatePixelShader(data, size, nullptr, pixelShader)))
 		{
-			blob->Release();
-			return nullptr;
+			blob = nullptr;
+			return result;
 		}
 
 		if (!OutBlob)
 		{
-			blob->Release();
+			blob = nullptr;
 		}
 		else
 		{
 			*OutBlob = blob;
 		}
-		return pixelShader;
+		return result;
 	}
 
 	HRESULT UDXHelper::CompileShaderFromFile(const WCHAR* FileName, LPCSTR EntryPoint, LPCSTR ShaderModel,
@@ -113,7 +115,7 @@ namespace LJG
 #ifdef _DEBUG
 		ShaderFlag |= D3DCOMPILE_DEBUG;
 #endif
-		ID3DBlob* errorBlob;
+		ComPtr<ID3DBlob> errorBlob;
 
 		result = D3DCompileFromFile(
 			FileName,    // 셰이더 파일명
@@ -124,20 +126,20 @@ namespace LJG
 			ShaderFlag,  // 셰이더 컴파일 플래그
 			0,           // 이펙트 옵션 컴파일 플래그
 			OutBlob,     // 반환 될 blob
-			&errorBlob   // 컴파일 오류 및 경고 목록 저장
+			errorBlob.GetAddressOf()// 컴파일 오류 및 경고 목록 저장
 		);
 
 		if (FAILED(result))
 		{
-			if (errorBlob)
+			if (errorBlob.Get())
 			{
 				OutputDebugStringA(static_cast<char*>(errorBlob->GetBufferPointer()));
 			}
 		}
 
-		if (errorBlob)
+		if (errorBlob.Get())
 		{
-			errorBlob->Release();
+			errorBlob = nullptr;
 		}
 
 		return result;

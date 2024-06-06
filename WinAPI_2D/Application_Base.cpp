@@ -5,6 +5,7 @@
 #include "ObjectManager.h"
 #include "Renderer.h"
 #include "UObject.h"
+#include "UTimer.h"
 #include "Window.h"
 
 namespace LJG
@@ -26,13 +27,6 @@ namespace LJG
 
 	Application_Base::~Application_Base()
 	{
-		if (mWindow)
-		{
-			mWindow->Clear();
-			delete mWindow;
-			mWindow = nullptr;
-		}
-
 		Application_Base::Release();
 	}
 
@@ -57,24 +51,26 @@ namespace LJG
 
 	void Application_Base::Render()
 	{
-		const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
-		FpsText.Text                 = frameInfo;
+		// const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
+		// FpsText.get()->Text          = frameInfo;
 
 
 		ObjectManager::Render();
-		Renderer::GetRenderer()->Render();
+		Renderer::Get()->Render();
 	}
 
 	void Application_Base::Release()
 	{
 		ObjectManager::Release();
+		Renderer::Get()->Release();
 	}
 
 	void Application_Base::Initialize_Internal()
 	{
 		if (!bIsInitialized)
 		{
-			mWindow        = new Window(mWindowTitle, mWindowData);
+			mWindow.reset(new Window(mWindowTitle, mWindowData));
+			mTimer.reset(new UTimer());
 			bIsInitialized = true;
 		}
 	}
@@ -106,21 +102,20 @@ namespace LJG
 	{
 		if (bIsInitialized)
 		{
-			mTimer = new Utils::Timer;
-
 			timer       = 0.f;
 			updateTimer = mTimer->ElapsedMillis();
 
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			FpsText.RectSize = {0, 0, mWindowData.Width, mWindowData.Height};
+			// FpsText                 = std::make_unique<FWriteData>();
+			// FpsText.get()->RectSize = {0, 0, mWindowData.Width, mWindowData.Height};
 
-			DXWrite::AddText(FpsText);
+			// DXWrite::AddText(std::move(FpsText));
 
-			FWriteData TestWriteData;
-			TestWriteData.RectSize = {300, 300, mWindowData.Width, mWindowData.Height};
-			TestWriteData.Text     = L"HELLO WORLD";
+			// FWriteData TestWriteData;
+			// TestWriteData.RectSize = {300, 300, mWindowData.Width, mWindowData.Height};
+			// TestWriteData.Text     = L"HELLO WORLD";
 			// DXWrite::AddText(TestWriteData);
 
 			while (bIsRunning)
@@ -129,21 +124,21 @@ namespace LJG
 
 				currentTime = mTimer->ElapsedMillis();
 
-				if (currentTime - updateTimer > Utils::TickFrequency)
+				if (currentTime - updateTimer > TickFrequency)
 				{
 					// TODO: Update
 
 					updateCounter++;
-					updateTimer += Utils::TickFrequency;
+					updateTimer += TickFrequency;
 				}
 
 				{
-					Utils::Timer frameTimer;
+					UTimer frameTimer;
 
 					Update(mDeltaTime);
 
 					// TODO: Render
-					Renderer::GetRenderer()->Clear();
+					Renderer::Get()->Clear();
 					Render();
 
 					frameCounter++;

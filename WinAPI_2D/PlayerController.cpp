@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
 #include "InputManager.h"
+#include "UTexture.h"
 
 LJG::PlayerController::PlayerController(const std::wstring& InTextureFile)
 	: UObject(InTextureFile) {}
@@ -45,4 +46,9 @@ void LJG::PlayerController::Render()
 void LJG::PlayerController::Release()
 {
 	UObject::Release();
+}
+
+void LJG::PlayerController::AddMovementInput(const FVector2f& MovementInputAmount) const
+{
+	mVertexMesh->AddWorldLocation(MovementInputAmount);
 }

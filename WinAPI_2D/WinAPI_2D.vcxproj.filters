@@ -69,7 +69,7 @@
     <ClCompile Include="Context.cpp">
       <Filter>소스 파일\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
+    <ClCompile Include="UTimer.cpp">
       <Filter>소스 파일\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Math\Math.cpp">
@@ -128,7 +128,7 @@
     <ClInclude Include="Context.h">
       <Filter>소스 파일\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
+    <ClInclude Include="UTimer.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathFwd.h">

@@ -3,6 +3,8 @@
 
 namespace LJG
 {
+	CLASS_PTR(Window);
+
 	class Window
 	{
 	public:

@@ -1,10 +1,14 @@
 #pragma once
 #include "CommonInclude.h"
-#include "Timer.h"
-#include "Window.h"
+
 
 namespace LJG
 {
+	namespace Utils
+	{
+		class UTimer;
+	}
+
 	class Application_Base : public ICoreAPI
 	{
 	public:
@@ -35,12 +39,12 @@ namespace LJG
 #pragma region Window
 		LPCWSTR     mWindowTitle;
 		FWindowData mWindowData;
-		Window*     mWindow;
+		WindowUPtr  mWindow;
 #pragma endregion
 
 #pragma region Time
-		Utils::Timer* mTimer;
-		FWriteData    FpsText;
+		UTimerUPtr mTimer;
+		FWriteDataUPtr    FpsText;
 
 		float_t mDeltaTime;
 		float_t timer;
@@ -55,6 +59,5 @@ namespace LJG
 		bool bIsRunning;
 		bool bIsPaused;
 #pragma endregion
-
 	};
 }
