@@ -4,7 +4,7 @@
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
-#include "UObject.h"
+#include "UTextBlock.h"
 #include "UTimer.h"
 #include "Window.h"
 
@@ -51,9 +51,8 @@ namespace LJG
 
 	void Application_Base::Render()
 	{
-		// const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
-		// FpsText.get()->Text          = frameInfo;
-
+		const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
+		FpsText->SetText(frameInfo);
 
 		ObjectManager::Render();
 		Renderer::Get()->Render();
@@ -71,6 +70,10 @@ namespace LJG
 		{
 			mWindow.reset(new Window(mWindowTitle, mWindowData));
 			mTimer.reset(new UTimer());
+
+			FpsText.reset(new UTextBlock(L""));
+			FpsText->SetLocation({0, 0, mWindowData.Width, mWindowData.Height});
+
 			bIsInitialized = true;
 		}
 	}
@@ -79,6 +82,9 @@ namespace LJG
 	{
 		bIsRunning = true;
 		bIsPaused  = false;
+
+		timer       = 0.f;
+		updateTimer = mTimer->ElapsedMillis();
 
 		Run();
 	}
@@ -102,21 +108,10 @@ namespace LJG
 	{
 		if (bIsInitialized)
 		{
-			timer       = 0.f;
-			updateTimer = mTimer->ElapsedMillis();
-
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			// FpsText                 = std::make_unique<FWriteData>();
-			// FpsText.get()->RectSize = {0, 0, mWindowData.Width, mWindowData.Height};
-
-			// DXWrite::AddText(std::move(FpsText));
-
-			// FWriteData TestWriteData;
-			// TestWriteData.RectSize = {300, 300, mWindowData.Width, mWindowData.Height};
-			// TestWriteData.Text     = L"HELLO WORLD";
-			// DXWrite::AddText(TestWriteData);
+			DXWrite::AddText(FpsText);
 
 			while (bIsRunning)
 			{

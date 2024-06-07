@@ -4,6 +4,10 @@
 
 namespace LJG
 {
+	class UTextBlock;
+}
+namespace LJG
+{
 	namespace Utils
 	{
 		class UTimer;
@@ -14,7 +18,7 @@ namespace LJG
 	public:
 		Application_Base() = delete;
 		explicit Application_Base(LPCWSTR WindowTitle, const FWindowData& WindowData);
-		virtual  ~Application_Base();
+		~Application_Base() override;
 
 	public:
 #pragma region Core Interface
@@ -43,8 +47,8 @@ namespace LJG
 #pragma endregion
 
 #pragma region Time
-		UTimerUPtr mTimer;
-		FWriteDataUPtr    FpsText;
+		UTimerUPtr     mTimer;
+		UTextBlockSPtr FpsText;
 
 		float_t mDeltaTime;
 		float_t timer;

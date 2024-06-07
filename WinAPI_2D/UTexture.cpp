@@ -2,7 +2,6 @@
 
 #include <d3dcompiler.h>
 #include "Context.h"
-#include "EngineHelper.h"
 #include "UDXHelper.h"
 #include "directxtk/WICTextureLoader.h"
 
@@ -11,12 +10,7 @@ namespace LJG
 {
 	UTexture::UTexture(const std::wstring& TextureFile)
 	{
-		if (FAILED(LoadTextureFromFile(TextureFile)))
-		{
-			LOG_DX_ERROR("Invalid file");
-			return;
-		}
-
+		CHECK_RESULT(LoadTextureFromFile(TextureFile));
 		UTexture::Initialize();
 	}
 
@@ -27,14 +21,8 @@ namespace LJG
 
 	void UTexture::Initialize()
 	{
-		if (FAILED(CreateTriangle()))
-		{
-			EngineHelper::ShowErrorMessageBox(Window::GetWindow()->GetHandle(), false);
-		}
-		if (FAILED(CreateConstantBuffer()))
-		{
-			EngineHelper::ShowErrorMessageBox(Window::GetWindow()->GetHandle(), true);
-		}
+		CHECK_RESULT(CreateTriangle());
+		CHECK_RESULT(CreateConstantBuffer());
 	}
 
 	void UTexture::Update(float DeltaTime)
@@ -44,14 +32,16 @@ namespace LJG
 
 	void UTexture::Render()
 	{
+		// Input Layout
+		Context::GetDeviceContext()->IASetInputLayout(mVertexLayout.Get());
+
+		// Shader
 		Context::GetDeviceContext()->VSSetShader(mVertexShader.Get(), nullptr, 0);
 		Context::GetDeviceContext()->PSSetShader(mPixelShader.Get(), nullptr, 0);
 		// TODO: Set other shader...
 
-		Context::GetDeviceContext()->IASetInputLayout(mVertexLayout.Get());
-
-
-		// ·»´õ¸µ ¸®¼Ò½º°¡ º¯°æµÉ ¶§ ´Ù½Ã È£Ãâ (°¢±â ´Ù¸¥ ÅØ½ºÃ³·Î ¼³Á¤ -> ·»´õ¸µ)
+		//ì•„ë‹ˆ
+		// ë Œë”ë§ ë¦¬ì†ŒìŠ¤ê°€ ë³€ê²½ë  ë•Œ ë‹¤ì‹œ í˜¸ì¶œ (ê°ê¸° ë‹¤ë¥¸ í…ìŠ¤ì²˜ë¡œ ì„¤ì • -> ë Œë”ë§)
 		Context::GetDeviceContext()->PSSetShaderResources(0, 1, mSRV.GetAddressOf());
 		Context::GetDeviceContext()->PSSetSamplers(0, 1, mSamplerState.GetAddressOf());
 
@@ -83,23 +73,17 @@ namespace LJG
 
 	HRESULT UTexture::LoadTextureFromFile(const std::wstring& TextureFile)
 	{
-		HRESULT result = E_FAIL;
 		if (!TextureFile.empty())
 		{
-			result = DirectX::CreateWICTextureFromFile(Context::GetDevice(), TextureFile.c_str(),
-			                                           mTextureResource.GetAddressOf(),
-			                                           mSRV.GetAddressOf());
-			if (FAILED(result))
-				return result;
+			CHECK_RESULT(DirectX::CreateWICTextureFromFile(Context::GetDevice(), TextureFile.c_str(),
+														   mTextureResource.GetAddressOf(),
+														   mSRV.GetAddressOf()));
+			CHECK_RESULT(mTextureResource->QueryInterface(__uuidof(ID3D11Texture2D),
+														  reinterpret_cast<void**>(mTexture.GetAddressOf())));
 
-			// ÅØ½ºÃ³ Á¤º¸ °¡Á®¿À±â
+			// í…ìŠ¤ì²˜ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 			mSRV->GetDesc(&mSRVDesc);
-
-			result = mTextureResource->QueryInterface(__uuidof(ID3D11Texture2D),
-			                                          reinterpret_cast<void**>(mTexture.GetAddressOf()));
-
 			mTexture->GetDesc(&mTextureDesc);
-
 
 			LOG_DX_INFO("-------- Texure Loaded ----------");
 			std::string texName;
@@ -111,7 +95,7 @@ namespace LJG
 			AdjustTextureSize();
 		}
 
-		return result;
+		return S_OK;
 	}
 
 	void UTexture::AdjustTextureSize()
@@ -129,21 +113,19 @@ namespace LJG
 
 	HRESULT UTexture::CreateTriangle()
 	{
-		HRESULT result = S_OK;
-
-		result = CreateVertexBuffer();
-		result = CreateIndexBuffer();
-		result = LoadShaderAndInputLayout();
-		result = CreateSamplerState();
+		CHECK_RESULT(CreateVertexBuffer());
+		CHECK_RESULT(CreateIndexBuffer());
+		CHECK_RESULT(LoadShaderAndInputLayout());
+		CHECK_RESULT(CreateSamplerState());
 
 		Context::GetDeviceContext()->IASetPrimitiveTopology(mPrimType);
 
-		return result;
+		return S_OK;
 	}
 
 	HRESULT UTexture::CreateVertexBuffer()
 	{
-		// Á¤Á¡ Á¤º¸ (»ç°¢ÇüÀ» ±×¸®±âÀ§ÇØ ±âº»ÀûÀÎ »ï°¢Çü 2°³¸¦ ÀÎµ¦½ÌÇÏ¿© Çü¼º
+		// ì •ì  ì •ë³´ (ì‚¬ê°í˜•ì„ ê·¸ë¦¬ê¸°ìœ„í•´ ê¸°ë³¸ì ì¸ ì‚¼ê°í˜• 2ê°œë¥¼ ì¸ë±ì‹±í•˜ì—¬ í˜•ì„±
 		mVertexBufferArray = {
 			{{mScale.X * (-mVertexOffset.X), mScale.Y * (mVertexOffset.Y)}, {0, 0}},
 			{{mScale.X * (mVertexOffset.X), mScale.Y * (mVertexOffset.Y)}, {1, 0}},
@@ -153,18 +135,18 @@ namespace LJG
 
 		D3D11_BUFFER_DESC bufferDesc;
 		{
-			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FTexVertex); // ¹öÆÛÅ©±â
-			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // ¹öÆÛÀÇ ÀĞ±â/¾²±â ¹æ¹ı ÁöÁ¤
-			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // ÆÄÀÌÇÁ¶óÀÎ¿¡ ¹ÙÀÎµùµÉ ¹æ¹ı
-			bufferDesc.CPUAccessFlags = 0;                                        // »ı¼ºµÉ ¹öÆÛ¿¡ CPU°¡ Á¢±ÙÇÏ´Â À¯Çü (DX ¼º´É¿¡ ¸Å¿ì Áß¿ä)
-			bufferDesc.MiscFlags      = 0;                                        // Ãß°¡ÀûÀÎ ¿É¼Ç ÇÃ·¡±×
+			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FTexVertex); // ë²„í¼í¬ê¸°
+			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // ë²„í¼ì˜ ì½ê¸°/ì“°ê¸° ë°©ë²• ì§€ì •
+			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // íŒŒì´í”„ë¼ì¸ì— ë°”ì¸ë”©ë  ë°©ë²•
+			bufferDesc.CPUAccessFlags = 0;                                        // ìƒì„±ë  ë²„í¼ì— CPUê°€ ì ‘ê·¼í•˜ëŠ” ìœ í˜• (DX ì„±ëŠ¥ì— ë§¤ìš° ì¤‘ìš”)
+			bufferDesc.MiscFlags      = 0;                                        // ì¶”ê°€ì ì¸ ì˜µì…˜ í”Œë˜ê·¸
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;
 		{
-			InitData.pSysMem = mVertexBufferArray.data(); // ÃÊ±âÈ­ µ¥ÀÌÅÍ Æ÷ÀÎÅÍ (Á¤Á¡ ¹è¿­ÀÇ ÁÖ¼Ò¸¦ ³Ñ°ÜÁØ´Ù)
-			// InitData.SysMemPitch (ÅØ½ºÃ³ ¸®¼Ò½ºÀÇ ÇÑÁÙÀÇ Å©±â)
-			// InitData.SysMemSlicePitch (3Â÷¿ø ÅØ½ºÃ³ÀÇ ±íÀÌ °£°İ)
+			InitData.pSysMem = mVertexBufferArray.data(); // ì´ˆê¸°í™” ë°ì´í„° í¬ì¸í„° (ì •ì  ë°°ì—´ì˜ ì£¼ì†Œë¥¼ ë„˜ê²¨ì¤€ë‹¤)
+			// InitData.SysMemPitch (í…ìŠ¤ì²˜ ë¦¬ì†ŒìŠ¤ì˜ í•œì¤„ì˜ í¬ê¸°)
+			// InitData.SysMemSlicePitch (3ì°¨ì› í…ìŠ¤ì²˜ì˜ ê¹Šì´ ê°„ê²©)
 		}
 
 		return Context::GetDevice()->CreateBuffer(&bufferDesc, &InitData, mVertexBuffer.GetAddressOf());
@@ -206,34 +188,34 @@ namespace LJG
 #endif
 		/**
 		 * ID3DBlob
-		 *  ÀÓÀÇ ±æÀÌÀÇ µ¥ÀÌÅÍ¸¦ ¹İÈ¯ÇÏ´Â °÷¿¡ »ç¿ëµÊ
-		 *	¸Ş½Ã ÃÖÀûÈ­ ¹× ·Îµå ÀÛ¾÷ ¶§ Á¤Á¡ ÀÎÁ¢, ÀÚ·á µîÀÇ Á¤º¸¸¦ ÀúÀåÇÏ´Â µ¥ÀÌÅÍ ¹öÆÛ·Î »ç¿ë
-		 *	¼ÎÀÌ´õ ÄÄÆÄÀÏ APIÀÎÀÚ·Î½á °³Ã¼ÄÚµå, ¿À·ù¸Ş½ÃÁö ¹İÈ¯
-		 *	GetBufferPointer	: µ¥ÀÌÅÍ Æ÷ÀÎÅÍ
-		 *	GetBufferSize		: µ¥ÀÌÅÍ Å©±â
+		 *  ì„ì˜ ê¸¸ì´ì˜ ë°ì´í„°ë¥¼ ë°˜í™˜í•˜ëŠ” ê³³ì— ì‚¬ìš©ë¨
+		 *	ë©”ì‹œ ìµœì í™” ë° ë¡œë“œ ì‘ì—… ë•Œ ì •ì  ì¸ì ‘, ìë£Œ ë“±ì˜ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ë°ì´í„° ë²„í¼ë¡œ ì‚¬ìš©
+		 *	ì…°ì´ë” ì»´íŒŒì¼ APIì¸ìë¡œì¨ ê°œì²´ì½”ë“œ, ì˜¤ë¥˜ë©”ì‹œì§€ ë°˜í™˜
+		 *	GetBufferPointer	: ë°ì´í„° í¬ì¸í„°
+		 *	GetBufferSize		: ë°ì´í„° í¬ê¸°
 		 */
 		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
 		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"sample_vert.vsh",
-		                                         vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
+												 vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
 		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"sample_frag.psh", mPixelShader.GetAddressOf());
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
-			LOG_DX_ERROR("Failed to load, compile ShaderFile or ¸±¸®Áî¸ğµå(°æ·Î¼öÁ¤ÇÏ½Ã¿À)?");
+			LOG_DX_ERROR("Failed to load, compile ShaderFile or ë¦´ë¦¬ì¦ˆëª¨ë“œ(ê²½ë¡œìˆ˜ì •í•˜ì‹œì˜¤)?");
 			return E_FAIL;
 		}
 
 		constexpr D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{
-				"POSITION",                  // ¼ÎÀÌ´õ ÀÔ·Â ¼­¸í¿¡¼­ ÀÌ ¿ä¼Ò¿Í ¿¬°áµÈ ÀÇ¹ÌÃ¼°è 
-				0,                           // ÀÇ¹Ì»ó ÀÎµ¦½º
-				DXGI_FORMAT_R32G32_FLOAT,    // µ¥ÀÌÅÍ Çü½Ä (float2)
-				0,                           // ÀÔ·Â ¾î¼Àºí·¯ ½Äº°Á¤¼ö
-				0,                           // ¿ä¼Ò »çÀÌ ¿ÀÇÁ¼Â 
-				D3D11_INPUT_PER_VERTEX_DATA, // ´ÜÀÏ ÀÔ·Â ½½·Ô ÀÔ·Â µ¥ÀÌÅÍ Å¬·¡½º
-				0                            // Á¤Á¡ ¹öÆÛ¿¡¼­ ·»´õ¸µ µÇ´Â ÀÎ½ºÅÏ½ºÀÇ ¼ö (D3D11_INPUT_PER_VERTEX_DATA -> 0)
+				"POSITION",                  // ì…°ì´ë” ì…ë ¥ ì„œëª…ì—ì„œ ì´ ìš”ì†Œì™€ ì—°ê²°ëœ ì˜ë¯¸ì²´ê³„ 
+				0,                           // ì˜ë¯¸ìƒ ì¸ë±ìŠ¤
+				DXGI_FORMAT_R32G32_FLOAT,    // ë°ì´í„° í˜•ì‹ (float2)
+				0,                           // ì…ë ¥ ì–´ì…ˆë¸”ëŸ¬ ì‹ë³„ì •ìˆ˜
+				0,                           // ìš”ì†Œ ì‚¬ì´ ì˜¤í”„ì…‹ 
+				D3D11_INPUT_PER_VERTEX_DATA, // ë‹¨ì¼ ì…ë ¥ ìŠ¬ë¡¯ ì…ë ¥ ë°ì´í„° í´ë˜ìŠ¤
+				0                            // ì •ì  ë²„í¼ì—ì„œ ë Œë”ë§ ë˜ëŠ” ì¸ìŠ¤í„´ìŠ¤ì˜ ìˆ˜ (D3D11_INPUT_PER_VERTEX_DATA -> 0)
 			},
 			{
 				"TEX",
@@ -261,11 +243,11 @@ namespace LJG
 	HRESULT UTexture::CreateSamplerState()
 	{
 		/**
-		 * ÅØ½ºÃ³ ¸ÅÇÎ
-		 *	1. ÅØ½ºÃ³ ÇÊÅÍ¸µ
-		 *		Point(°¡±î¿î ÅØ¼¿°ª) Linear(º¸°£) Anisotropic(°æ»çµµ)
-		 *	2. ÁÂÇ¥ Warping
-		 *		Wrap (¹İº¹) Clamp(0-1) Mirror(¹İº¹, µÚÁı±â) Border(¹üÀ§ ¹ş¾î³¯ ½Ã¿¡ °æ°è »ö)
+		 * í…ìŠ¤ì²˜ ë§¤í•‘
+		 *	1. í…ìŠ¤ì²˜ í•„í„°ë§
+		 *		Point(ê°€ê¹Œìš´ í…ì…€ê°’) Linear(ë³´ê°„) Anisotropic(ê²½ì‚¬ë„)
+		 *	2. ì¢Œí‘œ Warping (U, V, Wê°’ì€ ì±„ì›Œì•¼í•œë‹¤)
+		 *		Wrap (ë°˜ë³µ) Clamp(0-1) Mirror(ë°˜ë³µ, ë’¤ì§‘ê¸°) Border(ë²”ìœ„ ë²—ì–´ë‚  ì‹œì— ê²½ê³„ ìƒ‰)
 		 */
 		D3D11_SAMPLER_DESC samplerDesc{};
 		{
@@ -292,27 +274,24 @@ namespace LJG
 			bufferDesc.MiscFlags      = 0;
 		}
 
-		return Context::GetDevice()->CreateBuffer(&bufferDesc, nullptr, &mConstantBuffer);
+		return Context::GetDevice()->CreateBuffer(&bufferDesc, nullptr, mConstantBuffer.GetAddressOf());
 	}
 
 	void UTexture::SetWorldLocation(const FVector2f& InPos)
 	{
-		if (InPos == mWorldLocation)
-			return;
-
 		mWorldLocation      = InPos;
 		mNormalizedLocation = GetWorldPositionToNormalized(InPos);
 
 		assert(!mVertexBufferArray.empty());
 
 		mVertexBufferArray[0].Pos = (FVector2f(-mVertexOffset.X, mVertexOffset.Y) + mNormalizedLocation) *
-			mScale; // Left Top
+		mScale; // Left Top
 		mVertexBufferArray[1].Pos = (FVector2f(mVertexOffset.X, mVertexOffset.Y) + mNormalizedLocation) *
-			mScale; // Right Top
+		mScale; // Right Top
 		mVertexBufferArray[2].Pos = (FVector2f(mVertexOffset.X, -mVertexOffset.Y) + mNormalizedLocation) *
-			mScale; // Right Bottom
+		mScale; // Right Bottom
 		mVertexBufferArray[3].Pos = (FVector2f(-mVertexOffset.X, -mVertexOffset.Y) + mNormalizedLocation) *
-			mScale; // Left Top
+		mScale; // Left Top
 	}
 
 	void UTexture::AddWorldLocation(const FVector2f& InPos)
@@ -326,6 +305,12 @@ namespace LJG
 
 		mWorldLocation += InPos;
 		mNormalizedLocation += normPos;
+	}
+
+	void UTexture::OnResizeCallback()
+	{
+		AdjustTextureSize();
+		SetWorldLocation(mWorldLocation);
 	}
 
 	void UTexture::SetShaderParams() const

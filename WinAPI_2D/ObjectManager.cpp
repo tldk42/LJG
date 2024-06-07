@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 
 #include "UObject.h"
+#include "Window.h"
 
 namespace LJG
 {
@@ -9,6 +10,10 @@ namespace LJG
 	ObjectManager::ObjectManager()
 	{
 		mObjects.reserve(10);
+
+		Window::GetWindow()->OnResize.emplace_back([this](UINT InWidth, UINT InHeight){
+			OnResizeCallback(InWidth, InHeight);
+		});
 	}
 
 	ObjectManager::~ObjectManager()
@@ -48,20 +53,19 @@ namespace LJG
 
 	void ObjectManager::Release()
 	{
-		// if (s_ObjectManager)
-		// {
-		// 	for (UObjectSPtr& obj : s_ObjectManager->mObjects)
-		// 	{
-		// 		obj->Release();
-		// 		obj = nullptr;
-		// 	}
-		// }
-
 		s_ObjectManager->mObjects.clear();
 	}
 
-	void ObjectManager::AddObject_Internal(UObject* Object)
+	void ObjectManager::AddObject_Internal(UObject* InObject)
 	{
-		mObjects.emplace_back(Object);
+		mObjects.emplace_back(InObject);
+	}
+
+	void ObjectManager::OnResizeCallback(UINT InWidth, UINT InHeight)
+	{
+		for (const UObjectSPtr& obj_ptr : mObjects)
+		{
+			obj_ptr->OnResize();
+		}
 	}
 }

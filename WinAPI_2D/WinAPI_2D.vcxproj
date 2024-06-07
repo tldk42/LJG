@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../bin/$(Configuration)/$(ProjectName)/output</OutDir>
-    <IntDir>../../bin/$(Configuration)/$(ProjectName)/Intermediate</IntDir>
+    <OutDir>../../bin/$(Configuration)/$(ProjectName)/output/</OutDir>
+    <IntDir>../../bin/$(Configuration)/$(ProjectName)/Intermediate/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -170,6 +170,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="UTextBlock.cpp" />
     <ClCompile Include="UTimer.cpp" />
     <ClCompile Include="UDXHelper.cpp" />
     <ClCompile Include="UTexture.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Structs.h" />
+    <ClInclude Include="UTextBlock.h" />
     <ClInclude Include="UTimer.h" />
     <ClInclude Include="UDXHelper.h" />
     <ClInclude Include="UTexture.h" />

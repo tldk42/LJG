@@ -4,13 +4,16 @@
 
 namespace LJG
 {
+	CLASS_PTR(InputManager)
+
 	class InputManager : public ICoreAPI
 	{
 	public:
 		InputManager();
+		~InputManager() = default;
 
-		static void Create();
-		static InputManager* Get() { return s_InputManager; }
+		static void          Create();
+		static InputManager* Get() { return s_InputManager.get(); }
 
 #pragma region Core Interface
 		void Initialize() override;
@@ -20,10 +23,22 @@ namespace LJG
 #pragma endregion
 
 	public:
-		inline bool IsKeyDown(EKeyCode Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Down; }
-		inline bool IsKeyUp(EKeyCode Key) const { return mKeys[static_cast<UINT>(Key)].State == EKeyState::Up; }
+		FORCEINLINE static bool IsKeyDown(const EKeyCode Key) { return Get()->IsKeyDown_Internal(Key); }
+		FORCEINLINE static bool IsKeyUp(const EKeyCode Key) { return Get()->IsKeyUp_Internal(Key); }
+		FORCEINLINE static bool IsKeyPressed(const EKeyCode Key) { return Get()->IsKeyPressed_Internal(Key); }
 
-		inline bool IsKeyPressed(EKeyCode Key) const
+	private:
+		inline bool IsKeyDown_Internal(EKeyCode Key) const
+		{
+			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Down;
+		}
+
+		inline bool IsKeyUp_Internal(EKeyCode Key) const
+		{
+			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Up;
+		}
+
+		inline bool IsKeyPressed_Internal(EKeyCode Key) const
 		{
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
@@ -48,8 +63,8 @@ namespace LJG
 
 	private:
 		std::vector<FKeyData> mKeys;
-		FVector2D        mMousePosition;
+		FVector2D             mMousePosition;
 
-		static InputManager* s_InputManager;
+		static InputManagerUPtr s_InputManager;
 	};
 }

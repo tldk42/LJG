@@ -57,8 +57,6 @@ namespace LJG
 	{
 		constexpr float clearColor[] = {.1f, .2f, .3f, 1.f};
 
-		Context* s = Context::Get();
-
 		Context::GetDeviceContext()->ClearRenderTargetView(Context::GetRTV(), clearColor);
 	}
 }

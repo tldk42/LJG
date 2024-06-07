@@ -6,18 +6,16 @@
 
 namespace LJG
 {
-	InputManager* InputManager::s_InputManager = nullptr;
+	InputManagerUPtr InputManager::s_InputManager = nullptr;
 
 	InputManager::InputManager()
-		: mMousePosition()
-	{
-	}
+		: mMousePosition() {}
 
 	void InputManager::Create()
 	{
 		if (!s_InputManager)
 		{
-			s_InputManager = new InputManager;
+			s_InputManager.reset(new InputManager());
 			assert(s_InputManager);
 
 			s_InputManager->Initialize();
@@ -37,17 +35,11 @@ namespace LJG
 		UpdateMouseWindowPosition();
 	}
 
-	void InputManager::Render()
-	{
-	}
+	void InputManager::Render() {}
 
-	void InputManager::Release()
-	{
-	}
+	void InputManager::Release() {}
 
-	void InputManager::SetMousePosition(const FVector2D& Position)
-	{
-	}
+	void InputManager::SetMousePosition(const FVector2D& Position) {}
 
 	void InputManager::CreateKeys()
 	{
@@ -129,9 +121,7 @@ namespace LJG
 		}
 	}
 
-	void InputManager::ClearMouse()
-	{
-	}
+	void InputManager::ClearMouse() {}
 
 	bool InputManager::IsKeyDown_Implements(const EKeyCode InKey)
 	{

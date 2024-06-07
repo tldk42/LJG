@@ -19,10 +19,14 @@ namespace LJG
 		static void Render();
 		static void Release();
 
-		inline static void AddObject(class UObject* Object) { s_ObjectManager->AddObject_Internal(Object); }
+		FORCEINLINE static void AddObject(class UObject* Object) { s_ObjectManager->AddObject_Internal(Object); }
 
 	private:
-		void AddObject_Internal(UObject* Object);
+		void AddObject_Internal(UObject* InObject);
+
+	private:
+		// Resize Callback
+		void OnResizeCallback(UINT InWidth, UINT InHeight);
 
 	private:
 		std::vector<UObjectSPtr> mObjects;

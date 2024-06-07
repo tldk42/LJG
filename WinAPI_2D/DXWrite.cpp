@@ -2,6 +2,7 @@
 
 #include "Context.h"
 #include "EngineHelper.h"
+#include "UTextBlock.h"
 
 namespace LJG
 {
@@ -50,14 +51,14 @@ namespace LJG
 #pragma region Font Test
 		if (mTextFormat.Get())
 		{
-			D2D1_SIZE_F rtSize = mRenderTarget->GetSize();
+			const D2D1_SIZE_F rtSize = mRenderTarget->GetSize();
 			//Draw a grid background.
 			int width  = static_cast<int>(rtSize.width);
 			int height = static_cast<int>(rtSize.height);
 
-			for (const FWriteDataUPtr& text : TextArray)
+			for (const UTextBlockSPtr& text : mTextArray)
 			{
-				Draw(text.get()->RectSize, text.get()->Text);
+				Draw(text->GetLocation(), text->GetText());
 			}
 		}
 #pragma endregion
@@ -67,7 +68,11 @@ namespace LJG
 	{
 		DiscardDeviceIndependentResources();
 		DiscardDeviceResources();
-		mText.clear();
+		for (auto& text : mTextArray)
+		{
+			text = nullptr;
+		}
+		mTextArray.clear();
 		mFontFamily.clear();
 	}
 
@@ -95,15 +100,15 @@ namespace LJG
 			backBuffer->Release();
 		});
 
-		TextArray.clear();
-		TextArray.reserve(10);
+		mTextArray.clear();
+		mTextArray.reserve(10);
 
 		return true;
 	}
 
 	bool DXWrite::Begin()
 	{
-		if (mRenderTarget)
+		if (mRenderTarget.Get())
 		{
 			mRenderTarget->BeginDraw();
 			mRenderTarget->SetTransform(D2D1::IdentityMatrix());
@@ -114,7 +119,7 @@ namespace LJG
 
 	bool DXWrite::End()
 	{
-		if (mRenderTarget && FAILED(mRenderTarget->EndDraw()))
+		if (mRenderTarget.Get() && FAILED(mRenderTarget->EndDraw()))
 		{
 			return false;
 		}
@@ -136,7 +141,7 @@ namespace LJG
 
 	HRESULT DXWrite::DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF InColor)
 	{
-		if (mRenderTarget && mBrush)
+		if (mRenderTarget.Get() && mBrush)
 		{
 			D2D1_RECT_F layoutRect = D2D1::RectF(
 				static_cast<FLOAT>(InRect.left) / mDPI_Scale,
@@ -176,7 +181,7 @@ namespace LJG
 
 		// Create  DWrite Factory
 		result = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
-		                             reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
+									 reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
 		if (FAILED(result)) {}
 
 		// Create TextFormat
@@ -233,23 +238,9 @@ namespace LJG
 		mBrush        = nullptr;
 	}
 
-	void DXWrite::AddText(FWriteDataUPtr InWriteData)
+	void DXWrite::AddText(UTextBlockSPtr InWriteData)
 	{
-		Get()->TextArray.emplace_back(std::move(InWriteData));
-	}
-
-	bool DXWrite::RemoveText(const FWriteData& WriteDataToRemove)
-	{
-		for (auto it = Get()->TextArray.begin(); it != Get()->TextArray.end(); ++it)
-		{
-			if (it->get() == &WriteDataToRemove)
-			{
-				Get()->TextArray.erase(it);
-				return true;
-			}
-		}
-
-		return false;
+		Get()->mTextArray.emplace_back(InWriteData);
 	}
 
 #pragma region Set Brush

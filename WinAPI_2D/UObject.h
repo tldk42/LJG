@@ -7,8 +7,8 @@ namespace LJG
 	{
 	public:
 		UObject();
-		UObject(const std::wstring& InTextureFile);
-		~UObject();
+		explicit UObject(const std::wstring& InTextureFile);
+		~UObject() override;
 
 	public:
 #pragma region Core Interface
@@ -18,13 +18,18 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void      SetLocation(const FVector2f& NewLocation) const;
+		void      SetLocation(const FVector2f& InLocation) const;
 		FVector2f GetLocation() const;
 
 	public:
 		void SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify);
 
+	private:
+		void        OnResize();
+		friend class ObjectManager;
+
 	protected:
 		UTextureUPtr mVertexMesh;
+
 	};
 }

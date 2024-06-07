@@ -9,31 +9,34 @@ namespace LJG
 	class Context : ICoreAPI
 	{
 	private:
-		Context(const FWindowData& WinData, void* DeviceContext);
+		Context(const FWindowData& InWinData, void* InDeviceContext);
 
 	public:
-		~Context();
+		~Context() override;
 
 	public:
-		static void Create(const FWindowData& WinData, void* DeviceContext);
+		static void Create(const FWindowData& InWinData, void* InDeviceContext);
 
 #pragma region Core Interface
 		void Initialize() override;
-		void Update(float DeltaTime) override;
+		void Update(float InDeltaTime) override;
 		void Render() override;
 		void Release() override;
 #pragma endregion
 
 		void Present();
-		void Resize(UINT InWidth, UINT InHeight);
 
 	private:
-		bool    InitD3D(HWND Hwnd);
+		bool    InitD3D(HWND InHwnd);
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
-		HRESULT CreateSwapChain(HWND Hwnd);
+		HRESULT CreateSwapChain(HWND InHwnd);
 		HRESULT SetViewport();
 		HRESULT SetRenderTarget();
+
+	private:
+		// Resize Callback
+		void OnResizeCallback(UINT InWidth, UINT InHeight);
 
 	public:
 #pragma region Get
@@ -60,7 +63,6 @@ namespace LJG
 		ComPtr<ID3D11Texture2D>        mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
 		D3D11_VIEWPORT                 mViewport;                  /** 렌더링 뷰포트 */
 		D3D_FEATURE_LEVEL              mFeatureLevel;              /** DX기능 수준 레벨 */
-		int32_t                        mVideoCardMemory;           /** 비디오카드 메모리 용량 */
 		CHAR                           mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
 		FWindowData                    mWindowData;                /** 윈도우 프로퍼티 */
 

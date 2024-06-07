@@ -6,21 +6,21 @@
 // Basic
 #include <cmath>
 #include <cstdint>
-#include <iostream>
 #include <fstream>
-#include <sstream>
+#include <iostream>
 #include <memory>
+#include <sstream>
 
 // STL
-#include <vector>
+#include <algorithm>
+#include <list>
 #include <map>
 #include <string>
-#include <list>
-#include <algorithm>
+#include <vector>
 
 // Custom Classes
-#include "Structs.h"
 #include "Logger.h"
+#include "Structs.h"
 
 #include "Math/MathFwd.h"
 #include "Math/Vector2D.h"
@@ -67,6 +67,7 @@ namespace LJG
 	class ICoreAPI
 	{
 	public:
+		virtual      ~ICoreAPI() = default;
 		virtual void Initialize() = 0;
 		virtual void Update(float DeltaTime) = 0;
 		virtual void Render() = 0;
@@ -87,4 +88,5 @@ namespace LJG
 	CLASS_PTR(Window)
 	CLASS_PTR(UTexture)
 	CLASS_PTR(UObject)
+	CLASS_PTR(UTextBlock)
 }

@@ -16,7 +16,7 @@ namespace LJG
 	public:
 		UTexture() = delete;
 		explicit UTexture(const std::wstring& TextureFile = L"");
-		~UTexture();
+		~UTexture() override;
 
 
 #pragma region Core Interface
@@ -44,6 +44,10 @@ namespace LJG
 
 		void SetWorldLocation(const FVector2f& InPos);
 		void AddWorldLocation(const FVector2f& InPos);
+
+	private:
+		void OnResizeCallback();
+		friend class UObject;
 
 	protected:
 #pragma region Buffer & Layout

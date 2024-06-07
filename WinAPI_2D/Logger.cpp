@@ -11,10 +11,12 @@ namespace LJG
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
 
-		s_CoreLogger = spdlog::stdout_color_mt("Jacob Core:");
+		// Set Core Logger
+		s_CoreLogger = spdlog::stdout_color_mt("Jacob Core");
 		s_CoreLogger->set_level(spdlog::level::trace);
 
-		s_DXLogger = spdlog::stdout_color_mt("Jacob DX:");
+		// Set DirectX Logger
+		s_DXLogger = spdlog::stdout_color_mt("------DX------");
 		s_DXLogger->set_level(spdlog::level::trace);
 	}
 }

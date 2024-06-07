@@ -15,8 +15,10 @@ int main()
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = false;
 
+	
+	
 	Application_Base app(L"Renderer", testWindowData);
-	ObjectManager::AddObject(new UObject(L"background.jpg"));
+	ObjectManager::AddObject(new UObject(L"dune.jpg"));
 	ObjectManager::AddObject(new PlayerController(L"jacob.jpg"));
 	app.Start();
 

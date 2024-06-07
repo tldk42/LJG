@@ -37,9 +37,9 @@ namespace LJG
 		mVertexMesh->Release();
 	}
 
-	void UObject::SetLocation(const FVector2f& NewLocation) const
+	void UObject::SetLocation(const FVector2f& InLocation) const
 	{
-		mVertexMesh->SetWorldLocation(NewLocation);
+		mVertexMesh->SetWorldLocation(InLocation);
 	}
 
 	FVector2f UObject::GetLocation() const
@@ -53,5 +53,10 @@ namespace LJG
 		{
 			mVertexMesh.reset(new UTexture(InTextureFile));
 		}
+	}
+
+	void UObject::OnResize()
+	{
+		mVertexMesh->OnResizeCallback();
 	}
 }

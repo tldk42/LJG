@@ -7,7 +7,7 @@ namespace LJG
 {
 	ContextUPtr Context::s_Context = nullptr;
 
-	Context::Context(const FWindowData& WinData, void* DeviceContext)
+	Context::Context(const FWindowData& InWinData, void* InDeviceContext)
 		: mDevice(nullptr),
 		  mDeviceContext(nullptr),
 		  mSwapChain(nullptr),
@@ -16,12 +16,11 @@ namespace LJG
 		  mDepthStencilBuffer(nullptr),
 		  mViewport(),
 		  mFeatureLevel(D3D_FEATURE_LEVEL_11_0),
-		  mVideoCardMemory(0),
 		  mVideoCardDescription{},
-		  mWindowData(WinData)
+		  mWindowData(InWinData)
 
 	{
-		if (!InitD3D(static_cast<HWND>(DeviceContext)))
+		if (!InitD3D(static_cast<HWND>(InDeviceContext)))
 		{
 			LOG_DX_ERROR("FAILED");
 		}
@@ -32,9 +31,9 @@ namespace LJG
 		Context::Release();
 	}
 
-	void Context::Create(const FWindowData& WinData, void* DeviceContext)
+	void Context::Create(const FWindowData& InWinData, void* InDeviceContext)
 	{
-		s_Context.reset(new Context(WinData, DeviceContext));
+		s_Context.reset(new Context(InWinData, InDeviceContext));
 
 		s_Context->Initialize();
 	}
@@ -42,11 +41,11 @@ namespace LJG
 	void Context::Initialize()
 	{
 		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
-			Resize(Width, Height);
+			OnResizeCallback(Width, Height);
 		});
 	}
 
-	void Context::Update(float DeltaTime) {}
+	void Context::Update(float InDeltaTime) {}
 
 	void Context::Render()
 	{
@@ -70,49 +69,51 @@ namespace LJG
 		mDevice = nullptr;
 	}
 
-	bool Context::InitD3D(HWND Hwnd)
+	bool Context::InitD3D(HWND InHwnd)
 	{
 		LOG_DX_TRACE("DirectX Initialization Start...");
 
-		// Step 1. D3D Device, DeviceContext 반환
-		if (FAILED(CreateDevice()))
-		{
-			LOG_DX_ERROR("Failed to Create DX Device & Device Context");
-			EngineHelper::ShowErrorMessageBox(Hwnd, true);
-			return false;
-		}
-		LOG_DX_TRACE("1. Device, DeviceContext...");
+		// Step 1. DirectX Graphic Infrastructure 생성
+		CHECK_RESULT(CreateGIFactory());
+		LOG_DX_TRACE("1. DirectX Graphic Infrastructure...");
 
-		// Step 2. DirectX Graphic Infrastructure 생성
-		if (FAILED(CreateGIFactory()))
-		{
-			LOG_DX_ERROR("Failed to Create DXGI");
-			EngineHelper::ShowErrorMessageBox(Hwnd, true);
-			return false;
-		}
-		LOG_DX_TRACE("2. DirectX Graphic Infrastructure...");
+		// Step 2. D3D Device, DeviceContext 반환
+		CHECK_RESULT(CreateDevice());
+		LOG_DX_TRACE("2. Device, DeviceContext...");
 
 		// Step 3. SwapChain 정보 생성 및 SwapChain 반환
-		if (FAILED(CreateSwapChain(Hwnd)))
-		{
-			LOG_DX_ERROR("Failed to Create SwapChain");
-			EngineHelper::ShowErrorMessageBox(Hwnd, true);
-			return false;
-		}
+		CHECK_RESULT(CreateSwapChain(InHwnd));
 		LOG_DX_TRACE("3. SwapChain...");
 
-		Resize(mWindowData.Width, mWindowData.Height); // 렌더 타겟 뷰 생성
+		// Step 4. RenderTargetView, Viewport 생성
+		OnResizeCallback(mWindowData.Width, mWindowData.Height);
+		LOG_DX_TRACE("4. RTV..., Viewport...");
 
+		// Step 5. Alt + Enter로 자동 창변환을 제어
+		CHECK_RESULT(mGIFactory->MakeWindowAssociation(InHwnd, DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
+		return true;
+	}
 
-		// Step 6. Alt + Enter로 자동 창변환을 제어
-		if (FAILED(mGIFactory->MakeWindowAssociation(Hwnd, DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER)))
+	HRESULT Context::CreateGIFactory()
+	{
+		ComPtr<IDXGIAdapter> DXGIAdapter;
+
+		CHECK_RESULT(CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(mGIFactory.GetAddressOf())));
+
+		// 첫번째 그래픽카드 장치 반환
+		CHECK_RESULT(mGIFactory->EnumAdapters(0, DXGIAdapter.GetAddressOf()));
 		{
-			LOG_DX_ERROR("Failed to Make Association");
-			EngineHelper::ShowErrorMessageBox(Hwnd, true);
-			return false;
+			DXGI_ADAPTER_DESC desc;
+			DXGIAdapter->GetDesc(&desc);
+			size_t stringLength;
+
+			wcstombs_s(&stringLength, mVideoCardDescription, 128, desc.Description, 128);
+			LOG_DX_TRACE("그래픽카드: {}, 메모리: {:d}", mVideoCardDescription, desc.DedicatedVideoMemory / (1 << 20));
 		}
 
-		return true;
+		DXGIAdapter = nullptr;
+
+		return S_OK;
 	}
 
 	HRESULT Context::CreateDevice()
@@ -124,7 +125,7 @@ namespace LJG
 			D3D_FEATURE_LEVEL_10_0,
 		};
 
-		const HRESULT result = D3D11CreateDevice(
+		CHECK_RESULT(D3D11CreateDevice(
 			nullptr,                  // 주 모니터 사용
 			D3D_DRIVER_TYPE_HARDWARE, // 하드웨어 가속 사용
 			nullptr,                  // 하드웨어 사용
@@ -137,9 +138,9 @@ namespace LJG
 			D3D11_SDK_VERSION,                                                     // DX Version
 			mDevice.GetAddressOf(),                                                              // (Out) Device
 			&mFeatureLevel,                                                        // (Out) Features
-			mDeviceContext.GetAddressOf());                                                      // (Out) DeviceContext
+			mDeviceContext.GetAddressOf()));                                                      // (Out) DeviceContext
 
-		if (FAILED(result) || mFeatureLevel < D3D_FEATURE_LEVEL_11_0)
+		if (mFeatureLevel < D3D_FEATURE_LEVEL_11_0)
 		{
 			mDeviceContext = nullptr;
 			mDevice        = nullptr;
@@ -147,63 +148,33 @@ namespace LJG
 			EngineHelper::ShowErrorMessageBox(nullptr, true);
 		}
 
-		return result;
+		return S_OK;
 	}
 
-	HRESULT Context::CreateGIFactory()
-	{
-		if (!mDevice)
-			return E_FAIL;
-
-		ComPtr<IDXGIDevice>  DXGIDevice;
-		ComPtr<IDXGIAdapter> DXGIAdapter;
-
-		HRESULT result = mDevice->QueryInterface(__uuidof(IDXGIDevice),
-		                                         reinterpret_cast<void**>(DXGIDevice.GetAddressOf()));
-
-		result = DXGIDevice->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void**>(DXGIAdapter.GetAddressOf()));
-
-		result = DXGIAdapter->GetParent(__uuidof(IDXGIFactory), reinterpret_cast<void**>(mGIFactory.GetAddressOf()));
-
-		if (SUCCEEDED(mGIFactory->EnumAdapters(0, &DXGIAdapter))) // 첫번째 그래픽카드 장치 반환
-		{
-			DXGI_ADAPTER_DESC desc;
-			DXGIAdapter->GetDesc(&desc);
-			size_t stringLength;
-
-			wcstombs_s(&stringLength, mVideoCardDescription, 128, desc.Description, 128);
-			LOG_DX_TRACE("그래픽카드: {}, 메모리: {:d}", mVideoCardDescription, desc.DedicatedVideoMemory / (1 << 20));
-		}
-
-		DXGIDevice  = nullptr;
-		DXGIAdapter = nullptr;
-
-		return result;
-	}
-
-	HRESULT Context::CreateSwapChain(HWND Hwnd)
+	HRESULT Context::CreateSwapChain(HWND InHwnd)
 	{
 		ZeroMemory(&mSwapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 		{
-			mSwapChainDesc.BufferCount = 1;
-			mSwapChainDesc.BufferDesc.Width = mWindowData.Width; // Buffer Width
-			mSwapChainDesc.BufferDesc.Height = mWindowData.Height; // Buffer Height
-			mSwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
-			mSwapChainDesc.BufferDesc.RefreshRate.Numerator = 60; // FPS 분자 TODO: 고정 주사율 설정
+			mSwapChainDesc.BufferCount                        = 1;
+			mSwapChainDesc.BufferDesc.Width                   = mWindowData.Width; // Buffer Width
+			mSwapChainDesc.BufferDesc.Height                  = mWindowData.Height; // Buffer Height
+			mSwapChainDesc.BufferDesc.Format                  = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
+			mSwapChainDesc.BufferDesc.RefreshRate.Numerator   = 60; // FPS 분자 TODO: 고정 주사율 설정
 			mSwapChainDesc.BufferDesc.RefreshRate.Denominator = 1; // FPS 분모
-			mSwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
-			mSwapChainDesc.OutputWindow = Hwnd; // 출력될 윈도우 핸들
-			mSwapChainDesc.SampleDesc.Count = 1; // 멀티 샘플링 개수
-			mSwapChainDesc.SampleDesc.Quality = 0; // 멀티 샘플링 품질
-			mSwapChainDesc.Windowed = !(mWindowData.bFullScreen); // 창 전체 화면 모드
-			mSwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
-			mSwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
+			mSwapChainDesc.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
+			mSwapChainDesc.OutputWindow                       = InHwnd; // 출력될 윈도우 핸들
+			mSwapChainDesc.SampleDesc.Count                   = 1; // 멀티 샘플링 개수
+			mSwapChainDesc.SampleDesc.Quality                 = 0; // 멀티 샘플링 품질
+			mSwapChainDesc.Windowed                           = !(mWindowData.bFullScreen); // 창 전체 화면 모드
+			mSwapChainDesc.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
+			mSwapChainDesc.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
 		}
 
-		return mGIFactory->CreateSwapChain(mDevice.Get(), &mSwapChainDesc, mSwapChain.GetAddressOf());
+		CHECK_RESULT(mGIFactory->CreateSwapChain(mDevice.Get(), &mSwapChainDesc, mSwapChain.GetAddressOf()));
+		return S_OK;
 	}
 
-	void Context::Resize(UINT InWidth, UINT InHeight)
+	void Context::OnResizeCallback(UINT InWidth, UINT InHeight)
 	{
 		if (mDevice.Get())
 		{
@@ -215,16 +186,11 @@ namespace LJG
 
 			mRenderTargetView = nullptr;
 
-			const HRESULT result = mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
-			                                                 InWidth, InHeight,
-			                                                 mSwapChainDesc.BufferDesc.Format,
-			                                                 mSwapChainDesc.Flags);
+			CHECK_RESULT(mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
+												   InWidth, InHeight,
+												   mSwapChainDesc.BufferDesc.Format,
+												   mSwapChainDesc.Flags));
 			mSwapChain->GetDesc(&mSwapChainDesc);
-
-			if (result != S_OK)
-			{
-				LOG_DX_FATAL("DS");
-			}
 
 			SetRenderTarget();
 			SetViewport();
@@ -237,29 +203,20 @@ namespace LJG
 	HRESULT Context::SetRenderTarget()
 	{
 		ComPtr<ID3D11Texture2D> backBuffer;
-		HRESULT                 result = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
-		                                       reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
-		if (FAILED(result))
-		{
-			EngineHelper::ShowErrorMessageBox(nullptr, false);
-		}
-
-		result = mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf());
-		if (FAILED(result))
-		{
-			EngineHelper::ShowErrorMessageBox(nullptr, false);
-		}
-
-		backBuffer = nullptr;
+		CHECK_RESULT(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
+										   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf())));
+		CHECK_RESULT(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
-		return result;
+
+		backBuffer = nullptr;
+		return S_OK;
 	}
 
 	HRESULT Context::SetViewport()
 	{
-		mViewport.Width    = mSwapChainDesc.BufferDesc.Width;
-		mViewport.Height   = mSwapChainDesc.BufferDesc.Height;
+		mViewport.Width    = static_cast<float_t>(mSwapChainDesc.BufferDesc.Width);
+		mViewport.Height   = static_cast<float_t>(mSwapChainDesc.BufferDesc.Height);
 		mViewport.MinDepth = 0.f;
 		mViewport.MaxDepth = 1.f;
 		mViewport.TopLeftX = 0;
@@ -273,10 +230,7 @@ namespace LJG
 	{
 		if (mSwapChain.Get())
 		{
-			if (FAILED(mSwapChain->Present(mWindowData.bVsync, 0)))
-			{
-				LOG_DX_ERROR("SwapChain Present Failed");
-			}
+			CHECK_RESULT(mSwapChain->Present(mWindowData.bVsync, 0));
 		}
 	}
 }

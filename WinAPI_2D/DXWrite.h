@@ -14,7 +14,7 @@ namespace LJG
 	{
 	public:
 		DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
-		~DXWrite();
+		~DXWrite() override;
 
 	public:
 		static void            Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
@@ -36,7 +36,7 @@ namespace LJG
 		HRESULT Draw(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::Green);
 		HRESULT DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::DarkGreen);
 		HRESULT DrawText_Immediately(const std::wstring& InText, D2D1_RECT_F Rect,
-		                             D2D1::ColorF         = D2D1::ColorF::DarkGreen);
+									 D2D1::ColorF         = D2D1::ColorF::DarkGreen);
 
 
 		HRESULT CreateDeviceIndependentResources();
@@ -46,8 +46,7 @@ namespace LJG
 		void DiscardDeviceResources();
 
 	public:
-		static void AddText(FWriteDataUPtr InWriteData);
-		static bool RemoveText(const FWriteData& WriteDataToRemove);
+		static void AddText(UTextBlockSPtr InWriteData);
 #pragma region Set
 		// HRESULT SetText(D2D1_POINT_2F InPos, const wchar_t* InText, D2D1::ColorF InColor);
 		HRESULT SetFont(const wchar_t* InFontFamily);
@@ -58,6 +57,7 @@ namespace LJG
 #pragma endregion
 
 	private:
+		// Resize Callback
 		void OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface);
 
 	private:
@@ -83,7 +83,7 @@ namespace LJG
 
 		bool bInitialized;
 
-		std::vector<FWriteDataUPtr> TextArray;
+		std::vector<UTextBlockSPtr> mTextArray;
 
 	private:
 		static DXWriteUPtr s_Writer;

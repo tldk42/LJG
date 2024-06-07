@@ -36,9 +36,6 @@
     <Filter Include="Math">
       <UniqueIdentifier>{9a63433f-34aa-478c-b193-56d52262b88f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\DirectX\Vertex">
-      <UniqueIdentifier>{2aafff80-eaa3-490a-b38b-cf545974ef13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{e08c2dfe-d6d5-45d6-b57b-4a22244c3b75}</UniqueIdentifier>
     </Filter>
@@ -50,6 +47,9 @@
     </Filter>
     <Filter Include="소스 파일\Player">
       <UniqueIdentifier>{61547867-eae6-4ea3-9df8-57535576b711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DirectX\Texture">
+      <UniqueIdentifier>{2aafff80-eaa3-490a-b38b-cf545974ef13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +85,7 @@
       <Filter>소스 파일\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="UTexture.cpp">
-      <Filter>소스 파일\DirectX\Vertex</Filter>
+      <Filter>소스 파일\DirectX\Texture</Filter>
     </ClCompile>
     <ClCompile Include="UDXHelper.cpp">
       <Filter>소스 파일\DirectX\Helper</Filter>
@@ -153,7 +153,7 @@
       <Filter>소스 파일\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="UTexture.h">
-      <Filter>소스 파일\DirectX\Vertex</Filter>
+      <Filter>소스 파일\DirectX\Texture</Filter>
     </ClInclude>
     <ClInclude Include="UDXHelper.h">
       <Filter>소스 파일\DirectX\Helper</Filter>

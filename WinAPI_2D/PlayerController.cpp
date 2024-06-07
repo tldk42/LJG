@@ -20,19 +20,19 @@ void LJG::PlayerController::Update(float DeltaTime)
 {
 	UObject::Update(DeltaTime);
 
-	if (InputManager::Get()->IsKeyDown(EKeyCode::D))
+	if (InputManager::IsKeyDown(EKeyCode::D))
 	{
 		AddMovementInput({DeltaTime, 0.f});
 	}
-	if (InputManager::Get()->IsKeyDown(EKeyCode::S))
+	if (InputManager::IsKeyDown(EKeyCode::S))
 	{
 		AddMovementInput({0.f, -DeltaTime});
 	}
-	if (InputManager::Get()->IsKeyDown(EKeyCode::W))
+	if (InputManager::IsKeyDown(EKeyCode::W))
 	{
 		AddMovementInput({0.f, DeltaTime});
 	}
-	if (InputManager::Get()->IsKeyDown(EKeyCode::A))
+	if (InputManager::IsKeyDown(EKeyCode::A))
 	{
 		AddMovementInput({-DeltaTime, 0.f});
 	}
