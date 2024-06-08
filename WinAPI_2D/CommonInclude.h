@@ -74,8 +74,9 @@ namespace LJG
 		virtual void Release() = 0;
 	};
 
-
+	using namespace std::chrono;
 	using ResizeDelegate = std::function<void(UINT, UINT)>;
+
 
 #define CLASS_PTR(klassName)\
 	class klassName;\

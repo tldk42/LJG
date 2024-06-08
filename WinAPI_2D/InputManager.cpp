@@ -1,7 +1,5 @@
 #include "InputManager.h"
-
 #include "EngineHelper.h"
-#include "Math/Vector2D.h"
 
 
 namespace LJG
@@ -9,7 +7,12 @@ namespace LJG
 	InputManagerUPtr InputManager::s_InputManager = nullptr;
 
 	InputManager::InputManager()
-		: mMousePosition() {}
+		: mMousePosition(), bEnableDebug(false)
+	{
+		#ifdef _DEBUG
+		bEnableDebug = true;
+		#endif
+	}
 
 	void InputManager::Create()
 	{
@@ -25,6 +28,7 @@ namespace LJG
 	void InputManager::Initialize()
 	{
 		CreateKeys();
+
 		ClearKeys();
 		ClearMouse();
 	}
@@ -33,13 +37,14 @@ namespace LJG
 	{
 		UpdateKeys();
 		UpdateMouseWindowPosition();
+
+		Debug_Input();
 	}
 
-	void InputManager::Render() {}
+	void InputManager::Render()
+	{}
 
 	void InputManager::Release() {}
-
-	void InputManager::SetMousePosition(const FVector2D& Position) {}
 
 	void InputManager::CreateKeys()
 	{
@@ -74,13 +79,32 @@ namespace LJG
 
 	void InputManager::UpdateKeyDown(FKeyData& InKey)
 	{
-		InKey.State    = (InKey.State == EKeyState::Pressed) ? EKeyState::Pressed : EKeyState::Down;
+		if (InKey.State <= EKeyState::Up)
+		{
+			InKey.State     = EKeyState::Down;
+			InKey.PressTime = steady_clock::now();
+		}
+		else
+		{
+			InKey.State         = EKeyState::Pressed;
+			InKey.PressDuration = std::chrono::duration_cast<milliseconds>(
+				steady_clock::now() - InKey.PressTime);
+		}
 		InKey.bPressed = true;
 	}
 
 	void InputManager::UpdateKeyUp(FKeyData& InKey)
 	{
-		InKey.State    = (InKey.State == EKeyState::Pressed) ? EKeyState::Up : EKeyState::None;
+		if (InKey.State == EKeyState::Pressed)
+		{
+			InKey.State         = EKeyState::Up;
+			InKey.ReleaseTime   = steady_clock::now(); // TODO Release 필요하면 구현
+			InKey.PressDuration = milliseconds(0);
+		}
+		else
+		{
+			InKey.State = EKeyState::None;
+		}
 		InKey.bPressed = false;
 	}
 
@@ -113,11 +137,13 @@ namespace LJG
 				break;
 			case EKeyState::Up:
 				key.State = EKeyState::None;
+				break;
 			case EKeyState::None:
 				break;
 			}
 
-			key.bPressed = false;
+			key.PressDuration = std::chrono::milliseconds(0);
+			key.bPressed      = false;
 		}
 	}
 
@@ -126,5 +152,20 @@ namespace LJG
 	bool InputManager::IsKeyDown_Implements(const EKeyCode InKey)
 	{
 		return GetAsyncKeyState(ASCII[static_cast<UINT>(InKey)]) & 0x8000;
+	}
+
+	void InputManager::Debug_Input()
+	{
+		if (bEnableDebug)
+		{
+			for (const FKeyData& key : mKeys)
+			{
+				if (key.PressDuration.count() > 0)
+				{
+					std::cout << "Key " << ASCIIString[static_cast<int>(key.KeyCode)] << " was pressed for " <<
+					key.PressDuration.count() * (1.f / 1000.f) << " seconds\n";
+				}
+			}
+		}
 	}
 }

@@ -4,9 +4,9 @@
 enum class EKeyState
 {
 	None,    // 기본
-	Down,    // 눌림
+	Up,      // 떼어짐
+	Down,    // 눌림 (입력 소모)
 	Pressed, // 눌린 상태
-	Up       // 떼어짐
 };
 
 /** 키보드로 입력될 수 있는 키 목록 */

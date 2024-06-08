@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-
 #include "Enums.h"
 
 
@@ -14,11 +13,17 @@ namespace LJG
 		bool    bVsync;
 	};
 
+	using namespace std::chrono;
+
 	struct FKeyData
 	{
 		EKeyCode  KeyCode;// 고유 Key
 		EKeyState State; // 키 상태
 		bool      bPressed;
+
+		steady_clock::time_point PressTime;
+		steady_clock::time_point ReleaseTime;
+		milliseconds             PressDuration;
 	};
 
 	struct FWriteData

@@ -7,8 +7,6 @@ namespace LJG
 {
 	constexpr float TickFrequency = 60 / 1000.f;
 
-	using namespace std::chrono;
-
 	class UTimer
 	{
 	public:

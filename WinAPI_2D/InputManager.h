@@ -1,6 +1,5 @@
 #pragma once
 #include "CommonInclude.h"
-#include "Math/Vector2D.h"
 
 namespace LJG
 {
@@ -10,7 +9,7 @@ namespace LJG
 	{
 	public:
 		InputManager();
-		~InputManager() = default;
+		~InputManager() override = default;
 
 		static void          Create();
 		static InputManager* Get() { return s_InputManager.get(); }
@@ -43,8 +42,7 @@ namespace LJG
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
 
-		inline const FVector2D& GetMousePosition() { return mMousePosition; }
-		inline void             SetMousePosition(const FVector2D& Position);
+		inline const FVector2D& GetMousePosition() const { return mMousePosition; }
 
 	private:
 		void CreateKeys();
@@ -59,11 +57,15 @@ namespace LJG
 		void ClearKeys();
 		void ClearMouse();
 
-		bool IsKeyDown_Implements(const EKeyCode InKey);
+		static bool IsKeyDown_Implements(const EKeyCode InKey);
+
+		void Debug_Input();
 
 	private:
 		std::vector<FKeyData> mKeys;
 		FVector2D             mMousePosition;
+
+		bool bEnableDebug;
 
 		static InputManagerUPtr s_InputManager;
 	};
