@@ -43,6 +43,20 @@ namespace LJG
 				return !(*this == Other);
 			}
 
+			bool Equals(const TBox2<T>& Other, T Tolerance = M_KINDA_SMALL_NUMBER) const
+			{
+				return Min == Other.Min && Max == Other.Max;
+			}
+
+			inline TBox2<T>& operator+=(const TVector2<T>& Other);
+
+			inline TBox2<T>& operator+=(const TBox2<T>& Other);
+
+			TBox2<T> operator+(const TBox2<T>& Other) const
+			{
+				return TBox2<T>(*this) += Other;
+			}
+
 			TVector2<T>& operator[](int32_t Index)
 			{
 				assert((Index >= 0) && (Index < 2));
@@ -59,6 +73,65 @@ namespace LJG
 			TBox2<T>    Overlap(const TBox2<T>& Other) const;
 			inline bool Intersect(const TBox2<T>& Other) const;
 		};
+
+		template <typename T> TBox2<T>::TBox2(const TVector2<T>* Points, const int32_t Count)
+			: Min(0.f, 0.f),
+			  Max(0.f, 0.f),
+			  bIsValid(false)
+		{
+			for (int32_t PointItr = 0; PointItr < Count; ++PointItr)
+			{
+				*this += Points[PointItr];
+			}
+		}
+
+		template <typename T> TBox2<T>::TBox2(const std::vector<TVector2<T>>& Points)
+			: Min(0.f, 0.f),
+			  Max(0.f, 0.f),
+			  bIsValid(false)
+		{
+			for (const TVector2<T>& EachPoint : Points)
+			{
+				*this += EachPoint;
+			}
+		}
+
+		template <typename T> TBox2<T>& TBox2<T>::operator+=(const TVector2<T>& Other)
+		{
+			if (bIsValid)
+			{
+				Min.X = FMath::Min(Min.X, Other.X);
+				Min.Y = FMath::Min(Min.Y, Other.Y);
+
+				Max.X = FMath::Max(Max.X, Other.X);
+				Max.Y = FMath::Max(Max.Y, Other.Y);
+			}
+			else
+			{
+				Min      = Max = Other;
+				bIsValid = true;
+			}
+
+			return *this;
+		}
+
+		template <typename T> TBox2<T>& TBox2<T>::operator+=(const TBox2<T>& Other)
+		{
+			if (bIsValid && Other.bIsValid)
+			{
+				Min.X = FMath::Min(Min.X, Other.Min.X);
+				Min.Y = FMath::Min(Min.Y, Other.Min.Y);
+
+				Max.X = FMath::Max(Max.X, Other.Max.X);
+				Max.Y = FMath::Max(Max.Y, Other.Max.Y);
+			}
+			else if (Other.bIsValid)
+			{
+				*this = Other;
+			}
+
+			return *this;
+		}
 
 		template <typename T> TBox2<T> TBox2<T>::Overlap(const TBox2<T>& Other) const
 		{

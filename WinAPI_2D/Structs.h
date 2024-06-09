@@ -2,7 +2,6 @@
 #include <cstdint>
 #include "Enums.h"
 
-
 namespace LJG
 {
 	struct FWindowData
@@ -25,6 +24,8 @@ namespace LJG
 		steady_clock::time_point ReleaseTime;
 		milliseconds             PressDuration;
 	};
+
+
 
 	struct FWriteData
 	{

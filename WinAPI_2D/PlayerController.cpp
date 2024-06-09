@@ -1,7 +1,7 @@
 #include "PlayerController.h"
 
 #include "InputManager.h"
-#include "UTexture.h"
+#include "USprite2D.h"
 
 LJG::PlayerController::PlayerController(const std::wstring& InTextureFile)
 	: UObject(InTextureFile) {}
@@ -20,19 +20,19 @@ void LJG::PlayerController::Update(float DeltaTime)
 {
 	UObject::Update(DeltaTime);
 
-	if (InputManager::IsKeyDown(EKeyCode::D))
+	if (InputManager::IsKeyPressed(EKeyCode::D))
 	{
 		AddMovementInput({DeltaTime, 0.f});
 	}
-	if (InputManager::IsKeyDown(EKeyCode::S))
+	if (InputManager::IsKeyPressed(EKeyCode::S))
 	{
 		AddMovementInput({0.f, -DeltaTime});
 	}
-	if (InputManager::IsKeyDown(EKeyCode::W))
+	if (InputManager::IsKeyPressed(EKeyCode::W))
 	{
 		AddMovementInput({0.f, DeltaTime});
 	}
-	if (InputManager::IsKeyDown(EKeyCode::A))
+	if (InputManager::IsKeyPressed(EKeyCode::A))
 	{
 		AddMovementInput({-DeltaTime, 0.f});
 	}

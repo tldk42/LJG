@@ -1,6 +1,6 @@
 #include "UObject.h"
 
-#include "UTexture.h"
+#include "USprite2D.h"
 
 
 namespace LJG
@@ -11,7 +11,7 @@ namespace LJG
 	{
 		if (!InTextureFile.empty())
 		{
-			mVertexMesh.reset(new UTexture(InTextureFile));
+			mVertexMesh.reset(new USprite2D(InTextureFile));
 		}
 	}
 
@@ -44,14 +44,14 @@ namespace LJG
 
 	FVector2f UObject::GetLocation() const
 	{
-		return mVertexMesh->GetWorldLocation();
+		return FVector2f::ZeroVector;
 	}
 
 	void UObject::SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify)
 	{
 		if (!mVertexMesh || bForceModify)
 		{
-			mVertexMesh.reset(new UTexture(InTextureFile));
+			mVertexMesh.reset(new USprite2D(InTextureFile));
 		}
 	}
 

@@ -5,9 +5,9 @@
 
 namespace LJG
 {
-	HRESULT UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t* VertexFileName,
-	                                        ID3DBlob** OutBlob, ID3D11VertexShader** VertexShader, LPCSTR FunctionName,
-	                                        bool bBinary)
+	HRESULT UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t*        VertexFileName,
+											ID3DBlob**    OutBlob, ID3D11VertexShader** VertexShader, LPCSTR FunctionName,
+											bool          bBinary)
 	{
 		HRESULT result = S_OK;
 
@@ -18,7 +18,7 @@ namespace LJG
 		if (!bBinary)
 		{
 			result = CompileShaderFromFile(VertexFileName, FunctionName ? FunctionName : "vs", "vs_5_0",
-			                               &blob);
+										   &blob);
 			if (FAILED(result))
 			{
 				return result;
@@ -56,9 +56,9 @@ namespace LJG
 	}
 
 	HRESULT UDXHelper::LoadPixelShaderFile(ID3D11Device*       Device, const wchar_t* PixelFileName,
-	                                       ID3D11PixelShader** pixelShader,
-	                                       const wchar_t*      FunctionName, bool bBinary,
-	                                       ID3DBlob**          OutBlob)
+										   ID3D11PixelShader** pixelShader,
+										   const wchar_t*      FunctionName, bool bBinary,
+										   ID3DBlob**          OutBlob)
 	{
 		HRESULT result = S_OK;
 
@@ -69,7 +69,7 @@ namespace LJG
 		if (!bBinary)
 		{
 			result = CompileShaderFromFile(PixelFileName, "ps", "ps_5_0",
-			                               &blob);
+										   &blob);
 			if (FAILED(result))
 			{
 				return result;
@@ -107,7 +107,7 @@ namespace LJG
 	}
 
 	HRESULT UDXHelper::CompileShaderFromFile(const WCHAR* FileName, LPCSTR EntryPoint, LPCSTR ShaderModel,
-	                                         ID3DBlob**   OutBlob)
+											 ID3DBlob**   OutBlob)
 	{
 		HRESULT result;
 
@@ -143,5 +143,25 @@ namespace LJG
 		}
 
 		return result;
+	}
+
+	FVector2f UDXHelper::NDC2Screen(const FVector2f& InWindow, const FVector2f& InNDC)
+	{
+		FVector2f returnValue;
+
+		returnValue.X = static_cast<float_t>(InWindow.X) * (InNDC.X + 1.f) * .5f;
+		returnValue.Y = static_cast<float_t>(InWindow.Y) * .5f * (1.f - InNDC.Y);
+
+		return returnValue;
+	}
+
+	FVector2f UDXHelper::Screen2NDC(const FVector2f& InWindow, const FVector2f& InScreen)
+	{
+		FVector2f returnValue;
+
+		returnValue.X = InScreen.X / (static_cast<float_t>(InWindow.X) * .5f);
+		returnValue.Y = InScreen.Y / (static_cast<float_t>(InWindow.Y) * .5f);
+
+		return returnValue;
 	}
 }

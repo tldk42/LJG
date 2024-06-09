@@ -3,6 +3,9 @@
 #include <d3d11.h>
 #include <wrl.h>
 
+#include "Math/MathFwd.h"
+#include "Math/Vector2D.h"
+
 namespace LJG
 {
 	using namespace Microsoft::WRL;
@@ -35,17 +38,20 @@ namespace LJG
 	{
 	public:
 		static HRESULT LoadVertexShaderFile(ID3D11Device* Device, const wchar_t*        VertexFileName,
-		                                    ID3DBlob**    OutBlob, ID3D11VertexShader** VertexShader,
-		                                    LPCSTR        FunctionName = nullptr,
-		                                    bool          bBinary      = false);
+											ID3DBlob**    OutBlob, ID3D11VertexShader** VertexShader,
+											LPCSTR        FunctionName = nullptr,
+											bool          bBinary      = false);
 		static HRESULT LoadPixelShaderFile(ID3D11Device*       d3dDevice,
-		                                   const wchar_t*      PixelFileName,
-		                                   ID3D11PixelShader** pixelShader,
-		                                   const wchar_t*      FunctionName = nullptr,
-		                                   bool                bBinary      = false,
-		                                   ID3DBlob**          OutBlob      = nullptr);
+										   const wchar_t*      PixelFileName,
+										   ID3D11PixelShader** pixelShader,
+										   const wchar_t*      FunctionName = nullptr,
+										   bool                bBinary      = false,
+										   ID3DBlob**          OutBlob      = nullptr);
 
 		static HRESULT CompileShaderFromFile(const WCHAR* FileName, LPCSTR EntryPoint, LPCSTR ShaderModel,
-		                                     ID3DBlob**   OutBlob);
+											 ID3DBlob**   OutBlob);
+
+		static FVector2f NDC2Screen(const FVector2f& InWindow, const FVector2f& InNDC);
+		static FVector2f Screen2NDC(const FVector2f& InWindow, const FVector2f& InScreen);
 	};
 }

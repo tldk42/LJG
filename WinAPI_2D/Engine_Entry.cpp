@@ -1,9 +1,4 @@
 ﻿#include "Application_Base.h"
-#include "InputManager.h"
-#include "UObject.h"
-#include "ObjectManager.h"
-#include "PlayerController.h"
-
 
 int main()
 {
@@ -15,12 +10,14 @@ int main()
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = false;
 
-	
-	
-	Application_Base app(L"Renderer", testWindowData);
-	ObjectManager::AddObject(new UObject(L"dune.jpg"));
-	ObjectManager::AddObject(new PlayerController(L"jacob.jpg"));
-	app.Start();
 
+	// ----------------------- START ------------------------------
+	{
+		Application_Base app(L"Renderer", testWindowData);
+		// ObjectManager::AddObject(new UObject(L"dune.jpg"));
+		// ObjectManager::AddObject(new PlayerController(L"jacob.jpg"));
+
+		app.Start();
+	}
 	return 0;
 }

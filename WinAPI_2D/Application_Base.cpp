@@ -4,6 +4,8 @@
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
+#include "UAnimation.h"
+#include "USprite2D.h"
 #include "UTextBlock.h"
 #include "UTimer.h"
 #include "Window.h"
@@ -113,12 +115,22 @@ namespace LJG
 
 			DXWrite::AddText(FpsText);
 
+			std::vector<FAnimData> animset =
+			{
+				{new USprite2D(L"rsc/blinky/d1.png"), 1.f},
+				{new USprite2D(L"rsc/blinky/d2.png"), 1.f}
+			};
+
+			UAnimation animation(animset);
+			animation.PlayAnim(0);
+
 			while (bIsRunning)
 			{
 				mWindow->Clear();
 
 				currentTime = mTimer->ElapsedMillis();
 
+#pragma region Update Per 1 / 60 Seconds
 				if (currentTime - updateTimer > TickFrequency)
 				{
 					// TODO: Update
@@ -126,14 +138,19 @@ namespace LJG
 					updateCounter++;
 					updateTimer += TickFrequency;
 				}
+#pragma endregion
+
+#pragma region Update Every Frame
 
 				{
 					UTimer frameTimer;
 
+					animation.Update(mDeltaTime);
 					Update(mDeltaTime);
 
 					// TODO: Render
 					Renderer::Get()->Clear();
+					animation.Render();
 					Render();
 
 					frameCounter++;
@@ -141,7 +158,9 @@ namespace LJG
 				}
 
 				mWindow->Update();
+#pragma endregion
 
+#pragma region Update Per Seconds
 				if (mTimer->ElapsedSeconds() - timer > 1.f)
 				{
 					timer += 1.f;
@@ -154,6 +173,7 @@ namespace LJG
 
 					// TODO: Tick
 				}
+#pragma endregion
 
 				if (mWindow->IsClosed())
 				{
@@ -161,5 +181,6 @@ namespace LJG
 				}
 			}
 		}
+
 	}
 }

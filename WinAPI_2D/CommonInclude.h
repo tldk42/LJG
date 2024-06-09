@@ -24,6 +24,8 @@
 
 #include "Math/MathFwd.h"
 #include "Math/Vector2D.h"
+#include "Math/Vector.h"
+#include "Math/Color.h"
 
 #include "UDXHelper.h"
 
@@ -77,6 +79,14 @@ namespace LJG
 	using namespace std::chrono;
 	using ResizeDelegate = std::function<void(UINT, UINT)>;
 
+#define STRUCT_PTR(structName)\
+	struct structName;\
+	using structName##UPtr = std::unique_ptr<structName>;\
+	using structName##SPtr = std::shared_ptr<structName>;\
+	using structName##WPtr = std::weak_ptr<structName>;
+
+	STRUCT_PTR(FWriteData)
+
 
 #define CLASS_PTR(klassName)\
 	class klassName;\
@@ -84,10 +94,14 @@ namespace LJG
 	using klassName##SPtr = std::shared_ptr<klassName>;\
 	using klassName##WPtr = std::weak_ptr<klassName>;
 
-	CLASS_PTR(FWriteData)
 	CLASS_PTR(UTimer)
 	CLASS_PTR(Window)
-	CLASS_PTR(UTexture)
+	CLASS_PTR(USprite2D)
 	CLASS_PTR(UObject)
 	CLASS_PTR(UTextBlock)
+
+	CLASS_PTR(XSamplerState)
+	CLASS_PTR(XBlendState)
+	CLASS_PTR(XTexture)
+	CLASS_PTR(USprite2D)
 }

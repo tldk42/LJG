@@ -12,6 +12,7 @@ class FMath
 	// 	return abs(A - B) <= ErrorTolerance;
 	// }
 public:
+	//----------------------- Min Max ------------------------------------
 	template <typename T>
 	[[nodiscard]] static constexpr inline T Max(const T A, const T B)
 	{
@@ -28,5 +29,24 @@ public:
 	[[nodiscard]] static constexpr inline T Min(const T A, const T B)
 	{
 		return (B > A) ? A : B;
+	}
+
+
+	//------------------------- Clamp --------------------------------
+	template <typename T>
+	[[nodiscard]] static constexpr inline T Clamp(const T Current, const T MinValue, const T MaxValue)
+	{
+		return Max(Min(Current, MaxValue), MinValue);
+	}
+
+	[[nodiscard]] static constexpr inline float Clamp(const float Current, const float MinValue, const float MaxValue)
+	{
+		return Clamp<float>(Current, MinValue, MaxValue);
+	}
+
+	template <typename T>
+	static constexpr inline T Abs(const T A)
+	{
+		return (A < static_cast<T>(0)) ? -A : A;
 	}
 };

@@ -25,11 +25,11 @@ namespace LJG
 		void SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify);
 
 	private:
-		void        OnResize();
+		void OnResize();
 		friend class ObjectManager;
 
 	protected:
-		UTextureUPtr mVertexMesh;
+		USprite2DUPtr mVertexMesh;
 
 	};
 }

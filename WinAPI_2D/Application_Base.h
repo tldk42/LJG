@@ -4,6 +4,10 @@
 
 namespace LJG
 {
+	class XVertex2D;
+}
+namespace LJG
+{
 	class UTextBlock;
 }
 namespace LJG
@@ -63,5 +67,6 @@ namespace LJG
 		bool bIsRunning;
 		bool bIsPaused;
 #pragma endregion
+		
 	};
 }
