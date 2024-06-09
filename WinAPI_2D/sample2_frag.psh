@@ -20,6 +20,6 @@ float4 ps(VS_OUTPUT input) : SV_TARGET
 	
     texColor = shaderTexture.Sample(SampleType, input.Texture);
 	
-	texColor = lerp(texColor, overlayColor, 0.3f);
+// 	texColor = lerp(texColor, overlayColor, 0.3f);
 	return texColor;
 }

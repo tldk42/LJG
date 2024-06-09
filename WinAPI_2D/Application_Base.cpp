@@ -117,8 +117,12 @@ namespace LJG
 
 			std::vector<FAnimData> animset =
 			{
-				{new USprite2D(L"rsc/blinky/d1.png"), 1.f},
-				{new USprite2D(L"rsc/blinky/d2.png"), 1.f}
+				{new USprite2D(L"rsc/Samurai/a1.png"), 1.f/6},
+				{new USprite2D(L"rsc/Samurai/a2.png"), 1.f/6},
+				{new USprite2D(L"rsc/Samurai/a3.png"), 1.f/6},
+				{new USprite2D(L"rsc/Samurai/a4.png"), 1.f/6},
+				{new USprite2D(L"rsc/Samurai/a5.png"), 1.f/6},
+				{new USprite2D(L"rsc/Samurai/a6.png"), 1.f/6},
 			};
 
 			UAnimation animation(animset);
