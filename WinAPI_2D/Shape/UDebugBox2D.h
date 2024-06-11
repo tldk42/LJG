@@ -17,6 +17,8 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		void SetColor(const FLinearColor& InColor);
+
 	protected:
 		void CreateVertexArray() override;
 		void CreateIndexArray() override;

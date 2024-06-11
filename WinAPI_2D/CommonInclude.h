@@ -27,6 +27,9 @@
 #include "Math/Vector.h"
 #include "Math/Color.h"
 
+#include "TManagedEntity.h"
+
+
 #include "UDXHelper.h"
 
 namespace LJG

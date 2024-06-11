@@ -28,6 +28,18 @@ namespace LJG
 		UDebugShape2D::Release();
 	}
 
+	void UDebugBox2D::SetColor(const FLinearColor& InColor)
+	{
+		mDrawColor = InColor;
+
+		for (auto& vertex : mVertexBufferArray)
+		{
+			vertex.Color = mDrawColor;
+		}
+
+		SetShaderParams();
+	}
+
 	void UDebugBox2D::CreateVertexArray()
 	{
 		UDebugShape2D::CreateVertexArray();

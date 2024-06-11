@@ -12,6 +12,17 @@ int main()
 		testWindowData.bVsync      = false;
 	}
 
+
+	class Sample : public TManagedEntity<Sample>
+	{
+	public:
+		Sample() = default;
+	};
+
+	std::shared_ptr<Sample> s = Sample::Create();
+
+	// Sample* s2 = new Sample();
+
 	// ----------------------- START ------------------------------
 	{
 		Application_Base app(L"Renderer", testWindowData);

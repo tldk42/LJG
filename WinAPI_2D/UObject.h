@@ -1,5 +1,6 @@
 #pragma once
 #include "CommonInclude.h"
+#include "TManagedEntity.h"
 
 namespace LJG
 {
@@ -26,7 +27,5 @@ namespace LJG
 
 	private:
 		friend class ObjectManager;
-
-
 	};
 }

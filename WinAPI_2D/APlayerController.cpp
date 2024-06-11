@@ -30,7 +30,8 @@ namespace LJG
 		{
 			mDebugBox = std::make_unique<UDebugBox2D>();
 			mDebugBox->Initialize();
-			mDebugBox->SetScale({150.f, 150.f});
+			mDebugBox->SetScale({120.f, 120.f});
+			mDebugBox->SetColor({1, 0, 0, 1});
 
 			mAnimator = std::make_shared<UAnimator>();
 
@@ -90,13 +91,11 @@ namespace LJG
 		{
 			AddMovementInput({0.f, -DeltaTime});
 			bMove = true;
-
 		}
 		if (InputManager::IsKeyPressed(EKeyCode::W))
 		{
 			AddMovementInput({0.f, DeltaTime});
 			bMove = true;
-
 		}
 		if (InputManager::IsKeyPressed(EKeyCode::A))
 		{
