@@ -161,8 +161,8 @@
     <ClCompile Include="Application_Base.cpp" />
     <ClCompile Include="Box2D.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="Debug\UDebugBox2D.cpp" />
-    <ClCompile Include="Debug\UDebugShape2D.cpp" />
+    <ClCompile Include="Shape\UDebugBox2D.cpp" />
+    <ClCompile Include="Shape\UDebugShape2D.cpp" />
     <ClCompile Include="DXWrite.cpp" />
     <ClCompile Include="EngineHelper.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -193,8 +193,8 @@
     <ClInclude Include="Box2D.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Context.h" />
-    <ClInclude Include="Debug\UDebugBox2D.h" />
-    <ClInclude Include="Debug\UDebugShape2D.h" />
+    <ClInclude Include="Shape\UDebugBox2D.h" />
+    <ClInclude Include="Shape\UDebugShape2D.h" />
     <ClInclude Include="DXWrite.h" />
     <ClInclude Include="EngineHelper.h" />
     <ClInclude Include="Enums.h" />

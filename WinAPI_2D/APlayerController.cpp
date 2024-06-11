@@ -7,7 +7,7 @@
 #include "PlayerData.h"
 #include "UAnimation.h"
 #include "XSprite2D.h"
-#include "Debug/UDebugBox2D.h"
+#include "Shape/UDebugBox2D.h"
 
 namespace LJG
 {
