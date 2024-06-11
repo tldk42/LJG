@@ -5,12 +5,12 @@ namespace LJG
 {
 	enum class EBlendType
 	{
-		AlphaBlend, // Default: ë°˜íˆ¬ëª…, ìœ ë¦¬, ë¬¼, ê·¸ë¦¼ì
-		Additive, // Source + Dest: ì´í™íŠ¸
+		AlphaBlend, // Default: ¹İÅõ?? ??¸®, ?? ±×¸²??
+		Additive, // Source + Dest: ??Æå??
 	};
 
 	/**
-	 * \brief ë Œë” íƒ€ê²Ÿì˜ í”½ì…€ ìƒ‰ìƒ ê°’ì„ ì–´ë–¤ ì‹ìœ¼ë¡œ ë¸”ë Œë”©í• ì§€ ì •ì˜(í…ìŠ¤ì²˜ í˜¼í•© ë°©ì‹)
+	 * \brief ??´õ ??°ÙÀÇ ???? ??»ó °ªÀ» ??¶² ??À¸??ºí·»??ÇÒÁö ??ÀÇ(??½º????ÇÕ ¹æ½Ä)
 	 */
 	class XBlendState : public ICoreAPI
 	{

@@ -65,7 +65,7 @@ namespace LJG
 	{
 		for (const UObjectSPtr& obj_ptr : mObjects)
 		{
-			obj_ptr->OnResize();
+			// obj_ptr->OnResize();
 		}
 	}
 }

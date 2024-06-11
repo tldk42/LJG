@@ -19,7 +19,12 @@ float4 ps(VS_OUTPUT input) : SV_TARGET
     float4 overlayColor = input.Color;
 	
     texColor = shaderTexture.Sample(SampleType, input.Texture);
+    
+    if (overlayColor.a > 0.0f)
+    {
+        return overlayColor;
+    }
 	
-// 	texColor = lerp(texColor, overlayColor, 0.3f);
+// 	texColor = lerp(texColor, overlayColor, 1.0f);
 	return texColor;
 }

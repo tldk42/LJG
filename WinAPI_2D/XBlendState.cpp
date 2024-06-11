@@ -16,24 +16,24 @@ namespace LJG
 	void XBlendState::Initialize()
 	{
 		/**
-		 * Blend êµ¬ì¡°ì²´
-		 * RenderTarget[8] - ìµœëŒ€ 8ê°œì˜ RenderTargetì— ë¸”ë Œë“œ ì„¤ì •
+		 * Blend ±¸Á¶??
+		 * RenderTarget[8] - ÃÖ?? 8°³ÀÇ RenderTarget??ºí·»????Á¤
 		 * 
-		 *	BlendEnable - í™œì„±í™” ì—¬ë¶€ 
+		 *	BlendEnable - ??¼º?????? 
 		 *	
-		 *	SrcBlend  - ë¸”ë Œë”© ì—°ì‚°ì— ì‚¬ìš©ë˜ëŠ” ì†ŒìŠ¤ ê°’
-		 *	DestBlend - ë¸”ë Œë”© ì—°ì‚°ì— ì‚¬ìš©ë˜ëŠ” íƒ€ê²Ÿ ê°’
-		 *	BlendOp   - ë¸”ë Œë”© ì—°ì‚°
+		 *	SrcBlend  - ºí·»????»ê????¿ë??´Â ??½º ??
+		 *	DestBlend - ºí·»????»ê????¿ë??´Â ??????
+		 *	BlendOp   - ºí·»????»ê
 		 *
 		 *	SrcBlendAlpha  -
 		 *	DestBlendAlpha - 
 		 *	BlendOpAlpha   - 
 		 *
-		 *	RenderTargetWriteMask - ë Œë” íƒ€ì¼“ì˜ ìƒ‰ìƒ ë§ˆìŠ¤í¬ ì§€ì •
+		 *	RenderTargetWriteMask - ??´õ ??ÄÏÀÇ ??»ó ¸¶½º??Áö??
 		 */
 		D3D11_BLEND_DESC blendDesc{};
 		{
-			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // ëª¨ë“  ìƒ‰ìƒ ì±„ë„ í™œì„±
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // ¸ğµç ??»ó Ã¤³Î ??¼º
 
 			blendDesc.RenderTarget[0].BlendOp      = D3D11_BLEND_OP_ADD;
 			blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;

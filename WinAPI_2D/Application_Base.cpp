@@ -1,11 +1,10 @@
 #include "Application_Base.h"
 
+#include "APlayerController.h"
 #include "DXWrite.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
-#include "UAnimation.h"
-#include "USprite2D.h"
 #include "UTextBlock.h"
 #include "UTimer.h"
 #include "Window.h"
@@ -115,18 +114,8 @@ namespace LJG
 
 			DXWrite::AddText(FpsText);
 
-			std::vector<FAnimData> animset =
-			{
-				{new USprite2D(L"rsc/Samurai/a1.png"), 1.f/6},
-				{new USprite2D(L"rsc/Samurai/a2.png"), 1.f/6},
-				{new USprite2D(L"rsc/Samurai/a3.png"), 1.f/6},
-				{new USprite2D(L"rsc/Samurai/a4.png"), 1.f/6},
-				{new USprite2D(L"rsc/Samurai/a5.png"), 1.f/6},
-				{new USprite2D(L"rsc/Samurai/a6.png"), 1.f/6},
-			};
 
-			UAnimation animation(animset);
-			animation.PlayAnim(0);
+			APlayerControllerSPtr pc = std::make_shared<APlayerController>();
 
 			while (bIsRunning)
 			{
@@ -149,12 +138,12 @@ namespace LJG
 				{
 					UTimer frameTimer;
 
-					animation.Update(mDeltaTime);
 					Update(mDeltaTime);
+					pc->Update(mDeltaTime);
 
 					// TODO: Render
 					Renderer::Get()->Clear();
-					animation.Render();
+					pc->Render();
 					Render();
 
 					frameCounter++;

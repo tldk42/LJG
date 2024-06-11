@@ -1,11 +1,15 @@
 #include "UAnimation.h"
 
-#include "USprite2D.h"
+#include "AActor.h"
+#include "UAnimator.h"
+#include "XSprite2D.h"
 
 namespace LJG
 {
 	UAnimation::UAnimation(std::vector<FAnimData>& InAnims)
-		: mAnimDatas(InAnims)
+		: bIsPlaying(false),
+		  mFrames(0),
+		  mAnimDatas(InAnims)
 	{}
 
 	UAnimation::~UAnimation()
@@ -18,19 +22,45 @@ namespace LJG
 
 	void UAnimation::Update(float DeltaTime)
 	{
-		const FAnimData& frame = mAnimDatas[mFrames];
-		const float elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f / 1000.f);
-		if (elapsedTime >= frame.Time) // ì• ë‹˜ ê²½ê³¼ì‹œê°„ ì´ˆê³¼
+		if (bIsPlaying)
 		{
-			mFrames++;
+			if (mOwnerAnimator.lock())
+			{
+				const AActor* ownerActor = mOwnerAnimator.lock().get()->GetOwnerActor();
 
-			if (mFrames >= mAnimDatas.size())
-				mFrames = 0;
 
-			mPlayTime = steady_clock::now();
+				for (const FAnimData& anim : mAnimDatas)
+				{
+					anim.Sprite->SetWorldLocation(mOwnerAnimator.lock()->GetOwnerActor()->GetActorLocation());
+				}
+
+				mPosition = ownerActor->GetActorLocation();
+
+			}
+
+
+			const FAnimData& frame       = mAnimDatas[mFrames];
+			const float      elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f /
+				1000.f);
+			if (elapsedTime >= frame.Time) // ??´Ô °æ°ú??°£ ÃÊ°ú
+			{
+				mFrames++;
+
+				if (mFrames >= mAnimDatas.size())
+				{
+					mFrames = 0;
+					if (!bLoop)
+					{
+						Pause();
+					}
+				}
+
+				mPlayTime = steady_clock::now();
+			}
+
+			mAnimDatas[mFrames].Sprite->Update(DeltaTime);
 		}
 
-		mAnimDatas[mFrames].Sprite->Update(DeltaTime);
 	}
 
 	void UAnimation::Render()
@@ -46,12 +76,17 @@ namespace LJG
 		}
 	}
 
-	void UAnimation::PlayAnim(UINT InFrame)
+	void UAnimation::PlayAnim(bool InbLoop)
 	{
-		bIsPlaying = true;
+		if (!bIsPlaying)
+		{
+			bIsPlaying = true;
+			bLoop      = InbLoop;
 
-		mFrames   = InFrame;
-		mPlayTime = steady_clock::now();
+			mFrames   = 0;
+			mPlayTime = steady_clock::now();
+		}
+
 	}
 
 	void UAnimation::Pause()

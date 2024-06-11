@@ -1,22 +1,18 @@
 #pragma once
 #include "CommonInclude.h"
 
-
 namespace LJG
 {
 	class XVertex2D;
-}
-namespace LJG
-{
 	class UTextBlock;
-}
-namespace LJG
-{
+
 	namespace Utils
 	{
 		class UTimer;
 	}
-
+}
+namespace LJG
+{
 	class Application_Base : public ICoreAPI
 	{
 	public:
@@ -67,6 +63,6 @@ namespace LJG
 		bool bIsRunning;
 		bool bIsPaused;
 #pragma endregion
-		
+
 	};
 }

@@ -13,13 +13,10 @@ namespace LJG
 	protected:
 		void CreateRegisterClass();
 		HWND CreateWin(HINSTANCE hInstance, int nCmdShow);
-	
 
 	private:
 		HINSTANCE mHinstance;
-		HWND mHwnd;
+		HWND      mHwnd;
 	};
 
 }
-
-

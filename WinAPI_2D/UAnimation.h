@@ -5,10 +5,10 @@ namespace LJG
 {
 	struct FAnimData
 	{
-		USprite2DSPtr Sprite = nullptr;
+		XSprite2DSPtr Sprite = nullptr;
 		float         Time   = 1.f;
 
-		FAnimData(USprite2D* InSprite2D, float InTime)
+		FAnimData(XSprite2D* InSprite2D, float InTime)
 			: Sprite(InSprite2D),
 			  Time(InTime) {}
 	};
@@ -27,21 +27,24 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void PlayAnim(UINT InFrame);
+		void PlayAnim(bool InbLoop);
 		void Pause();
 		void Stop();
 
+		void SetAnimator(UAnimatorSPtr InAnimator) { mOwnerAnimator = InAnimator; }
+
 	private:
+		bool                     bLoop;
 		bool                     bIsPlaying;
 		UINT                     mFrames;
 		steady_clock::time_point mPlayTime;
+
+		UAnimatorWPtr mOwnerAnimator;
 
 		FVector2f    mPosition;
 		FVector2f    mScale;
 		FLinearColor mColor;
 
 		std::vector<FAnimData> mAnimDatas;
-
-
 	};
 }

@@ -84,9 +84,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>소스 파일\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="UTexture.cpp">
-      <Filter>소스 파일\DirectX\Texture</Filter>
-    </ClCompile>
     <ClCompile Include="UDXHelper.cpp">
       <Filter>소스 파일\DirectX\Helper</Filter>
     </ClCompile>
@@ -104,6 +101,36 @@
     </ClCompile>
     <ClCompile Include="PlayerController.cpp">
       <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\UDebugBox2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\UDebugShape2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Color.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UAnimation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UTextBlock.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="XSprite2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="XVertex2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="XBlendState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="XSamplerState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="XTexture.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +179,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>소스 파일\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="UTexture.h">
-      <Filter>소스 파일\DirectX\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="UDXHelper.h">
       <Filter>소스 파일\DirectX\Helper</Filter>
     </ClInclude>
@@ -173,6 +197,16 @@
     <ClInclude Include="PlayerController.h">
       <Filter>소스 파일\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Debug\UDebugBox2D.h" />
+    <ClInclude Include="Debug\UDebugShape2D.h" />
+    <ClInclude Include="Math\Color.h" />
+    <ClInclude Include="UAnimation.h" />
+    <ClInclude Include="UTextBlock.h" />
+    <ClInclude Include="XSprite2D.h" />
+    <ClInclude Include="XVertex2D.h" />
+    <ClInclude Include="XBlendState.h" />
+    <ClInclude Include="XSamplerState.h" />
+    <ClInclude Include="XTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="sample_frag.psh">
@@ -181,5 +215,10 @@
     <FxCompile Include="sample_vert.vsh">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="sample2_vert.vsh" />
+    <FxCompile Include="sample2_frag.psh" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

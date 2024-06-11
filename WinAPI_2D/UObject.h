@@ -7,7 +7,7 @@ namespace LJG
 	{
 	public:
 		UObject();
-		explicit UObject(const std::wstring& InTextureFile);
+		explicit UObject(AActorSPtr InOwnerActor);
 		~UObject() override;
 
 	public:
@@ -18,18 +18,15 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void      SetLocation(const FVector2f& InLocation) const;
-		FVector2f GetLocation() const;
-
-	public:
-		void SetTextureResource(const std::wstring& InTextureFile, const bool bForceModify);
-
-	private:
-		void OnResize();
-		friend class ObjectManager;
+		inline AActor* GetOwnerActor() const { return mOwnerActor; }
+		void           SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
 
 	protected:
-		USprite2DUPtr mVertexMesh;
+		AActor* mOwnerActor;
+
+	private:
+		friend class ObjectManager;
+
 
 	};
 }

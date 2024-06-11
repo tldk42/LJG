@@ -46,7 +46,7 @@ namespace LJG
 		Context::GetDeviceContext()->IASetPrimitiveTopology(mPrimType);
 
 
-		// TODO: Child에서
+		// TODO: Child??��
 		// Context::GetDeviceContext()->DrawIndexed(8, 0, 0);
 	}
 
@@ -83,10 +83,10 @@ namespace LJG
 
 	void XVertex2D::SetWorldLocation(const FVector2f& InLocation)
 	{
-		// 스크린 좌표계 위치 업데이트
+		// ??ũ??��ǥ????ġ ??��??Ʈ
 		mWorldLocation = InLocation;
 
-		// NDC 좌표계 위치 업데이트
+		// NDC ��ǥ????ġ ??��??Ʈ
 		const FVector2f cachedPos = mNDCLocation;
 		Screen2NDC();
 		const FVector2f deltaPos = (mNDCLocation - cachedPos);
@@ -101,10 +101,10 @@ namespace LJG
 	{
 		const FVector2f addiPos = UDXHelper::Screen2NDC(mScreenResolution, InAddLocation);
 
-		// 스크린 좌표계 위치 업데이트
+		// ??ũ??��ǥ????ġ ??��??Ʈ
 		mWorldLocation += InAddLocation;
 
-		// NDC 좌표계 위치 업데이트
+		// NDC ��ǥ????ġ ??��??Ʈ
 		Screen2NDC();
 
 		for (FVertexBase& vertex : mVertexBufferArray)
@@ -128,18 +128,18 @@ namespace LJG
 
 		D3D11_BUFFER_DESC bufferDesc;
 		{
-			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // 버퍼크기
-			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // 버퍼의 읽기/쓰기 방법 지정
-			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // 파이프라인에 바인딩될 방법
-			bufferDesc.CPUAccessFlags = 0;                                        // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
-			bufferDesc.MiscFlags      = 0;                                        // 추가적인 옵션 플래그
+			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // ����??��
+			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // ����????��/??�� ��� ��??
+			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // ??��??��??�� ����??�� ���
+			bufferDesc.CPUAccessFlags = 0;                                        // ??��??����??CPU�� ??��??�� ??�� (DX ??��??�ſ� �߿�)
+			bufferDesc.MiscFlags      = 0;                                        // ��????�� ??�� ??��??
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;
 		{
-			InitData.pSysMem = mVertexBufferArray.data(); // 초기화 데이터 포인터 (정점 배열의 주소를 넘겨준다)
-			// InitData.SysMemPitch (텍스처 리소스의 한줄의 크기)
-			// InitData.SysMemSlicePitch (3차원 텍스처의 깊이 간격)
+			InitData.pSysMem = mVertexBufferArray.data(); // �ʱ�????��????��??(??�� �迭??�ּ�????����??
+			// InitData.SysMemPitch (??��??����??�� ??��????��)
+			// InitData.SysMemSlicePitch (3���� ??��ó�� ���� ����)
 		}
 
 		return Context::GetDevice()->CreateBuffer(&bufferDesc, &InitData, mVertexBuffer.GetAddressOf());
@@ -179,20 +179,20 @@ namespace LJG
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
-			LOG_DX_ERROR("Failed to load, compile ShaderFile or 릴리즈모드(경로수정하시오)?");
+			LOG_DX_ERROR("Failed to load, compile ShaderFile or �������??���??��??��???");
 			return E_FAIL;
 		}
 
 		constexpr D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{
-				"POSITION",                  // 셰이더 입력 서명에서 이 요소와 연결된 의미체계 
-				0,                           // 의미상 인덱스
-				DXGI_FORMAT_R32G32_FLOAT,    // 데이터 형식 (float2)
-				0,                           // 입력 어셈블러 식별정수
-				0,                           // 요소 사이 오프셋 
-				D3D11_INPUT_PER_VERTEX_DATA, // 단일 입력 슬롯 입력 데이터 클래스
-				0                            // 정점 버퍼에서 렌더링 되는 인스턴스의 수 (D3D11_INPUT_PER_VERTEX_DATA -> 0)
+				"POSITION",                  // ??��????�� ??��??�� ????��?? ??��??????ü�� 
+				0,                           // ????????��??
+				DXGI_FORMAT_R32G32_FLOAT,    // ??��????�� (float2)
+				0,                           // ??�� ??������ ??��??��
+				0,                           // ??�� ??�� ??��??
+				D3D11_INPUT_PER_VERTEX_DATA, // ??�� ??�� ??�� ??�� ??��????��??
+				0                            // ??�� ����??�� ??��????�� ??��??��????(D3D11_INPUT_PER_VERTEX_DATA -> 0)
 			},
 			{
 				"TEX",
@@ -228,7 +228,7 @@ namespace LJG
 
 	void XVertex2D::CreateVertexArray()
 	{
-		// 정점 정보 (사각형을 그리기위해 기본적인 삼각형 2개를 인덱싱하여 형성
+		// ??�� ??�� (??��??�� �׸�����??�⺻??�� ??��??2��?? ??��??��????��
 		/*
 		 * (0) ^ * * * ^ (1)
 		 *     *       *

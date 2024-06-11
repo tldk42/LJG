@@ -5,12 +5,12 @@ namespace LJG
 {}
 namespace LJG
 {
-	class USprite2D : public XVertex2D
+	class XSprite2D : public XVertex2D
 	{
 	public:
-		USprite2D() = delete;
-		explicit USprite2D(const std::wstring& TextureFile = L"");
-		~USprite2D() override;
+		XSprite2D() = delete;
+		explicit XSprite2D(const std::wstring& TextureFile = L"");
+		~XSprite2D() override;
 
 
 #pragma region Core Interface

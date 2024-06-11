@@ -1,4 +1,4 @@
-#include "USprite2D.h"
+#include "XSprite2D.h"
 
 #include <d3dcompiler.h>
 #include "Context.h"
@@ -10,10 +10,10 @@
 
 namespace LJG
 {
-	USprite2D::USprite2D(const std::wstring& TextureFile)
+	XSprite2D::XSprite2D(const std::wstring& TextureFile)
 	{
 		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		mDrawColor = FLinearColor(0, 0, 0, 1);
+		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
 
 		mVertexBufferArray.reserve(4);
 
@@ -21,15 +21,15 @@ namespace LJG
 		mSamplerState.reset(new XSamplerState());
 		mBlendState_AlphaBlend.reset(new XBlendState(EBlendType::AlphaBlend));
 
-		USprite2D::Initialize();
+		XSprite2D::Initialize();
 	}
 
-	USprite2D::~USprite2D()
+	XSprite2D::~XSprite2D()
 	{
-		USprite2D::Release();
+		XSprite2D::Release();
 	}
 
-	void USprite2D::Initialize()
+	void XSprite2D::Initialize()
 	{
 		SetWindowResolution();
 
@@ -42,12 +42,12 @@ namespace LJG
 		XVertex2D::Initialize();
 	}
 
-	void USprite2D::Update(float DeltaTime)
+	void XSprite2D::Update(float DeltaTime)
 	{
 		XVertex2D::Update(DeltaTime);
 	}
 
-	void USprite2D::Render()
+	void XSprite2D::Render()
 	{
 		XVertex2D::Render();
 
@@ -62,7 +62,7 @@ namespace LJG
 		Context::GetDeviceContext()->DrawIndexed(6, 0, 0);
 	}
 
-	void USprite2D::Release()
+	void XSprite2D::Release()
 	{
 		XVertex2D::Release();
 
@@ -73,7 +73,7 @@ namespace LJG
 		mBlendState_AlphaBlend = nullptr;
 	}
 
-	void USprite2D::AdjustTextureSize()
+	void XSprite2D::AdjustTextureSize()
 	{
 		const FVector2f cachedScale = mScale;
 
@@ -91,12 +91,12 @@ namespace LJG
 		}
 	}
 
-	void USprite2D::CreateVertexArray()
+	void XSprite2D::CreateVertexArray()
 	{
 		XVertex2D::CreateVertexArray();
 	}
 
-	void USprite2D::CreateIndexArray()
+	void XSprite2D::CreateIndexArray()
 	{
 		mIndices =
 		{
@@ -105,7 +105,7 @@ namespace LJG
 		};
 	}
 
-	void USprite2D::OnResizeCallback()
+	void XSprite2D::OnResizeCallback()
 	{
 		SetWindowResolution();
 		AdjustTextureSize();

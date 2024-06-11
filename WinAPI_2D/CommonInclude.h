@@ -79,6 +79,13 @@ namespace LJG
 	using namespace std::chrono;
 	using ResizeDelegate = std::function<void(UINT, UINT)>;
 
+
+	template <typename EnumType>
+	inline uint8_t EnumAsByte(EnumType value)
+	{
+		return static_cast<uint8_t>(value);
+	}
+
 #define STRUCT_PTR(structName)\
 	struct structName;\
 	using structName##UPtr = std::unique_ptr<structName>;\
@@ -96,12 +103,21 @@ namespace LJG
 
 	CLASS_PTR(UTimer)
 	CLASS_PTR(Window)
-	CLASS_PTR(USprite2D)
-	CLASS_PTR(UObject)
 	CLASS_PTR(UTextBlock)
 
+	// -------- Graphics ------------
+	CLASS_PTR(XSprite2D)
 	CLASS_PTR(XSamplerState)
 	CLASS_PTR(XBlendState)
 	CLASS_PTR(XTexture)
-	CLASS_PTR(USprite2D)
+	CLASS_PTR(XSprite2D)
+
+	//--------- Objects ---------------
+	CLASS_PTR(UObject)
+	CLASS_PTR(UAnimation)
+	CLASS_PTR(UAnimator)
+
+	//--------- Actors ---------------
+	CLASS_PTR(AActor)
+	CLASS_PTR(APlayerController)
 }
