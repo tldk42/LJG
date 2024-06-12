@@ -5,65 +5,53 @@
 
 namespace LJG
 {
-	ObjectManagerUPtr ObjectManager::s_ObjectManager;
-
-	ObjectManager::ObjectManager()
+	void ObjectManager::Initialize()
 	{
-		mObjects.reserve(10);
-
 		Window::GetWindow()->OnResize.emplace_back([this](UINT InWidth, UINT InHeight){
 			OnResizeCallback(InWidth, InHeight);
 		});
 	}
 
-	ObjectManager::~ObjectManager()
-	{
-		ObjectManager::Release();
-	}
-
-	void ObjectManager::Initialize()
-	{
-		if (s_ObjectManager)
-			return;
-
-		s_ObjectManager.reset(new ObjectManager());
-	}
-
 	void ObjectManager::Update(float DeltaTime)
 	{
-		if (s_ObjectManager)
+		RemoveInvalidObjects();
+
+		for (const auto& obj : mManagedObjects)
 		{
-			for (UObjectSPtr& obj : s_ObjectManager->mObjects)
-			{
-				obj->Update(DeltaTime);
-			}
+			obj.second->Update(DeltaTime);
 		}
 	}
 
 	void ObjectManager::Render()
 	{
-		if (s_ObjectManager)
+		for (const auto& obj : mManagedObjects)
 		{
-			for (UObjectSPtr& obj : s_ObjectManager->mObjects)
-			{
-				obj->Render();
-			}
+			obj.second->Render();
 		}
 	}
 
 	void ObjectManager::Release()
-	{
-		s_ObjectManager->mObjects.clear();
-	}
+	{}
 
-	void ObjectManager::AddObject_Internal(UObject* InObject)
+
+	void ObjectManager::RemoveInvalidObjects()
 	{
-		mObjects.emplace_back(InObject);
+		for (auto it = mManagedObjects.begin(); it != mManagedObjects.end();)
+		{
+			if (!it->second)
+			{
+				it = mManagedObjects.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
 	}
 
 	void ObjectManager::OnResizeCallback(UINT InWidth, UINT InHeight)
 	{
-		for (const UObjectSPtr& obj_ptr : mObjects)
+		for (const auto& obj : mManagedObjects)
 		{
 			// obj_ptr->OnResize();
 		}

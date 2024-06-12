@@ -6,10 +6,11 @@
 
 namespace LJG
 {
-	UAnimation::UAnimation(std::vector<FAnimData>& InAnims)
+
+	UAnimation::UAnimation(std::vector<FAnimData>&& InAnims)
 		: bIsPlaying(false),
 		  mFrames(0),
-		  mAnimDatas(InAnims)
+		  mAnimDatas(std::move(InAnims))
 	{}
 
 	UAnimation::~UAnimation()
@@ -24,14 +25,14 @@ namespace LJG
 	{
 		if (bIsPlaying)
 		{
-			if (mOwnerAnimator.lock())
+			if (mOwnerAnimator)
 			{
-				const AActor* ownerActor = mOwnerAnimator.lock().get()->GetOwnerActor();
+				const AActor* ownerActor = mOwnerAnimator->GetOwnerActor();
 
 
 				for (const FAnimData& anim : mAnimDatas)
 				{
-					anim.Sprite->SetWorldLocation(mOwnerAnimator.lock()->GetOwnerActor()->GetActorLocation());
+					anim.Sprite->SetWorldLocation(mOwnerAnimator->GetOwnerActor()->GetActorLocation());
 				}
 
 				mPosition = ownerActor->GetActorLocation();
@@ -65,7 +66,8 @@ namespace LJG
 
 	void UAnimation::Render()
 	{
-		mAnimDatas[mFrames].Sprite->Render();
+		if (bIsPlaying)
+			mAnimDatas[mFrames].Sprite->Render();
 	}
 
 	void UAnimation::Release()

@@ -1,12 +1,13 @@
 #include "Application_Base.h"
 
+#include "AHUD.h"
 #include "APlayerController.h"
 #include "DXWrite.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
 #include "UTextBlock.h"
-#include "UTimer.h"
+#include "FTimer.h"
 #include "Window.h"
 
 namespace LJG
@@ -40,28 +41,26 @@ namespace LJG
 		InputManager::Create();
 		Renderer::Create(mWindowData, mWindow->GetHandle());
 
-		ObjectManager::Initialize();
+		ObjectManager::Get();
+		ObjectManager::Get().Initialize();
 	}
 
 	void Application_Base::Update(float DeltaTime)
 	{
 		InputManager::Get()->Update(DeltaTime);
 
-		ObjectManager::Update(DeltaTime);
+		ObjectManager::Get().Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
 	{
-		const std::wstring frameInfo = std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds());
-		FpsText->SetText(frameInfo);
-
-		ObjectManager::Render();
+		ObjectManager::Get().Render();
 		Renderer::Get()->Render();
 	}
 
 	void Application_Base::Release()
 	{
-		ObjectManager::Release();
+		ObjectManager::Get().Release();
 		Renderer::Get()->Release();
 	}
 
@@ -70,10 +69,7 @@ namespace LJG
 		if (!bIsInitialized)
 		{
 			mWindow.reset(new Window(mWindowTitle, mWindowData));
-			mTimer.reset(new UTimer());
-
-			FpsText.reset(new UTextBlock(L""));
-			FpsText->SetLocation({0, 0, mWindowData.Width, mWindowData.Height});
+			mTimer.reset(new FTimer());
 
 			bIsInitialized = true;
 		}
@@ -112,10 +108,8 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			DXWrite::AddText(FpsText);
-
-
-			APlayerControllerSPtr pc = std::make_shared<APlayerController>();
+			APlayerController* pc  = ObjectManager::Get().CreateObject<APlayerController>(L"PC");
+			AHUD*              hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
 
 			while (bIsRunning)
 			{
@@ -136,14 +130,13 @@ namespace LJG
 #pragma region Update Every Frame
 
 				{
-					UTimer frameTimer;
+					FTimer frameTimer;
 
 					Update(mDeltaTime);
-					pc->Update(mDeltaTime);
+					hud->UpdateFpsText(std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds()));
 
 					// TODO: Render
 					Renderer::Get()->Clear();
-					pc->Render();
 					Render();
 
 					frameCounter++;

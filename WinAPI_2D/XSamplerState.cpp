@@ -1,6 +1,7 @@
 #include "XSamplerState.h"
 
 #include "Context.h"
+#include "UDXHelper.h"
 
 namespace LJG
 {

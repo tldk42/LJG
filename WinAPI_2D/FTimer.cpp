@@ -1,4 +1,4 @@
-#include "UTimer.h"
+#include "FTimer.h"
 
 namespace LJG
 {
@@ -6,7 +6,7 @@ namespace LJG
 	// LARGE_INTEGER UTimer::PrevFrequency    = {};
 	// LARGE_INTEGER UTimer::CurrentFrequency = {};
 
-	UTimer::UTimer()
+	FTimer::FTimer()
 	{
 		Reset();
 	}
@@ -52,17 +52,17 @@ namespace LJG
 	}*/
 
 
-	void UTimer::Reset()
+	void FTimer::Reset()
 	{
 		mStartTime = high_resolution_clock::now();
 	}
 
-	float UTimer::ElapsedSeconds()
+	float FTimer::ElapsedSeconds()
 	{
 		return ElapsedMillis() / 1000.f;
 	}
 
-	float UTimer::ElapsedMillis()
+	float FTimer::ElapsedMillis()
 	{
 		return duration_cast<duration<float, std::milli>>(high_resolution_clock::now() - mStartTime).count();
 	}

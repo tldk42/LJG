@@ -2,8 +2,6 @@
 #include "XVertex2D.h"
 
 namespace LJG
-{}
-namespace LJG
 {
 	class XSprite2D : public XVertex2D
 	{

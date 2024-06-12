@@ -5,33 +5,49 @@ namespace LJG
 {
 	CLASS_PTR(ObjectManager)
 
-	class ObjectManager
+	class ObjectManager : public ICoreAPI
 	{
-	private:
-		ObjectManager();
-
 	public:
-		~ObjectManager();
+		void Initialize() override;
+		void Update(float DeltaTime) override;
+		void Render() override;
+		void Release() override;
 
-	public:
-		static void Initialize();
-		static void Update(float DeltaTime);
-		static void Render();
-		static void Release();
+		inline static ObjectManager& Get()
+		{
+			static ObjectManager instance;
+			return instance;
+		}
 
-		FORCEINLINE static void AddObject(class UObject* Object) { s_ObjectManager->AddObject_Internal(Object); }
+		template <class ReturnType, typename... Args>
+		ReturnType* CreateObject(WTextView InKey, Args&&... InArgs)
+		{
+			static_assert(std::is_base_of_v<UObject, ReturnType>, L"UObject에서 파생되어야함");
+
+			std::unique_ptr<ReturnType> obj    = std::make_unique<ReturnType>(std::forward<Args>(InArgs)...);
+			ReturnType*                 rawPtr = obj.get();
+			mManagedObjects[WText(InKey)]      = std::move(obj);
+
+			return rawPtr;
+		}
 
 	private:
-		void AddObject_Internal(UObject* InObject);
+		void RemoveInvalidObjects();
 
 	private:
 		// Resize Callback
 		void OnResizeCallback(UINT InWidth, UINT InHeight);
 
 	private:
-		std::vector<UObjectSPtr> mObjects;
+		std::unordered_map<WText, UObjectUPtr> mManagedObjects;
 
 	private:
-		static ObjectManagerUPtr s_ObjectManager;
+		ObjectManager()           = default;
+		~ObjectManager() override = default;
+
+	public:
+		ObjectManager(const ObjectManager&)            = delete;
+		ObjectManager& operator=(const ObjectManager&) = delete;
+
 	};
 }

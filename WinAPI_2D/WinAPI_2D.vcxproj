@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AActor.cpp" />
+    <ClCompile Include="AHUD.cpp" />
     <ClCompile Include="Application_Base.cpp" />
     <ClCompile Include="Box2D.cpp" />
     <ClCompile Include="Context.cpp" />
@@ -176,8 +177,9 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="APlayerController.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="UPlayerAnimator.cpp" />
     <ClCompile Include="UTextBlock.cpp" />
-    <ClCompile Include="UTimer.cpp" />
+    <ClCompile Include="FTimer.cpp" />
     <ClCompile Include="UDXHelper.cpp" />
     <ClCompile Include="XSprite2D.cpp" />
     <ClCompile Include="Engine_Entry.cpp" />
@@ -189,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AActor.h" />
+    <ClInclude Include="AHUD.h" />
     <ClInclude Include="Application_Base.h" />
     <ClInclude Include="Box2D.h" />
     <ClInclude Include="CommonInclude.h" />
@@ -213,8 +216,9 @@
     <ClInclude Include="APlayerController.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Structs.h" />
+    <ClInclude Include="UPlayerAnimator.h" />
     <ClInclude Include="UTextBlock.h" />
-    <ClInclude Include="UTimer.h" />
+    <ClInclude Include="FTimer.h" />
     <ClInclude Include="UDXHelper.h" />
     <ClInclude Include="XSprite2D.h" />
     <ClInclude Include="XVertex2D.h" />

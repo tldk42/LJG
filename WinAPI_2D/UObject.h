@@ -1,6 +1,6 @@
 #pragma once
 #include "CommonInclude.h"
-#include "TManagedEntity.h"
+#include "ObjectManager.h"
 
 namespace LJG
 {
@@ -21,6 +21,12 @@ namespace LJG
 
 		inline AActor* GetOwnerActor() const { return mOwnerActor; }
 		void           SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
+
+		template <class ReturnType, typename... Args>
+		ReturnType* CreateDefaultSubObject(WTextView InKey, Args&&... args)
+		{
+			return ObjectManager::Get().CreateObject<ReturnType>(InKey, std::forward<Args>(args)...);
+		}
 
 	protected:
 		AActor* mOwnerActor;

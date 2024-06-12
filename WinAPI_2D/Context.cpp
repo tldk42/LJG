@@ -2,6 +2,8 @@
 
 #include "EngineHelper.h"
 #include "DXWrite.h"
+#include "UDXHelper.h"
+#include "Window.h"
 
 namespace LJG
 {
@@ -104,10 +106,11 @@ namespace LJG
 		CHECK_RESULT(mGIFactory->EnumAdapters(0, DXGIAdapter.GetAddressOf()));
 		{
 			DXGI_ADAPTER_DESC desc;
-			DXGIAdapter->GetDesc(&desc);
-			size_t stringLength;
+			CHECK_RESULT(DXGIAdapter->GetDesc(&desc));
 
+			size_t stringLength;
 			wcstombs_s(&stringLength, mVideoCardDescription, 128, desc.Description, 128);
+
 			LOG_DX_TRACE("그래픽카드: {}, 메모리: {:d}", mVideoCardDescription, desc.DedicatedVideoMemory / (1 << 20));
 		}
 
@@ -200,7 +203,7 @@ namespace LJG
 		}
 	}
 
-	HRESULT Context::SetRenderTarget()
+	void Context::SetRenderTarget()
 	{
 		ComPtr<ID3D11Texture2D> backBuffer;
 		CHECK_RESULT(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
@@ -210,10 +213,9 @@ namespace LJG
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
 
 		backBuffer = nullptr;
-		return S_OK;
 	}
 
-	HRESULT Context::SetViewport()
+	void Context::SetViewport()
 	{
 		mViewport.Width    = static_cast<float_t>(mSwapChainDesc.BufferDesc.Width);
 		mViewport.Height   = static_cast<float_t>(mSwapChainDesc.BufferDesc.Height);
@@ -222,15 +224,12 @@ namespace LJG
 		mViewport.TopLeftX = 0;
 		mViewport.TopLeftY = 0;
 		mDeviceContext->RSSetViewports(1, &mViewport);
-
-		return S_OK;
 	}
 
-	void Context::Present()
+	void Context::Present() const
 	{
-		if (mSwapChain.Get())
-		{
-			CHECK_RESULT(mSwapChain->Present(mWindowData.bVsync, 0));
-		}
+		assert(mSwapChain.Get());
+
+		CHECK_RESULT(mSwapChain->Present(mWindowData.bVsync, 0));
 	}
 }

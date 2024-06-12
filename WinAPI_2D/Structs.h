@@ -6,10 +6,10 @@ namespace LJG
 {
 	struct FWindowData
 	{
-		int32_t Width;
-		int32_t Height;
-		bool    bFullScreen;
-		bool    bVsync;
+		uint32_t Width;
+		uint32_t Height;
+		bool     bFullScreen;
+		bool     bVsync;
 	};
 
 	using namespace std::chrono;
@@ -26,23 +26,13 @@ namespace LJG
 	};
 
 
-
 	struct FWriteData
 	{
 		RECT         RectSize;
 		std::wstring Text;
-		int32_t      ID;
 
-		FWriteData()
-			: RectSize(),
-			  Text(),
-			  ID(_GenerateUniqueID()) {}
-
-		FWriteData(const RECT& InRectSize, std::wstring InText)
-			: RectSize(InRectSize),
-			  Text(std::move(InText)),
-			  ID(_GenerateUniqueID()) {}
-
+	private:
+		int32_t ID = _GenerateUniqueID();
 
 		static int32_t _GenerateUniqueID()
 		{
@@ -55,4 +45,6 @@ namespace LJG
 			return ID == WriteData.ID;
 		}
 	};
+
+
 }

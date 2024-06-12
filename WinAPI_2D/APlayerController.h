@@ -2,6 +2,10 @@
 #include "AActor.h"
 namespace LJG
 {
+	class UPlayerAnimator;
+}
+namespace LJG
+{
 	class UDebugBox2D;
 }
 namespace LJG
@@ -24,7 +28,7 @@ namespace LJG
 
 	private:
 		bool                         bIsAttacking = false;
-		UAnimatorSPtr                mAnimator;
+		UPlayerAnimator*             mAnimator;
 		std::unique_ptr<UDebugBox2D> mDebugBox;
 	};
 }

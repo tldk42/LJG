@@ -1,6 +1,7 @@
 #include "XVertex2D.h"
 
 #include "Context.h"
+#include "UDXHelper.h"
 namespace LJG
 {
 	XVertex2D::XVertex2D()
