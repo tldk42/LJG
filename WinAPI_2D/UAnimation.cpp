@@ -32,10 +32,11 @@ namespace LJG
 
 				for (const FAnimData& anim : mAnimDatas)
 				{
-					anim.Sprite->SetWorldLocation(mOwnerAnimator->GetOwnerActor()->GetActorLocation());
-				}
+					anim.Sprite->AddWorldLocation(ownerActor->GetActorLocation() - mPosition);
 
+				}
 				mPosition = ownerActor->GetActorLocation();
+
 
 			}
 

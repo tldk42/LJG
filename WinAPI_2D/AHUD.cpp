@@ -15,6 +15,7 @@ namespace LJG
 		AActor::Initialize();
 
 		mFpsText = CreateDefaultSubObject<UTextBlock>(L"FpsTextBlock", L"");
+		mFpsText->SetupAttachment(this);
 	}
 
 	void AHUD::Update(float DeltaTime)
@@ -32,7 +33,7 @@ namespace LJG
 		AActor::Release();
 	}
 
-	void AHUD::UpdateFpsText(WTextView InText)
+	void AHUD::UpdateFpsText(WTextView InText) const
 	{
 		mFpsText->SetText(InText);
 	}

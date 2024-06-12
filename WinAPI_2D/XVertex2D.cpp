@@ -85,22 +85,29 @@ namespace LJG
 	void XVertex2D::SetWorldLocation(const FVector2f& InLocation)
 	{
 		// ??크??좌표????치 ??데??트
+
 		mWorldLocation = InLocation;
 
-		// NDC 좌표????치 ??데??트
-		const FVector2f cachedPos = mNDCLocation;
 		Screen2NDC();
-		const FVector2f deltaPos = (mNDCLocation - cachedPos);
+		SetWorldTransform(mNDCLocation, 0, FVector2f::UnitVector);
 
-		for (FVertexBase& vertex : mVertexBufferArray)
-		{
-			vertex.Pos += deltaPos;
-		}
+
+		// const FVector2f cachedPos = mNDCLocation;
+		// Screen2NDC();
+		// const FVector2f deltaPos = (mNDCLocation - cachedPos);
+		//
+		// for (FVertexBase& vertex : mVertexBufferArray)
+		// {
+		// 	vertex.Pos += deltaPos;
+		// }
 	}
 
 	void XVertex2D::AddWorldLocation(const FVector2f& InAddLocation)
 	{
 		const FVector2f addiPos = UDXHelper::Screen2NDC(mScreenResolution, InAddLocation);
+
+		SetWorldTransform(InAddLocation, 0, FVector2f::UnitVector);
+
 
 		// ??크??좌표????치 ??데??트
 		mWorldLocation += InAddLocation;
@@ -108,9 +115,37 @@ namespace LJG
 		// NDC 좌표????치 ??데??트
 		Screen2NDC();
 
+		// SetWorldTransform(mNDCLocation, 0, FVector2f::UnitVector);
+
+		// for (FVertexBase& vertex : mVertexBufferArray)
+		// {
+		// 	vertex.Pos += addiPos;
+		// }
+	}
+
+	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
+	{
+		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
+		const XMMATRIX rotation    = RotationMatrix(InAngle);
+		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
+
+		const XMMATRIX transform = scale * rotation * translation;
+
+		// XMVECTOR pos = XMVectorSet(mWorldLocation.X, mWorldLocation.Y, 0.f, 0.f);
+		// pos          = XMVector2Transform(pos, transform);
+		// XMStoreFloat2(reinterpret_cast<XMFLOAT2*>(&mWorldLocation), pos);
+
+
 		for (FVertexBase& vertex : mVertexBufferArray)
 		{
-			vertex.Pos += addiPos;
+			XMVECTOR pos = XMVectorSet(vertex.Pos.X, vertex.Pos.Y, 1.f, 1.f);
+			// 변환 행렬 적용
+			pos = XMVector2Transform(pos, transform);
+
+			// XMVECTOR를 다시 FVector2f로 저장
+			vertex.Pos.X = pos.m128_f32[0];
+			vertex.Pos.Y = pos.m128_f32[1];
+			// XMStoreFloat2(reinterpret_cast<XMFLOAT2*>(&vertex.Pos), pos);
 		}
 	}
 
@@ -132,8 +167,9 @@ namespace LJG
 			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // 버퍼??기
 			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // 버퍼????기/??기 방법 지??
 			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // ??이??라??에 바인??될 방법
-			bufferDesc.CPUAccessFlags = 0;                                        // ??성??버퍼??CPU가 ??근??는 ??형 (DX ??능??매우 중요)
-			bufferDesc.MiscFlags      = 0;                                        // 추????인 ??션 ??래??
+			bufferDesc.CPUAccessFlags =
+			0;                                        // ??성??버퍼??CPU가 ??근??는 ??형 (DX ??능??매우 중요)
+			bufferDesc.MiscFlags = 0;                                        // 추????인 ??션 ??래??
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;

@@ -27,7 +27,6 @@ namespace LJG
 		void AddMovementInput(const FVector2f& MovementInputAmount);
 
 	private:
-		bool                         bIsAttacking = false;
 		UPlayerAnimator*             mAnimator;
 		std::unique_ptr<UDebugBox2D> mDebugBox;
 	};

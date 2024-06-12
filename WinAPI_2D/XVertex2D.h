@@ -1,4 +1,5 @@
 #pragma once
+#include <DirectXMath.h>
 #include "CommonInclude.h"
 
 namespace LJG
@@ -9,6 +10,27 @@ namespace LJG
 		FVector2f    Tex;
 		FLinearColor Color;
 	};
+
+	using namespace DirectX;
+
+	// 이동 변환 행렬 생성
+	inline XMMATRIX TranslationMatrix(float tx, float ty)
+	{
+		return XMMatrixTranslation(tx, ty, 0.0f);
+	}
+
+	// 회전 변환 행렬 생성
+	inline XMMATRIX RotationMatrix(float angle)
+	{
+		float radians = XMConvertToRadians(angle);
+		return XMMatrixRotationZ(radians);
+	}
+
+	// 스케일 변환 행렬 생성
+	inline XMMATRIX ScaleMatrix(float sx, float sy)
+	{
+		return XMMatrixScaling(sx, sy, 1.0f);
+	}
 
 	/**
 	 * \brief 2D전용 메시 정점이 항상 4개 고정
@@ -33,6 +55,7 @@ namespace LJG
 		void SetScale(const FVector2f& InScale);
 		void SetWorldLocation(const FVector2f& InLocation);
 		void AddWorldLocation(const FVector2f& InAddLocation);
+		void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
 #pragma endregion
 
 	protected:

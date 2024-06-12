@@ -18,7 +18,7 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void UpdateFpsText(WTextView InText);
+		void UpdateFpsText(WTextView InText) const;
 
 	private:
 		UTextBlock* mFpsText;

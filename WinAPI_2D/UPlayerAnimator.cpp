@@ -16,6 +16,10 @@ namespace LJG
 		mAttackState = CreateDefaultSubObject<UAnimation>(L"AttackAnimSet",
 														  LoadAnimation(L"rsc/ND/Attack/LD_Combo2b_", 22));
 
+		mIdleState->SetupAttachment(this);
+		mMoveState->SetupAttachment(this);
+		mAttackState->SetupAttachment(this);
+
 		AddState(EnumAsByte(EPlayerAnimState::Idle), mIdleState);
 		AddState(EnumAsByte(EPlayerAnimState::Move), mMoveState);
 		AddState(EnumAsByte(EPlayerAnimState::Attack), mAttackState);

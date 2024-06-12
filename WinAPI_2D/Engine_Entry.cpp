@@ -1,4 +1,6 @@
-﻿#include "Application_Base.h"
+﻿#include <DirectXMath.h>
+
+#include "Application_Base.h"
 
 int main()
 {
@@ -11,6 +13,7 @@ int main()
 		testWindowData.bFullScreen = false;
 		testWindowData.bVsync      = false;
 	}
+
 
 	// ----------------------- START ------------------------------
 	{

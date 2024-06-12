@@ -5,13 +5,12 @@ namespace LJG
 {
 	CLASS_PTR(ObjectManager)
 
-	class ObjectManager : public ICoreAPI
+	class ObjectManager
 	{
 	public:
-		void Initialize() override;
-		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
+		static void Initialize();
+		static void Update(float DeltaTime);
+		static void Render();
 
 		inline static ObjectManager& Get()
 		{
@@ -42,8 +41,8 @@ namespace LJG
 		std::unordered_map<WText, UObjectUPtr> mManagedObjects;
 
 	private:
-		ObjectManager()           = default;
-		~ObjectManager() override = default;
+		ObjectManager()  = default;
+		~ObjectManager() = default;
 
 	public:
 		ObjectManager(const ObjectManager&)            = delete;

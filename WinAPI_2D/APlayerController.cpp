@@ -33,19 +33,9 @@ namespace LJG
 			mDebugBox->SetColor({1, 0, 0, 1});
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
-			mAnimator->Initialize();
+			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
-
-			// mAnimator = CreateDefaultSubObject<UAnimator>(L"PlayerAnimator");
-			//
-			//
-			//
-			// mAnimator->AddState(EnumAsByte(EPlayerAnimState::Idle), std::make_shared<UAnimation>(idleAnimSet));
-			// mAnimator->AddState(EnumAsByte(EPlayerAnimState::Move), std::make_shared<UAnimation>(moveAnimSet));
-			// mAnimator->AddState(EnumAsByte(EPlayerAnimState::Attack), std::make_shared<UAnimation>(attackAnimSet));
-			//
-			//
-			// mAnimator->SetOwnerActor(this);
+			mAnimator->Initialize();
 		}
 	}
 
@@ -86,12 +76,11 @@ namespace LJG
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Idle), true);
 		}
 
-		if (InputManager::IsKeyPressed(EKeyCode::X) )
+		if (InputManager::IsKeyPressed(EKeyCode::X))
 		{
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
-			bIsAttacking = true;
 		}
-		
+
 	}
 
 	void APlayerController::Render()
@@ -109,6 +98,6 @@ namespace LJG
 	void APlayerController::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
 		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		mLocation += (MovementInputAmount * .1f);
+		mLocation += (MovementInputAmount * 0.001f);
 	}
 }

@@ -8,7 +8,7 @@ namespace LJG
 	{
 	public:
 		UObject();
-		explicit UObject(AActorSPtr InOwnerActor);
+		explicit UObject(AActor* InOwnerActor);
 		~UObject() override;
 
 	public:
@@ -28,10 +28,13 @@ namespace LJG
 			return ObjectManager::Get().CreateObject<ReturnType>(InKey, std::forward<Args>(args)...);
 		}
 
-	protected:
-		AActor* mOwnerActor;
+		void     SetupAttachment(UObject* InParentObj);
+		UObject* GetParent() const { return mParentObject; }
 
-	private:
-		friend class ObjectManager;
+	protected:
+		WText                               mObjectID;
+		AActor*                             mOwnerActor;
+		UObject*                            mParentObject;
+		std::unordered_map<WText, UObject*> mChildObjects;
 	};
 }

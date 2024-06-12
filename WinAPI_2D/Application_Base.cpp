@@ -42,25 +42,27 @@ namespace LJG
 		Renderer::Create(mWindowData, mWindow->GetHandle());
 
 		ObjectManager::Get();
-		ObjectManager::Get().Initialize();
+		ObjectManager::Initialize();
 	}
 
 	void Application_Base::Update(float DeltaTime)
 	{
 		InputManager::Get()->Update(DeltaTime);
 
-		ObjectManager::Get().Update(DeltaTime);
+		ObjectManager::Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
 	{
-		ObjectManager::Get().Render();
+		Renderer::Clear();
+
+		ObjectManager::Render();
+
 		Renderer::Get()->Render();
 	}
 
 	void Application_Base::Release()
 	{
-		ObjectManager::Get().Release();
 		Renderer::Get()->Release();
 	}
 
@@ -131,14 +133,13 @@ namespace LJG
 
 				{
 					FTimer frameTimer;
+					{
+						Update(mDeltaTime);
+						hud->UpdateFpsText(
+							std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds()));
 
-					Update(mDeltaTime);
-					hud->UpdateFpsText(std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds()));
-
-					// TODO: Render
-					Renderer::Get()->Clear();
-					Render();
-
+						Render();
+					}
 					frameCounter++;
 					mDeltaTime = frameTimer.ElapsedMillis();
 				}

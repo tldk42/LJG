@@ -7,7 +7,7 @@ namespace LJG
 	{
 	public:
 		AActor();
-		~AActor() override;
+		~AActor() override = default;
 
 	public:
 #pragma region Core Interface
@@ -19,17 +19,17 @@ namespace LJG
 
 		[[nodiscard]] inline FVector2f GetActorLocation() const { return mLocation; }
 		[[nodiscard]] inline FVector2f GetActorScale() const { return mScale; }
-		[[nodiscard]] UObjectSPtr      GetComponentByID(const std::wstring& InCompID);
+		[[nodiscard]] UObject*         GetComponentByID(const WText& InCompID);
 
 
 		inline void SetActorLocation(const FVector2f& InLocation) { mLocation = InLocation; }
 		inline void SetActorScale(const FVector2f& InScale) { mScale = InScale; }
-		void        AttachComponent(const std::wstring& InCompID, const UObjectSPtr& InComp);
+		void        AttachComponent(const WText& InCompID, UObject* InComp);
 
 	protected:
+		bool bVisibility;
+
 		FVector2f mLocation;
 		FVector2f mScale;
-
-		std::unordered_map<std::wstring, UObjectSPtr> mChildComponents;
 	};
 }

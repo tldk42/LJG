@@ -11,7 +11,7 @@ namespace LJG
 		Renderer(const FWindowData& InWinData, HWND InWindowHandle);
 
 	public:
-		~Renderer();
+		~Renderer() override;
 
 	public:
 		static void             Create(const FWindowData& WinData, void* DeviceContext);
@@ -25,7 +25,7 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void Clear();
+		static void Clear();
 
 	private:
 		static RendererUPtr s_Renderer;
