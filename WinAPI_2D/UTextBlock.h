@@ -1,23 +1,33 @@
 #pragma once
-#include "CommonInclude.h"
+#include "UObject.h"
 
 namespace LJG
 {
-	class UTextBlock
+	class UTextBlock : public UObject
 	{
 	public:
-		explicit UTextBlock(const std::wstring& InText);
-		~UTextBlock() = default;
+		explicit UTextBlock(WTextView InText);
+		~UTextBlock() override = default;
 
 	public:
-		FORCEINLINE void SetLocation(const RECT& InRect) const { mText->RectSize = InRect; }
-		FORCEINLINE void SetText(const std::wstring& InText) const { mText->Text = InText; }
+#pragma region Core Interface
+		void Initialize() override;
+		void Update(float DeltaTime) override;
+		void Render() override;
+		void Release() override;
+#pragma endregion
 
-		[[nodiscard]] FORCEINLINE const RECT&         GetLocation() const { return mText->RectSize; }
-		[[nodiscard]] FORCEINLINE const std::wstring& GetText() const { return mText->Text; }
+
+		inline void SetLocation(const FVector2f& InRect) { mPosition = InRect; }
+		inline void SetText(WTextView InText) { mText = WText(InText); }
+
+		[[nodiscard]] inline const FVector2f& GetLocation() const { return mPosition; }
+		[[nodiscard]] inline WTextView        GetText() const { return mText; }
 
 	private:
-		FWriteDataUPtr mText;
+		FVector2f mPosition;
+		FVector2f mScale;
+		WText     mText;
 	};
 
 }

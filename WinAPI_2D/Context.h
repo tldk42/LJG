@@ -24,15 +24,15 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void Present();
+		void Present() const;
 
 	private:
 		bool    InitD3D(HWND InHwnd);
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
 		HRESULT CreateSwapChain(HWND InHwnd);
-		HRESULT SetViewport();
-		HRESULT SetRenderTarget();
+		void    SetViewport();
+		void    SetRenderTarget();
 
 	private:
 		// Resize Callback

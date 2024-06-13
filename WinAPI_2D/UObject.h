@@ -1,6 +1,6 @@
 #pragma once
 #include "CommonInclude.h"
-#include "TManagedEntity.h"
+#include "ObjectManager.h"
 
 namespace LJG
 {
@@ -8,7 +8,7 @@ namespace LJG
 	{
 	public:
 		UObject();
-		explicit UObject(AActorSPtr InOwnerActor);
+		explicit UObject(AActor* InOwnerActor);
 		~UObject() override;
 
 	public:
@@ -22,10 +22,19 @@ namespace LJG
 		inline AActor* GetOwnerActor() const { return mOwnerActor; }
 		void           SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
 
-	protected:
-		AActor* mOwnerActor;
+		template <class ReturnType, typename... Args>
+		ReturnType* CreateDefaultSubObject(WTextView InKey, Args&&... args)
+		{
+			return ObjectManager::Get().CreateObject<ReturnType>(InKey, std::forward<Args>(args)...);
+		}
 
-	private:
-		friend class ObjectManager;
+		void     SetupAttachment(UObject* InParentObj);
+		UObject* GetParent() const { return mParentObject; }
+
+	protected:
+		WText                               mObjectID;
+		AActor*                             mOwnerActor;
+		UObject*                            mParentObject;
+		std::unordered_map<WText, UObject*> mChildObjects;
 	};
 }

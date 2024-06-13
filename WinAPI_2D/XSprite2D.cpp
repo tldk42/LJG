@@ -2,7 +2,6 @@
 
 #include <d3dcompiler.h>
 #include "Context.h"
-#include "UDXHelper.h"
 #include "XBlendState.h"
 #include "XSamplerState.h"
 #include "XTexture.h"

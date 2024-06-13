@@ -7,10 +7,10 @@ namespace LJG
 {
 	constexpr float TickFrequency = 60 / 1000.f;
 
-	class UTimer
+	class FTimer
 	{
 	public:
-		UTimer();
+		FTimer();
 
 		// static bool  Initialize();
 		// static void  Update();

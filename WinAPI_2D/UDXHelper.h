@@ -1,14 +1,8 @@
 #pragma once
-#include <assert.h>
-#include <d3d11.h>
-#include <wrl.h>
-
-#include "Math/MathFwd.h"
-#include "Math/Vector2D.h"
+#include "CommonInclude.h"
 
 namespace LJG
 {
-	using namespace Microsoft::WRL;
 
 	inline void CHECK_RESULT(const HRESULT Result, ...)
 	{

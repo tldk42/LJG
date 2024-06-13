@@ -5,10 +5,10 @@
 namespace LJG
 {
 	AActor::AActor()
-		: mLocation(FVector2f::ZeroVector),
+		: bVisibility(true),
+		  mLocation(FVector2f::ZeroVector),
 		  mScale(FVector2f::UnitVector) {}
 
-	AActor::~AActor() {}
 
 	void AActor::Initialize()
 	{
@@ -18,20 +18,16 @@ namespace LJG
 	void AActor::Update(float DeltaTime)
 	{
 		UObject::Update(DeltaTime);
-
-		for (const auto& component : mChildComponents)
-		{
-			component.second->Update(DeltaTime);
-		}
 	}
 
 	void AActor::Render()
 	{
-		UObject::Render();
-
-		for (const auto& component : mChildComponents)
+		if (bVisibility)
 		{
-			component.second->Render();
+			for (auto& [key, object] : mChildObjects)
+			{
+				object->Render();
+			}
 		}
 	}
 
@@ -40,20 +36,20 @@ namespace LJG
 		UObject::Release();
 	}
 
-	void AActor::AttachComponent(const std::wstring& InCompID, const UObjectSPtr& InComp)
+	void AActor::AttachComponent(const WText& InCompID, UObject* InComp)
 	{
-		if (!mChildComponents.contains(InCompID))
+		if (!mChildObjects.contains(InCompID))
 		{
-			mChildComponents[InCompID] = InComp;
-			mChildComponents[InCompID]->SetOwnerActor(this);
+			mChildObjects[InCompID] = InComp;
+			mChildObjects[InCompID]->SetOwnerActor(this);
 		}
 	}
 
-	UObjectSPtr AActor::GetComponentByID(const std::wstring& InCompID)
+	UObject* AActor::GetComponentByID(const WText& InCompID)
 	{
-		if (!mChildComponents.contains(InCompID))
+		if (!mChildObjects.contains(InCompID))
 		{
-			return mChildComponents[InCompID];
+			return mChildObjects[InCompID];
 		}
 		return nullptr;
 	}

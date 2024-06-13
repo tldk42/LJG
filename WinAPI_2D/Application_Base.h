@@ -47,8 +47,7 @@ namespace LJG
 #pragma endregion
 
 #pragma region Time
-		UTimerUPtr     mTimer;
-		UTextBlockSPtr FpsText;
+		FTimerUPtr     mTimer;
 
 		float_t mDeltaTime;
 		float_t timer;

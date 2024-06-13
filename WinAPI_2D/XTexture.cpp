@@ -1,8 +1,7 @@
 #include "XTexture.h"
-
 #include <directxtk/WICTextureLoader.h>
-
 #include "Context.h"
+#include "UDXHelper.h"
 
 namespace LJG
 {

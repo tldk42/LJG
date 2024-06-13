@@ -7,9 +7,6 @@
 
 namespace LJG
 {
-	CLASS_PTR(DXWrite);
-	CLASS_PTR(FWriteData);
-
 	class DXWrite : public ICoreAPI
 	{
 	public:
@@ -31,10 +28,10 @@ namespace LJG
 
 		bool Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
 
-		bool    Begin();
-		bool    End();
-		HRESULT Draw(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::Green);
-		HRESULT DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF = D2D1::ColorF::DarkGreen);
+		HRESULT Begin() const;
+		HRESULT End() const;
+		HRESULT Draw(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = D2D1::ColorF::Green) const;
+		HRESULT DrawText_A(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = D2D1::ColorF::DarkGreen) const;
 		HRESULT DrawText_Immediately(const std::wstring& InText, D2D1_RECT_F Rect,
 									 D2D1::ColorF         = D2D1::ColorF::DarkGreen);
 

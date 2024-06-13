@@ -1,22 +1,19 @@
 #pragma once
 #include "CommonInclude.h"
+#include "UObject.h"
 
 namespace LJG
 {
 	struct FAnimData
 	{
-		XSprite2DSPtr Sprite = nullptr;
+		XSprite2DUPtr Sprite = nullptr;
 		float         Time   = 1.f;
-
-		FAnimData(XSprite2D* InSprite2D, float InTime)
-			: Sprite(InSprite2D),
-			  Time(InTime) {}
 	};
 
-	class UAnimation : public ICoreAPI
+	class UAnimation : public UObject
 	{
 	public:
-		UAnimation(std::vector<FAnimData>& InAnims);
+		UAnimation(std::vector<FAnimData>&& InAnims);
 		~UAnimation() override;
 
 	public:
@@ -31,7 +28,7 @@ namespace LJG
 		void Pause();
 		void Stop();
 
-		void SetAnimator(UAnimatorSPtr InAnimator) { mOwnerAnimator = InAnimator; }
+		void SetAnimator(UAnimator* InAnimator) { mOwnerAnimator = InAnimator; }
 
 	private:
 		bool                     bLoop;
@@ -39,7 +36,7 @@ namespace LJG
 		UINT                     mFrames;
 		steady_clock::time_point mPlayTime;
 
-		UAnimatorWPtr mOwnerAnimator;
+		UAnimator* mOwnerAnimator;
 
 		FVector2f    mPosition;
 		FVector2f    mScale;

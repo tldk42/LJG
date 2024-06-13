@@ -18,6 +18,9 @@
 #include <string>
 #include <vector>
 
+#include <d3d11.h>
+#include <wrl.h>
+
 // Custom Classes
 #include "Logger.h"
 #include "Structs.h"
@@ -29,8 +32,13 @@
 
 #include "TManagedEntity.h"
 
+using namespace Microsoft::WRL;
+using namespace std::chrono;
 
-#include "UDXHelper.h"
+using ResizeDelegate = std::function<void(UINT, UINT)>;
+using WText = std::wstring;
+using WTextView = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
+
 
 namespace LJG
 {
@@ -79,10 +87,6 @@ namespace LJG
 		virtual void Release() = 0;
 	};
 
-	using namespace std::chrono;
-	using ResizeDelegate = std::function<void(UINT, UINT)>;
-
-
 	template <typename EnumType>
 	inline uint8_t EnumAsByte(EnumType value)
 	{
@@ -96,6 +100,7 @@ namespace LJG
 	using structName##WPtr = std::weak_ptr<structName>;
 
 	STRUCT_PTR(FWriteData)
+	STRUCT_PTR(FTimer)
 
 
 #define CLASS_PTR(klassName)\
@@ -104,16 +109,15 @@ namespace LJG
 	using klassName##SPtr = std::shared_ptr<klassName>;\
 	using klassName##WPtr = std::weak_ptr<klassName>;
 
-	CLASS_PTR(UTimer)
 	CLASS_PTR(Window)
 	CLASS_PTR(UTextBlock)
+	CLASS_PTR(XSprite2D)
+	CLASS_PTR(DXWrite)
 
 	// -------- Graphics ------------
-	CLASS_PTR(XSprite2D)
 	CLASS_PTR(XSamplerState)
 	CLASS_PTR(XBlendState)
 	CLASS_PTR(XTexture)
-	CLASS_PTR(XSprite2D)
 
 	//--------- Objects ---------------
 	CLASS_PTR(UObject)

@@ -2,7 +2,9 @@
 
 #include "Context.h"
 #include "EngineHelper.h"
+#include "UDXHelper.h"
 #include "UTextBlock.h"
+#include "Window.h"
 
 namespace LJG
 {
@@ -51,14 +53,9 @@ namespace LJG
 #pragma region Font Test
 		if (mTextFormat.Get())
 		{
-			const D2D1_SIZE_F rtSize = mRenderTarget->GetSize();
-			//Draw a grid background.
-			int width  = static_cast<int>(rtSize.width);
-			int height = static_cast<int>(rtSize.height);
-
 			for (const UTextBlockSPtr& text : mTextArray)
 			{
-				Draw(text->GetLocation(), text->GetText());
+				CHECK_RESULT(Draw(text->GetLocation(), text->GetText()));
 			}
 		}
 #pragma endregion
@@ -106,51 +103,44 @@ namespace LJG
 		return true;
 	}
 
-	bool DXWrite::Begin()
+	HRESULT DXWrite::Begin() const
 	{
-		if (mRenderTarget.Get())
-		{
-			mRenderTarget->BeginDraw();
-			mRenderTarget->SetTransform(D2D1::IdentityMatrix());
-		}
+		assert(mRenderTarget);
 
-		return true;
+		mRenderTarget->BeginDraw();
+		mRenderTarget->SetTransform(D2D1::IdentityMatrix());
+
+		return S_OK;
 	}
 
-	bool DXWrite::End()
+	HRESULT DXWrite::End() const
 	{
-		if (mRenderTarget.Get() && FAILED(mRenderTarget->EndDraw()))
-		{
-			return false;
-		}
+		assert(mRenderTarget.Get());
 
-		return true;
+		return mRenderTarget->EndDraw();
 	}
 
-	HRESULT DXWrite::Draw(RECT InRect, const std::wstring& InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::Draw(const FVector2f& InPosition, WTextView InText, D2D1::ColorF InColor) const
 	{
-		if (Begin())
-		{
-			if (SUCCEEDED(DrawText_A(InRect, InText, InColor)))
-			{
-				return End();
-			}
-		}
-		return 0;
+		CHECK_RESULT(Begin());
+
+		CHECK_RESULT(DrawText_A(InPosition, InText, InColor));
+
+		return End();
 	}
 
-	HRESULT DXWrite::DrawText_A(RECT InRect, const std::wstring& InText, D2D1::ColorF InColor)
+	HRESULT DXWrite::DrawText_A(const FVector2f& InPosition, WTextView InText, D2D1::ColorF InColor) const
 	{
-		if (mRenderTarget.Get() && mBrush)
+		if (mRenderTarget.Get() && mBrush.Get())
 		{
-			D2D1_RECT_F layoutRect = D2D1::RectF(
-				static_cast<FLOAT>(InRect.left) / mDPI_Scale,
-				static_cast<FLOAT>(InRect.top) / mDPI_Scale,
-				static_cast<FLOAT>(InRect.right) / mDPI_Scale,
-				static_cast<FLOAT>(InRect.bottom) / mDPI_Scale);
+			const D2D1_RECT_F layoutRect = D2D1::RectF(
+				InPosition.X / mDPI_Scale,
+				InPosition.Y / mDPI_Scale,
+				mRenderTarget->GetSize().width / mDPI_Scale,
+				mRenderTarget->GetSize().height / mDPI_Scale);
 
 			mBrush->SetColor(InColor);
-			mRenderTarget->DrawText(InText.c_str(), InText.size(), mTextFormat.Get(), &layoutRect, mBrush.Get());
+			mRenderTarget->DrawText(WText(InText).c_str(), InText.size(), mTextFormat.Get(), &layoutRect, mBrush.Get());
 		}
 
 		return S_OK;

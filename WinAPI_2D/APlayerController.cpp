@@ -5,8 +5,7 @@
 #include "InputManager.h"
 #include "UAnimator.h"
 #include "PlayerData.h"
-#include "UAnimation.h"
-#include "XSprite2D.h"
+#include "UPlayerAnimator.h"
 #include "Shape/UDebugBox2D.h"
 
 namespace LJG
@@ -33,41 +32,10 @@ namespace LJG
 			mDebugBox->SetScale({120.f, 120.f});
 			mDebugBox->SetColor({1, 0, 0, 1});
 
-			mAnimator = std::make_shared<UAnimator>();
-
-
-			std::vector<FAnimData> idleAnimSet;
-			std::vector<FAnimData> moveAnimSet;
-			std::vector<FAnimData> attackAnimSet;
-
-			for (int32_t i = 1; i <= 60; ++i)
-			{
-				std::wstringstream ss;
-				ss << L"rsc/ND/Idle/LD_Idle_" << std::setw(4) << std::setfill(L'0') << i << L".png";
-				std::wstring filePath = ss.str();
-				idleAnimSet.emplace_back(new XSprite2D(filePath), 1.f / 60);
-			}
-			for (int32_t i = 1; i <= 5; ++i)
-			{
-				std::wstringstream ss;
-				ss << L"rsc/ND/Move/LD_Run_" << std::setw(4) << std::setfill(L'0') << i << L".png";
-				std::wstring filePath = ss.str();
-				moveAnimSet.emplace_back(new XSprite2D(filePath), 1.f / 20);
-			}
-			for (int32_t i = 1; i <= 22; ++i)
-			{
-				std::wstringstream ss;
-				ss << L"rsc/ND/Attack/LD_Combo2b_" << std::setw(4) << std::setfill(L'0') << i << L".png";
-				std::wstring filePath = ss.str();
-				attackAnimSet.emplace_back(new XSprite2D(filePath), 1.f / 22);
-			}
-
-			mAnimator->AddState(EnumAsByte(EPlayerAnimState::Idle), std::make_shared<UAnimation>(idleAnimSet));
-			mAnimator->AddState(EnumAsByte(EPlayerAnimState::Move), std::make_shared<UAnimation>(moveAnimSet));
-			mAnimator->AddState(EnumAsByte(EPlayerAnimState::Attack), std::make_shared<UAnimation>(attackAnimSet));
-
-
+			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
+			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
+			mAnimator->Initialize();
 		}
 	}
 
@@ -111,10 +79,8 @@ namespace LJG
 		if (InputManager::IsKeyPressed(EKeyCode::X))
 		{
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
-			bIsAttacking = true;
 		}
 
-		mAnimator->Update(DeltaTime);
 	}
 
 	void APlayerController::Render()
@@ -122,8 +88,6 @@ namespace LJG
 		AActor::Render();
 
 		mDebugBox->Render();
-
-		mAnimator->Render();
 	}
 
 	void APlayerController::Release()
@@ -134,6 +98,6 @@ namespace LJG
 	void APlayerController::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
 		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		mLocation += MovementInputAmount;
+		mLocation += (MovementInputAmount * 0.001f);
 	}
 }

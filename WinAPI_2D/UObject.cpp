@@ -5,10 +5,13 @@
 
 namespace LJG
 {
-	UObject::UObject() {}
+	UObject::UObject()
+		: mOwnerActor(nullptr),
+		  mParentObject(nullptr) {}
 
-	UObject::UObject(AActorSPtr InOwnerActor)
-	{}
+	UObject::UObject(AActor* InOwnerActor)
+		: mOwnerActor(InOwnerActor),
+		  mParentObject(nullptr) {}
 
 	UObject::~UObject()
 	{
@@ -18,13 +21,25 @@ namespace LJG
 	void UObject::Initialize() {}
 
 	void UObject::Update(float DeltaTime)
-	{}
+	{
+		for (const auto& object : mChildObjects)
+		{
+			object.second->Update(DeltaTime);
+		}
+	}
 
 	void UObject::Render()
 	{}
 
 	void UObject::Release()
 	{}
+
+	void UObject::SetupAttachment(UObject* InParentObj)
+	{
+		InParentObj->mChildObjects.emplace(mObjectID, this);
+
+		mParentObject = InParentObj;
+	}
 
 
 }

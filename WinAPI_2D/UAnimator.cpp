@@ -2,6 +2,7 @@
 
 #include "AActor.h"
 #include "UAnimation.h"
+#include "XSprite2D.h"
 
 namespace LJG
 {
@@ -55,15 +56,39 @@ namespace LJG
 				bIsPlaying = true;
 				mStateMachine[mCurrentState]->PlayAnim(bLoop);
 			}
+			if (cachedState != mCurrentState)
+				mStateMachine[cachedState]->Stop();
+
 		}
 	}
 
-	void UAnimator::AddState(const uint8_t InState, const UAnimationSPtr& InAnimation)
+	void UAnimator::AddState(const uint8_t InState, UAnimation* InAnimation)
 	{
 		if (!mStateMachine.contains(InState))
 		{
 			mStateMachine[InState] = InAnimation;
-			InAnimation->SetAnimator(shared_from_this());
+			InAnimation->SetAnimator(this);
 		}
+	}
+
+	std::vector<FAnimData> UAnimator::LoadAnimation(WTextView      InPath, const uint32_t    InMaxSprite,
+													const uint32_t InCustomFrame, const bool bForceCustomFrame)
+	{
+		// C++11 이후에 local var를 반환하면 r-value로 간주되어서 이동생성자로 최적화 된다고하는데 과연...
+		std::vector<FAnimData> animSet;
+
+		for (uint32_t i = 1; i <= InMaxSprite; ++i)
+		{
+			std::wstringstream ss;
+			ss << InPath << std::setw(4) << std::setfill(L'0') << i << L".png";
+			std::wstring filePath = ss.str();
+
+			animSet.emplace_back(std::make_unique<XSprite2D>(filePath),
+								 1.f / (bForceCustomFrame
+											? static_cast<float>(InCustomFrame)
+											: static_cast<float_t>(InMaxSprite)));
+		}
+
+		return animSet;
 	}
 }
