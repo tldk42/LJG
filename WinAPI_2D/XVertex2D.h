@@ -52,7 +52,9 @@ namespace LJG
 	public:
 #pragma region Set
 		void SetWindowResolution();
+		void SetColor(const FLinearColor& InColor);
 		void SetScale(const FVector2f& InScale);
+		void SetWorldRotation(const float InAngle);
 		void SetWorldLocation(const FVector2f& InLocation);
 		void AddWorldLocation(const FVector2f& InAddLocation);
 		void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
@@ -71,6 +73,7 @@ namespace LJG
 
 		void NDC2Screen();
 		void Screen2NDC();
+		void SetTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
 
 		virtual void OnResizeCallback();
 
@@ -100,5 +103,4 @@ namespace LJG
 		FLinearColor           mDrawColor;
 		D3D_PRIMITIVE_TOPOLOGY mPrimType;
 	};
-
 }

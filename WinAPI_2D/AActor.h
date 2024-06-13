@@ -19,6 +19,7 @@ namespace LJG
 
 		[[nodiscard]] inline FVector2f GetActorLocation() const { return mLocation; }
 		[[nodiscard]] inline FVector2f GetActorScale() const { return mScale; }
+		[[nodi]] float                 GetActorRotation() const { return mTestRotation; }
 		[[nodiscard]] UObject*         GetComponentByID(const WText& InCompID);
 
 
@@ -31,5 +32,6 @@ namespace LJG
 
 		FVector2f mLocation;
 		FVector2f mScale;
+		float     mTestRotation = 0.f;
 	};
 }

@@ -36,8 +36,8 @@ using namespace Microsoft::WRL;
 using namespace std::chrono;
 
 using ResizeDelegate = std::function<void(UINT, UINT)>;
-using WText = std::wstring;
-using WTextView = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
+using WText          = std::wstring;
+using WTextView      = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
 
 
 namespace LJG
@@ -111,13 +111,15 @@ namespace LJG
 
 	CLASS_PTR(Window)
 	CLASS_PTR(UTextBlock)
-	CLASS_PTR(XSprite2D)
 	CLASS_PTR(DXWrite)
 
 	// -------- Graphics ------------
 	CLASS_PTR(XSamplerState)
 	CLASS_PTR(XBlendState)
+	CLASS_PTR(XVertex2D)
 	CLASS_PTR(XTexture)
+	CLASS_PTR(XSprite2D)
+	CLASS_PTR(XDebugShape2D)
 
 	//--------- Objects ---------------
 	CLASS_PTR(UObject)
@@ -126,5 +128,5 @@ namespace LJG
 
 	//--------- Actors ---------------
 	CLASS_PTR(AActor)
-	CLASS_PTR(APlayerController)
+	CLASS_PTR(APawn)
 }

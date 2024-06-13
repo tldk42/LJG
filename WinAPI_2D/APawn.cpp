@@ -1,26 +1,27 @@
-#include "APlayerController.h"
+#include "APawn.h"
 
 #include <memory>
 
 #include "InputManager.h"
 #include "UAnimator.h"
 #include "PlayerData.h"
+#include "UPawnMovementComponent2D.h"
 #include "UPlayerAnimator.h"
 #include "Shape/UDebugBox2D.h"
 
 namespace LJG
 {
-	APlayerController::APlayerController()
+	APawn::APawn()
 	{
-		APlayerController::Initialize();
+		APawn::Initialize();
 	}
 
-	APlayerController::~APlayerController()
+	APawn::~APawn()
 	{
-		APlayerController::Release();
+		APawn::Release();
 	}
 
-	void APlayerController::Initialize()
+	void APawn::Initialize()
 	{
 		AActor::Initialize();
 
@@ -31,19 +32,24 @@ namespace LJG
 			mDebugBox->Initialize();
 			mDebugBox->SetScale({120.f, 120.f});
 			mDebugBox->SetColor({1, 0, 0, 1});
+			mDebugBox->SetOwnerActor(this);
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
 			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
 			mAnimator->Initialize();
+
+			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
+			mMovementComponent->SetupAttachment(this);
+			mMovementComponent->SetOwnerActor(this);
+			mMovementComponent->Initialize();
 		}
 	}
 
-	void APlayerController::Update(float DeltaTime)
+	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
 
-		mDebugBox->SetWorldLocation(mLocation);
 
 		mDebugBox->Update(DeltaTime);
 
@@ -78,26 +84,31 @@ namespace LJG
 
 		if (InputManager::IsKeyPressed(EKeyCode::X))
 		{
+			mTestRotation += (DeltaTime);
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
 		}
-
+		else
+		{
+			mTestRotation = 0.f;
+		}
 	}
 
-	void APlayerController::Render()
+	void APawn::Render()
 	{
 		AActor::Render();
 
 		mDebugBox->Render();
 	}
 
-	void APlayerController::Release()
+	void APawn::Release()
 	{
 		AActor::Release();
 	}
 
-	void APlayerController::AddMovementInput(const FVector2f& MovementInputAmount)
+	void APawn::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
+		mMovementComponent->AddMovementInput(MovementInputAmount);
 		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		mLocation += (MovementInputAmount * 0.001f);
+		mLocation += (MovementInputAmount * mMovementComponent->GetMaxWalkSpeed());
 	}
 }

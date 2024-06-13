@@ -1,7 +1,7 @@
 #include "Application_Base.h"
 
 #include "AHUD.h"
-#include "APlayerController.h"
+#include "APawn.h"
 #include "DXWrite.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
@@ -110,7 +110,7 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			APlayerController* pc  = ObjectManager::Get().CreateObject<APlayerController>(L"PC");
+			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
 			AHUD*              hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
 
 			while (bIsRunning)
@@ -141,7 +141,7 @@ namespace LJG
 						Render();
 					}
 					frameCounter++;
-					mDeltaTime = frameTimer.ElapsedMillis();
+					mDeltaTime = frameTimer.ElapsedSeconds();
 				}
 
 				mWindow->Update();

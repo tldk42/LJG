@@ -5,13 +5,12 @@
 #define M_INVERSE_SQRT_2	(0.70710678118654752440084436210485f)
 
 #pragma once
-class FMath
+struct FMath
 {
 	// [[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
 	// {
 	// 	return abs(A - B) <= ErrorTolerance;
 	// }
-public:
 	//----------------------- Min Max ------------------------------------
 	template <typename T>
 	[[nodiscard]] static constexpr inline T Max(const T A, const T B)
@@ -48,5 +47,13 @@ public:
 	static constexpr inline T Abs(const T A)
 	{
 		return (A < static_cast<T>(0)) ? -A : A;
+	}
+
+
+	//--------------------------- Lerp -------------------------------------------
+	template<typename T>
+	[[nodiscard]] static inline T Lerp(const T Current, const T Target, const float DeltaSeconds)
+	{
+		
 	}
 };

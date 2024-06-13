@@ -60,6 +60,9 @@
     <Filter Include="소스 파일\Component">
       <UniqueIdentifier>{a9ed368f-b3ca-427e-a711-e803d7fde595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Component\Character">
+      <UniqueIdentifier>{bf1cd226-4cdd-4762-ba6a-86b9a82f4069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine_Entry.cpp" />
@@ -74,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>소스 파일\Logger</Filter>
-    </ClCompile>
-    <ClCompile Include="UTimer.cpp">
-      <Filter>소스 파일\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Math\Math.cpp">
       <Filter>Math</Filter>
@@ -126,7 +126,7 @@
     <ClCompile Include="XBlendState.cpp">
       <Filter>소스 파일\DirectX\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="APlayerController.cpp">
+    <ClCompile Include="APawn.cpp">
       <Filter>소스 파일\Player</Filter>
     </ClCompile>
     <ClCompile Include="AActor.cpp">
@@ -144,8 +144,23 @@
     <ClCompile Include="Shape\UDebugBox2D.cpp">
       <Filter>소스 파일\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Shape\UDebugShape2D.cpp">
+    <ClCompile Include="AHUD.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FTimer.cpp">
+      <Filter>소스 파일\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="UPlayerAnimator.cpp">
       <Filter>소스 파일\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UPawnMovementComponent2D.cpp">
+      <Filter>소스 파일\Component\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape\XDebugShape2D.cpp">
+      <Filter>소스 파일\DirectX\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="UImage.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +181,6 @@
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>소스 파일\Logger</Filter>
-    </ClInclude>
-    <ClInclude Include="UTimer.h">
-      <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathFwd.h">
       <Filter>Math</Filter>
@@ -227,7 +239,7 @@
     <ClInclude Include="XVertex2D.h">
       <Filter>소스 파일\DirectX\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="APlayerController.h">
+    <ClInclude Include="APawn.h">
       <Filter>소스 파일\Player</Filter>
     </ClInclude>
     <ClInclude Include="AActor.h">
@@ -242,16 +254,26 @@
     <ClInclude Include="Shape\UDebugBox2D.h">
       <Filter>소스 파일\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Shape\UDebugShape2D.h">
-      <Filter>소스 파일\Component</Filter>
-    </ClInclude>
     <ClInclude Include="UTextBlock.h">
       <Filter>소스 파일\Component</Filter>
     </ClInclude>
     <ClInclude Include="PlayerData.h">
       <Filter>소스 파일\Data</Filter>
     </ClInclude>
-    <ClInclude Include="TManagedEntity.h" />
+    <ClInclude Include="AHUD.h" />
+    <ClInclude Include="FTimer.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UPlayerAnimator.h">
+      <Filter>소스 파일\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UPawnMovementComponent2D.h">
+      <Filter>소스 파일\Component\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape\XDebugShape2D.h">
+      <Filter>소스 파일\DirectX\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="UImage.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="sample_frag.psh">

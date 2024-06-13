@@ -1,9 +1,10 @@
 #pragma once
-#include "UDebugShape2D.h"
+#include "../UObject.h"
 
 namespace LJG
 {
-	class UDebugBox2D : public UDebugShape2D
+	class UDebugBox2D : public UObject
+
 	{
 	public:
 		UDebugBox2D();
@@ -17,10 +18,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void SetColor(const FLinearColor& InColor);
+		void SetScale(const FVector2f& InScale) const;
+		void SetColor(const FLinearColor& InColor) const;
 
 	protected:
-		void CreateVertexArray() override;
-		void CreateIndexArray() override;
+		XDebugShape2DUPtr mDebugShape;
 	};
 }
