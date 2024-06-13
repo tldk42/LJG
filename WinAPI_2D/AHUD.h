@@ -3,6 +3,10 @@
 
 namespace LJG
 {
+	class UImage;
+}
+namespace LJG
+{
 	/* TODO: 테스트용도로 작성 Base클래스로 다시 작성해야함*/
 	class AHUD : public AActor
 	{
@@ -22,6 +26,7 @@ namespace LJG
 
 	private:
 		UTextBlock* mFpsText;
+		UImage*     mBackgroundImage;
 	};
 
 }

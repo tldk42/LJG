@@ -81,15 +81,13 @@ namespace LJG
 		{
 			vertex.Pos *= (mScale / cachedScale);
 		}
-
-
-		// SetTransform(FVector2f::ZeroVector, 0.f, InScale /mScale );
 	}
 
 	void XVertex2D::SetWorldRotation(const float InAngle)
 	{
+		mAngle = InAngle;
+
 		SetTransform(FVector2f::ZeroVector, InAngle, FVector2f::UnitVector);
-		SetScale(mScale);
 	}
 
 	void XVertex2D::SetColor(const FLinearColor& InColor)
@@ -100,8 +98,6 @@ namespace LJG
 		{
 			vertex.Color = mDrawColor;
 		}
-
-		SetShaderParams();
 	}
 
 	void XVertex2D::SetWorldLocation(const FVector2f& InLocation)
@@ -122,11 +118,22 @@ namespace LJG
 
 	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
-		SetTransform(InLocation, InAngle, InScale);
+		const FVector2f addiPos = UDXHelper::Screen2NDC(mScreenResolution, InLocation - mWorldLocation);
+
+		SetTransform(addiPos, InAngle, InScale);
+
+		mWorldLocation = InLocation;
+		mAngle         = InAngle;
+		mScale         = InScale;
 	}
 
 	void XVertex2D::SetTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
+		const float aspectRatio = mScreenResolution.X / mScreenResolution.Y;
+
+		const XMMATRIX aspectScale   = ScaleMatrix(aspectRatio, 1.0f);
+		const XMMATRIX aspectInverse = ScaleMatrix(1.f / aspectRatio, 1.f);
+
 		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
 		const XMMATRIX rotation    = RotationMatrix(InAngle);
 		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
@@ -137,8 +144,14 @@ namespace LJG
 		{
 			XMVECTOR pos = {vertex.Pos.X, vertex.Pos.Y, 1.f, 1.f};
 
+			// 1 : 1 정규화
+			pos = XMVector2Transform(pos, aspectScale);
+
 			// 변환 행렬 적용
 			pos = XMVector2Transform(pos, transform);
+
+			// 4 : 3변환 
+			pos = XMVector2Transform(pos, aspectInverse);
 
 			XMStoreFloat2(reinterpret_cast<XMFLOAT2*>(&vertex.Pos), pos);
 		}
@@ -163,7 +176,7 @@ namespace LJG
 			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                                 // 버퍼????기/??기 방법 지??
 			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                            // ??이??라??에 바인??될 방법
 			bufferDesc.CPUAccessFlags =
-				0;                    // ??성??버퍼??CPU가 ??근??는 ??형 (DX ??능??매우 중요)
+			0;                    // ??성??버퍼??CPU가 ??근??는 ??형 (DX ??능??매우 중요)
 			bufferDesc.MiscFlags = 0; // 추????인 ??션 ??래??
 		}
 
@@ -206,7 +219,7 @@ namespace LJG
 		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
 		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"sample2_vert.vsh",
-		                                         vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
+												 vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
 		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"sample2_frag.psh", mPixelShader.GetAddressOf());
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
@@ -260,7 +273,6 @@ namespace LJG
 
 	void XVertex2D::CreateVertexArray()
 	{
-		// ??점 ??보 (??각??을 그리기위??기본??인 ??각??2개?? ??덱??하????성
 		/*
 		 * (0) ^ * * * ^ (1)
 		 *     *       *

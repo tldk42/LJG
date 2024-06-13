@@ -29,6 +29,7 @@
 #include "Math/Vector2D.h"
 #include "Math/Vector.h"
 #include "Math/Color.h"
+#include "Math/Box2D.h"
 
 #include "TManagedEntity.h"
 
@@ -36,8 +37,8 @@ using namespace Microsoft::WRL;
 using namespace std::chrono;
 
 using ResizeDelegate = std::function<void(UINT, UINT)>;
-using WText          = std::wstring;
-using WTextView      = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
+using WText = std::wstring;
+using WTextView = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
 
 
 namespace LJG
@@ -75,6 +76,18 @@ namespace LJG
 		}
 	}
 
+	template <typename EnumType>
+	inline uint8_t EnumAsByte(EnumType value)
+	{
+		return static_cast<uint8_t>(value);
+	}
+
+	template <typename T>
+	inline bool IsValid(T ValuePtr)
+	{
+		return ValuePtr != nullptr;
+	}
+
 	// ======================== 인터페이스 ==================================
 
 	class ICoreAPI
@@ -87,11 +100,6 @@ namespace LJG
 		virtual void Release() = 0;
 	};
 
-	template <typename EnumType>
-	inline uint8_t EnumAsByte(EnumType value)
-	{
-		return static_cast<uint8_t>(value);
-	}
 
 #define STRUCT_PTR(structName)\
 	struct structName;\
@@ -109,11 +117,12 @@ namespace LJG
 	using klassName##SPtr = std::shared_ptr<klassName>;\
 	using klassName##WPtr = std::weak_ptr<klassName>;
 
+	CLASS_PTR(TGUI_Base)
+	
 	CLASS_PTR(Window)
-	CLASS_PTR(UTextBlock)
-	CLASS_PTR(DXWrite)
 
 	// -------- Graphics ------------
+	CLASS_PTR(DXWrite)
 	CLASS_PTR(XSamplerState)
 	CLASS_PTR(XBlendState)
 	CLASS_PTR(XVertex2D)
@@ -123,6 +132,7 @@ namespace LJG
 
 	//--------- Objects ---------------
 	CLASS_PTR(UObject)
+	CLASS_PTR(UTextBlock)
 	CLASS_PTR(UAnimation)
 	CLASS_PTR(UAnimator)
 

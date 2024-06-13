@@ -12,7 +12,7 @@ namespace LJG
 		static void Update(float DeltaTime);
 		static void Render();
 
-		inline static ObjectManager& Get()
+		[[nodiscard]] inline static ObjectManager& Get()
 		{
 			static ObjectManager instance;
 			return instance;
@@ -25,7 +25,9 @@ namespace LJG
 
 			std::unique_ptr<ReturnType> obj    = std::make_unique<ReturnType>(std::forward<Args>(InArgs)...);
 			ReturnType*                 rawPtr = obj.get();
-			mManagedObjects[WText(InKey)]      = std::move(obj);
+			obj->SetID(InKey);
+
+			mManagedObjects[WText(InKey)] = std::move(obj);
 
 			return rawPtr;
 		}

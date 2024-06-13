@@ -23,6 +23,9 @@ namespace LJG
 			float RGBA[4];
 		};
 
+		static FLinearColor Red;
+		static FLinearColor Green;
+		static FLinearColor Blue;
 
 		/** sRGB -> Linear 룩업 테이블 */
 		static float s_RGBToLinearTable[256];
@@ -215,5 +218,5 @@ namespace LJG
 
 
 	};
-	
+
 }

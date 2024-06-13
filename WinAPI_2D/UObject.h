@@ -19,8 +19,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		inline AActor* GetOwnerActor() const { return mOwnerActor; }
-		void           SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
+
+		inline AActor*  GetOwnerActor() const { return mOwnerActor; }
+		inline UObject* GetParent() const { return mParentObject; }
+		inline void     SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
 
 		template <class ReturnType, typename... Args>
 		ReturnType* CreateDefaultSubObject(WTextView InKey, Args&&... args)
@@ -28,13 +30,17 @@ namespace LJG
 			return ObjectManager::Get().CreateObject<ReturnType>(InKey, std::forward<Args>(args)...);
 		}
 
-		void     SetupAttachment(UObject* InParentObj);
-		UObject* GetParent() const { return mParentObject; }
+		void AttachComponent(UObject* ComponentToAttach);
+		void SetupAttachment(UObject* InParentObj);
 
 	protected:
 		WText                               mObjectID;
 		AActor*                             mOwnerActor;
 		UObject*                            mParentObject;
 		std::unordered_map<WText, UObject*> mChildObjects;
+
+	private:
+		void SetID(WTextView InID) { mObjectID = InID; }
+		friend class ObjectManager;
 	};
 }

@@ -6,9 +6,10 @@
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
-#include "UTextBlock.h"
 #include "FTimer.h"
 #include "Window.h"
+#include "GUI/TGUI_Base.h"
+#include "GUI/TGUI_Inspector.h"
 
 namespace LJG
 {
@@ -39,9 +40,12 @@ namespace LJG
 		Initialize_Internal();
 
 		InputManager::Create();
+
 		Renderer::Create(mWindowData, mWindow->GetHandle());
 
-		ObjectManager::Get();
+		mMainGUI = std::make_unique<TGUI_Inspector>(mWindow->GetHandle());
+		mMainGUI->Initialize();
+
 		ObjectManager::Initialize();
 	}
 
@@ -50,6 +54,8 @@ namespace LJG
 		InputManager::Get()->Update(DeltaTime);
 
 		ObjectManager::Update(DeltaTime);
+
+		mMainGUI->Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
@@ -58,11 +64,14 @@ namespace LJG
 
 		ObjectManager::Render();
 
+		mMainGUI->Render();
+
 		Renderer::Get()->Render();
 	}
 
 	void Application_Base::Release()
 	{
+		mMainGUI->Release();
 		Renderer::Get()->Release();
 	}
 
@@ -111,7 +120,7 @@ namespace LJG
 			int32_t updateCounter = 0;
 
 			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
-			AHUD*              hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
+			AHUD*  hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
 
 			while (bIsRunning)
 			{

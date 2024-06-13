@@ -159,11 +159,89 @@
   <ItemGroup>
     <ClCompile Include="AActor.cpp" />
     <ClCompile Include="AHUD.cpp" />
+    <ClCompile Include="APawn.cpp" />
     <ClCompile Include="Application_Base.cpp" />
-    <ClCompile Include="Box2D.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="Shape\UDebugBox2D.cpp" />
-    <ClCompile Include="Shape\UDebugShape2D.cpp" />
+    <ClCompile Include="GUI\TGUI_Base.cpp" />
+    <ClCompile Include="GUI\TGUI_Inspector.cpp" />
+    <ClCompile Include="Math\Box2D.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>../../bin/Debug/WinAPI_2D/Intermediate/</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>../../bin/Debug/WinAPI_2D/Intermediate/</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleDependenciesFile>
+      <ModuleOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>../../bin/Debug/WinAPI_2D/Intermediate/</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>../../bin/Debug/WinAPI_2D/Intermediate/vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>../../bin/Debug/WinAPI_2D/Intermediate/</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+      <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="Math\Transform.cpp" />
+    <ClCompile Include="Shape\UBoxComponent.cpp" />
     <ClCompile Include="DXWrite.cpp" />
     <ClCompile Include="EngineHelper.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -171,12 +249,15 @@
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Math\Color.cpp" />
     <ClCompile Include="Math\Math.cpp" />
+    <ClCompile Include="Shape\XDebugShape2D.cpp" />
     <ClCompile Include="UAnimation.cpp" />
+    <ClCompile Include="UAnimation2D.cpp" />
     <ClCompile Include="UAnimator.cpp" />
+    <ClCompile Include="UImage.cpp" />
     <ClCompile Include="UObject.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="APlayerController.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="UPawnMovementComponent2D.cpp" />
     <ClCompile Include="UPlayerAnimator.cpp" />
     <ClCompile Include="UTextBlock.cpp" />
     <ClCompile Include="FTimer.cpp" />
@@ -192,12 +273,15 @@
   <ItemGroup>
     <ClInclude Include="AActor.h" />
     <ClInclude Include="AHUD.h" />
+    <ClInclude Include="APawn.h" />
     <ClInclude Include="Application_Base.h" />
-    <ClInclude Include="Box2D.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Context.h" />
-    <ClInclude Include="Shape\UDebugBox2D.h" />
-    <ClInclude Include="Shape\UDebugShape2D.h" />
+    <ClInclude Include="GUI\TGUI_Base.h" />
+    <ClInclude Include="GUI\TGUI_Inspector.h" />
+    <ClInclude Include="Math\Box2D.h" />
+    <ClInclude Include="Math\Transform.h" />
+    <ClInclude Include="Shape\UBoxComponent.h" />
     <ClInclude Include="DXWrite.h" />
     <ClInclude Include="EngineHelper.h" />
     <ClInclude Include="Enums.h" />
@@ -209,13 +293,16 @@
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector2D.h" />
     <ClInclude Include="PlayerData.h" />
+    <ClInclude Include="Shape\XDebugShape2D.h" />
     <ClInclude Include="UAnimation.h" />
+    <ClInclude Include="UAnimation2D.h" />
     <ClInclude Include="UAnimator.h" />
+    <ClInclude Include="UImage.h" />
     <ClInclude Include="UObject.h" />
     <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="APlayerController.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Structs.h" />
+    <ClInclude Include="UPawnMovementComponent2D.h" />
     <ClInclude Include="UPlayerAnimator.h" />
     <ClInclude Include="UTextBlock.h" />
     <ClInclude Include="FTimer.h" />

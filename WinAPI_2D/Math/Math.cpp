@@ -1,5 +1,6 @@
 #include "Vector.h"
 
+
 template<> const FVector3f FVector3f::ZeroVector(0, 0, 0);
 template<> const FVector3f FVector3f::OneVector(1, 1, 1);
 template<> const FVector3f FVector3f::UpVector(0, 0, 1);

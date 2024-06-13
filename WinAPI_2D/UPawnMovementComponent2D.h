@@ -13,9 +13,7 @@ namespace LJG
 		void Update(float DeltaTime) override;
 #pragma endregion
 
-
 		void AddMovementInput(const FVector2f& InInput);
-
 
 #pragma region Get
 		[[nodiscard]] inline bool      IsMovingOnGround() const { return bIsMovingOnGround; }

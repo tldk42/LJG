@@ -4,30 +4,38 @@
 
 namespace LJG
 {
-	UImage::UImage()
-	{
-	}
+	UImage::UImage(WTextView InTexturePath)
+		: mImagePath(InTexturePath)
+	{}
 
 	UImage::~UImage()
-	{
-	}
+	{}
 
 	void UImage::Initialize()
 	{
 		UObject::Initialize();
 
 		mSprite2D = std::make_unique<XSprite2D>(mImagePath);
-		mSprite2D->Initialize();
 	}
 
 	void UImage::Update(float DeltaTime)
 	{
 		UObject::Update(DeltaTime);
+
+		if (IsValid(mSprite2D.get()))
+		{
+			mSprite2D->Update(DeltaTime);
+		}
 	}
 
 	void UImage::Render()
 	{
 		UObject::Render();
+
+		if (IsValid(mSprite2D.get()))
+		{
+			mSprite2D->Render();
+		}
 	}
 
 	void UImage::Release()
@@ -35,8 +43,11 @@ namespace LJG
 		UObject::Release();
 	}
 
-	void UImage::SetPosition(const FVector2f& InLocation)
+	void UImage::SetPosition(const FVector2f& InLocation) const
 	{
-		mSprite2D->SetWorldLocation(InLocation);
+		if (IsValid(mSprite2D.get()))
+		{
+			mSprite2D->SetWorldLocation(InLocation);
+		}
 	}
 }

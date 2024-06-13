@@ -98,6 +98,7 @@ namespace LJG
 		FVector2f mNDCOffset          = FVector2f::ZeroVector;
 		FVector2f mNormalizedLocation = FVector2f::ZeroVector;
 		FVector2f mScreenResolution;
+		float     mAngle = 0.f;
 #pragma endregion
 
 		FLinearColor           mDrawColor;

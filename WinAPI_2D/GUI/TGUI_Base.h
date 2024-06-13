@@ -1,14 +1,14 @@
 #pragma once
-#include "UObject.h"
+#include "../CommonInclude.h"
 
 namespace LJG
 {
-	class UImage : public	UObject
+
+	class TGUI_Base : public ICoreAPI
 	{
 	public:
-		explicit UImage(WTextView InTexturePath = nullptr);
-		~UImage() override;
-
+		TGUI_Base(HWND InWindowHandle);
+		
 	public:
 #pragma region Core Interface
 		void Initialize() override;
@@ -17,10 +17,7 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void SetPosition(const FVector2f& InLocation) const;
-
 	protected:
-		WText         mImagePath;
-		XSprite2DUPtr mSprite2D;
+		HWND mWindowHandle;
 	};
 }

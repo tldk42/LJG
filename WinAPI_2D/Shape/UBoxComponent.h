@@ -3,12 +3,12 @@
 
 namespace LJG
 {
-	class UDebugBox2D : public UObject
+	class UBoxComponent : public UObject
 
 	{
 	public:
-		UDebugBox2D();
-		~UDebugBox2D() override = default;
+		UBoxComponent();
+		~UBoxComponent() override = default;
 
 	public:
 #pragma region Core Interface
@@ -23,5 +23,6 @@ namespace LJG
 
 	protected:
 		XDebugShape2DUPtr mDebugShape;
+		FBox2f            mBox;
 	};
 }

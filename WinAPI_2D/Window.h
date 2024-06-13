@@ -3,8 +3,6 @@
 
 namespace LJG
 {
-	CLASS_PTR(Window);
-
 	class Window
 	{
 	public:
@@ -26,12 +24,12 @@ namespace LJG
 		void Clear();
 
 #pragma region Get
-		inline HWND    GetHandle() const { return mWindowHandle; }
-		inline int32_t GetWidth() const { return mWindowData.Width; }
-		inline int32_t GetHeight() const { return mWindowData.Height; }
-		inline bool    IsFullScreen() const { return mWindowData.bFullScreen; }
-		inline bool    IsVsyncEnabled() const { return mWindowData.bVsync; }
-		inline bool    IsClosed() const { return bClosed; }
+		inline HWND     GetHandle() const { return mWindowHandle; }
+		inline uint32_t GetWidth() const { return mWindowData.Width; }
+		inline uint32_t GetHeight() const { return mWindowData.Height; }
+		inline bool     IsFullScreen() const { return mWindowData.bFullScreen; }
+		inline bool     IsVsyncEnabled() const { return mWindowData.bVsync; }
+		inline bool     IsClosed() const { return bClosed; }
 #pragma endregion
 
 #pragma region Set

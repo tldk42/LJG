@@ -1,10 +1,13 @@
 #include "Window.h"
 
+#include <imgui.h>
+
 #include "Context.h"
 #include "EngineHelper.h"
 #include "InputManager.h"
 
-EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+EXTERN_C IMAGE_DOS_HEADER     __ImageBase;
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace LJG
 {
@@ -14,8 +17,11 @@ namespace LJG
 	{
 		Window* window = Window::GetWindow(HWnd);
 
+		ImGui_ImplWin32_WndProcHandler(HWnd, Message, WParam, LParam);
+
 		if (window == nullptr)
 			return DefWindowProc(HWnd, Message, WParam, LParam);
+
 		switch (Message)
 		{
 		case WM_SIZE:
@@ -46,9 +52,7 @@ namespace LJG
 	}
 
 	Window::~Window()
-	{
-		
-	}
+	{}
 
 	bool Window::Initialize()
 	{

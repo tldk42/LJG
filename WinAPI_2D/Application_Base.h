@@ -3,16 +3,6 @@
 
 namespace LJG
 {
-	class XVertex2D;
-	class UTextBlock;
-
-	namespace Utils
-	{
-		class UTimer;
-	}
-}
-namespace LJG
-{
 	class Application_Base : public ICoreAPI
 	{
 	public:
@@ -47,7 +37,7 @@ namespace LJG
 #pragma endregion
 
 #pragma region Time
-		FTimerUPtr     mTimer;
+		FTimerUPtr mTimer;
 
 		float_t mDeltaTime;
 		float_t timer;
@@ -63,5 +53,6 @@ namespace LJG
 		bool bIsPaused;
 #pragma endregion
 
+		TGUI_BaseUPtr mMainGUI;
 	};
 }

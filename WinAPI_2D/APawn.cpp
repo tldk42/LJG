@@ -7,7 +7,7 @@
 #include "PlayerData.h"
 #include "UPawnMovementComponent2D.h"
 #include "UPlayerAnimator.h"
-#include "Shape/UDebugBox2D.h"
+#include "Shape/UBoxComponent.h"
 
 namespace LJG
 {
@@ -28,10 +28,10 @@ namespace LJG
 
 		// DELETE BELOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
-			mDebugBox = std::make_unique<UDebugBox2D>();
+			mDebugBox = std::make_unique<UBoxComponent>();
 			mDebugBox->Initialize();
 			mDebugBox->SetScale({120.f, 120.f});
-			mDebugBox->SetColor({1, 0, 0, 1});
+			mDebugBox->SetColor(FLinearColor::Green);
 			mDebugBox->SetOwnerActor(this);
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
@@ -84,7 +84,6 @@ namespace LJG
 
 		if (InputManager::IsKeyPressed(EKeyCode::X))
 		{
-			mTestRotation += (DeltaTime);
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
 		}
 		else

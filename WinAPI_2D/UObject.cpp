@@ -34,9 +34,14 @@ namespace LJG
 	void UObject::Release()
 	{}
 
+	void UObject::AttachComponent(UObject* ComponentToAttach)
+	{
+		ComponentToAttach->SetupAttachment(this);
+	}
+
 	void UObject::SetupAttachment(UObject* InParentObj)
 	{
-		InParentObj->mChildObjects.emplace(mObjectID, this);
+		InParentObj->mChildObjects.try_emplace(mObjectID, this);
 
 		mParentObject = InParentObj;
 	}

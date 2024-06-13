@@ -9,7 +9,7 @@ namespace LJG
 
 namespace LJG
 {
-	class UDebugBox2D;
+	class UBoxComponent;
 }
 
 namespace LJG
@@ -38,7 +38,7 @@ namespace LJG
 	private:
 		UPawnMovementComponent2D*    mMovementComponent;
 		UPlayerAnimator*             mAnimator;
-		std::unique_ptr<UDebugBox2D> mDebugBox;
+		std::unique_ptr<UBoxComponent> mDebugBox;
 
 	};
 }

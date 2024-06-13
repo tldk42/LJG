@@ -1,7 +1,6 @@
 #pragma once
 #include <assert.h>
-
-#include "Math/Vector2D.h"
+#include "Vector2D.h"
 #include <vector>
 
 namespace LJG
