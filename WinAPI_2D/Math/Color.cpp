@@ -12,6 +12,21 @@ namespace LJG
 	FLinearColor FLinearColor::Red(1, 0, 0, 1);
 	FLinearColor FLinearColor::Green(0, 1, 0, 1);
 	FLinearColor FLinearColor::Blue(0, 0, 1, 1);
+	FLinearColor FLinearColor::Gray       = FColor(189, 195, 199, 1);
+	FLinearColor FLinearColor::Black      = FColor(189, 195, 199, 1);
+	FLinearColor FLinearColor::Lynch      = FColor(108, 122, 137);
+	FLinearColor FLinearColor::WhiteSmoke = FColor(236, 236, 236);
+	FLinearColor FLinearColor::Gallary    = FColor(238, 238, 238);
+	FLinearColor FLinearColor::Iron       = FColor(218, 223, 225);
+	FLinearColor FLinearColor::Edward     = FColor(171, 183, 183);
+	FLinearColor FLinearColor::Cascade    = FColor(149, 165, 166);
+	FLinearColor FLinearColor::Silver     = FColor(191, 191, 191);
+	FLinearColor FLinearColor::Orange     = FColor(230, 126, 34);
+	FLinearColor FLinearColor::HippiePink = FColor(175, 65, 84);
+	FLinearColor FLinearColor::BlackPearl = FColor(8, 14, 44);
+	FLinearColor FLinearColor::Shark      = FColor(36, 37, 42);
+	FLinearColor FLinearColor::EbonyClay  = FColor(34, 49, 63);
+	FLinearColor FLinearColor::GreenPea   = FColor(22, 69, 62);
 
 	//---------------------- Lookup Table -----------------------------
 	float FLinearColor::s_RGBToLinearTable[256] =

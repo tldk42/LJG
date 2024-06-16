@@ -4,8 +4,6 @@
 
 namespace LJG
 {
-	InputManagerUPtr InputManager::s_InputManager = nullptr;
-
 	InputManager::InputManager()
 		: mMousePosition(), bEnableDebug(false)
 	{
@@ -14,37 +12,22 @@ namespace LJG
 		#endif
 	}
 
-	void InputManager::Create()
-	{
-		if (!s_InputManager)
-		{
-			s_InputManager.reset(new InputManager());
-			assert(s_InputManager);
-
-			s_InputManager->Initialize();
-		}
-	}
-
 	void InputManager::Initialize()
 	{
-		CreateKeys();
+		Get().CreateKeys();
 
-		ClearKeys();
-		ClearMouse();
+		Get().ClearKeys();
+		Get().ClearMouse();
 	}
 
 	void InputManager::Update(float DeltaTime)
 	{
-		UpdateKeys();
-		UpdateMouseWindowPosition();
+		Get().UpdateKeys();
+		Get().UpdateMouseWindowPosition();
 
-		Debug_Input();
+		Get().Debug_Input();
 	}
 
-	void InputManager::Render()
-	{}
-
-	void InputManager::Release() {}
 
 	void InputManager::CreateKeys()
 	{
@@ -110,12 +93,7 @@ namespace LJG
 
 	void InputManager::UpdateMouseWindowPosition()
 	{
-		const HWND WindowHandle = EngineHelper::GetWindowHandle();
-		if (!WindowHandle)
-		{
-			LOG_CORE_FATAL("Window Handle 반환 실패");
-			return;
-		}
+		const HWND WindowHandle = GetHWND();
 
 		POINT mousePoint;
 		GetCursorPos(&mousePoint);                 // 커서 좌표 받아오기

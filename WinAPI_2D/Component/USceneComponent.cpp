@@ -14,7 +14,7 @@ namespace LJG
 	}
 
 	USceneComponent::~USceneComponent() = default;
-
+		
 	void USceneComponent::Initialize()
 	{
 		UObject::Initialize();

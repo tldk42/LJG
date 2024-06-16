@@ -55,11 +55,15 @@ void LJG::TGUI_Inspector::ShowInspector()
 		v[0] = mObjectToShow->GetActorLocation().X;
 		v[1] = mObjectToShow->GetActorLocation().Y;
 	}
-	static float s[2];
+	static float s[2] = {1.f,1.f};
 	ImGui::InputFloat2("Location", v);
 	ImGui::InputFloat2("Scale", s);
 
+	auto worldPos = XMVectorSet(v[0], v[1], 0, 1.f);
+	// auto clipPos = XMVector3TransformCoord(worldPos, )
+
 	mObjectToShow->SetActorLocation({v[0], v[1]});
+	mObjectToShow->SetActorScale({s[0], s[1]});
 
 	ImGui::End();
 

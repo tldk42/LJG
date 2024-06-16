@@ -1,16 +1,17 @@
 #include "UPawnMovementComponent2D.h"
 
+#include "AActor.h"
+
 namespace LJG
 {
 	UPawnMovementComponent2D::UPawnMovementComponent2D()
-		: bIsMovingOnGround(false),
+		: bIsMovingOnGround(true),
 		  mMaxWalkSpeed(350.f),
+		  mGravity(98.f),
 		  mVelocity(FVector2f::ZeroVector),
-		  mGravity(),
 		  mAirResistance(),
 		  mGroundFriction()
-	{
-	}
+	{}
 
 	void UPawnMovementComponent2D::Initialize()
 	{
@@ -23,18 +24,23 @@ namespace LJG
 	{
 		UObject::Update(DeltaTime);
 
-		if (bIsMovingOnGround)
+		const FVector2f ownerLocation = mOwnerActor->GetActorLocation();
+
+		if (ownerLocation.Y > 0 || !bIsMovingOnGround)
 		{
-			mVelocity += mGroundFriction;
+			auto newLoc = ownerLocation.Y - (mGravity * DeltaTime);
+			mOwnerActor->SetActorLocation({ownerLocation.X, newLoc});
 		}
-		else
-		{
-			mVelocity += mGravity;
-		}
+
+		const auto newVelocity = (ownerLocation - mPreviousLocation) / DeltaTime;
+		mAcceleration          = (newVelocity - mVelocity) / DeltaTime;
+		mVelocity              = newVelocity;
+		mPreviousLocation      = ownerLocation;
 	}
 
 	void UPawnMovementComponent2D::AddMovementInput(const FVector2f& InInput)
 	{
 		mInputVector += InInput;
 	}
+	
 }

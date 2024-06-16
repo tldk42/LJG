@@ -10,7 +10,7 @@ namespace LJG
 {
 	DXWriteUPtr DXWrite::s_Writer = nullptr;
 
-	DXWrite::DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
+	DXWrite::DXWrite()
 		: mD2DFactory(nullptr),
 		  mRenderTarget(nullptr),
 		  mBrush(nullptr),
@@ -25,7 +25,7 @@ namespace LJG
 		  mFontWeight(DWRITE_FONT_WEIGHT_NORMAL),
 		  mFontStyle(DWRITE_FONT_STYLE_NORMAL)
 	{
-		Set(InWidth, InHeight, InSurface);
+		DXWrite::Initialize();
 	}
 
 	DXWrite::~DXWrite()
@@ -33,9 +33,9 @@ namespace LJG
 		DXWrite::Release();
 	}
 
-	void DXWrite::Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
+	void DXWrite::Create()
 	{
-		s_Writer.reset(new DXWrite(InWidth, InHeight, InSurface));
+		s_Writer.reset(new DXWrite());
 	}
 
 	void DXWrite::Initialize()
@@ -44,6 +44,14 @@ namespace LJG
 		mFontFamily                     = defaultText;
 
 		CreateDeviceIndependentResources();
+		CreateDeviceResources();
+
+		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
+			OnResizeCallback(Width, Height);
+		});
+
+		mTextArray.clear();
+		mTextArray.reserve(10);
 	}
 
 	void DXWrite::Update(float DeltaTime) {}
@@ -77,30 +85,8 @@ namespace LJG
 	{
 		if (s_Writer)
 			return s_Writer->bInitialized;
+
 		return false;
-	}
-
-	bool DXWrite::Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface)
-	{
-		Initialize();
-
-		CreateDeviceResources(InSurface);
-
-
-		// static_assert(Window::GetWindow(), L"윈도우 초기화 안됨");
-
-		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
-			IDXGISurface1* backBuffer = nullptr;
-			Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), reinterpret_cast<void**>(&backBuffer));
-
-			OnResizeCallback(Width, Height, backBuffer);
-			backBuffer->Release();
-		});
-
-		mTextArray.clear();
-		mTextArray.reserve(10);
-
-		return true;
 	}
 
 	HRESULT DXWrite::Begin() const
@@ -161,7 +147,7 @@ namespace LJG
 	HRESULT DXWrite::CreateDeviceIndependentResources()
 	{
 		// Set DPI
-		mDPI       = static_cast<float_t>(GetDpiForWindow(EngineHelper::GetWindowHandle()));
+		mDPI       = static_cast<float_t>(GetDpiForWindow(GetHWND()));
 		mDPI_Scale = mDPI / 96.f;
 
 
@@ -192,9 +178,12 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT DXWrite::CreateDeviceResources(IDXGISurface1* InSurface)
+	HRESULT DXWrite::CreateDeviceResources()
 	{
-		HRESULT result = S_OK;
+		ComPtr<IDXGISurface1> backBuffer;
+		CHECK_RESULT(Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1),
+														reinterpret_cast<void**>(backBuffer.GetAddressOf())));
+
 
 		D2D1_RENDER_TARGET_PROPERTIES props;
 
@@ -205,13 +194,13 @@ namespace LJG
 		props.usage       = D2D1_RENDER_TARGET_USAGE_NONE;
 		props.minLevel    = D2D1_FEATURE_LEVEL_DEFAULT;
 
-		result = mD2DFactory->CreateDxgiSurfaceRenderTarget(InSurface, &props, mRenderTarget.GetAddressOf());
-		if (SUCCEEDED(result))
-		{
-			result = mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), mBrush.GetAddressOf());
-		}
+		CHECK_RESULT(mD2DFactory->CreateDxgiSurfaceRenderTarget(backBuffer.Get(), &props, mRenderTarget.GetAddressOf()));
+		CHECK_RESULT(mRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), mBrush.GetAddressOf()));
 
-		return result;
+
+		backBuffer = nullptr;
+
+		return S_OK;
 	}
 
 	void DXWrite::DiscardDeviceIndependentResources()
@@ -350,11 +339,11 @@ namespace LJG
 	}
 #pragma endregion
 
-	void DXWrite::OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface)
+	void DXWrite::OnResizeCallback(UINT InWidth, UINT InHeight)
 	{
 		// RenderTarget, Brush 해제 
 		DiscardDeviceResources();
 		// 새로운 BackBuffer로 재생성
-		CreateDeviceResources(InSurface);
+		CreateDeviceResources();
 	}
 }

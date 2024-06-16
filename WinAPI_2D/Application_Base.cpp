@@ -7,7 +7,6 @@
 #include "Renderer.h"
 #include "FTimer.h"
 #include "Window.h"
-#include "Component/USceneComponent.h"
 #include "GUI/TGUI_Inspector.h"
 
 namespace LJG
@@ -34,49 +33,56 @@ namespace LJG
 
 	void Application_Base::Initialize()
 	{
+		// Logger를 가장 먼저 초기화 해야 함 다른 초기화중에 Logger를 사용
 		Logger::Initialize();
+		InputManager::Initialize();
 
-		Initialize_Internal();
+		// 무조건 Device를 생성전에 Window Handle Instance를 반환해야 함 
+		Initialize_Application();
 
-		InputManager::Create();
+		Renderer::Initialize();
+		ObjectManager::Initialize();
 
-		Renderer::Create(mWindowData, mWindow->GetHandle());
 
 		mMainGUI = std::make_unique<TGUI_Inspector>(mWindow->GetHandle());
 		mMainGUI->Initialize();
-
-		ObjectManager::Initialize();
 	}
 
 	void Application_Base::Update(float DeltaTime)
 	{
-		InputManager::Get()->Update(DeltaTime);
+		InputManager::Update(DeltaTime);
 
 		ObjectManager::Update(DeltaTime);
 
 		mMainGUI->Update(DeltaTime);
 
-		Renderer::Get()->Update(DeltaTime);
+		Renderer::Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
 	{
-		Renderer::Clear();
+		// RenderTarget (Background 또는 기본 바탕색) 지워주고
+		Renderer::Clear(FLinearColor::Gallary);
 
+		// 모든 렌더링 오브젝트 Draw
 		ObjectManager::Render();
 
+		// GUI Draw
 		mMainGUI->Render();
 
-		Renderer::Get()->Render();
+		// TODO: UI Draw
+
+		// Back Buffer -> Present
+		Renderer::Render();
 	}
 
 	void Application_Base::Release()
 	{
 		mMainGUI->Release();
-		Renderer::Get()->Release();
+		Renderer::Release();
 	}
 
-	void Application_Base::Initialize_Internal()
+	void Application_Base::Initialize_Application()
 	{
 		if (!bIsInitialized)
 		{
@@ -120,10 +126,8 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			APawn*           pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
-			AHUD*            hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
-			USceneComponent* sc  = ObjectManager::Get().CreateObject<USceneComponent>(L"SceneComp");
-			
+			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
+			AHUD*  hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
 
 			mMainGUI->BindObject(pc);
 

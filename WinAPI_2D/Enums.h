@@ -45,5 +45,6 @@ enum class EKeyCode
 	LButton,
 	MButton,
 	RButton,
+	Space,
 	End
 };

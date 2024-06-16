@@ -26,6 +26,21 @@ namespace LJG
 		static FLinearColor Red;
 		static FLinearColor Green;
 		static FLinearColor Blue;
+		static FLinearColor Gray;
+		static FLinearColor Lynch;
+		static FLinearColor WhiteSmoke;
+		static FLinearColor Gallary;
+		static FLinearColor Iron;
+		static FLinearColor Edward;
+		static FLinearColor Cascade;
+		static FLinearColor Silver;
+		static FLinearColor Orange;
+		static FLinearColor HippiePink;
+		static FLinearColor GreenPea;
+		static FLinearColor BlackPearl;
+		static FLinearColor Shark;
+		static FLinearColor EbonyClay;
+		static FLinearColor Black;
 
 		/** sRGB -> Linear 룩업 테이블 */
 		static float s_RGBToLinearTable[256];

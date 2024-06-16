@@ -3,29 +3,27 @@
 
 namespace LJG
 {
-	CLASS_PTR(InputManager)
 
-	class InputManager : public ICoreAPI
+	class InputManager
 	{
 	public:
 		InputManager();
-		~InputManager() override = default;
+		~InputManager() = default;
 
-		static void          Create();
-		static InputManager* Get() { return s_InputManager.get(); }
+		[[nodiscard]] inline static InputManager& Get()
+		{
+			static InputManager instance;
+			return instance;
+		}
 
-#pragma region Core Interface
-		void Initialize() override;
-		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
-#pragma endregion
+		static void Initialize();
+		static void Update(float DeltaTime);
 
 	public:
-		FORCEINLINE static bool             IsKeyDown(const EKeyCode Key) { return Get()->IsKeyDown_Internal(Key); }
-		FORCEINLINE static bool             IsKeyUp(const EKeyCode Key) { return Get()->IsKeyUp_Internal(Key); }
-		FORCEINLINE static bool             IsKeyPressed(const EKeyCode Key) { return Get()->IsKeyPressed_Internal(Key); }
-		FORCEINLINE static const FVector2f& GetMousePosition() { return Get()->mMousePosition; }
+		FORCEINLINE static bool             IsKeyDown(const EKeyCode Key) { return Get().IsKeyDown_Internal(Key); }
+		FORCEINLINE static bool             IsKeyUp(const EKeyCode Key) { return Get().IsKeyUp_Internal(Key); }
+		FORCEINLINE static bool             IsKeyPressed(const EKeyCode Key) { return Get().IsKeyPressed_Internal(Key); }
+		FORCEINLINE static const FVector2f& GetMousePosition() { return Get().mMousePosition; }
 
 	private:
 		inline bool IsKeyDown_Internal(EKeyCode Key) const
@@ -65,7 +63,5 @@ namespace LJG
 		FVector2f             mMousePosition;
 
 		bool bEnableDebug;
-
-		static InputManagerUPtr s_InputManager;
 	};
 }

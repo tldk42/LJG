@@ -21,6 +21,8 @@ namespace LJG
 
 		void SetState(const uint8_t InState, const bool bLoop);
 		void AddState(uint8_t InState, UAnimation* InAnimation);
+		void SetFlipX(const bool bEnable) { bFlipX = bEnable; }
+		bool FlipX() const { return bFlipX; }
 
 	public:
 		static std::vector<FAnimData> LoadAnimation(WTextView      InPath, const uint32_t InMaxSprite,
@@ -29,6 +31,7 @@ namespace LJG
 
 	private:
 		bool                                     bIsPlaying;
+		bool                                     bFlipX;
 		uint8_t                                  mCurrentState;
 		std::unordered_map<uint8_t, UAnimation*> mStateMachine;
 	};

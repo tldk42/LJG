@@ -3,34 +3,27 @@
 
 namespace LJG
 {
-	CLASS_PTR(Renderer)
-
-	class Renderer : ICoreAPI
+	class Renderer
 	{
 	private:
-		Renderer(const FWindowData& InWinData, HWND InWindowHandle);
+		Renderer();
 
 	public:
-		~Renderer() override;
+		~Renderer();
 
 	public:
-		static void             Create(const FWindowData& WinData, void* DeviceContext);
-		inline static Renderer* Get() { return s_Renderer.get(); }
+		[[nodiscard]] inline static Renderer& Get()
+		{
+			static Renderer instance;
+			return instance;
+		}
 
 	public:
-#pragma region Core Interface
-		void Initialize() override;
-		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
-#pragma endregion
+		static void Initialize();
+		static void Update(float DeltaTime);
+		static void Render();
+		static void Release();
 
-		static void Clear();
-
-	private:
-		static RendererUPtr s_Renderer;
-
-		FWindowData mWindowData;
-		HWND        mWindowHandle;
+		static void Clear(const FLinearColor& InClearColor = FLinearColor::Gray);
 	};
 }

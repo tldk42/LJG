@@ -24,10 +24,7 @@ namespace LJG
 
 		if (mOwnerActor)
 		{
-			mDebugShape->SetWorldTransform(
-				mOwnerActor->GetActorLocation(),
-				0,
-				FVector2f::UnitVector);
+			mDebugShape->SetWorldLocation(mOwnerActor->GetActorLocation());
 		}
 
 	}

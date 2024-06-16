@@ -26,8 +26,8 @@ namespace LJG
 
 	void XVertex2D::Update(float DeltaTime)
 	{
+		mWorldBuffer->SetWorldMatrix(mTransform);
 		mWorldBuffer->Update(DeltaTime);
-		SetShaderParams();
 	}
 
 	void XVertex2D::Render()
@@ -69,16 +69,37 @@ namespace LJG
 #pragma region Transform
 	void XVertex2D::SetScale(const FVector2f& InScale)
 	{
-		mScale = InScale;
+		// 기존 행렬의 이동, 회전 성분을 저장
+		XMVECTOR scale, rotation, translation;
+		XMMatrixDecompose(&scale, &rotation, &translation, mTransform);
 
-		SetTransform(FVector2f::ZeroVector, 0.f, mScale);
+		// 새로운 스케일 행렬을 생성
+		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X, InScale.Y, 1.0f);
+
+		// 새로운 스케일 행렬과 기존의 회전 행렬을 결합
+		const XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(rotation);
+		mTransform                    = newScaleMatrix * rotationMatrix;
+
+		// 기존의 위치 성분을 다시 설정
+		mTransform.r[3] = translation;
 	}
 
-	void XVertex2D::SetWorldRotation(const float InAngle)
+	void XVertex2D::SetWorldRotation(const float InDegree)
 	{
-		mAngle = InAngle;
+		// 새로운 각 (Degree)
+		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
 
-		SetTransform(FVector2f::ZeroVector, InAngle, FVector2f::UnitVector);
+		// 기존 스케일 성분
+		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mTransform.r[0]),
+												 XMVectorGetY(mTransform.r[1]),
+												 XMVectorGetZ(mTransform.r[2]), 0.0f);
+		// 기존 위치 성분
+		const XMVECTOR cachedTranslation = mTransform.r[3];
+
+		// 새로운 변환 행렬을 스케일, 새로운 회전, 기존 위치를 결합하여 재구성
+		mTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix; // 회전, 스케일은 위 3x3성분
+		mTransform.r[3] = cachedTranslation; // 이동 성분은 마지막 행벡터
+
 	}
 
 	void XVertex2D::SetColor(const FLinearColor& InColor)
@@ -89,29 +110,34 @@ namespace LJG
 		{
 			vertex.Color = mDrawColor;
 		}
+
+		SetShaderParams();
 	}
 
 	void XVertex2D::SetWorldLocation(const FVector2f& InLocation)
 	{
-		AddWorldLocation(InLocation - mWorldLocation);
+		mTransform.r[3] = XMVectorSet(InLocation.X, InLocation.Y, 0.f, 1.f);
 	}
 
 	void XVertex2D::AddWorldLocation(const FVector2f& InAddLocation)
 	{
-		SetTransform(InAddLocation, 0, FVector2f::UnitVector);
+		mTransform.r[3] = XMVectorSet(GetLocation().X + InAddLocation.X, GetLocation().Y + InAddLocation.Y, 0.f, 1.f);
+	}
 
-		mWorldLocation += InAddLocation;
+	void XVertex2D::SetWorldTransform(const Matrix& InMatrix)
+	{
+		mTransform = InMatrix;
 	}
 
 	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
-		const FVector2f delta = InLocation - mWorldLocation;
+		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
+		const XMMATRIX rotation    = RotationMatrix(InAngle);
+		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
 
-		SetTransform(delta, InAngle, InScale);
+		const XMMATRIX transform = scale * rotation * translation;
 
-		mWorldLocation = InLocation;
-		mAngle         = InAngle;
-		mScale         = InScale;
+		mTransform = transform;
 	}
 
 	void XVertex2D::SetFlipX(const bool bEnable)
@@ -120,39 +146,15 @@ namespace LJG
 		{
 			for (FVertexBase& vertex : mVertexBufferArray)
 			{
-				vertex.Pos.X *= -1;
+				vertex.Tex.X = 1.f - vertex.Tex.X;
 			}
 
 			bFlipX = bEnable;
 		}
+
+		SetShaderParams();
 	}
 
-	void XVertex2D::SetTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
-	{
-		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
-		const XMMATRIX rotation    = RotationMatrix(InAngle);
-		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
-
-		const XMMATRIX transform = scale * rotation * translation;
-
-		mWorldBuffer->SetWorldMatrix(transform);
-
-		for (FVertexBase& vertex : mVertexBufferArray)
-		{
-			XMVECTOR pos = {vertex.Pos.X, vertex.Pos.Y, vertex.Pos.Z, 1.f};
-
-			// 1 : 1 정규화
-			// pos = XMVector2Transform(pos, aspectScale);
-
-			// 변환 행렬 적용
-			pos = XMVector2Transform(pos, transform);
-
-			// 4 : 3변환 
-			// pos = XMVector2Transform(pos, aspectInverse);
-
-			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vertex.Pos), pos);
-		}
-	}
 #pragma endregion
 
 	HRESULT XVertex2D::CreateShape()
@@ -280,10 +282,10 @@ namespace LJG
 		 */
 		mVertexBufferArray =
 		{
-			{FVector3f(-.5f, .5f, mZOrder) * mScale, {0, 0}, mDrawColor},
-			{FVector3f(.5f, .5f, mZOrder) * mScale, {1, 0}, mDrawColor},
-			{FVector3f(.5f, -.5f, mZOrder) * mScale, {1, 1}, mDrawColor},
-			{FVector3f(-.5f, -.5f, mZOrder) * mScale, {0, 1}, mDrawColor},
+			{FVector3f(-.5f, .5f, mZOrder), {0, 0}, mDrawColor},
+			{FVector3f(.5f, .5f, mZOrder), {1, 0}, mDrawColor},
+			{FVector3f(.5f, -.5f, mZOrder), {1, 1}, mDrawColor},
+			{FVector3f(-.5f, -.5f, mZOrder), {0, 1}, mDrawColor},
 		};
 	}
 

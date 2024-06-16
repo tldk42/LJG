@@ -10,11 +10,11 @@ namespace LJG
 	class DXWrite : public ICoreAPI
 	{
 	public:
-		DXWrite(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		DXWrite();
 		~DXWrite() override;
 
 	public:
-		static void            Create(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
+		static void            Create();
 		inline static DXWrite* Get() { return s_Writer.get(); }
 
 #pragma region Core Interface
@@ -26,18 +26,16 @@ namespace LJG
 
 		static bool Initialized();
 
-		bool Set(int32_t InWidth, int32_t InHeight, IDXGISurface1* InSurface);
-
 		HRESULT Begin() const;
 		HRESULT End() const;
-		HRESULT Draw(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = D2D1::ColorF::Green) const;
-		HRESULT DrawText_A(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = D2D1::ColorF::DarkGreen) const;
+		HRESULT Draw(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = 0x16453E) const;
+		HRESULT DrawText_A(const FVector2f& InPosition, WTextView InText, D2D1::ColorF = 0x16453E) const;
 		HRESULT DrawText_Immediately(const std::wstring& InText, D2D1_RECT_F Rect,
 									 D2D1::ColorF         = D2D1::ColorF::DarkGreen);
 
 
 		HRESULT CreateDeviceIndependentResources();
-		HRESULT CreateDeviceResources(IDXGISurface1* InSurface);
+		HRESULT CreateDeviceResources();
 
 		void DiscardDeviceIndependentResources();
 		void DiscardDeviceResources();
@@ -55,7 +53,7 @@ namespace LJG
 
 	private:
 		// Resize Callback
-		void OnResizeCallback(UINT InWidth, UINT InHeight, IDXGISurface1* InSurface);
+		void OnResizeCallback(UINT InWidth, UINT InHeight);
 
 	private:
 		ComPtr<ID2D1Factory>         mD2DFactory;
@@ -75,8 +73,8 @@ namespace LJG
 		DWRITE_FONT_WEIGHT mFontWeight;
 		DWRITE_FONT_STYLE  mFontStyle;
 
-		std::wstring mFontFamily;
-		std::wstring mText;
+		WText mFontFamily;
+		WText mText;
 
 		bool bInitialized;
 

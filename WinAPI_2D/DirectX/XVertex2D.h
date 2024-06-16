@@ -33,16 +33,17 @@ namespace LJG
 #pragma region Set
 		void SetColor(const FLinearColor& InColor);
 		void SetScale(const FVector2f& InScale);
-		void SetWorldRotation(const float InAngle);
+		void SetWorldRotation(const float InDegree);
 		void SetWorldLocation(const FVector2f& InLocation);
 		void AddWorldLocation(const FVector2f& InAddLocation);
+		void SetWorldTransform(const Matrix& InMatrix);
 		void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
 		void SetFlipX(const bool bEnable);
 #pragma endregion
 
 #pragma region Get
-		inline const FVector2f& GetLocation() const { return mWorldLocation; }
-		inline const FVector2f& GetScale() const { return mScale; }
+		inline const FVector2f& GetLocation() const { return Mat2LocVector2(mTransform); }
+		inline const FVector2f& GetScale() const { return Mat2ScaleVector2(mTransform); }
 #pragma endregion
 
 	protected:
@@ -56,8 +57,6 @@ namespace LJG
 
 		void SetShaderParams() const;
 
-		void SetTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
-
 		virtual void OnResizeCallback();
 
 	protected:
@@ -65,6 +64,9 @@ namespace LJG
 		ComPtr<ID3D11InputLayout> mVertexLayout;
 		ComPtr<ID3D11Buffer>      mVertexBuffer;
 		ComPtr<ID3D11Buffer>      mIndexBuffer;
+		XWorldBufferUPtr          mWorldBuffer;
+		D3D_PRIMITIVE_TOPOLOGY    mPrimType;
+		FLinearColor              mDrawColor;
 		std::vector<FVertexBase>  mVertexBufferArray;
 		std::vector<WORD>         mIndices;
 #pragma endregion
@@ -75,18 +77,10 @@ namespace LJG
 #pragma endregion
 
 #pragma region Transform
-		FVector2f mWorldLocation = FVector2f::ZeroVector;
-		float     mAngle         = 0.f;
-		FVector2f mScale         = FVector2f::UnitVector;
+		Matrix mTransform = XMMatrixIdentity();
 #pragma endregion
 
 		float mZOrder = 0.f;
-
-		XWorldBufferUPtr mWorldBuffer;
-
-		FLinearColor           mDrawColor;
-		D3D_PRIMITIVE_TOPOLOGY mPrimType;
-
-		bool bFlipX = false;
+		bool  bFlipX  = false;
 	};
 }

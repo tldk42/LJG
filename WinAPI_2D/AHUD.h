@@ -27,6 +27,7 @@ namespace LJG
 	private:
 		UTextBlock* mFpsText;
 		UImage*     mBackgroundImage;
+		UImage*     mSampleImage;
 	};
 
 }

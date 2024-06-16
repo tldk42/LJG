@@ -26,7 +26,7 @@ namespace LJG
 #pragma endregion
 
 	protected:
-		virtual void Initialize_Internal();
+		virtual void Initialize_Application();
 		virtual void Run();
 
 	protected:

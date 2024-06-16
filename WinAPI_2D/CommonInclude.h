@@ -55,7 +55,8 @@ namespace LJG
 		'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
 		'Z', 'X', 'C', 'V', 'B', 'N', 'M',
 		VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
-		VK_LBUTTON, VK_MBUTTON, VK_RBUTTON
+		VK_LBUTTON, VK_MBUTTON, VK_RBUTTON,
+		VK_SPACE
 	};
 
 	constexpr const char* ASCIIString[static_cast<UINT>(EKeyCode::End)] =
@@ -64,7 +65,8 @@ namespace LJG
 		"A", "S", "D", "F", "G", "H", "J", "K", "L",
 		"Z", "X", "C", "V", "B", "N", "M",
 		"LEFT", "RIGHT", "DOWN", "UP",
-		"LBUTTON", "MBUTTON", "RBUTTON"
+		"LBUTTON", "MBUTTON", "RBUTTON",
+		"Space"
 	};
 #pragma endregion
 

@@ -68,8 +68,9 @@ namespace LJG
 
 	void XSprite2D::AdjustTextureSize()
 	{
-		mScale.X = static_cast<float_t>(mTexture->GetTextureDesc().Width);
-		mScale.Y = static_cast<float_t>(mTexture->GetTextureDesc().Height);
+		SetScale({
+			static_cast<float_t>(mTexture->GetTextureDesc().Width), static_cast<float_t>(mTexture->GetTextureDesc().Height)
+		});
 	}
 
 	void XSprite2D::CreateVertexArray()
@@ -87,6 +88,5 @@ namespace LJG
 	}
 
 	void XSprite2D::OnResizeCallback()
-	{
-	}
+	{}
 }

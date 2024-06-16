@@ -32,8 +32,10 @@ namespace LJG
 
 				for (const FAnimData& anim : mAnimDatas)
 				{
-					anim.Sprite->SetWorldTransform(ownerActor->GetActorLocation(), ownerActor->GetActorRotation(),
-												   FVector2f::UnitVector);
+					anim.Sprite->SetFlipX(mOwnerAnimator->FlipX() ? true : false);
+					anim.Sprite->SetWorldLocation(ownerActor->GetActorLocation());
+					// anim.Sprite->SetWorldTransform(ownerActor->GetActorLocation(), ownerActor->GetActorRotation(),
+					// 							   FVector2f::UnitVector);
 				}
 				mPosition = ownerActor->GetActorLocation();
 			}

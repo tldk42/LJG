@@ -23,7 +23,13 @@ namespace LJG
 		mBackgroundImage->SetupAttachment(this);
 		mBackgroundImage->SetOwnerActor(this);
 		mBackgroundImage->Initialize();
-		mBackgroundImage->SetPosition({0, -100.f});
+		mBackgroundImage->SetPosition({0, -200.f});
+
+		mSampleImage = CreateDefaultSubObject<UImage>(L"SampleImage", L"rsc/ND/Monster/Sample.png");
+		mSampleImage->SetupAttachment(this);
+		mSampleImage->SetOwnerActor(this);
+		mSampleImage->Initialize();
+		mSampleImage->SetPosition({800, 0.f});
 	}
 
 	void AHUD::Update(float DeltaTime)

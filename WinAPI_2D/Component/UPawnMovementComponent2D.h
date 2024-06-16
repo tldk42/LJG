@@ -18,9 +18,9 @@ namespace LJG
 #pragma region Get
 		[[nodiscard]] inline bool      IsMovingOnGround() const { return bIsMovingOnGround; }
 		[[nodiscard]] inline float_t   GetMaxWalkSpeed() const { return mMaxWalkSpeed; }
+		[[nodiscard]] inline float_t   GetGravity() const { return mGravity; }
 		[[nodiscard]] inline FVector2f GetInputVector() const { return mInputVector; }
 		[[nodiscard]] inline FVector2f GetVelocity() const { return mVelocity; }
-		[[nodiscard]] inline FVector2f GetGravity() const { return mGravity; }
 		[[nodiscard]] inline FVector2f GetAirResistance() const { return mAirResistance; }
 		[[nodiscard]] inline FVector2f GetGroundFriction() const { return mGroundFriction; }
 #pragma endregion
@@ -29,11 +29,13 @@ namespace LJG
 		bool bIsMovingOnGround;
 
 		float_t mMaxWalkSpeed;
+		float_t mGravity;
 
 		FVector2f mInputVector;
 		FVector2f mVelocity;
-		FVector2f mGravity;
+		FVector2f mAcceleration;
 		FVector2f mAirResistance;
 		FVector2f mGroundFriction;
+		FVector2f mPreviousLocation;
 	};
 }

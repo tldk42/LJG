@@ -6,16 +6,16 @@ namespace LJG
 {
 	CLASS_PTR(Context)
 
-	class Context : ICoreAPI
+	class Context : public ICoreAPI
 	{
 	private:
-		Context(const FWindowData& InWinData, void* InDeviceContext);
+		Context();
 
 	public:
 		~Context() override;
 
 	public:
-		static void Create(const FWindowData& InWinData, void* InDeviceContext);
+		static void Create();
 
 #pragma region Core Interface
 		void Initialize() override;
@@ -27,10 +27,9 @@ namespace LJG
 		void Present() const;
 
 	private:
-		bool    InitD3D(HWND InHwnd);
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
-		HRESULT CreateSwapChain(HWND InHwnd);
+		HRESULT CreateSwapChain();
 		void    SetViewport();
 		void    SetRenderTarget();
 
@@ -48,8 +47,7 @@ namespace LJG
 		inline static ID3D11RenderTargetView* GetRTV() { return Get()->mRenderTargetView.Get(); }
 		inline static ID3D11DepthStencilView* GetDepthStencilView() { return Get()->mDepthStencilView.Get(); }
 
-		inline static CHAR*              GetVideoCardDesc() { return Get()->mVideoCardDescription; }
-		inline static const FWindowData& GetWindowData() { return Get()->mWindowData; }
+		inline static CHAR* GetVideoCardDesc() { return Get()->mVideoCardDescription; }
 #pragma endregion
 
 	private:
@@ -64,7 +62,6 @@ namespace LJG
 		D3D11_VIEWPORT                 mViewport;                  /** 렌더링 뷰포트 */
 		D3D_FEATURE_LEVEL              mFeatureLevel;              /** DX기능 수준 레벨 */
 		CHAR                           mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
-		FWindowData                    mWindowData;                /** 윈도우 프로퍼티 */
 
 		ComPtr<IDXGIFactory> mGIFactory;
 	};

@@ -9,7 +9,7 @@ namespace LJG
 {
 	ContextUPtr Context::s_Context = nullptr;
 
-	Context::Context(const FWindowData& InWinData, void* InDeviceContext)
+	Context::Context()
 		: mDevice(nullptr),
 		  mDeviceContext(nullptr),
 		  mSwapChain(nullptr),
@@ -18,14 +18,9 @@ namespace LJG
 		  mDepthStencilBuffer(nullptr),
 		  mViewport(),
 		  mFeatureLevel(D3D_FEATURE_LEVEL_11_0),
-		  mVideoCardDescription{},
-		  mWindowData(InWinData)
-
+		  mVideoCardDescription{}
 	{
-		if (!InitD3D(static_cast<HWND>(InDeviceContext)))
-		{
-			LOG_DX_ERROR("FAILED");
-		}
+		Context::Initialize();
 	}
 
 	Context::~Context()
@@ -33,15 +28,36 @@ namespace LJG
 		Context::Release();
 	}
 
-	void Context::Create(const FWindowData& InWinData, void* InDeviceContext)
+	void Context::Create()
 	{
-		s_Context.reset(new Context(InWinData, InDeviceContext));
+		s_Context.reset(new Context());
 
 		s_Context->Initialize();
 	}
 
 	void Context::Initialize()
 	{
+		LOG_DX_TRACE("DirectX Initialization Start...");
+
+		// Step 1. DirectX Graphic Infrastructure 생성
+		CHECK_RESULT(CreateGIFactory());
+		LOG_DX_TRACE("1. DirectX Graphic Infrastructure...");
+
+		// Step 2. D3D Device, DeviceContext 반환
+		CHECK_RESULT(CreateDevice());
+		LOG_DX_TRACE("2. Device, DeviceContext...");
+
+		// Step 3. SwapChain 정보 생성 및 SwapChain 반환
+		CHECK_RESULT(CreateSwapChain());
+		LOG_DX_TRACE("3. SwapChain...");
+
+		// Step 4. RenderTargetView, Viewport 생성
+		OnResizeCallback(GetWindowWidth(), GetWindowHeight());
+		LOG_DX_TRACE("4. RTV..., Viewport...");
+
+		// Step 5. Alt + Enter로 자동 창변환을 제어
+		CHECK_RESULT(mGIFactory->MakeWindowAssociation(GetHWND(), DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
+
 		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
 			OnResizeCallback(Width, Height);
 		});
@@ -69,31 +85,6 @@ namespace LJG
 			debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 		}
 		mDevice = nullptr;
-	}
-
-	bool Context::InitD3D(HWND InHwnd)
-	{
-		LOG_DX_TRACE("DirectX Initialization Start...");
-
-		// Step 1. DirectX Graphic Infrastructure 생성
-		CHECK_RESULT(CreateGIFactory());
-		LOG_DX_TRACE("1. DirectX Graphic Infrastructure...");
-
-		// Step 2. D3D Device, DeviceContext 반환
-		CHECK_RESULT(CreateDevice());
-		LOG_DX_TRACE("2. Device, DeviceContext...");
-
-		// Step 3. SwapChain 정보 생성 및 SwapChain 반환
-		CHECK_RESULT(CreateSwapChain(InHwnd));
-		LOG_DX_TRACE("3. SwapChain...");
-
-		// Step 4. RenderTargetView, Viewport 생성
-		OnResizeCallback(mWindowData.Width, mWindowData.Height);
-		LOG_DX_TRACE("4. RTV..., Viewport...");
-
-		// Step 5. Alt + Enter로 자동 창변환을 제어
-		CHECK_RESULT(mGIFactory->MakeWindowAssociation(InHwnd, DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
-		return true;
 	}
 
 	HRESULT Context::CreateGIFactory()
@@ -154,21 +145,21 @@ namespace LJG
 		return S_OK;
 	}
 
-	HRESULT Context::CreateSwapChain(HWND InHwnd)
+	HRESULT Context::CreateSwapChain()
 	{
 		ZeroMemory(&mSwapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 		{
 			mSwapChainDesc.BufferCount                        = 1;
-			mSwapChainDesc.BufferDesc.Width                   = mWindowData.Width; // Buffer Width
-			mSwapChainDesc.BufferDesc.Height                  = mWindowData.Height; // Buffer Height
+			mSwapChainDesc.BufferDesc.Width                   = GetWindowWidth(); // Buffer Width
+			mSwapChainDesc.BufferDesc.Height                  = GetWindowHeight(); // Buffer Height
 			mSwapChainDesc.BufferDesc.Format                  = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
 			mSwapChainDesc.BufferDesc.RefreshRate.Numerator   = 60; // FPS 분자 TODO: 고정 주사율 설정
 			mSwapChainDesc.BufferDesc.RefreshRate.Denominator = 1; // FPS 분모
 			mSwapChainDesc.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
-			mSwapChainDesc.OutputWindow                       = InHwnd; // 출력될 윈도우 핸들
+			mSwapChainDesc.OutputWindow                       = GetHWND(); // 출력될 윈도우 핸들
 			mSwapChainDesc.SampleDesc.Count                   = 1; // 멀티 샘플링 개수
 			mSwapChainDesc.SampleDesc.Quality                 = 0; // 멀티 샘플링 품질
-			mSwapChainDesc.Windowed                           = !(mWindowData.bFullScreen); // 창 전체 화면 모드
+			mSwapChainDesc.Windowed                           = !IsFullScreen(); // 창 전체 화면 모드
 			mSwapChainDesc.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
 			mSwapChainDesc.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
 		}
@@ -197,9 +188,6 @@ namespace LJG
 
 			SetRenderTarget();
 			SetViewport();
-
-			mWindowData.Width  = InWidth;
-			mWindowData.Height = InHeight;
 		}
 	}
 
@@ -230,6 +218,6 @@ namespace LJG
 	{
 		assert(mSwapChain.Get());
 
-		CHECK_RESULT(mSwapChain->Present(mWindowData.bVsync, 0));
+		CHECK_RESULT(mSwapChain->Present(IsVsyncEnabled(), 0));
 	}
 }

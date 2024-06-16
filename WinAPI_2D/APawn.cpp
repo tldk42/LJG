@@ -37,7 +37,7 @@ namespace LJG
 
 			mDebugBox2 = CreateDefaultSubObject<UBoxComponent>(L"DebugBox2");
 			mDebugBox2->SetScale({200.f, 200.f});
-			mDebugBox2->SetColor(FLinearColor::Blue);
+			mDebugBox2->SetColor(FLinearColor::BlackPearl);
 			mDebugBox2->SetOwnerActor(this);
 
 
@@ -63,12 +63,19 @@ namespace LJG
 		if (InputManager::IsKeyPressed(EKeyCode::D))
 		{
 			AddMovementInput({DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
+			mAnimator->SetFlipX(false);
 			bMove = true;
 		}
 		if (InputManager::IsKeyPressed(EKeyCode::A))
 		{
 			AddMovementInput({-DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
+			mAnimator->SetFlipX(true);
 			bMove = true;
+		}
+
+		if (InputManager::IsKeyDown(EKeyCode::Space))
+		{
+			mLocation += {0, 250 * DeltaTime};
 		}
 
 		if (!bMove)

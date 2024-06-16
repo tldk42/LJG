@@ -5,43 +5,21 @@
 
 namespace LJG
 {
-	RendererUPtr Renderer::s_Renderer = nullptr;
-
-
-	Renderer::Renderer(const FWindowData& InWinData, HWND InWindowHandle)
-		: mWindowData(InWinData),
-		  mWindowHandle(InWindowHandle) {}
+	Renderer::Renderer() {}
 
 	Renderer::~Renderer()
 	{
 		Renderer::Release();
 	}
 
-	void Renderer::Create(const FWindowData& WinData, void* DeviceContext)
-	{
-		if (!s_Renderer)
-		{
-			s_Renderer.reset(new Renderer(WinData, static_cast<HWND>(DeviceContext)));
-
-			s_Renderer->Initialize();
-		}
-	}
-
 	void Renderer::Initialize()
 	{
-		Context::Create(mWindowData, mWindowHandle);
-
-		IDXGISurface1* surface = nullptr;
-		Context::GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface1), reinterpret_cast<void**>(&surface));
-
-		DXWrite::Create(mWindowData.Width, mWindowData.Height, surface);
-
-		surface->Release();
+		Context::Create();
+		DXWrite::Create();
 	}
 
 	void Renderer::Update(float DeltaTime)
-	{
-	}
+	{}
 
 	void Renderer::Release()
 	{
@@ -55,10 +33,8 @@ namespace LJG
 		Context::Get()->Render();
 	}
 
-	void Renderer::Clear()
+	void Renderer::Clear(const FLinearColor& InClearColor)
 	{
-		constexpr float clearColor[] = {.1f, .2f, .3f, 1.f};
-
-		Context::GetDeviceContext()->ClearRenderTargetView(Context::GetRTV(), clearColor);
+		Context::GetDeviceContext()->ClearRenderTargetView(Context::GetRTV(), InClearColor.RGBA);
 	}
 }
