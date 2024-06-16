@@ -16,8 +16,11 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+
 	private:
 		void ShowInspector();
-		bool bExit;
+
+	private:
+		bool     bExit;
 	};
 }

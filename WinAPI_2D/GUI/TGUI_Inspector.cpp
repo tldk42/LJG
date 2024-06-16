@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "AActor.h"
+
 LJG::TGUI_Inspector::TGUI_Inspector(HWND InHwnd)
 	: TGUI_Base(InHwnd) {}
 
@@ -49,7 +51,15 @@ void LJG::TGUI_Inspector::ShowInspector()
 	}
 	// ImGui::ImageButton()
 	static float v[2];
+	{
+		v[0] = mObjectToShow->GetActorLocation().X;
+		v[1] = mObjectToShow->GetActorLocation().Y;
+	}
+	static float s[2];
 	ImGui::InputFloat2("Location", v);
+	ImGui::InputFloat2("Scale", s);
+
+	mObjectToShow->SetActorLocation({v[0], v[1]});
 
 	ImGui::End();
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "UObject.h"
+#include "Component/UObject.h"
 
 namespace LJG
 {
@@ -19,7 +19,7 @@ namespace LJG
 
 		[[nodiscard]] inline FVector2f GetActorLocation() const { return mLocation; }
 		[[nodiscard]] inline FVector2f GetActorScale() const { return mScale; }
-		[[nodi]] float                 GetActorRotation() const { return mTestRotation; }
+		[[nodiscard]] float            GetActorRotation() const { return mTestRotation; }
 		[[nodiscard]] UObject*         GetComponentByID(const WText& InCompID);
 
 

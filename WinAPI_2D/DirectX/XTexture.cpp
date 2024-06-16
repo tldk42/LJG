@@ -1,12 +1,12 @@
 #include "XTexture.h"
 #include <directxtk/WICTextureLoader.h>
 #include "Context.h"
-#include "UDXHelper.h"
+#include "Helper/UDXHelper.h"
 
 namespace LJG
 {
 
-	XTexture::XTexture(const std::wstring& InFile, UINT InSlot)
+	XTexture::XTexture(WTextView InFile, UINT InSlot)
 		: mSlot(InSlot),
 		  mFilePath(InFile),
 		  mSRVDesc(),
@@ -32,12 +32,9 @@ namespace LJG
 			mSRV->GetDesc(&mSRVDesc);
 			mTexture->GetDesc(&mTextureDesc);
 
-			LOG_DX_INFO("-------- Texure Loaded ----------");
 			std::string texName;
 			texName.assign(mFilePath.begin(), mFilePath.end());
 			LOG_DX_INFO("File: {}", texName);
-			LOG_DX_INFO("Width: {}", mTextureDesc.Width);
-			LOG_DX_INFO("Height: {}", mTextureDesc.Height);
 		}
 	}
 

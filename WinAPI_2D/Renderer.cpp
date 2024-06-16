@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
-#include "Context.h"
-#include "DXWrite.h"
+#include "DirectX/Context.h"
+#include "DirectX/DXWrite.h"
 
 namespace LJG
 {
@@ -39,7 +39,9 @@ namespace LJG
 		surface->Release();
 	}
 
-	void Renderer::Update(float DeltaTime) {}
+	void Renderer::Update(float DeltaTime)
+	{
+	}
 
 	void Renderer::Release()
 	{

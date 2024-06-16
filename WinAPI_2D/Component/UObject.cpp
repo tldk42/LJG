@@ -1,6 +1,6 @@
 #include "UObject.h"
 
-#include "XSprite2D.h"
+#include "DirectX/XSprite2D.h"
 
 
 namespace LJG
@@ -28,11 +28,8 @@ namespace LJG
 		}
 	}
 
-	void UObject::Render()
-	{}
-
-	void UObject::Release()
-	{}
+	void UObject::Render() {}
+	void UObject::Release() {}
 
 	void UObject::AttachComponent(UObject* ComponentToAttach)
 	{

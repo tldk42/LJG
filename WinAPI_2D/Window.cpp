@@ -1,10 +1,7 @@
 #include "Window.h"
-
 #include <imgui.h>
-
-#include "Context.h"
-#include "EngineHelper.h"
-#include "InputManager.h"
+#include "DirectX/Context.h"
+#include "Helper/EngineHelper.h"
 
 EXTERN_C IMAGE_DOS_HEADER     __ImageBase;
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

@@ -1,13 +1,14 @@
 #pragma once
-#include "../CommonInclude.h"
+#include "CommonInclude.h"
 
 namespace LJG
 {
 
-	class TGUI_Base : public ICoreAPI
+	class XConstantBuffer : public ICoreAPI
 	{
 	public:
-		TGUI_Base(HWND InWindowHandle);
+		XConstantBuffer() ;
+		~XConstantBuffer() override = default;
 
 	public:
 #pragma region Core Interface
@@ -17,11 +18,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void BindObject(AActor* InBindObject);
+	protected:
+		virtual HRESULT CreateConstantBuffer();
 
 	protected:
-		HWND mWindowHandle;
-
-		AActor* mObjectToShow;
+		ComPtr<ID3D11Buffer> mConstantBuffer;
 	};
 }

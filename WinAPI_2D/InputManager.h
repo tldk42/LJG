@@ -22,9 +22,10 @@ namespace LJG
 #pragma endregion
 
 	public:
-		FORCEINLINE static bool IsKeyDown(const EKeyCode Key) { return Get()->IsKeyDown_Internal(Key); }
-		FORCEINLINE static bool IsKeyUp(const EKeyCode Key) { return Get()->IsKeyUp_Internal(Key); }
-		FORCEINLINE static bool IsKeyPressed(const EKeyCode Key) { return Get()->IsKeyPressed_Internal(Key); }
+		FORCEINLINE static bool             IsKeyDown(const EKeyCode Key) { return Get()->IsKeyDown_Internal(Key); }
+		FORCEINLINE static bool             IsKeyUp(const EKeyCode Key) { return Get()->IsKeyUp_Internal(Key); }
+		FORCEINLINE static bool             IsKeyPressed(const EKeyCode Key) { return Get()->IsKeyPressed_Internal(Key); }
+		FORCEINLINE static const FVector2f& GetMousePosition() { return Get()->mMousePosition; }
 
 	private:
 		inline bool IsKeyDown_Internal(EKeyCode Key) const
@@ -42,8 +43,6 @@ namespace LJG
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
 
-		inline const FVector2D& GetMousePosition() const { return mMousePosition; }
-
 	private:
 		void CreateKeys();
 
@@ -59,11 +58,11 @@ namespace LJG
 
 		static bool IsKeyDown_Implements(const EKeyCode InKey);
 
-		void Debug_Input();
+		void Debug_Input() const;
 
 	private:
 		std::vector<FKeyData> mKeys;
-		FVector2D             mMousePosition;
+		FVector2f             mMousePosition;
 
 		bool bEnableDebug;
 

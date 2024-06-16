@@ -1,12 +1,10 @@
 #include "APawn.h"
-
-#include <memory>
-
+#include "Camera.h"
 #include "InputManager.h"
-#include "UAnimator.h"
+#include "Component/UAnimator.h"
 #include "PlayerData.h"
-#include "UPawnMovementComponent2D.h"
-#include "UPlayerAnimator.h"
+#include "Component/UPawnMovementComponent2D.h"
+#include "Component/UPlayerAnimator.h"
 #include "Shape/UBoxComponent.h"
 
 namespace LJG
@@ -28,11 +26,20 @@ namespace LJG
 
 		// DELETE BELOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
-			mDebugBox = std::make_unique<UBoxComponent>();
-			mDebugBox->Initialize();
+			mCamera = CreateDefaultSubObject<ACamera>(L"Camera");
+			mCamera->SetOwnerActor(this);
+			mCamera->SetProjection(1024, 768);
+
+			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox");
 			mDebugBox->SetScale({120.f, 120.f});
 			mDebugBox->SetColor(FLinearColor::Green);
 			mDebugBox->SetOwnerActor(this);
+
+			mDebugBox2 = CreateDefaultSubObject<UBoxComponent>(L"DebugBox2");
+			mDebugBox2->SetScale({200.f, 200.f});
+			mDebugBox2->SetColor(FLinearColor::Blue);
+			mDebugBox2->SetOwnerActor(this);
+
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
 			mAnimator->SetupAttachment(this);
@@ -49,31 +56,18 @@ namespace LJG
 	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
-
-
-		mDebugBox->Update(DeltaTime);
+		mCamera->SetPosition(mLocation);
 
 		bool bMove = false;
 
-
 		if (InputManager::IsKeyPressed(EKeyCode::D))
 		{
-			AddMovementInput({DeltaTime, 0.f});
-			bMove = true;
-		}
-		if (InputManager::IsKeyPressed(EKeyCode::S))
-		{
-			AddMovementInput({0.f, -DeltaTime});
-			bMove = true;
-		}
-		if (InputManager::IsKeyPressed(EKeyCode::W))
-		{
-			AddMovementInput({0.f, DeltaTime});
+			AddMovementInput({DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
 			bMove = true;
 		}
 		if (InputManager::IsKeyPressed(EKeyCode::A))
 		{
-			AddMovementInput({-DeltaTime, 0.f});
+			AddMovementInput({-DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
 			bMove = true;
 		}
 
@@ -86,28 +80,12 @@ namespace LJG
 		{
 			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
 		}
-		else
-		{
-			mTestRotation = 0.f;
-		}
-	}
-
-	void APawn::Render()
-	{
-		AActor::Render();
-
-		mDebugBox->Render();
-	}
-
-	void APawn::Release()
-	{
-		AActor::Release();
 	}
 
 	void APawn::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
 		mMovementComponent->AddMovementInput(MovementInputAmount);
 		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		mLocation += (MovementInputAmount * mMovementComponent->GetMaxWalkSpeed());
+		mLocation += MovementInputAmount;
 	}
 }

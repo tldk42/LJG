@@ -1,10 +1,9 @@
 #pragma once
-#include "../UObject.h"
+#include "Component/UObject.h"
 
 namespace LJG
 {
 	class UBoxComponent : public UObject
-
 	{
 	public:
 		UBoxComponent();
@@ -18,8 +17,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void SetScale(const FVector2f& InScale) const;
+		void SetScale(const FVector2f& InScale);
 		void SetColor(const FLinearColor& InColor) const;
+
+		bool IsInArea(const FVector2f& InPos) const;
 
 	protected:
 		XDebugShape2DUPtr mDebugShape;

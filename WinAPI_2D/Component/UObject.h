@@ -19,7 +19,6 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-
 		inline AActor*  GetOwnerActor() const { return mOwnerActor; }
 		inline UObject* GetParent() const { return mParentObject; }
 		inline void     SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }

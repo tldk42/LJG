@@ -10,7 +10,7 @@ namespace LJG
 		explicit XSprite2D(const std::wstring& TextureFile = L"");
 		~XSprite2D() override;
 
-
+	public:
 #pragma region Core Interface
 		void Initialize() override;
 		void Update(float DeltaTime) override;

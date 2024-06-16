@@ -1,14 +1,13 @@
 #include "UAnimation2D.h"
 
 #include "AActor.h"
-#include "XSprite2D.h"
+#include "DirectX/XSprite2D.h"
 
 namespace LJG
 {
 	UAnimation2D::UAnimation2D(std::vector<FAnimData2D>& InAnims)
 		: mAnimDatas(InAnims)
-	{
-	}
+	{}
 
 	UAnimation2D::~UAnimation2D()
 	{

@@ -16,9 +16,9 @@ namespace LJG
 
 		mVertexBufferArray.reserve(4);
 
-		mTexture.reset(new XTexture(TextureFile));
-		mSamplerState.reset(new XSamplerState());
-		mBlendState_AlphaBlend.reset(new XBlendState(EBlendType::AlphaBlend));
+		mTexture               = std::make_unique<XTexture>(TextureFile);
+		mSamplerState          = std::make_unique<XSamplerState>();
+		mBlendState_AlphaBlend = std::make_unique<XBlendState>(EBlendType::AlphaBlend);
 
 		XSprite2D::Initialize();
 	}
@@ -30,8 +30,6 @@ namespace LJG
 
 	void XSprite2D::Initialize()
 	{
-		SetWindowResolution();
-
 		mTexture->Initialize();
 		mSamplerState->Initialize();
 		mBlendState_AlphaBlend->Initialize();
@@ -49,10 +47,6 @@ namespace LJG
 	void XSprite2D::Render()
 	{
 		XVertex2D::Render();
-
-		// 렌더링 리소스가 변경될 때 다시 호출 (각기 다른 텍스처로 설정 -> 렌더링)
-		// Context::GetDeviceContext()->PSSetShaderResources(0, 1, mSRV.GetAddressOf());
-		// Context::GetDeviceContext()->PSSetSamplers(0, 1, mSamplerState.GetAddressOf());
 
 		mTexture->Render();
 		mSamplerState->Render();
@@ -74,20 +68,8 @@ namespace LJG
 
 	void XSprite2D::AdjustTextureSize()
 	{
-		const FVector2f cachedScale = mScale;
-
-		mScale.X = static_cast<float_t>(mTexture->GetTextureDesc().Width) / mScreenResolution.X;
-		mScale.Y = static_cast<float_t>(mTexture->GetTextureDesc().Height) / mScreenResolution.Y;
-
-		if (const float overflowArea = mScale.GetMax(); overflowArea > 1)
-		{
-			mScale /= overflowArea;
-		}
-
-		for (FVertexBase& vertex : mVertexBufferArray)
-		{
-			vertex.Pos *= (mScale / cachedScale);
-		}
+		mScale.X = static_cast<float_t>(mTexture->GetTextureDesc().Width);
+		mScale.Y = static_cast<float_t>(mTexture->GetTextureDesc().Height);
 	}
 
 	void XSprite2D::CreateVertexArray()
@@ -106,7 +88,5 @@ namespace LJG
 
 	void XSprite2D::OnResizeCallback()
 	{
-		SetWindowResolution();
-		AdjustTextureSize();
 	}
 }

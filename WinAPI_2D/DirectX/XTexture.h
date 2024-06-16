@@ -6,7 +6,7 @@ namespace LJG
 	class XTexture : ICoreAPI
 	{
 	public:
-		XTexture(const std::wstring& InFile = L"", UINT InSlot = 0);
+		XTexture(WTextView InFile = L"", UINT InSlot = 0);
 		~XTexture() override;
 
 #pragma region Core Interface
@@ -20,7 +20,7 @@ namespace LJG
 
 	private:
 		UINT                             mSlot;
-		std::wstring                     mFilePath;
+		WText                            mFilePath;
 		ComPtr<ID3D11Resource>           mTextureResource;
 		ComPtr<ID3D11ShaderResourceView> mSRV;
 		ComPtr<ID3D11Texture2D>          mTexture;

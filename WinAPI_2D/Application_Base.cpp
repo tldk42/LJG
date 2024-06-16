@@ -2,13 +2,12 @@
 
 #include "AHUD.h"
 #include "APawn.h"
-#include "DXWrite.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "Renderer.h"
 #include "FTimer.h"
 #include "Window.h"
-#include "GUI/TGUI_Base.h"
+#include "Component/USceneComponent.h"
 #include "GUI/TGUI_Inspector.h"
 
 namespace LJG
@@ -56,6 +55,8 @@ namespace LJG
 		ObjectManager::Update(DeltaTime);
 
 		mMainGUI->Update(DeltaTime);
+
+		Renderer::Get()->Update(DeltaTime);
 	}
 
 	void Application_Base::Render()
@@ -119,8 +120,12 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
-			AHUD*  hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
+			APawn*           pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
+			AHUD*            hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
+			USceneComponent* sc  = ObjectManager::Get().CreateObject<USceneComponent>(L"SceneComp");
+			
+
+			mMainGUI->BindObject(pc);
 
 			while (bIsRunning)
 			{

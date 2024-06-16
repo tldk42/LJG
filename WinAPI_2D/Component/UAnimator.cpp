@@ -2,7 +2,7 @@
 
 #include "AActor.h"
 #include "UAnimation.h"
-#include "XSprite2D.h"
+#include "DirectX/XSprite2D.h"
 
 namespace LJG
 {

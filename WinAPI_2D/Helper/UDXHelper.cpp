@@ -1,7 +1,7 @@
 #include "UDXHelper.h"
 #include <d3dcompiler.h>
 
-#include "Context.h"
+#include "DirectX/Context.h"
 
 namespace LJG
 {

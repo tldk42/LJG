@@ -1,5 +1,5 @@
 #include "InputManager.h"
-#include "EngineHelper.h"
+#include "Helper/EngineHelper.h"
 
 
 namespace LJG
@@ -147,14 +147,17 @@ namespace LJG
 		}
 	}
 
-	void InputManager::ClearMouse() {}
+	void InputManager::ClearMouse()
+	{
+		mMousePosition = FVector2f::UnitVector;
+	}
 
 	bool InputManager::IsKeyDown_Implements(const EKeyCode InKey)
 	{
 		return GetAsyncKeyState(ASCII[static_cast<UINT>(InKey)]) & 0x8000;
 	}
 
-	void InputManager::Debug_Input()
+	void InputManager::Debug_Input() const
 	{
 		if (bEnableDebug)
 		{

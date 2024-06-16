@@ -47,4 +47,14 @@ namespace LJG
 	};
 
 
+	struct FCachedRenderState
+	{
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>  CurrentInputLayout  = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader> CurrentVertexShader = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>  CurrentPixelShader  = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>       CurrentVertexBuffer = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>       CurrentIndexBuffer  = nullptr;
+		D3D_PRIMITIVE_TOPOLOGY                     CurrentTopology     = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
+	};
+
 }

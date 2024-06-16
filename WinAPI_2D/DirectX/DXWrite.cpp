@@ -1,9 +1,9 @@
 #include "DXWrite.h"
 
 #include "Context.h"
-#include "EngineHelper.h"
-#include "UDXHelper.h"
-#include "UTextBlock.h"
+#include "Helper/EngineHelper.h"
+#include "Helper/UDXHelper.h"
+#include "Component/UTextBlock.h"
 #include "Window.h"
 
 namespace LJG

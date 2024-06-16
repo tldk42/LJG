@@ -1,15 +1,14 @@
 #include "XVertex2D.h"
-
+#include "XWorldBuffer.h"
 #include "Context.h"
-#include "UDXHelper.h"
+#include "Helper/UDXHelper.h"
 
 namespace LJG
 {
-	XVertex2D::XVertex2D()
-		: mNDCLocation(FVector2f::ZeroVector),
-		  mNDCOffset(FVector2f::ZeroVector)
+	XVertex2D::XVertex2D(const float InZOrder)
+		: mZOrder(InZOrder)
 	{
-		SetWindowResolution();
+		mWorldBuffer = std::make_unique<XWorldBuffer>();
 	}
 
 	XVertex2D::~XVertex2D()
@@ -21,11 +20,13 @@ namespace LJG
 	{
 		mVertexBufferArray.reserve(4);
 
+		mWorldBuffer->Initialize();
 		CHECK_RESULT(CreateShape());
 	}
 
 	void XVertex2D::Update(float DeltaTime)
 	{
+		mWorldBuffer->Update(DeltaTime);
 		SetShaderParams();
 	}
 
@@ -34,26 +35,30 @@ namespace LJG
 		// Input Layout
 		Context::GetDeviceContext()->IASetInputLayout(mVertexLayout.Get());
 
+
 		// Shader
 		Context::GetDeviceContext()->VSSetShader(mVertexShader.Get(), nullptr, 0);
 		Context::GetDeviceContext()->PSSetShader(mPixelShader.Get(), nullptr, 0);
+
 		// TODO: Set other shader...
 
 		// hardcoded
 		constexpr UINT stride = sizeof(FVertexBase);
 		constexpr UINT offset = 0;
 
+		mWorldBuffer->Render();
 		Context::GetDeviceContext()->IASetVertexBuffers(0, 1, mVertexBuffer.GetAddressOf(), &stride, &offset);
 		Context::GetDeviceContext()->IASetIndexBuffer(mIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+
 		Context::GetDeviceContext()->IASetPrimitiveTopology(mPrimType);
 
-
-		// TODO: Child??서
+		// TODO: 실제 Draw는 Child Vertex에서 진행
 		// Context::GetDeviceContext()->DrawIndexed(8, 0, 0);
 	}
 
 	void XVertex2D::Release()
 	{
+		mWorldBuffer->Release();
 		mVertexLayout = nullptr;
 		mVertexBuffer = nullptr;
 		mIndexBuffer  = nullptr;
@@ -61,26 +66,12 @@ namespace LJG
 		mPixelShader  = nullptr;
 	}
 
-	void XVertex2D::SetWindowResolution()
-	{
-		mScreenResolution =
-		{
-			static_cast<float_t>(Context::GetWindowData().Width),
-			static_cast<float_t>(Context::GetWindowData().Height)
-		};
-	}
-
+#pragma region Transform
 	void XVertex2D::SetScale(const FVector2f& InScale)
 	{
-		const FVector2f cachedScale = mScale;
+		mScale = InScale;
 
-		mScale.X = (InScale.X) / mScreenResolution.X;
-		mScale.Y = (InScale.Y) / mScreenResolution.Y;
-
-		for (FVertexBase& vertex : mVertexBufferArray)
-		{
-			vertex.Pos *= (mScale / cachedScale);
-		}
+		SetTransform(FVector2f::ZeroVector, 0.f, mScale);
 	}
 
 	void XVertex2D::SetWorldRotation(const float InAngle)
@@ -107,55 +98,62 @@ namespace LJG
 
 	void XVertex2D::AddWorldLocation(const FVector2f& InAddLocation)
 	{
-		const FVector2f addiPos = UDXHelper::Screen2NDC(mScreenResolution, InAddLocation);
-
-		SetTransform(addiPos, 0, FVector2f::UnitVector);
+		SetTransform(InAddLocation, 0, FVector2f::UnitVector);
 
 		mWorldLocation += InAddLocation;
-
-		Screen2NDC();
 	}
 
 	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
-		const FVector2f addiPos = UDXHelper::Screen2NDC(mScreenResolution, InLocation - mWorldLocation);
+		const FVector2f delta = InLocation - mWorldLocation;
 
-		SetTransform(addiPos, InAngle, InScale);
+		SetTransform(delta, InAngle, InScale);
 
 		mWorldLocation = InLocation;
 		mAngle         = InAngle;
 		mScale         = InScale;
 	}
 
+	void XVertex2D::SetFlipX(const bool bEnable)
+	{
+		if (bEnable != bFlipX)
+		{
+			for (FVertexBase& vertex : mVertexBufferArray)
+			{
+				vertex.Pos.X *= -1;
+			}
+
+			bFlipX = bEnable;
+		}
+	}
+
 	void XVertex2D::SetTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
-		const float aspectRatio = mScreenResolution.X / mScreenResolution.Y;
-
-		const XMMATRIX aspectScale   = ScaleMatrix(aspectRatio, 1.0f);
-		const XMMATRIX aspectInverse = ScaleMatrix(1.f / aspectRatio, 1.f);
-
 		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
 		const XMMATRIX rotation    = RotationMatrix(InAngle);
 		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
 
 		const XMMATRIX transform = scale * rotation * translation;
 
+		mWorldBuffer->SetWorldMatrix(transform);
+
 		for (FVertexBase& vertex : mVertexBufferArray)
 		{
-			XMVECTOR pos = {vertex.Pos.X, vertex.Pos.Y, 1.f, 1.f};
+			XMVECTOR pos = {vertex.Pos.X, vertex.Pos.Y, vertex.Pos.Z, 1.f};
 
 			// 1 : 1 정규화
-			pos = XMVector2Transform(pos, aspectScale);
+			// pos = XMVector2Transform(pos, aspectScale);
 
 			// 변환 행렬 적용
 			pos = XMVector2Transform(pos, transform);
 
 			// 4 : 3변환 
-			pos = XMVector2Transform(pos, aspectInverse);
+			// pos = XMVector2Transform(pos, aspectInverse);
 
-			XMStoreFloat2(reinterpret_cast<XMFLOAT2*>(&vertex.Pos), pos);
+			XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vertex.Pos), pos);
 		}
 	}
+#pragma endregion
 
 	HRESULT XVertex2D::CreateShape()
 	{
@@ -172,19 +170,18 @@ namespace LJG
 
 		D3D11_BUFFER_DESC bufferDesc;
 		{
-			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // 버퍼??기
-			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                                 // 버퍼????기/??기 방법 지??
-			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                            // ??이??라??에 바인??될 방법
-			bufferDesc.CPUAccessFlags =
-			0;                    // ??성??버퍼??CPU가 ??근??는 ??형 (DX ??능??매우 중요)
-			bufferDesc.MiscFlags = 0; // 추????인 ??션 ??래??
+			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // 버퍼크기
+			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // 버퍼의 읽기/쓰기 방법 지정
+			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // 파이프라인에 바인딩될 방법
+			bufferDesc.CPUAccessFlags = 0;                                        // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
+			bufferDesc.MiscFlags      = 0;                                        // 추가적인 옵션 플래그
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;
 		{
-			InitData.pSysMem = mVertexBufferArray.data(); // 초기????이????인??(??점 배열??주소????겨준??
-			// InitData.SysMemPitch (??스??리소??의 ??줄????기)
-			// InitData.SysMemSlicePitch (3차원 ??스처의 깊이 간격)
+			InitData.pSysMem = mVertexBufferArray.data(); // 초기화 데이터 포인터 (정점 배열의 주소를 넘겨준다)
+			// InitData.SysMemPitch (텍스처 리소스의 한줄의 크기)
+			// InitData.SysMemSlicePitch (3차원 텍스처의 깊이 간격)
 		}
 
 		return Context::GetDevice()->CreateBuffer(&bufferDesc, &InitData, mVertexBuffer.GetAddressOf());
@@ -212,15 +209,17 @@ namespace LJG
 		return Context::GetDevice()->CreateBuffer(&initData, &ibInitData, mIndexBuffer.GetAddressOf());
 	}
 
+
 	HRESULT XVertex2D::LoadShaderAndInputLayout()
 	{
 		HRESULT result = S_OK;
 
 		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
-		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"sample2_vert.vsh",
+		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"Shader/sample2_vert.vsh",
 												 vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
-		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"sample2_frag.psh", mPixelShader.GetAddressOf());
+		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"Shader/sample2_frag.psh",
+												mPixelShader.GetAddressOf());
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
@@ -231,13 +230,13 @@ namespace LJG
 		constexpr D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{
-				"POSITION",                  // ??이????력 ??명??서 ????소?? ??결??????체계 
-				0,                           // ????????덱??
-				DXGI_FORMAT_R32G32_FLOAT,    // ??이????식 (float2)
-				0,                           // ??력 ??셈블러 ??별??수
-				0,                           // ??소 ??이 ??프??
-				D3D11_INPUT_PER_VERTEX_DATA, // ??일 ??력 ??롯 ??력 ??이????래??
-				0                            // ??점 버퍼??서 ??더????는 ??스??스????(D3D11_INPUT_PER_VERTEX_DATA -> 0)
+				"POSITION",                  // 셰이더 입력 서명에서 이 요소와 연결된 의미체계 
+				0,                           // 의미상 인덱스
+				DXGI_FORMAT_R32G32B32_FLOAT,    // 데이터 형식 (float2)
+				0,                           // 입력 어셈블러 식별정수
+				0,                           // 요소 사이 오프셋 
+				D3D11_INPUT_PER_VERTEX_DATA, // 단일 입력 슬롯 입력 데이터 클래스
+				0                            // 정점 버퍼에서 렌더링 되는 인스턴스의 수 (D3D11_INPUT_PER_VERTEX_DATA -> 0)
 			},
 			{
 				"TEX",
@@ -281,10 +280,10 @@ namespace LJG
 		 */
 		mVertexBufferArray =
 		{
-			{FVector2f(-1.f, 1.f) * mScale, {0, 0}, mDrawColor},
-			{FVector2f(1.f, 1.f) * mScale, {1, 0}, mDrawColor},
-			{FVector2f(1.f, -1.f) * mScale, {1, 1}, mDrawColor},
-			{FVector2f(-1.f, -1.f) * mScale, {0, 1}, mDrawColor},
+			{FVector3f(-.5f, .5f, mZOrder) * mScale, {0, 0}, mDrawColor},
+			{FVector3f(.5f, .5f, mZOrder) * mScale, {1, 0}, mDrawColor},
+			{FVector3f(.5f, -.5f, mZOrder) * mScale, {1, 1}, mDrawColor},
+			{FVector3f(-.5f, -.5f, mZOrder) * mScale, {0, 1}, mDrawColor},
 		};
 	}
 
@@ -310,23 +309,6 @@ namespace LJG
 			0);
 	}
 
-	void XVertex2D::NDC2Screen()
-	{
-		mWorldLocation.X = mScreenResolution.X * (mNDCLocation.X + 1.f) * .5f;
-		mWorldLocation.Y = mScreenResolution.Y * .5f * (1.f - mNDCLocation.Y);
-	}
-
-	void XVertex2D::Screen2NDC()
-	{
-		mNDCLocation.X = mWorldLocation.X / (mScreenResolution.X * .5f);
-		mNDCLocation.Y = mWorldLocation.Y / (mScreenResolution.Y * .5f);
-	}
-
 	void XVertex2D::OnResizeCallback()
-	{
-		const auto cachedWorldScale = mScale;
-
-		SetWindowResolution();
-		SetScale(cachedWorldScale * mScreenResolution);
-	}
+	{}
 }

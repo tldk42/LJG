@@ -190,19 +190,19 @@ namespace LJG
 		template <typename T>
 		bool TVector2<T>::operator<(const TVector2& Other) const
 		{
-			return X > Other.X && Y > Other.Y;
+			return X < Other.X && Y < Other.Y;
 		}
 
 		template <typename T>
 		bool TVector2<T>::operator<=(const TVector2& Other) const
 		{
-			return X >= Other.X && Y >= Other.Y;
+			return X <= Other.X && Y <= Other.Y;
 		}
 
 		template <typename T>
 		bool TVector2<T>::operator>(const TVector2& Other) const
 		{
-			return X < Other.X && Y < Other.Y;
+			return X > Other.X && Y > Other.Y;
 		}
 
 		template <typename T>

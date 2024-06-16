@@ -16,43 +16,83 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce049ef4-aad4-4df1-9c0a-47bb97e4f561" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Transform.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Transform.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Camera.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Camera.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Component/USceneComponent.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/Component/USceneComponent.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XConstantBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XConstantBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XProjectionBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XProjectionBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XViewBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XViewBuffer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XWorldBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XWorldBuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LJG/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LJG/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LJG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LJG/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/AActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/AActor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/AHUD.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/AHUD.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/AHUD.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/AHUD.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/APawn.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/APawn.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/APawn.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/APawn.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/Application_Base.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Application_Base.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/Application_Base.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Application_Base.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Box2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Box2D.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Box2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Box2D.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/CommonInclude.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/CommonInclude.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Engine_Entry.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Engine_Entry.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/Color.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Color.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/Color.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Color.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/Math.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Math.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/MathFwd.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/MathFwd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Context.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/Context.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Context.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/Context.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/DXWrite.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/DXWrite.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/DXWrite.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/DXWrite.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/EngineHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Helper/EngineHelper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/EngineHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Helper/EngineHelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Base.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/GUI/TGUI_Inspector.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/InputManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/InputManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/InputManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/InputManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/Vector.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Vector.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/ObjectManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/ObjectManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/UDebugBox2D.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/UDebugBox2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UImage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/UImage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/UImage.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/UObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/UObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UPawnMovementComponent2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/UPawnMovementComponent2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Math/Vector2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Math/Vector2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/ObjectManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/ObjectManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Renderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/UBoxComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/XDebugShape2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/XDebugShape2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Shape/XDebugShape2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shape/XDebugShape2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Structs.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Structs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimation.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimation.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimation2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimation2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimation2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimation2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UAnimator.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UAnimator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UDXHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Helper/UDXHelper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UDXHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Helper/UDXHelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UImage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UImage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UImage.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UImage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UObject.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UObject.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UPawnMovementComponent2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UPawnMovementComponent2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UPawnMovementComponent2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UPawnMovementComponent2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UPlayerAnimator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UPlayerAnimator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UPlayerAnimator.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UPlayerAnimator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UTextBlock.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UTextBlock.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/UTextBlock.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Component/UTextBlock.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/WinAPI_2D.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/WinAPI_2D.vcxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/Window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Window.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/Window.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Window.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XBlendState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XBlendState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XBlendState.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XBlendState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XSamplerState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XSamplerState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XSamplerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XSamplerState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XSprite2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XSprite2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XSprite2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XSprite2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XTexture.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XTexture.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XTexture.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XTexture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XVertex2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/XVertex2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/DirectX/XVertex2D.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WinAPI_2D/imgui.ini" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/imgui.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/sample2_frag.psh" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shader/sample2_frag.psh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/sample2_vert.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shader/sample2_vert.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/sample_frag.psh" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shader/sample_frag.psh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WinAPI_2D/sample_vert.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/WinAPI_2D/Shader/sample_vert.vsh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,9 +121,184 @@
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="cidr-memory-view://12" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/shared/minwindef.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/shared/windef.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/shared/winerror.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/ucrt/corecrt_math.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um/DirectXMath.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um/DirectXMathMatrix.inl" root0="SKIP_HIGHLIGHTING" />
@@ -91,6 +306,7 @@
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um/WinUser.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um/d2d1.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um/d3d11.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/__msvc_chrono.hpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/iterator" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/list" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/include/memory" root0="SKIP_HIGHLIGHTING" />
@@ -107,18 +323,18 @@
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/APawn.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/Application_Base.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/CommonInclude.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/Component/UAnimation.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/Component/UAnimation.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/Component/UObject.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/Component/UObject.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/DirectX/XBlendState.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/DirectX/XBlendState.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/DirectX/XSprite2D.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WinAPI_2D/DirectX/XSprite2D.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/Engine_Entry.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/Math/Color.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/Shape/XDebugShape2D.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WinAPI_2D/TManagedEntity.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/UAnimation.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/UAnimation.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/UObject.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/UObject.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/XBlendState.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/XBlendState.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/XSprite2D.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WinAPI_2D/XSprite2D.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -142,7 +358,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -830,7 +1046,10 @@
       <workItem from="1718258839936" duration="6537000" />
       <workItem from="1718272046721" duration="7215000" />
       <workItem from="1718289616997" duration="1568000" />
-      <workItem from="1718291318261" duration="3575000" />
+      <workItem from="1718291318261" duration="3745000" />
+      <workItem from="1718355022961" duration="24727000" />
+      <workItem from="1718415754993" duration="24490000" />
+      <workItem from="1718500526041" duration="1039000" />
     </task>
     <task id="LOCAL-00001" summary="Input - Trigger시간 체크">
       <option name="closed" value="true" />
@@ -848,7 +1067,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717943834972</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="++">
+      <option name="closed" value="true" />
+      <created>1718295063889</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718295063889</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -876,7 +1103,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Input - Trigger시간 체크" />
     <MESSAGE value="+ Animation &#10;+ Refactoring&#10; Vertex -&gt; 세분화" />
-    <option name="LAST_COMMIT_MESSAGE" value="+ Animation &#10;+ Refactoring&#10; Vertex -&gt; 세분화" />
+    <MESSAGE value="++" />
+    <option name="LAST_COMMIT_MESSAGE" value="++" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

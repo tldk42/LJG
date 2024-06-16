@@ -46,6 +46,9 @@ namespace LJG::Math
 		static inline TVector UnitY() { return YAxisVector; }
 		static inline TVector UnitZ() { return ZAxisVector; }
 
+		inline TVector operator*(T Scale) const;
+		inline TVector operator*(TVector2<T> InVector2) const;
+
 	public:
 		TVector();
 		TVector(T InF);
@@ -53,6 +56,16 @@ namespace LJG::Math
 
 		explicit TVector(const TVector2<T> V, T InZ);
 	};
+
+	template <typename T> TVector<T> TVector<T>::operator*(T Scale) const
+	{
+		return TVector(X * Scale, Y * Scale, Z * Scale);
+	}
+
+	template <typename T> TVector<T> TVector<T>::operator*(TVector2<T> InVector2) const
+	{
+		return TVector(X * InVector2.X, Y * InVector2.Y, Z);
+	}
 
 	template <typename T>
 	TVector<T>::TVector()

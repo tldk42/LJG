@@ -5,15 +5,9 @@ namespace LJG
 {
 	class UPawnMovementComponent2D;
 	class UPlayerAnimator;
-}
-
-namespace LJG
-{
 	class UBoxComponent;
-}
+	class ACamera;
 
-namespace LJG
-{
 	class APawn : public AActor
 	{
 	public:
@@ -24,8 +18,6 @@ namespace LJG
 #pragma region Core Interface
 		void Initialize() override;
 		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
 #pragma endregion
 
 #pragma region Get
@@ -36,9 +28,11 @@ namespace LJG
 		void AddMovementInput(const FVector2f& MovementInputAmount);
 
 	private:
-		UPawnMovementComponent2D*    mMovementComponent;
-		UPlayerAnimator*             mAnimator;
-		std::unique_ptr<UBoxComponent> mDebugBox;
+		UPawnMovementComponent2D* mMovementComponent;
+		UPlayerAnimator*          mAnimator;
+		UBoxComponent*            mDebugBox;
+		UBoxComponent*            mDebugBox2;
 
+		ACamera* mCamera;
 	};
 }

@@ -2,7 +2,7 @@
 
 #include "AActor.h"
 #include "UAnimator.h"
-#include "XSprite2D.h"
+#include "DirectX/XSprite2D.h"
 
 namespace LJG
 {
@@ -32,19 +32,17 @@ namespace LJG
 
 				for (const FAnimData& anim : mAnimDatas)
 				{
-					anim.Sprite->AddWorldLocation(ownerActor->GetActorLocation() - mPosition);
-
+					anim.Sprite->SetWorldTransform(ownerActor->GetActorLocation(), ownerActor->GetActorRotation(),
+												   FVector2f::UnitVector);
 				}
 				mPosition = ownerActor->GetActorLocation();
-
-
 			}
 
 
 			const FAnimData& frame       = mAnimDatas[mFrames];
 			const float      elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f /
 				1000.f);
-			if (elapsedTime >= frame.Time) // ??님 경과??간 초과
+			if (elapsedTime >= frame.Time)
 			{
 				mFrames++;
 

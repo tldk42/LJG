@@ -1,6 +1,6 @@
 #include "XDebugShape2D.h"
-#include "../Context.h"
-#include "../XVertex2D.h"
+#include "DirectX/Context.h"
+#include "DirectX/XVertex2D.h"
 
 namespace LJG
 {

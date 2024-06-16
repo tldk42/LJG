@@ -1,7 +1,7 @@
 #include "AHUD.h"
 
-#include "UImage.h"
-#include "UTextBlock.h"
+#include "Component/UImage.h"
+#include "Component/UTextBlock.h"
 
 namespace LJG
 {
@@ -23,7 +23,7 @@ namespace LJG
 		mBackgroundImage->SetupAttachment(this);
 		mBackgroundImage->SetOwnerActor(this);
 		mBackgroundImage->Initialize();
-		mBackgroundImage->SetPosition({0, -256.f});
+		mBackgroundImage->SetPosition({0, -100.f});
 	}
 
 	void AHUD::Update(float DeltaTime)

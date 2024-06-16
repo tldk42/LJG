@@ -1,8 +1,8 @@
 #include "Context.h"
 
-#include "EngineHelper.h"
+#include "Helper/UDXHelper.h"
+#include "Helper/EngineHelper.h"
 #include "DXWrite.h"
-#include "UDXHelper.h"
 #include "Window.h"
 
 namespace LJG

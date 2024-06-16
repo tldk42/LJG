@@ -1,6 +1,6 @@
 #include "UTextBlock.h"
 
-#include "DXWrite.h"
+#include "DirectX/DXWrite.h"
 
 namespace LJG
 {

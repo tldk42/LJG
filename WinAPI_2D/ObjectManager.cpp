@@ -1,6 +1,6 @@
 #include "ObjectManager.h"
 
-#include "UObject.h"
+#include "Component/UObject.h"
 #include "Window.h"
 
 namespace LJG

@@ -1,8 +1,8 @@
 #include "EngineHelper.h"
 
-#include "UAnimation.h"
+#include "Component/UAnimation.h"
 #include "Window.h"
-#include "XSprite2D.h"
+#include "DirectX/XSprite2D.h"
 
 namespace LJG
 {
@@ -31,7 +31,7 @@ namespace LJG
 			PostQuitMessage(GetLastError());
 		}
 	}
-	
+
 	HWND EngineHelper::GetWindowHandle(void* WindowHandle)
 	{
 		return Window::GetWindow(WindowHandle)->GetHandle();

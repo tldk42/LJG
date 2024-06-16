@@ -1,5 +1,5 @@
 #pragma once
-#include "../XVertex2D.h"
+#include "DirectX/XVertex2D.h"
 
 
 namespace LJG

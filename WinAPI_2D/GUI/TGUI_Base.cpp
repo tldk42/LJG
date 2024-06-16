@@ -2,7 +2,7 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
-#include "../Context.h"
+#include "DirectX/Context.h"
 
 namespace LJG
 {
@@ -48,6 +48,11 @@ namespace LJG
 		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
+	}
+
+	void TGUI_Base::BindObject(AActor* InBindObject)
+	{
+		mObjectToShow = InBindObject;
 	}
 
 }
