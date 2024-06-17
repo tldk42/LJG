@@ -56,7 +56,7 @@ namespace LJG
 	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
-		mCamera->SetPosition(mLocation);
+		mCamera->SetPosition(GetWorldLocation());
 
 		bool bMove = false;
 
@@ -75,7 +75,7 @@ namespace LJG
 
 		if (InputManager::IsKeyDown(EKeyCode::Space))
 		{
-			mLocation += {0, 250 * DeltaTime};
+			// mLocation += {0, 250 * DeltaTime};
 		}
 
 		if (!bMove)
@@ -93,6 +93,6 @@ namespace LJG
 	{
 		mMovementComponent->AddMovementInput(MovementInputAmount);
 		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		mLocation += MovementInputAmount;
+		SetWorldLocation(GetWorldLocation() + MovementInputAmount);
 	}
 }

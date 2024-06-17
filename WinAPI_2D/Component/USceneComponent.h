@@ -5,6 +5,7 @@ namespace LJG
 {
 	class UBoxComponent;
 }
+
 namespace LJG
 {
 	/** Scene에 뿌려질 수 있는 오브젝트 */
@@ -37,6 +38,7 @@ namespace LJG
 		void SetWorldRotation(const float InDegree);
 		void SetRelativeRotation(const float InDegree);
 		void SetScale(const FVector2f& InScale);
+		void SetTransform(const Matrix& InMatrix);
 #pragma endregion
 
 	public:
@@ -44,12 +46,12 @@ namespace LJG
 
 
 	protected:
-		std::unordered_map<WText, USceneComponent*> mChild;
+		std::unordered_map<WText, USceneComponent*> mChildComponents;
 
 	protected:
+		bool bVisibility;
+
 		Matrix mLocalTransform;
 		Matrix mWorldTransform;
-
-
 	};
 }

@@ -6,7 +6,8 @@
 namespace LJG
 {
 	XVertex2D::XVertex2D(const float InZOrder)
-		: mZOrder(InZOrder)
+		: mTextureScale(FVector2f::UnitVector),
+		  mZOrder(InZOrder)
 	{
 		mWorldBuffer = std::make_unique<XWorldBuffer>();
 	}
@@ -74,7 +75,7 @@ namespace LJG
 		XMMatrixDecompose(&scale, &rotation, &translation, mTransform);
 
 		// 새로운 스케일 행렬을 생성
-		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X, InScale.Y, 1.0f);
+		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X * mTextureScale.X, InScale.Y * mTextureScale.Y, 1.0f);
 
 		// 새로운 스케일 행렬과 기존의 회전 행렬을 결합
 		const XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(rotation);
@@ -90,16 +91,15 @@ namespace LJG
 		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
 
 		// 기존 스케일 성분
-		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mTransform.r[0]),
-												 XMVectorGetY(mTransform.r[1]),
-												 XMVectorGetZ(mTransform.r[2]), 0.0f);
+		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mTransform.r[0] ),
+		                                         XMVectorGetY(mTransform.r[1] ),
+		                                         XMVectorGetZ(mTransform.r[2]), 0.0f);
 		// 기존 위치 성분
 		const XMVECTOR cachedTranslation = mTransform.r[3];
 
 		// 새로운 변환 행렬을 스케일, 새로운 회전, 기존 위치를 결합하여 재구성
 		mTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix; // 회전, 스케일은 위 3x3성분
-		mTransform.r[3] = cachedTranslation; // 이동 성분은 마지막 행벡터
-
+		mTransform.r[3] = cachedTranslation;                                          // 이동 성분은 마지막 행벡터
 	}
 
 	void XVertex2D::SetColor(const FLinearColor& InColor)
@@ -133,7 +133,7 @@ namespace LJG
 	{
 		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
 		const XMMATRIX rotation    = RotationMatrix(InAngle);
-		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
+		const XMMATRIX scale       = ScaleMatrix(InScale.X * mTextureScale.X, InScale.Y * mTextureScale.Y);
 
 		const XMMATRIX transform = scale * rotation * translation;
 
@@ -173,10 +173,10 @@ namespace LJG
 		D3D11_BUFFER_DESC bufferDesc;
 		{
 			bufferDesc.ByteWidth      = std::size(mVertexBufferArray) * sizeof(FVertexBase); // 버퍼크기
-			bufferDesc.Usage          = D3D11_USAGE_DEFAULT;                      // 버퍼의 읽기/쓰기 방법 지정
-			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER;                 // 파이프라인에 바인딩될 방법
-			bufferDesc.CPUAccessFlags = 0;                                        // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
-			bufferDesc.MiscFlags      = 0;                                        // 추가적인 옵션 플래그
+			bufferDesc.Usage          = D3D11_USAGE_DEFAULT; // 버퍼의 읽기/쓰기 방법 지정
+			bufferDesc.BindFlags      = D3D11_BIND_VERTEX_BUFFER; // 파이프라인에 바인딩될 방법
+			bufferDesc.CPUAccessFlags = 0; // 생성될 버퍼에 CPU가 접근하는 유형 (DX 성능에 매우 중요)
+			bufferDesc.MiscFlags      = 0; // 추가적인 옵션 플래그
 		}
 
 		D3D11_SUBRESOURCE_DATA InitData;
@@ -219,9 +219,9 @@ namespace LJG
 		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
 		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"Shader/sample2_vert.vsh",
-												 vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
+		                                         vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
 		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"Shader/sample2_frag.psh",
-												mPixelShader.GetAddressOf());
+		                                        mPixelShader.GetAddressOf());
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
@@ -234,7 +234,7 @@ namespace LJG
 			{
 				"POSITION",                  // 셰이더 입력 서명에서 이 요소와 연결된 의미체계 
 				0,                           // 의미상 인덱스
-				DXGI_FORMAT_R32G32B32_FLOAT,    // 데이터 형식 (float2)
+				DXGI_FORMAT_R32G32B32_FLOAT, // 데이터 형식 (float2)
 				0,                           // 입력 어셈블러 식별정수
 				0,                           // 요소 사이 오프셋 
 				D3D11_INPUT_PER_VERTEX_DATA, // 단일 입력 슬롯 입력 데이터 클래스
@@ -312,5 +312,6 @@ namespace LJG
 	}
 
 	void XVertex2D::OnResizeCallback()
-	{}
+	{
+	}
 }

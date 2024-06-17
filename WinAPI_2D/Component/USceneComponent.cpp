@@ -5,28 +5,30 @@
 
 namespace LJG
 {
-
 	USceneComponent::USceneComponent()
 		: mLocalTransform(XMMatrixIdentity()),
 		  mWorldTransform(XMMatrixIdentity())
 	{
-		Initialize();
+		USceneComponent::Initialize();
 	}
 
 	USceneComponent::~USceneComponent() = default;
-		
+
 	void USceneComponent::Initialize()
 	{
 		UObject::Initialize();
-
 	}
 
 	void USceneComponent::Update(float DeltaTime)
 	{
 		UObject::Update(DeltaTime);
-		
-	}
 
+		for (auto& sceneComponent : mChildComponents)
+		{
+			sceneComponent.second->SetTransform(mWorldTransform);
+		}
+	}
+	
 	void USceneComponent::Render()
 	{
 		UObject::Render();
@@ -74,17 +76,50 @@ namespace LJG
 
 	void USceneComponent::SetWorldRotation(const float InDegree)
 	{
-		mWorldTransform = RotationMatrix(InDegree) * mWorldTransform;
+		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
+
+		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mWorldTransform.r[0]),
+		                                         XMVectorGetY(mWorldTransform.r[1]),
+		                                         XMVectorGetZ(mWorldTransform.r[2]), 0.0f);
+		const XMVECTOR cachedTranslation = mWorldTransform.r[3];
+
+		mWorldTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix;
+		mWorldTransform.r[3] = cachedTranslation;
 	}
 
 	void USceneComponent::SetRelativeRotation(const float InDegree)
 	{
-		mLocalTransform = RotationMatrix(InDegree) * mLocalTransform;
+		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
+
+		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mLocalTransform.r[0]),
+		                                         XMVectorGetY(mLocalTransform.r[1]),
+		                                         XMVectorGetZ(mLocalTransform.r[2]), 0.0f);
+		const XMVECTOR cachedTranslation = mLocalTransform.r[3];
+
+		mLocalTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix;
+		mLocalTransform.r[3] = cachedTranslation;
 	}
 
 	void USceneComponent::SetScale(const FVector2f& InScale)
 	{
-		mLocalTransform = ScaleMatrix(InScale.X, InScale.Y) * mLocalTransform;
-		mWorldTransform = ScaleMatrix(InScale.X, InScale.Y) * mWorldTransform;
+		XMVECTOR scale, rotation, translation;
+		XMMatrixDecompose(&scale, &rotation, &translation, mLocalTransform);
+
+		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X, InScale.Y, 1.0f);
+
+		XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(rotation);
+		mLocalTransform         = newScaleMatrix * rotationMatrix;
+
+		mLocalTransform.r[3] = translation;
+
+		XMMatrixDecompose(&scale, &rotation, &translation, mWorldTransform);
+		rotationMatrix       = XMMatrixRotationQuaternion(rotation);
+		mWorldTransform      = newScaleMatrix * rotationMatrix;
+		mWorldTransform.r[3] = translation;
+	}
+
+	void USceneComponent::SetTransform(const Matrix& InMatrix)
+	{
+		mWorldTransform = InMatrix;
 	}
 }

@@ -5,13 +5,6 @@
 
 namespace LJG
 {
-	Renderer::Renderer() {}
-
-	Renderer::~Renderer()
-	{
-		Renderer::Release();
-	}
-
 	void Renderer::Initialize()
 	{
 		Context::Create();
@@ -19,7 +12,10 @@ namespace LJG
 	}
 
 	void Renderer::Update(float DeltaTime)
-	{}
+	{
+		DXWrite::Get()->Update(DeltaTime);
+		Context::Get()->Update(DeltaTime);
+	}
 
 	void Renderer::Release()
 	{

@@ -24,13 +24,13 @@ namespace LJG
 	{
 		UObject::Update(DeltaTime);
 
-		const FVector2f ownerLocation = mOwnerActor->GetActorLocation();
+		const FVector2f ownerLocation = mOwnerActor->GetWorldLocation();
 
-		if (ownerLocation.Y > 0 || !bIsMovingOnGround)
-		{
-			auto newLoc = ownerLocation.Y - (mGravity * DeltaTime);
-			mOwnerActor->SetActorLocation({ownerLocation.X, newLoc});
-		}
+		// if (ownerLocation.Y > 0 || !bIsMovingOnGround)
+		// {
+		// 	auto newLoc = ownerLocation.Y - (mGravity * DeltaTime);
+		// 	mOwnerActor->SetWorldLocation({ownerLocation.X, newLoc});
+		// }
 
 		const auto newVelocity = (ownerLocation - mPreviousLocation) / DeltaTime;
 		mAcceleration          = (newVelocity - mVelocity) / DeltaTime;

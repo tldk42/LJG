@@ -91,7 +91,7 @@ namespace LJG
 			WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 			// GetSystemMetrics는 시스템 설정 정보를 반환 nIndex에는 SM_으로 시작하는 상수값을 넣는다. ex) 2560 x 1600 (정중앙에 생성됨)
 			GetSystemMetrics(SM_CXSCREEN) / 2 - mWindowData.Width / 2,       // 1280 - 450 = 830 (좌)
-			GetSystemMetrics(SM_CYSCREEN) / 2 - mWindowData.Height / 2 - 40, // 800 - 300 = 500 (상)
+			GetSystemMetrics(SM_CYSCREEN) / 2 - mWindowData.Height / 2, // 800 - 300 = 500 (상)
 			size.right + (-size.left),                                       // 윈도우 폭: 900
 			size.bottom + (-size.top),                                       // 윈도우 높이: 600
 			nullptr,

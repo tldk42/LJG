@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonInclude.h"
 #include "UObject.h"
+#include "USceneComponent.h"
 
 namespace LJG
 {
@@ -10,7 +11,7 @@ namespace LJG
 		float         Time   = 1.f;
 	};
 
-	class UAnimation : public UObject
+	class UAnimation : public USceneComponent
 	{
 	public:
 		UAnimation(std::vector<FAnimData>&& InAnims);
@@ -37,10 +38,6 @@ namespace LJG
 		steady_clock::time_point mPlayTime;
 
 		UAnimator* mOwnerAnimator;
-
-		FVector2f    mPosition;
-		FVector2f    mScale;
-		FLinearColor mColor;
 
 		std::vector<FAnimData> mAnimDatas;
 	};

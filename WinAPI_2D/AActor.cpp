@@ -5,9 +5,10 @@
 namespace LJG
 {
 	AActor::AActor()
-		: bVisibility(true),
-		  mLocation(FVector2f::ZeroVector),
-		  mScale(FVector2f::UnitVector) {}
+
+	{
+		bVisibility = true;
+	}
 
 
 	void AActor::Initialize()

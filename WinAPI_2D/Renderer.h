@@ -5,12 +5,6 @@ namespace LJG
 {
 	class Renderer
 	{
-	private:
-		Renderer();
-
-	public:
-		~Renderer();
-
 	public:
 		[[nodiscard]] inline static Renderer& Get()
 		{
@@ -25,5 +19,13 @@ namespace LJG
 		static void Release();
 
 		static void Clear(const FLinearColor& InClearColor = FLinearColor::Gray);
+
+	private:
+		Renderer()  = default;
+		~Renderer() = default;
+
+	public:
+		Renderer(const Renderer& Other)           = delete;
+		Renderer operator=(const Renderer& Other) = delete;
 	};
 }

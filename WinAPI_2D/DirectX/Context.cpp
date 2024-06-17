@@ -31,8 +31,6 @@ namespace LJG
 	void Context::Create()
 	{
 		s_Context.reset(new Context());
-
-		s_Context->Initialize();
 	}
 
 	void Context::Initialize()
@@ -58,12 +56,15 @@ namespace LJG
 		// Step 5. Alt + Enter로 자동 창변환을 제어
 		CHECK_RESULT(mGIFactory->MakeWindowAssociation(GetHWND(), DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
 
-		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
+		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height)
+		{
 			OnResizeCallback(Width, Height);
 		});
 	}
 
-	void Context::Update(float InDeltaTime) {}
+	void Context::Update(float InDeltaTime)
+	{
+	}
 
 	void Context::Render()
 	{
@@ -127,12 +128,12 @@ namespace LJG
 			D3D11_CREATE_DEVICE_DEBUG | // 디버그 활성화
 #endif
 			D3D11_CREATE_DEVICE_BGRA_SUPPORT, // flags
-			featureLevels,                                                         // 기능 수준
-			ARRAYSIZE(featureLevels),                                              // 기능 배열 개수
-			D3D11_SDK_VERSION,                                                     // DX Version
-			mDevice.GetAddressOf(),                                                              // (Out) Device
-			&mFeatureLevel,                                                        // (Out) Features
-			mDeviceContext.GetAddressOf()));                                                      // (Out) DeviceContext
+			featureLevels,                    // 기능 수준
+			ARRAYSIZE(featureLevels),         // 기능 배열 개수
+			D3D11_SDK_VERSION,                // DX Version
+			mDevice.GetAddressOf(),           // (Out) Device
+			&mFeatureLevel,                   // (Out) Features
+			mDeviceContext.GetAddressOf()));  // (Out) DeviceContext
 
 		if (mFeatureLevel < D3D_FEATURE_LEVEL_11_0)
 		{
@@ -149,19 +150,19 @@ namespace LJG
 	{
 		ZeroMemory(&mSwapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 		{
-			mSwapChainDesc.BufferCount                        = 1;
-			mSwapChainDesc.BufferDesc.Width                   = GetWindowWidth(); // Buffer Width
-			mSwapChainDesc.BufferDesc.Height                  = GetWindowHeight(); // Buffer Height
-			mSwapChainDesc.BufferDesc.Format                  = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
-			mSwapChainDesc.BufferDesc.RefreshRate.Numerator   = 60; // FPS 분자 TODO: 고정 주사율 설정
+			mSwapChainDesc.BufferCount = 1;
+			mSwapChainDesc.BufferDesc.Width = GetWindowWidth(); // Buffer Width
+			mSwapChainDesc.BufferDesc.Height = GetWindowHeight(); // Buffer Height
+			mSwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 색상 출력 형식
+			mSwapChainDesc.BufferDesc.RefreshRate.Numerator = 60; // FPS 분자 TODO: 고정 주사율 설정
 			mSwapChainDesc.BufferDesc.RefreshRate.Denominator = 1; // FPS 분모
-			mSwapChainDesc.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
-			mSwapChainDesc.OutputWindow                       = GetHWND(); // 출력될 윈도우 핸들
-			mSwapChainDesc.SampleDesc.Count                   = 1; // 멀티 샘플링 개수
-			mSwapChainDesc.SampleDesc.Quality                 = 0; // 멀티 샘플링 품질
-			mSwapChainDesc.Windowed                           = !IsFullScreen(); // 창 전체 화면 모드
-			mSwapChainDesc.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
-			mSwapChainDesc.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
+			mSwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 버퍼 (렌더링 버퍼)
+			mSwapChainDesc.OutputWindow = GetHWND(); // 출력될 윈도우 핸들
+			mSwapChainDesc.SampleDesc.Count = 1; // 멀티 샘플링 개수
+			mSwapChainDesc.SampleDesc.Quality = 0; // 멀티 샘플링 품질
+			mSwapChainDesc.Windowed = !IsFullScreen(); // 창 전체 화면 모드
+			mSwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // Swap이 일어난 이후 버퍼를 Discard
+			mSwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // 적합한 디스플레이로 자동전환
 		}
 
 		CHECK_RESULT(mGIFactory->CreateSwapChain(mDevice.Get(), &mSwapChainDesc, mSwapChain.GetAddressOf()));
@@ -181,9 +182,9 @@ namespace LJG
 			mRenderTargetView = nullptr;
 
 			CHECK_RESULT(mSwapChain->ResizeBuffers(mSwapChainDesc.BufferCount,
-												   InWidth, InHeight,
-												   mSwapChainDesc.BufferDesc.Format,
-												   mSwapChainDesc.Flags));
+			                                       InWidth, InHeight,
+			                                       mSwapChainDesc.BufferDesc.Format,
+			                                       mSwapChainDesc.Flags));
 			mSwapChain->GetDesc(&mSwapChainDesc);
 
 			SetRenderTarget();
@@ -195,7 +196,7 @@ namespace LJG
 	{
 		ComPtr<ID3D11Texture2D> backBuffer;
 		CHECK_RESULT(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
-										   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf())));
+		                                   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf())));
 		CHECK_RESULT(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);

@@ -24,7 +24,7 @@ namespace LJG
 
 		if (mOwnerActor)
 		{
-			mDebugShape->SetWorldLocation(mOwnerActor->GetActorLocation());
+			mDebugShape->SetWorldLocation(mOwnerActor->GetWorldLocation());
 		}
 
 	}

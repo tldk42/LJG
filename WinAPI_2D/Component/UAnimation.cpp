@@ -6,12 +6,12 @@
 
 namespace LJG
 {
-
 	UAnimation::UAnimation(std::vector<FAnimData>&& InAnims)
 		: bIsPlaying(false),
 		  mFrames(0),
 		  mAnimDatas(std::move(InAnims))
-	{}
+	{
+	}
 
 	UAnimation::~UAnimation()
 	{
@@ -19,7 +19,8 @@ namespace LJG
 	}
 
 	void UAnimation::Initialize()
-	{}
+	{
+	}
 
 	void UAnimation::Update(float DeltaTime)
 	{
@@ -33,11 +34,14 @@ namespace LJG
 				for (const FAnimData& anim : mAnimDatas)
 				{
 					anim.Sprite->SetFlipX(mOwnerAnimator->FlipX() ? true : false);
-					anim.Sprite->SetWorldLocation(ownerActor->GetActorLocation());
-					// anim.Sprite->SetWorldTransform(ownerActor->GetActorLocation(), ownerActor->GetActorRotation(),
-					// 							   FVector2f::UnitVector);
+					static float testRot = 0.1f;
+					testRot += DeltaTime;
+
+					anim.Sprite->SetWorldTransform(ownerActor->GetWorldLocation(), testRot, ownerActor->GetScale());
+					// anim.Sprite->SetScale(ownerActor->GetScale());
+					// anim.Sprite->SetWorldRotation(testRot);
+					// anim.Sprite->SetWorldLocation(ownerActor->GetWorldLocation());
 				}
-				mPosition = ownerActor->GetActorLocation();
 			}
 
 
@@ -62,7 +66,6 @@ namespace LJG
 
 			mAnimDatas[mFrames].Sprite->Update(DeltaTime);
 		}
-
 	}
 
 	void UAnimation::Render()
@@ -89,7 +92,6 @@ namespace LJG
 			mFrames   = 0;
 			mPlayTime = steady_clock::now();
 		}
-
 	}
 
 	void UAnimation::Pause()

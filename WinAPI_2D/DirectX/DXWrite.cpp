@@ -50,8 +50,6 @@ namespace LJG
 			OnResizeCallback(Width, Height);
 		});
 
-		mTextArray.clear();
-		mTextArray.reserve(10);
 	}
 
 	void DXWrite::Update(float DeltaTime) {}
@@ -59,13 +57,7 @@ namespace LJG
 	void DXWrite::Render()
 	{
 #pragma region Font Test
-		if (mTextFormat.Get())
-		{
-			for (const UTextBlockSPtr& text : mTextArray)
-			{
-				CHECK_RESULT(Draw(text->GetLocation(), text->GetText()));
-			}
-		}
+	
 #pragma endregion
 	}
 
@@ -73,12 +65,7 @@ namespace LJG
 	{
 		DiscardDeviceIndependentResources();
 		DiscardDeviceResources();
-		for (auto& text : mTextArray)
-		{
-			text = nullptr;
-		}
-		mTextArray.clear();
-		mFontFamily.clear();
+
 	}
 
 	bool DXWrite::Initialized()
@@ -219,7 +206,6 @@ namespace LJG
 
 	void DXWrite::AddText(UTextBlockSPtr InWriteData)
 	{
-		Get()->mTextArray.emplace_back(InWriteData);
 	}
 
 #pragma region Set Brush

@@ -78,8 +78,6 @@ namespace LJG
 
 		bool bInitialized;
 
-		std::vector<UTextBlockSPtr> mTextArray;
-
 	private:
 		static DXWriteUPtr s_Writer;
 	};

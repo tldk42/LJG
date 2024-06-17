@@ -33,13 +33,12 @@ namespace LJG
 		void UpdateViewMatrix();
 
 	private:
-		XMMATRIX mViewMatrix;
-		XMMATRIX mProjectionMatrix;
+		Matrix mViewMatrix;
+		Matrix mProjectionMatrix;
 
-		std::unique_ptr<XViewBuffer>       mViewBuffer;
-		std::unique_ptr<XProjectionBuffer> mProjectionBuffer;
+		XViewBufferUPtr       mViewBuffer;
+		XProjectionBufferUPtr mProjectionBuffer;
 
-		FVector2f mCameraPosition;
-		float     mZoom;
+		float mZoom;
 	};
 }

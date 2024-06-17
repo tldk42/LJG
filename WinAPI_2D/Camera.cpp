@@ -5,10 +5,8 @@
 
 namespace LJG
 {
-
 	ACamera::ACamera()
-		: mCameraPosition(FVector2f::ZeroVector),
-		  mZoom(1.f)
+		: mZoom(1.f)
 	{
 		mViewMatrix       = XMMatrixIdentity();
 		mProjectionMatrix = XMMatrixIdentity();
@@ -16,7 +14,9 @@ namespace LJG
 		ACamera::Initialize();
 	}
 
-	ACamera::~ACamera() {}
+	ACamera::~ACamera()
+	{
+	}
 
 	void ACamera::Initialize()
 	{
@@ -58,12 +58,12 @@ namespace LJG
 	void ACamera::SetProjection(float InScreenWidth, float InScreenHeight)
 	{
 		mProjectionMatrix = XMMatrixOrthographicOffCenterLH(-InScreenWidth / 2.f, InScreenWidth / 2.f,
-															-InScreenHeight / 2.f, InScreenHeight / 2.f, -1.f, 1.f);
+		                                                    -InScreenHeight / 2.f, InScreenHeight / 2.f, -1.f, 1.f);
 	}
 
 	void ACamera::SetPosition(const FVector2f& InPosition)
 	{
-		mCameraPosition = InPosition;
+		SetWorldLocation(InPosition);
 	}
 
 	void ACamera::SetZoom(float InZoom)
@@ -74,8 +74,7 @@ namespace LJG
 
 	void ACamera::UpdateViewMatrix()
 	{
-		mViewMatrix = XMMatrixTranslation(-mCameraPosition.X, -mCameraPosition.Y, 0.f) *
-		XMMatrixScaling(mZoom, mZoom, 1.f);
+		mViewMatrix = XMMatrixTranslation(-GetWorldLocation().X, -GetWorldLocation().Y, 0.f) *
+			XMMatrixScaling(mZoom, mZoom, 1.f);
 	}
-
 }

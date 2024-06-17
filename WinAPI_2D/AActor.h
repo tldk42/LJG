@@ -1,9 +1,9 @@
 #pragma once
-#include "Component/UObject.h"
+#include "Component/USceneComponent.h"
 
 namespace LJG
 {
-	class AActor : public UObject
+	class AActor : public USceneComponent
 	{
 	public:
 		AActor();
@@ -17,21 +17,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		[[nodiscard]] inline FVector2f GetActorLocation() const { return mLocation; }
-		[[nodiscard]] inline FVector2f GetActorScale() const { return mScale; }
-		[[nodiscard]] float            GetActorRotation() const { return mTestRotation; }
-		[[nodiscard]] UObject*         GetComponentByID(const WText& InCompID);
+		[[nodiscard]] UObject* GetComponentByID(const WText& InCompID);
 
-
-		inline void SetActorLocation(const FVector2f& InLocation) { mLocation = InLocation; }
-		inline void SetActorScale(const FVector2f& InScale) { mScale = InScale; }
-		void        AttachComponent(const WText& InCompID, UObject* InComp);
+		void AttachComponent(const WText& InCompID, UObject* InComp);
 
 	protected:
-		bool bVisibility;
-
-		FVector2f mLocation;
-		FVector2f mScale;
-		float     mTestRotation = 0.f;
 	};
 }

@@ -31,14 +31,14 @@ namespace LJG
 
 	public:
 #pragma region Set
-		void SetColor(const FLinearColor& InColor);
-		void SetScale(const FVector2f& InScale);
-		void SetWorldRotation(const float InDegree);
-		void SetWorldLocation(const FVector2f& InLocation);
-		void AddWorldLocation(const FVector2f& InAddLocation);
-		void SetWorldTransform(const Matrix& InMatrix);
-		void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
-		void SetFlipX(const bool bEnable);
+		virtual void SetColor(const FLinearColor& InColor);
+		virtual void SetScale(const FVector2f& InScale);
+		virtual void SetWorldRotation(const float InDegree);
+		virtual void SetWorldLocation(const FVector2f& InLocation);
+		virtual void AddWorldLocation(const FVector2f& InAddLocation);
+		virtual void SetWorldTransform(const Matrix& InMatrix);
+		virtual void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
+		virtual void SetFlipX(const bool bEnable);
 #pragma endregion
 
 #pragma region Get
@@ -79,6 +79,7 @@ namespace LJG
 #pragma region Transform
 		Matrix mTransform = XMMatrixIdentity();
 #pragma endregion
+		FVector2f mTextureScale;
 
 		float mZOrder = 0.f;
 		bool  bFlipX  = false;

@@ -3,8 +3,6 @@
 
 namespace LJG
 {
-	CLASS_PTR(ObjectManager)
-
 	class ObjectManager
 	{
 	public:
