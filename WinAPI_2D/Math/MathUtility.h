@@ -51,9 +51,9 @@ struct FMath
 
 
 	//--------------------------- Lerp -------------------------------------------
-	template<typename T>
-	[[nodiscard]] static inline T Lerp(const T Current, const T Target, const float DeltaSeconds)
+	template <typename T, typename U>
+	[[nodiscard]] static inline constexpr T Lerp(const T Current, const T Target, const U Alpha)
 	{
-		
+		return (T)(Current + ((Target - Current) * Alpha));
 	}
 };

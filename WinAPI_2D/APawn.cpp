@@ -39,60 +39,90 @@ namespace LJG
 			mDebugBox2->SetScale({200.f, 200.f});
 			mDebugBox2->SetColor(FLinearColor::BlackPearl);
 			mDebugBox2->SetOwnerActor(this);
+			
 
+			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
+			mMovementComponent->SetupAttachment(this);
+			mMovementComponent->SetOwnerActor(this);
+			mMovementComponent->Initialize();
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
 			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
 			mAnimator->Initialize();
 
-			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
-			mMovementComponent->SetupAttachment(this);
-			mMovementComponent->SetOwnerActor(this);
-			mMovementComponent->Initialize();
+			{
+				InputManager::Get().AddInputBinding(
+					EKeyCode::D, EKeyState::Pressed,
+					std::bind(&APawn::OnMovementInputPressed, this, std::placeholders::_1, false));
+				InputManager::Get().AddInputBinding(
+					EKeyCode::A, EKeyState::Pressed,
+					std::bind(&APawn::OnMovementInputPressed, this, std::placeholders::_1, true));
+				InputManager::Get().AddInputBinding(
+					EKeyCode::Space, EKeyState::Down, std::bind(&APawn::Jump, this));
+				InputManager::Get().AddInputBinding(
+					EKeyCode::LButton, EKeyState::Down, std::bind(&APawn::Attack, this));
+			}
+
+
 		}
 	}
 
 	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
-		mCamera->SetPosition(GetWorldLocation());
 
-		bool bMove = false;
+		if (bAttacking)
+			return;
 
-		if (InputManager::IsKeyPressed(EKeyCode::D))
+		if (mMovementComponent->GetVelocity().IsNearlyZero())
 		{
-			AddMovementInput({DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
-			mAnimator->SetFlipX(false);
-			bMove = true;
-		}
-		if (InputManager::IsKeyPressed(EKeyCode::A))
-		{
-			AddMovementInput({-DeltaTime * mMovementComponent->GetMaxWalkSpeed(), 0.f});
-			mAnimator->SetFlipX(true);
-			bMove = true;
+			bMove = false;
 		}
 
-		if (InputManager::IsKeyDown(EKeyCode::Space))
+		if (bMove)
 		{
-			// mLocation += {0, 250 * DeltaTime};
+			mCamera->SetPosition(FMath::Lerp(mCamera->GetWorldLocation(), GetWorldLocation(), 5.f * DeltaTime));
 		}
-
-		if (!bMove)
+		else
 		{
-			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Idle), true);
-		}
-
-		if (InputManager::IsKeyPressed(EKeyCode::X))
-		{
-			mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
+			// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Idle), true);
 		}
 	}
 
 	void APawn::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
 		mMovementComponent->AddMovementInput(MovementInputAmount);
-		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
+		// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
 		SetWorldLocation(GetWorldLocation() + MovementInputAmount);
+		bMove = true;
+	}
+
+	void APawn::OnMovementInputPressed(float DeltaTime, bool bFlip)
+	{
+		const float_t moveDirection = bFlip
+										  ? DeltaTime * -mMovementComponent->GetMaxWalkSpeed()
+										  : DeltaTime * mMovementComponent->GetMaxWalkSpeed();
+
+		if (mMovementComponent->GetVelocity().X * moveDirection >= 0)
+		{
+			mAnimator->SetFlipX(bFlip);
+
+			AddMovementInput({
+				moveDirection,
+				0.f
+			});
+		}
+	}
+
+	void APawn::Jump()
+	{
+		mMovementComponent->Jump();
+	}
+
+	void APawn::Attack()
+	{
+		bAttacking = true;
+		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
 	}
 }

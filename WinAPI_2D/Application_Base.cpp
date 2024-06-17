@@ -119,6 +119,12 @@ namespace LJG
 		bIsRunning = true;
 	}
 
+	Application_Base& Application_Base::Get(LPCWSTR WindowTitle, const FWindowData& WindowData)
+	{
+		static Application_Base instance(WindowTitle, WindowData);
+		return instance;
+	}
+
 	void Application_Base::Run()
 	{
 		if (bIsInitialized)
@@ -129,7 +135,7 @@ namespace LJG
 			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
 			AHUD*  hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
 
-			mMainGUI->BindObject(pc);
+			mMainGUI->BindSceneComponent(pc);
 
 			while (bIsRunning)
 			{

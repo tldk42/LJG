@@ -7,6 +7,7 @@ namespace LJG
 
 	class UAnimator : public UObject
 	{
+
 	public:
 		UAnimator();
 		~UAnimator() override;
@@ -30,9 +31,9 @@ namespace LJG
 													const bool     bForceCustomFrame = false);
 
 	private:
-		bool                                     bIsPlaying;
-		bool                                     bFlipX;
-		uint8_t                                  mCurrentState;
-		std::unordered_map<uint8_t, UAnimation*> mStateMachine;
+		bool                                             bIsPlaying;
+		bool                                             bFlipX;
+		uint8_t                                          mCurrentState;
+		std::unordered_map<uint8_t, UAnimation*>         mStateMachine;
 	};
 }

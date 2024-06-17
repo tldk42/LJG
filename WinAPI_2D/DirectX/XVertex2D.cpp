@@ -91,9 +91,9 @@ namespace LJG
 		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
 
 		// 기존 스케일 성분
-		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mTransform.r[0] ),
-		                                         XMVectorGetY(mTransform.r[1] ),
-		                                         XMVectorGetZ(mTransform.r[2]), 0.0f);
+		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mTransform.r[0]),
+												 XMVectorGetY(mTransform.r[1]),
+												 XMVectorGetZ(mTransform.r[2]), 0.0f);
 		// 기존 위치 성분
 		const XMVECTOR cachedTranslation = mTransform.r[3];
 
@@ -126,7 +126,7 @@ namespace LJG
 
 	void XVertex2D::SetWorldTransform(const Matrix& InMatrix)
 	{
-		mTransform = InMatrix;
+		mTransform = ScaleMatrix(mTextureScale.X, mTextureScale.Y) * InMatrix;
 	}
 
 	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
@@ -219,9 +219,9 @@ namespace LJG
 		ComPtr<ID3DBlob> vertexShaderBuf = nullptr;
 
 		result = UDXHelper::LoadVertexShaderFile(Context::GetDevice(), L"Shader/sample2_vert.vsh",
-		                                         vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
+												 vertexShaderBuf.GetAddressOf(), mVertexShader.GetAddressOf());
 		result = UDXHelper::LoadPixelShaderFile(Context::GetDevice(), L"Shader/sample2_frag.psh",
-		                                        mPixelShader.GetAddressOf());
+												mPixelShader.GetAddressOf());
 
 		if (!mVertexShader.Get() || !mPixelShader.Get())
 		{
@@ -312,6 +312,5 @@ namespace LJG
 	}
 
 	void XVertex2D::OnResizeCallback()
-	{
-	}
+	{}
 }

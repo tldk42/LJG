@@ -25,6 +25,7 @@ namespace LJG
 
 	public:
 #pragma region Get
+		[[nodiscard]] Matrix    GetWorldTransform() const;
 		[[nodiscard]] FVector2f GetWorldLocation() const;
 		[[nodiscard]] FVector2f GetRelativeLocation() const;
 		[[nodiscard]] float     GetWorldRotation() const;
@@ -35,10 +36,12 @@ namespace LJG
 #pragma region Set
 		void SetWorldLocation(const FVector2f& InLocation);
 		void SetRelativeLocation(const FVector2f& InLocation);
+		void AddWorldLocation(const FVector2f& InAddLocation);
 		void SetWorldRotation(const float InDegree);
 		void SetRelativeRotation(const float InDegree);
 		void SetScale(const FVector2f& InScale);
 		void SetTransform(const Matrix& InMatrix);
+		void SetTransform(const FVector2f& InLocation, const float_t InRotation, const FVector2f& InScale);
 #pragma endregion
 
 	public:

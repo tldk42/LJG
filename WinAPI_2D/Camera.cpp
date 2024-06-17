@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+#include "InputManager.h"
 #include "DirectX/XProjectionBuffer.h"
 #include "DirectX/XViewBuffer.h"
 
@@ -15,8 +16,7 @@ namespace LJG
 	}
 
 	ACamera::~ACamera()
-	{
-	}
+	{}
 
 	void ACamera::Initialize()
 	{
@@ -29,6 +29,26 @@ namespace LJG
 	void ACamera::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
+
+		if (InputManager::IsKeyPressed(EKeyCode::Up))
+		{
+			AddWorldLocation(FVector2f{0.f, 200.f} * DeltaTime);
+		}
+		if (InputManager::IsKeyPressed(EKeyCode::Down))
+		{
+			AddWorldLocation(FVector2f{0.f, -200.f} * DeltaTime);
+
+		}
+		if (InputManager::IsKeyPressed(EKeyCode::Left))
+		{
+			AddWorldLocation(FVector2f{-200.f, 0.f} * DeltaTime);
+
+		}
+		if (InputManager::IsKeyPressed(EKeyCode::Right))
+		{
+			AddWorldLocation(FVector2f{200.f, 0.f} * DeltaTime);
+
+		}
 
 		UpdateViewMatrix();
 
@@ -58,7 +78,7 @@ namespace LJG
 	void ACamera::SetProjection(float InScreenWidth, float InScreenHeight)
 	{
 		mProjectionMatrix = XMMatrixOrthographicOffCenterLH(-InScreenWidth / 2.f, InScreenWidth / 2.f,
-		                                                    -InScreenHeight / 2.f, InScreenHeight / 2.f, -1.f, 1.f);
+															-InScreenHeight / 2.f, InScreenHeight / 2.f, -1.f, 1.f);
 	}
 
 	void ACamera::SetPosition(const FVector2f& InPosition)
@@ -75,6 +95,6 @@ namespace LJG
 	void ACamera::UpdateViewMatrix()
 	{
 		mViewMatrix = XMMatrixTranslation(-GetWorldLocation().X, -GetWorldLocation().Y, 0.f) *
-			XMMatrixScaling(mZoom, mZoom, 1.f);
+		XMMatrixScaling(mZoom, mZoom, 1.f);
 	}
 }

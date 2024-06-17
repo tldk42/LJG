@@ -48,7 +48,7 @@ namespace LJG
 
 	UObject* AActor::GetComponentByID(const WText& InCompID)
 	{
-		if (!mChildObjects.contains(InCompID))
+		if (mChildObjects.contains(InCompID))
 		{
 			return mChildObjects[InCompID];
 		}

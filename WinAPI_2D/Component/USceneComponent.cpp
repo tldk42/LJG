@@ -28,7 +28,7 @@ namespace LJG
 			sceneComponent.second->SetTransform(mWorldTransform);
 		}
 	}
-	
+
 	void USceneComponent::Render()
 	{
 		UObject::Render();
@@ -37,6 +37,11 @@ namespace LJG
 	void USceneComponent::Release()
 	{
 		UObject::Release();
+	}
+
+	Matrix USceneComponent::GetWorldTransform() const
+	{
+		return mWorldTransform;
 	}
 
 	FVector2f USceneComponent::GetWorldLocation() const
@@ -69,9 +74,16 @@ namespace LJG
 		mWorldTransform.r[3] = XMVectorSet(InLocation.X, InLocation.Y, 0.f, 1.f);
 	}
 
+
 	void USceneComponent::SetRelativeLocation(const FVector2f& InLocation)
 	{
 		mLocalTransform.r[3] = XMVectorSet(InLocation.X, InLocation.Y, 0.f, 1.f);
+	}
+
+	void USceneComponent::AddWorldLocation(const FVector2f& InAddLocation)
+	{
+		const auto cache     = Mat2LocVector2(mWorldTransform);
+		mWorldTransform.r[3] = XMVectorSet(cache.X + InAddLocation.X, cache.Y + InAddLocation.Y, 0.f, 1.f);
 	}
 
 	void USceneComponent::SetWorldRotation(const float InDegree)
@@ -79,8 +91,8 @@ namespace LJG
 		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
 
 		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mWorldTransform.r[0]),
-		                                         XMVectorGetY(mWorldTransform.r[1]),
-		                                         XMVectorGetZ(mWorldTransform.r[2]), 0.0f);
+												 XMVectorGetY(mWorldTransform.r[1]),
+												 XMVectorGetZ(mWorldTransform.r[2]), 0.0f);
 		const XMVECTOR cachedTranslation = mWorldTransform.r[3];
 
 		mWorldTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix;
@@ -92,8 +104,8 @@ namespace LJG
 		const XMMATRIX newRotationMatrix = RotationMatrix(InDegree);
 
 		const XMVECTOR cachedScale = XMVectorSet(XMVectorGetX(mLocalTransform.r[0]),
-		                                         XMVectorGetY(mLocalTransform.r[1]),
-		                                         XMVectorGetZ(mLocalTransform.r[2]), 0.0f);
+												 XMVectorGetY(mLocalTransform.r[1]),
+												 XMVectorGetZ(mLocalTransform.r[2]), 0.0f);
 		const XMVECTOR cachedTranslation = mLocalTransform.r[3];
 
 		mLocalTransform      = XMMatrixScalingFromVector(cachedScale) * newRotationMatrix;
@@ -121,5 +133,16 @@ namespace LJG
 	void USceneComponent::SetTransform(const Matrix& InMatrix)
 	{
 		mWorldTransform = InMatrix;
+	}
+
+	void USceneComponent::SetTransform(const FVector2f& InLocation, const float_t InRotation, const FVector2f& InScale)
+	{
+		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
+		const XMMATRIX rotation    = RotationMatrix(InRotation);
+		const XMMATRIX scale       = ScaleMatrix(InScale.X, InScale.Y);
+
+		const XMMATRIX transform = scale * rotation * translation;
+
+		mWorldTransform = transform;
 	}
 }

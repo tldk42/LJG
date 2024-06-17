@@ -3,11 +3,11 @@
 #include <imgui.h>
 
 #include "AActor.h"
+#include "InputManager.h"
 
 LJG::TGUI_Inspector::TGUI_Inspector(HWND InHwnd)
 	: TGUI_Base(InHwnd)
-{
-}
+{}
 
 void LJG::TGUI_Inspector::Initialize()
 {
@@ -43,37 +43,45 @@ void LJG::TGUI_Inspector::ShowInspector()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Save"))
-			{
-			}
+			{}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Open"))
-			{
-			}
+			{}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
 	}
 
+	static bool bEnableDebug = true;
+	ImGui::Checkbox("Input debug?", &bEnableDebug);
+	InputManager::EnableDebug(bEnableDebug);
+
+	ImGui::NewLine();
+
 	if (mObjectToShow)
 	{
-		static float v[2];
+		static float loc[2] = {0.f, 0.f};
 		{
-			v[0] = mObjectToShow->GetScale().X;
-			v[1] = mObjectToShow->GetScale().Y;
+			loc[0] = mObjectToShow->GetWorldLocation().X;
+			loc[1] = mObjectToShow->GetWorldLocation().Y;
 		}
-		static float s[2] = {0.f, 0.f};
+		static float rot = mObjectToShow->GetWorldRotation();
+		static float scale[2];
 		{
-			s[0] = mObjectToShow->GetWorldLocation().X;
-			s[1] = mObjectToShow->GetWorldLocation().Y;
+			scale[0] = mObjectToShow->GetScale().X;
+			scale[1] = mObjectToShow->GetScale().Y;
 		}
-		ImGui::InputFloat2("Scale", v);
-		ImGui::InputFloat2("Location", s);
 
-		auto worldPos = XMVectorSet(v[0], v[1], 0, 1.f);
-		// auto clipPos = XMVector3TransformCoord(worldPos, )
+		ImGui::InputFloat2("Location", loc);
+		ImGui::InputFloat("Rotation", &rot);
+		ImGui::InputFloat2("Scale", scale);
 
-		mObjectToShow->SetWorldLocation({s[0], s[1]});
-		mObjectToShow->SetScale({v[0], v[1]});
+		static bool bEdit = false;
+		ImGui::Checkbox("Edit Actor?", &bEdit);
+		if (bEdit)
+		{
+			mObjectToShow->SetTransform({loc[0], loc[1]}, rot, {scale[0], scale[1]});
+		}
 	}
 
 

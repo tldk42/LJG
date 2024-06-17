@@ -3,6 +3,10 @@
 
 namespace LJG
 {
+	class UPawnMovementComponent2D;
+}
+namespace LJG
+{
 	class UPlayerAnimator : public UAnimator
 	{
 	public:
@@ -21,6 +25,8 @@ namespace LJG
 		UAnimation* mIdleState;
 		UAnimation* mMoveState;
 		UAnimation* mAttackState;
+
+		UPawnMovementComponent2D* mMovementComponent;
 	};
 
 }

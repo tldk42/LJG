@@ -20,12 +20,19 @@ namespace LJG
 
 	void UAnimator::Update(float DeltaTime)
 	{
-		UObject::Update(DeltaTime);
+		// UObject::Update(DeltaTime);
 
 		if (mStateMachine.contains(mCurrentState))
 		{
-			mStateMachine[mCurrentState]->Update(DeltaTime);
+			UAnimation* currentAnim = mStateMachine[mCurrentState];
+			currentAnim->Update(DeltaTime);
+			if (currentAnim->GetNextAnimation() < MAXUINT8)
+			{
+				SetState(currentAnim->GetNextAnimation(), true);
+				
+			}
 		}
+
 	}
 
 	void UAnimator::Render()
@@ -67,6 +74,7 @@ namespace LJG
 		if (!mStateMachine.contains(InState))
 		{
 			mStateMachine[InState] = InAnimation;
+
 			InAnimation->SetAnimator(this);
 		}
 	}

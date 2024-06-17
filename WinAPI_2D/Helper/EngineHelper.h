@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Application_Base.h"
 #include "CommonInclude.h"
 #include "Window.h"
 
@@ -45,5 +46,10 @@ namespace LJG
 	inline bool IsVsyncEnabled(void* WindowHandle = nullptr)
 	{
 		return Window::GetWindow(WindowHandle)->IsVsyncEnabled();
+	}
+
+	inline float_t GetDeltaSeconds()
+	{
+		return Application_Base::Get().GetDeltaSeconds();
 	}
 }

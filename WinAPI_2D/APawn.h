@@ -26,6 +26,9 @@ namespace LJG
 #pragma endregion
 
 		void AddMovementInput(const FVector2f& MovementInputAmount);
+		void OnMovementInputPressed(float DeltaTime, bool bFlip);
+		void Jump();
+		void Attack();
 
 	private:
 		UPawnMovementComponent2D* mMovementComponent;
@@ -34,5 +37,8 @@ namespace LJG
 		UBoxComponent*            mDebugBox2;
 
 		ACamera* mCamera;
+
+		bool bMove = false;
+		bool  bAttacking;
 	};
 }

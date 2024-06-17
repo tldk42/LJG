@@ -4,12 +4,17 @@
 
 namespace LJG
 {
+
 	InputManager::InputManager()
 		: mMousePosition(), bEnableDebug(false)
 	{
-		#ifdef _DEBUG
+#ifdef _DEBUG
 		bEnableDebug = true;
-		#endif
+#endif
+
+		InputBindings_Up.reserve(30);
+		InputBindings_Down.reserve(30);
+		InputBindings_Pressed.reserve(30);
 	}
 
 	void InputManager::Initialize()
@@ -26,8 +31,58 @@ namespace LJG
 		Get().UpdateMouseWindowPosition();
 
 		Get().Debug_Input();
+
+		Get().UpdateKeyBindings(EKeyState::Up, DeltaTime);
+		Get().UpdateKeyBindings(EKeyState::Down, DeltaTime);
+		Get().UpdateKeyBindings(EKeyState::Pressed, DeltaTime);
 	}
 
+
+	void InputManager::AddInputBinding(const EKeyCode InKeyCode, const EKeyState BindType, InputCallback Callback)
+	{
+		switch (BindType)
+		{
+		case EKeyState::Up:
+			InputBindings_Up[InKeyCode].emplace_back(Callback);
+			break;
+		case EKeyState::Down:
+			InputBindings_Down[InKeyCode].emplace_back(Callback);
+			break;
+		case EKeyState::Pressed:
+			InputBindings_Pressed[InKeyCode].emplace_back(Callback);
+			break;
+		}
+
+	}
+
+	void InputManager::UpdateKeyBindings(const EKeyState InTriggerType, const float DeltaTime)
+	{
+		std::unordered_map<EKeyCode, std::vector<InputCallback>> Bindings;
+		switch (InTriggerType)
+		{
+		case EKeyState::Up:
+			Bindings = InputBindings_Up;
+			break;
+		case EKeyState::Down:
+			Bindings = InputBindings_Down;
+			break;
+		case EKeyState::Pressed:
+			Bindings = InputBindings_Pressed;
+			break;
+		}
+
+		for (const auto& inputActions : Bindings)
+		{
+			if (mKeys[(UINT)inputActions.first].State == InTriggerType)
+			{
+				for (const auto& inputAction : inputActions.second)
+				{
+					inputAction(DeltaTime);
+				}
+			}
+
+		}
+	}
 
 	void InputManager::CreateKeys()
 	{

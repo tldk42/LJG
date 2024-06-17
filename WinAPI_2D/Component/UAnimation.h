@@ -13,6 +13,8 @@ namespace LJG
 
 	class UAnimation : public USceneComponent
 	{
+		using TransitionCondition = std::function<bool()>;
+
 	public:
 		UAnimation(std::vector<FAnimData>&& InAnims);
 		~UAnimation() override;
@@ -30,15 +32,26 @@ namespace LJG
 		void Stop();
 
 		void SetAnimator(UAnimator* InAnimator) { mOwnerAnimator = InAnimator; }
+		void AddTransition(const uint8_t InAnimName, const TransitionCondition& InRule, UAnimation* InAnim);
+		void AddTransitionCondition(const uint8_t InAnimName, const TransitionCondition& InRule);
+
+		uint8_t     GetNextAnimation();
+		UAnimation* FindAdjAnim(const uint8_t InAnimName);
 
 	private:
 		bool                     bLoop;
 		bool                     bIsPlaying;
 		UINT                     mFrames;
-		steady_clock::time_point mPlayTime;
+		steady_clock::time_point mPlayTime; // 총 재생 시간
 
+		std::vector<FAnimData> mAnimDatas; // 1 프레임 스프라이트 집합
+
+	private:
 		UAnimator* mOwnerAnimator;
 
-		std::vector<FAnimData> mAnimDatas;
+		uint8_t mCandidateState;
+
+		std::unordered_map<uint8_t, UAnimation*>                      mTransitions; // StateName <-> State Anim
+		std::unordered_map<uint8_t, std::vector<TransitionCondition>> mTransitionRules; // StateName <-> Transition Rule
 	};
 }

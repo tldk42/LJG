@@ -14,8 +14,8 @@ int main()
 
 	// ----------------------- START ------------------------------
 	{
-		Application_Base app(L"Renderer", testWindowData);
-		app.Start();
+		Application_Base::Get(L"Renderer", testWindowData);
+		Application_Base::Get().Start();
 	}
 	return 0;
 }

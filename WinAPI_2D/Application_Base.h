@@ -19,11 +19,15 @@ namespace LJG
 #pragma endregion
 
 #pragma region Application Handle
-		void Start();
-		void Pause();
-		void Resume();
-		void Stop();
+		void                     Start();
+		void                     Pause();
+		void                     Resume();
+		void                     Stop();
+		static Application_Base& Get(LPCWSTR WindowTitle = nullptr, const FWindowData& WindowData = {});
 #pragma endregion
+
+	public:
+		[[nodiscard]] float_t GetDeltaSeconds() const { return mDeltaTime; }
 
 	protected:
 		virtual void Initialize_Application();

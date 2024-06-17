@@ -6,6 +6,9 @@ namespace LJG
 
 	class InputManager
 	{
+
+		using InputCallback = Delegate_OneParam<float_t>;
+
 	public:
 		InputManager();
 		~InputManager() = default;
@@ -25,6 +28,10 @@ namespace LJG
 		FORCEINLINE static bool             IsKeyPressed(const EKeyCode Key) { return Get().IsKeyPressed_Internal(Key); }
 		FORCEINLINE static const FVector2f& GetMousePosition() { return Get().mMousePosition; }
 
+		FORCEINLINE static void EnableDebug(const bool bEnable) { Get().bEnableDebug = bEnable; }
+
+		void AddInputBinding(const EKeyCode InKeyCode, const EKeyState BindType, InputCallback Callback);
+
 	private:
 		inline bool IsKeyDown_Internal(EKeyCode Key) const
 		{
@@ -40,6 +47,8 @@ namespace LJG
 		{
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
+
+		void UpdateKeyBindings(const EKeyState InTriggerType,const float DeltaTime);
 
 	private:
 		void CreateKeys();
@@ -57,6 +66,11 @@ namespace LJG
 		static bool IsKeyDown_Implements(const EKeyCode InKey);
 
 		void Debug_Input() const;
+
+	public:
+		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Up;
+		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Down;
+		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Pressed;
 
 	private:
 		std::vector<FKeyData> mKeys;

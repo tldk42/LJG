@@ -1,5 +1,4 @@
 #include "UPawnMovementComponent2D.h"
-
 #include "AActor.h"
 
 namespace LJG
@@ -7,8 +6,10 @@ namespace LJG
 	UPawnMovementComponent2D::UPawnMovementComponent2D()
 		: bIsMovingOnGround(true),
 		  mMaxWalkSpeed(350.f),
-		  mGravity(98.f),
-		  mVelocity(FVector2f::ZeroVector),
+		  mGravity(3333.f),
+		  mJumpPower_Value(1000.f),
+		  mJumpPower_Current(1000.f),
+		  mVelocity({0,0}),
 		  mAirResistance(),
 		  mGroundFriction()
 	{}
@@ -24,13 +25,9 @@ namespace LJG
 	{
 		UObject::Update(DeltaTime);
 
-		const FVector2f ownerLocation = mOwnerActor->GetWorldLocation();
+		HandleJumpAction(DeltaTime);
 
-		// if (ownerLocation.Y > 0 || !bIsMovingOnGround)
-		// {
-		// 	auto newLoc = ownerLocation.Y - (mGravity * DeltaTime);
-		// 	mOwnerActor->SetWorldLocation({ownerLocation.X, newLoc});
-		// }
+		const FVector2f ownerLocation = mOwnerActor->GetWorldLocation();
 
 		const auto newVelocity = (ownerLocation - mPreviousLocation) / DeltaTime;
 		mAcceleration          = (newVelocity - mVelocity) / DeltaTime;
@@ -42,5 +39,20 @@ namespace LJG
 	{
 		mInputVector += InInput;
 	}
-	
+
+	void UPawnMovementComponent2D::HandleJumpAction(const float DeltaTime)
+	{
+		if (bIsJumping)
+		{
+			mJumpPower_Current -= mGravity * DeltaTime;
+			mOwnerActor->AddWorldLocation(FVector2f(0.f, mJumpPower_Current * DeltaTime));
+		}
+		if (mOwnerActor->GetWorldLocation().Y <= 0.f)
+		{
+			mJumpPower_Current = mJumpPower_Value;
+			bIsJumping         = false;
+		}
+	}
+
+
 }

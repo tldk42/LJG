@@ -9,9 +9,9 @@ namespace LJG
 	UAnimation::UAnimation(std::vector<FAnimData>&& InAnims)
 		: bIsPlaying(false),
 		  mFrames(0),
-		  mAnimDatas(std::move(InAnims))
-	{
-	}
+		  mAnimDatas(std::move(InAnims)),
+		  mCandidateState(MAXUINT8)
+	{}
 
 	UAnimation::~UAnimation()
 	{
@@ -19,32 +19,26 @@ namespace LJG
 	}
 
 	void UAnimation::Initialize()
-	{
-	}
+	{}
 
 	void UAnimation::Update(float DeltaTime)
 	{
 		if (bIsPlaying)
 		{
-			if (mOwnerAnimator)
+			// 트랜스폼 업데이트
+			if (mOwnerAnimator && mOwnerAnimator->GetOwnerActor())
 			{
 				const AActor* ownerActor = mOwnerAnimator->GetOwnerActor();
-
 
 				for (const FAnimData& anim : mAnimDatas)
 				{
 					anim.Sprite->SetFlipX(mOwnerAnimator->FlipX() ? true : false);
-					static float testRot = 0.1f;
-					testRot += DeltaTime;
 
-					anim.Sprite->SetWorldTransform(ownerActor->GetWorldLocation(), testRot, ownerActor->GetScale());
-					// anim.Sprite->SetScale(ownerActor->GetScale());
-					// anim.Sprite->SetWorldRotation(testRot);
-					// anim.Sprite->SetWorldLocation(ownerActor->GetWorldLocation());
+					anim.Sprite->SetWorldTransform(ownerActor->GetWorldTransform());
 				}
 			}
 
-
+			// 스프라이트 업데이트
 			const FAnimData& frame       = mAnimDatas[mFrames];
 			const float      elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f /
 				1000.f);
@@ -66,6 +60,31 @@ namespace LJG
 
 			mAnimDatas[mFrames].Sprite->Update(DeltaTime);
 		}
+
+		// 정지 상태 -> 갈 수 있는 애님 스테이트 확인
+
+		for (auto& transitionRule : mTransitionRules)
+		{
+			bool bCanBeTrans = true;
+			for (TransitionCondition& rule : transitionRule.second)
+			{
+				if (!rule())
+				{
+					bCanBeTrans = false;
+					break;
+				}
+			}
+
+			// 모든 조건을 만족하면
+			if (bCanBeTrans)
+			{
+				mCandidateState = transitionRule.first;
+				break;
+			}
+			mCandidateState = MAXUINT8;
+		}
+
+
 	}
 
 	void UAnimation::Render()
@@ -103,5 +122,34 @@ namespace LJG
 	{
 		bIsPlaying = false;
 		mFrames    = 0;
+	}
+
+	void UAnimation::AddTransition(const uint8_t InAnimName, const TransitionCondition& InRule, UAnimation* InAnim)
+	{
+		mTransitions[InAnimName] = InAnim;
+		mTransitionRules[InAnimName].emplace_back(InRule);
+	}
+
+	void UAnimation::AddTransitionCondition(const uint8_t InAnimName, const TransitionCondition& InRule)
+	{
+		if (mTransitionRules.contains(InAnimName))
+		{
+			mTransitionRules[InAnimName].emplace_back(InRule);
+		}
+	}
+
+	uint8_t UAnimation::GetNextAnimation()
+	{
+		return mCandidateState;
+	}
+
+	UAnimation* UAnimation::FindAdjAnim(const uint8_t InAnimName)
+	{
+		if (mTransitions.contains(InAnimName))
+		{
+			return mTransitions[InAnimName];
+		}
+
+		return nullptr;
 	}
 }

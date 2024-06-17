@@ -17,8 +17,8 @@ namespace LJG
 		ImGui::CreateContext();
 
 		ImGuiIO& io = ImGui::GetIO();
-		
-		
+
+
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
@@ -50,7 +50,7 @@ namespace LJG
 		ImGui::DestroyContext();
 	}
 
-	void TGUI_Base::BindObject(AActor* InBindObject)
+	void TGUI_Base::BindSceneComponent(USceneComponent* InBindObject)
 	{
 		mObjectToShow = InBindObject;
 	}

@@ -3,6 +3,7 @@
 
 namespace LJG
 {
+	class USceneComponent;
 
 	class TGUI_Base : public ICoreAPI
 	{
@@ -17,11 +18,11 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void BindObject(AActor* InBindObject);
+		void BindSceneComponent(USceneComponent* InBindObject);
 
 	protected:
 		HWND mWindowHandle;
 
-		AActor* mObjectToShow;
+		USceneComponent* mObjectToShow;
 	};
 }

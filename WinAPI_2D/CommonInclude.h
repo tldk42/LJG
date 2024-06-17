@@ -38,7 +38,10 @@ using namespace Microsoft::WRL;
 using namespace std::chrono;
 using namespace DirectX;
 
+
 using VoidDelegate = std::function<void()>;
+template <typename T>
+using Delegate_OneParam = std::function<void(T)>;
 using ResizeDelegate = std::function<void(UINT, UINT)>;
 
 using WText = std::wstring;

@@ -1,6 +1,9 @@
 #include "UPlayerAnimator.h"
+
+#include "AActor.h"
 #include "PlayerData.h"
 #include "UAnimation.h"
+#include "UPawnMovementComponent2D.h"
 #include "DirectX/XSprite2D.h"
 
 namespace LJG
@@ -9,6 +12,11 @@ namespace LJG
 	void UPlayerAnimator::Initialize()
 	{
 		UAnimator::Initialize();
+
+		assert(mOwnerActor);
+
+		mMovementComponent = dynamic_cast<UPawnMovementComponent2D*>(mOwnerActor->GetComponentByID(L"MovementComponent"));
+		assert(mMovementComponent);
 
 		mIdleState = CreateDefaultSubObject<UAnimation>(L"IdleAnimSet", LoadAnimation(L"rsc/ND/Idle/LD_Idle_", 60));
 		mMoveState = CreateDefaultSubObject<
@@ -23,6 +31,17 @@ namespace LJG
 		AddState(EnumAsByte(EPlayerAnimState::Idle), mIdleState);
 		AddState(EnumAsByte(EPlayerAnimState::Move), mMoveState);
 		AddState(EnumAsByte(EPlayerAnimState::Attack), mAttackState);
+
+
+		mIdleState->AddTransition(EnumAsByte(EPlayerAnimState::Move), [this](){
+			return !mMovementComponent->GetVelocity().IsNearlyZero();
+		}, mMoveState);
+
+		mMoveState->AddTransition(EnumAsByte(EPlayerAnimState::Idle), [this](){
+			return mMovementComponent->GetVelocity().IsNearlyZero();
+		}, mIdleState);
+
+		SetState(EnumAsByte(EPlayerAnimState::Idle), true);
 	}
 
 	void UPlayerAnimator::Update(float DeltaTime)
@@ -39,5 +58,5 @@ namespace LJG
 	{
 		UAnimator::Release();
 	}
-	
+
 }
