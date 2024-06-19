@@ -7,16 +7,16 @@ namespace LJG
 {
 	void ObjectManager::Initialize()
 	{
-		Window::GetWindow()->OnResize.emplace_back([](UINT InWidth, UINT InHeight){
+		Window::GetWindow()->OnResize.Bind([](UINT InWidth, UINT InHeight){
 			Get().OnResizeCallback(InWidth, InHeight);
 		});
 	}
 
 	void ObjectManager::Update(float DeltaTime)
 	{
-		Get().RemoveInvalidObjects();
+		Get().RemoveInvalidResource();
 
-		for (const auto& [key, object] : Get().mManagedObjects)
+		for (const auto& [key, object] : Get().mManagedList)
 		{
 			if (!object->GetParent())
 			{
@@ -27,7 +27,7 @@ namespace LJG
 
 	void ObjectManager::Render()
 	{
-		for (const auto& [key, object] : Get().mManagedObjects)
+		for (const auto& [key, object] : Get().mManagedList)
 		{
 			if (!object->GetParent())
 			{
@@ -37,24 +37,9 @@ namespace LJG
 	}
 
 
-	void ObjectManager::RemoveInvalidObjects()
-	{
-		for (auto it = mManagedObjects.begin(); it != mManagedObjects.end();)
-		{
-			if (!it->second)
-			{
-				it = mManagedObjects.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-	}
-
 	void ObjectManager::OnResizeCallback(UINT InWidth, UINT InHeight)
 	{
-		for (const auto& obj : mManagedObjects)
+		for (const auto& obj : mManagedList)
 		{
 			// obj_ptr->OnResize();
 		}

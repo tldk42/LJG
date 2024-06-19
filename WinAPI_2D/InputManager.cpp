@@ -32,64 +32,61 @@ namespace LJG
 
 		Get().Debug_Input();
 
-		Get().UpdateKeyBindings(EKeyState::Up, DeltaTime);
-		Get().UpdateKeyBindings(EKeyState::Down, DeltaTime);
-		Get().UpdateKeyBindings(EKeyState::Pressed, DeltaTime);
+		Get().UpdateKeyBindings(DeltaTime);
 	}
 
 
-	void InputManager::AddInputBinding(const EKeyCode InKeyCode, const EKeyState BindType, InputCallback Callback)
+	void InputManager::AddInputBinding(const EKeyCode                     InKeyCode, const EKeyState BindType,
+									   const FOnInputEvent::FunctionType& Callback)
 	{
 		switch (BindType)
 		{
 		case EKeyState::Up:
-			InputBindings_Up[InKeyCode].emplace_back(Callback);
+			InputBindings_Up[InKeyCode].Bind(Callback);
 			break;
 		case EKeyState::Down:
-			InputBindings_Down[InKeyCode].emplace_back(Callback);
+			InputBindings_Down[InKeyCode].Bind(Callback);
 			break;
 		case EKeyState::Pressed:
-			InputBindings_Pressed[InKeyCode].emplace_back(Callback);
+			InputBindings_Pressed[InKeyCode].Bind(Callback);
 			break;
 		}
 
 	}
 
-	void InputManager::UpdateKeyBindings(const EKeyState InTriggerType, const float DeltaTime)
+	void InputManager::UpdateKeyBindings(const float DeltaTime)
 	{
-		std::unordered_map<EKeyCode, std::vector<InputCallback>> Bindings;
-		switch (InTriggerType)
+		for (auto& inputActions : InputBindings_Up)
 		{
-		case EKeyState::Up:
-			Bindings = InputBindings_Up;
-			break;
-		case EKeyState::Down:
-			Bindings = InputBindings_Down;
-			break;
-		case EKeyState::Pressed:
-			Bindings = InputBindings_Pressed;
-			break;
+			if (mKeys[EnumAsByte(inputActions.first)].State == EKeyState::Up)
+			{
+				(inputActions.second).Execute(DeltaTime);
+			}
 		}
 
-		for (const auto& inputActions : Bindings)
+		for (auto& inputActions : InputBindings_Down)
 		{
-			if (mKeys[(UINT)inputActions.first].State == InTriggerType)
+			if (mKeys[EnumAsByte(inputActions.first)].State == EKeyState::Down)
 			{
-				for (const auto& inputAction : inputActions.second)
-				{
-					inputAction(DeltaTime);
-				}
+				(inputActions.second).Execute(DeltaTime);
 			}
+		}
 
+		for (auto& inputActions : InputBindings_Pressed)
+		{
+			if (mKeys[EnumAsByte(inputActions.first)].State == EKeyState::Pressed)
+			{
+				(inputActions.second).Execute(DeltaTime);
+			}
 		}
 	}
 
 	void InputManager::CreateKeys()
 	{
 		mKeys.clear();
-		mKeys.reserve(static_cast<UINT>(EKeyCode::End));
+		mKeys.reserve(EnumAsByte(EKeyCode::End));
 
-		for (size_t i = 0; i < static_cast<UINT>(EKeyCode::End); ++i)
+		for (size_t i = 0; i < EnumAsByte(EKeyCode::End); ++i)
 		{
 			mKeys.emplace_back(static_cast<EKeyCode>(i), EKeyState::None, false);
 		}
@@ -187,7 +184,7 @@ namespace LJG
 
 	bool InputManager::IsKeyDown_Implements(const EKeyCode InKey)
 	{
-		return GetAsyncKeyState(ASCII[static_cast<UINT>(InKey)]) & 0x8000;
+		return GetAsyncKeyState(ASCII[EnumAsByte(InKey)]) & 0x8000;
 	}
 
 	void InputManager::Debug_Input() const
@@ -198,7 +195,7 @@ namespace LJG
 			{
 				if (key.PressDuration.count() > 0)
 				{
-					std::cout << "Key " << ASCIIString[static_cast<int>(key.KeyCode)] << " was pressed for " <<
+					std::cout << "Key " << ASCIIString[EnumAsByte(key.KeyCode)] << " was pressed for " <<
 					key.PressDuration.count() * (1.f / 1000.f) << " seconds\n";
 				}
 			}

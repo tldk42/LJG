@@ -3,7 +3,7 @@
 
 namespace LJG
 {
-	class XTexture : ICoreAPI
+	class XTexture : public ICoreAPI, public IManagedAPI
 	{
 	public:
 		XTexture(WTextView InFile = L"", UINT InSlot = 0);
@@ -15,6 +15,11 @@ namespace LJG
 		void Render() override;
 		void Release() override;
 #pragma endregion
+
+#pragma region Managed Interface
+		virtual void SetID(WTextView InKey) override { mFilePath = InKey; }
+#pragma endregion
+
 
 		inline D3D11_TEXTURE2D_DESC GetTextureDesc() const { return mTextureDesc; }
 

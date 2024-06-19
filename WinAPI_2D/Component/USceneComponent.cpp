@@ -23,7 +23,7 @@ namespace LJG
 	{
 		UObject::Update(DeltaTime);
 
-		for (auto& sceneComponent : mChildComponents)
+		for (const auto& sceneComponent : mChildComponents)
 		{
 			sceneComponent.second->SetTransform(mWorldTransform);
 		}

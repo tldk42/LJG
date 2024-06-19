@@ -57,6 +57,5 @@ namespace LJG
 		bool bIsPaused;
 #pragma endregion
 
-		TGUI_InspectorUPtr mMainGUI;
 	};
 }

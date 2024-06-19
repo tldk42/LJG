@@ -5,33 +5,10 @@
 #include "AActor.h"
 #include "InputManager.h"
 
-LJG::TGUI_Inspector::TGUI_Inspector(HWND InHwnd)
-	: TGUI_Base(InHwnd)
+LJG::TGUI_Inspector::TGUI_Inspector()
 {}
 
-void LJG::TGUI_Inspector::Initialize()
-{
-	TGUI_Base::Initialize();
-}
-
-void LJG::TGUI_Inspector::Update(float DeltaTime)
-{
-	TGUI_Base::Update(DeltaTime);
-
-	ShowInspector();
-}
-
-void LJG::TGUI_Inspector::Render()
-{
-	TGUI_Base::Render();
-}
-
-void LJG::TGUI_Inspector::Release()
-{
-	TGUI_Base::Release();
-}
-
-void LJG::TGUI_Inspector::ShowInspector()
+void LJG::TGUI_Inspector::RenderCustomGUI()
 {
 	ImGui::GetIO().NavActive        = false;
 	ImGui::GetIO().WantCaptureMouse = true;
@@ -83,7 +60,6 @@ void LJG::TGUI_Inspector::ShowInspector()
 			mObjectToShow->SetTransform({loc[0], loc[1]}, rot, {scale[0], scale[1]});
 		}
 	}
-
 
 	ImGui::End();
 }

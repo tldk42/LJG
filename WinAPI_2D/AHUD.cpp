@@ -25,6 +25,12 @@ namespace LJG
 		mBackgroundImage->Initialize();
 		mBackgroundImage->SetPosition({0, -200.f});
 
+		mBackgroundImage_Copy = CreateDefaultSubObject<UImage>(L"BackgroundImage2", L"rsc/ND/Background/GroundStone.png");
+		mBackgroundImage_Copy->SetupAttachment(this);
+		mBackgroundImage_Copy->SetOwnerActor(this);
+		mBackgroundImage_Copy->Initialize();
+		mBackgroundImage_Copy->SetPosition({500, -200.f});
+
 		mSampleImage = CreateDefaultSubObject<UImage>(L"SampleImage", L"rsc/ND/Monster/Sample.png");
 		mSampleImage->SetupAttachment(this);
 		mSampleImage->SetOwnerActor(this);

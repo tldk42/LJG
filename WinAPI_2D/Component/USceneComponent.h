@@ -45,8 +45,6 @@ namespace LJG
 #pragma endregion
 
 	public:
-		VoidDelegate OnClick_Delegate; // Editor에서 클릭시
-
 
 	protected:
 		std::unordered_map<WText, USceneComponent*> mChildComponents;

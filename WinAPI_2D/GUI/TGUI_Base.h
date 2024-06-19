@@ -5,24 +5,20 @@ namespace LJG
 {
 	class USceneComponent;
 
-	class TGUI_Base : public ICoreAPI
+	class TGUI_Base : public IManagedAPI
 	{
 	public:
-		TGUI_Base(HWND InWindowHandle);
+		TGUI_Base();
 
 	public:
-#pragma region Core Interface
-		void Initialize() override;
-		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
-#pragma endregion
+		void SetID(WTextView InKey) override;
 
-		void BindSceneComponent(USceneComponent* InBindObject);
+		virtual void RenderCustomGUI() = 0;
+
+		void BindSceneComponent(USceneComponent* InBindObject) { mObjectToShow = InBindObject; }
 
 	protected:
-		HWND mWindowHandle;
-
+		WText            mKey;
 		USceneComponent* mObjectToShow;
 	};
 }

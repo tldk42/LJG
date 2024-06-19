@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include "InputManager.h"
+#include "Window.h"
 #include "DirectX/XProjectionBuffer.h"
 #include "DirectX/XViewBuffer.h"
 
@@ -20,6 +21,9 @@ namespace LJG
 
 	void ACamera::Initialize()
 	{
+		Window::GetWindow()->OnResize.Bind([&](UINT InWidth, UINT InHeight){
+			SetProjection(InWidth, InHeight);
+		});
 		AActor::Initialize();
 
 		mViewBuffer       = std::make_unique<XViewBuffer>();

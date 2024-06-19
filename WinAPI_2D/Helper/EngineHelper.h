@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application_Base.h"
+#include "HighLevelApp/Application_Base.h"
 #include "CommonInclude.h"
 #include "Window.h"
 
@@ -18,7 +18,6 @@ namespace LJG
 		static void ShowMessageBox(HWND WindowHandle, LPCWSTR Text, LPCWSTR Title);
 		static void ShowErrorMessageBox(HWND WindowHandle, bool bQuit);
 #pragma endregion
-
 
 		static HWND GetWindowHandle(void* WindowHandle = nullptr);
 	};

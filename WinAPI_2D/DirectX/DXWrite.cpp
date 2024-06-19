@@ -46,7 +46,7 @@ namespace LJG
 		CreateDeviceIndependentResources();
 		CreateDeviceResources();
 
-		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height){
+		Window::GetWindow()->OnResize.Bind([this](UINT Width, UINT Height){
 			OnResizeCallback(Width, Height);
 		});
 
@@ -65,7 +65,6 @@ namespace LJG
 	{
 		DiscardDeviceIndependentResources();
 		DiscardDeviceResources();
-
 	}
 
 	bool DXWrite::Initialized()
@@ -129,8 +128,7 @@ namespace LJG
 		End();
 		return S_OK;
 	}
-
-
+	
 	HRESULT DXWrite::CreateDeviceIndependentResources()
 	{
 		// Set DPI

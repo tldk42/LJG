@@ -5,7 +5,7 @@
 
 namespace LJG
 {
-	HRESULT UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const wchar_t*        VertexFileName,
+	HRESULT UDXHelper::LoadVertexShaderFile(ID3D11Device* Device, const WText&          VertexFileName,
 											ID3DBlob**    OutBlob, ID3D11VertexShader** VertexShader, LPCSTR FunctionName,
 											bool          bBinary)
 	{
@@ -17,7 +17,7 @@ namespace LJG
 
 		if (!bBinary)
 		{
-			result = CompileShaderFromFile(VertexFileName, FunctionName ? FunctionName : "vs", "vs_5_0",
+			result = CompileShaderFromFile(VertexFileName.c_str(), FunctionName ? FunctionName : "vs", "vs_5_0",
 										   &blob);
 			if (FAILED(result))
 			{
@@ -55,7 +55,7 @@ namespace LJG
 		return result;
 	}
 
-	HRESULT UDXHelper::LoadPixelShaderFile(ID3D11Device*       Device, const wchar_t* PixelFileName,
+	HRESULT UDXHelper::LoadPixelShaderFile(ID3D11Device*       Device, const WText& PixelFileName,
 										   ID3D11PixelShader** pixelShader,
 										   const wchar_t*      FunctionName, bool bBinary,
 										   ID3DBlob**          OutBlob)
@@ -68,7 +68,7 @@ namespace LJG
 
 		if (!bBinary)
 		{
-			result = CompileShaderFromFile(PixelFileName, "ps", "ps_5_0",
+			result = CompileShaderFromFile(PixelFileName.c_str(), "ps", "ps_5_0",
 										   &blob);
 			if (FAILED(result))
 			{

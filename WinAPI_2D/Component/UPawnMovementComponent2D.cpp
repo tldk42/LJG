@@ -37,7 +37,7 @@ namespace LJG
 
 	void UPawnMovementComponent2D::AddMovementInput(const FVector2f& InInput)
 	{
-		mInputVector += InInput;
+		mInputVector = InInput;
 	}
 
 	void UPawnMovementComponent2D::HandleJumpAction(const float DeltaTime)

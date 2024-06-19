@@ -3,6 +3,9 @@
 
 namespace LJG
 {
+	class XShaderData;
+
+
 #pragma region Data
 	struct FVertexBase
 	{
@@ -72,16 +75,15 @@ namespace LJG
 #pragma endregion
 
 #pragma region Shader
-		ComPtr<ID3D11VertexShader> mVertexShader;
-		ComPtr<ID3D11PixelShader>  mPixelShader;
+		XShaderData* mShaderData;
 #pragma endregion
 
 #pragma region Transform
 		Matrix mTransform = XMMatrixIdentity();
 #pragma endregion
-		FVector2f mTextureScale;
 
-		float mZOrder = 0.f;
-		bool  bFlipX  = false;
+		FVector2f mTextureScale;
+		float     mZOrder = 0.f;
+		bool      bFlipX  = false;
 	};
 }

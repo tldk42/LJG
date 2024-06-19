@@ -31,12 +31,12 @@ namespace LJG
 	class UDXHelper
 	{
 	public:
-		static HRESULT LoadVertexShaderFile(ID3D11Device* Device, const wchar_t*        VertexFileName,
+		static HRESULT LoadVertexShaderFile(ID3D11Device* Device, const WText&        VertexFileName,
 											ID3DBlob**    OutBlob, ID3D11VertexShader** VertexShader,
 											LPCSTR        FunctionName = nullptr,
 											bool          bBinary      = false);
 		static HRESULT LoadPixelShaderFile(ID3D11Device*       d3dDevice,
-										   const wchar_t*      PixelFileName,
+										   const WText&      PixelFileName,
 										   ID3D11PixelShader** pixelShader,
 										   const wchar_t*      FunctionName = nullptr,
 										   bool                bBinary      = false,

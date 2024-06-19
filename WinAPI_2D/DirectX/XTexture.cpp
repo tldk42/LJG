@@ -11,7 +11,9 @@ namespace LJG
 		  mFilePath(InFile),
 		  mSRVDesc(),
 		  mTextureDesc()
-	{}
+	{
+		XTexture::Initialize();
+	}
 
 	XTexture::~XTexture()
 	{

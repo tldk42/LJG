@@ -1,10 +1,10 @@
 #pragma once
 #include "CommonInclude.h"
-#include "ObjectManager.h"
+#include "Component/Manager/ObjectManager.h"
 
 namespace LJG
 {
-	class UObject : public ICoreAPI
+	class UObject : public ICoreAPI, public IManagedAPI
 	{
 	public:
 		UObject();
@@ -19,14 +19,18 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+#pragma region Managed Interface
+		virtual void SetID(WTextView InKey) override { mObjectID = InKey; }
+#pragma endregion
+
 		inline AActor*  GetOwnerActor() const { return mOwnerActor; }
 		inline UObject* GetParent() const { return mParentObject; }
 		inline void     SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
 
 		template <class ReturnType, typename... Args>
-		ReturnType* CreateDefaultSubObject(WTextView InKey, Args&&... args)
+		ReturnType* CreateDefaultSubObject(const WText& InName, Args&&... args)
 		{
-			return ObjectManager::Get().CreateObject<ReturnType>(InKey, std::forward<Args>(args)...);
+			return Manager_Object.Load<ReturnType>(InName, std::forward<Args>(args)...);
 		}
 
 		void AttachComponent(UObject* ComponentToAttach);
@@ -39,7 +43,6 @@ namespace LJG
 		std::unordered_map<WText, UObject*> mChildObjects;
 
 	private:
-		void SetID(WTextView InID) { mObjectID = InID; }
-		friend class ObjectManager;
+		friend class ManagerBase<UObject, ObjectManager>;
 	};
 }

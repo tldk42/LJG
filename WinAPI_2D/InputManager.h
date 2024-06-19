@@ -1,24 +1,16 @@
 #pragma once
 #include "CommonInclude.h"
+#include "Component/Manager/Manager.h"
 
 namespace LJG
 {
 
-	class InputManager
+	DECLARE_DYNAMIC_DELEGATE(FOnInputEvent, float_t)
+
+	class InputManager : public TSingleton<InputManager>
 	{
 
-		using InputCallback = Delegate_OneParam<float_t>;
-
 	public:
-		InputManager();
-		~InputManager() = default;
-
-		[[nodiscard]] inline static InputManager& Get()
-		{
-			static InputManager instance;
-			return instance;
-		}
-
 		static void Initialize();
 		static void Update(float DeltaTime);
 
@@ -30,7 +22,8 @@ namespace LJG
 
 		FORCEINLINE static void EnableDebug(const bool bEnable) { Get().bEnableDebug = bEnable; }
 
-		void AddInputBinding(const EKeyCode InKeyCode, const EKeyState BindType, InputCallback Callback);
+		void AddInputBinding(const EKeyCode                     InKeyCode, const EKeyState BindType,
+							 const FOnInputEvent::FunctionType& Callback);
 
 	private:
 		inline bool IsKeyDown_Internal(EKeyCode Key) const
@@ -48,7 +41,7 @@ namespace LJG
 			return mKeys[static_cast<UINT>(Key)].State == EKeyState::Pressed;
 		}
 
-		void UpdateKeyBindings(const EKeyState InTriggerType,const float DeltaTime);
+		void UpdateKeyBindings(const float DeltaTime);
 
 	private:
 		void CreateKeys();
@@ -68,14 +61,20 @@ namespace LJG
 		void Debug_Input() const;
 
 	public:
-		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Up;
-		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Down;
-		std::unordered_map<EKeyCode, std::vector<InputCallback>> InputBindings_Pressed;
+		std::unordered_map<EKeyCode, FOnInputEvent> InputBindings_Up;
+		std::unordered_map<EKeyCode, FOnInputEvent> InputBindings_Down;
+		std::unordered_map<EKeyCode, FOnInputEvent> InputBindings_Pressed;
 
 	private:
 		std::vector<FKeyData> mKeys;
 		FVector2f             mMousePosition;
 
 		bool bEnableDebug;
+
+	private:
+		friend class TSingleton<InputManager>;
+		InputManager();
+		~InputManager() = default;
+
 	};
 }

@@ -6,6 +6,7 @@
 // Basic
 #include <cmath>
 #include <cstdint>
+#include <tchar.h>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -39,9 +40,6 @@ using namespace std::chrono;
 using namespace DirectX;
 
 
-using VoidDelegate = std::function<void()>;
-template <typename T>
-using Delegate_OneParam = std::function<void(T)>;
 using ResizeDelegate = std::function<void(UINT, UINT)>;
 
 using WText = std::wstring;
@@ -75,6 +73,7 @@ namespace LJG
 
 	// =========================== 인라인 함수 =============================
 #pragma region 인라인 함수
+
 	template <typename T>
 	inline void ReleaseCOM(T*& ComPtr)
 	{
@@ -152,15 +151,42 @@ namespace LJG
 	class ICoreAPI
 	{
 	public:
-		virtual      ~ICoreAPI() = default;
+		virtual ~ICoreAPI() = default;
+
 		virtual void Initialize() = 0;
 		virtual void Update(float DeltaTime) = 0;
 		virtual void Render() = 0;
 		virtual void Release() = 0;
 	};
 
+	class IManagedAPI
+	{
+	public:
+		virtual ~IManagedAPI() = default;
+
+		virtual void SetID(WTextView InKey) = 0;
+	};
+
 	// ======================== 매크로 ================================
 #pragma region 매크로
+
+#define CONCATENATE(x, y) x##y // 토큰 결합
+#define STRINGIFY(x) #x // 문자열화
+#define CHECK_PREFIX(name, prefix) static_assert(std::string_view(STRINGIFY(name)).substr(0, 1) == #prefix, "DelegateName must start with '#prefix'");
+
+#define DECLARE_DYNAMIC_DELEGATE(delegateName, ...)\
+CHECK_PREFIX(delegateName, F);\
+class delegateName {\
+	public:\
+	using FunctionType = std::function<void(__VA_ARGS__)>;\
+	void Bind(FunctionType func) { functions.push_back(func); }\
+	template<typename... Args>\
+	void Execute(Args&&... args) { for (auto& func : functions) { func(std::forward<Args>(args)...); } }\
+	private:\
+	std::vector<FunctionType> functions;\
+};
+
+
 #define STRUCT_PTR(structName)\
 	struct structName;\
 	using structName##UPtr = std::unique_ptr<structName>;\

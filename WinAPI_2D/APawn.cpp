@@ -23,7 +23,6 @@ namespace LJG
 	{
 		AActor::Initialize();
 
-
 		// DELETE BELOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
 			mCamera = CreateDefaultSubObject<ACamera>(L"Camera");
@@ -39,7 +38,7 @@ namespace LJG
 			mDebugBox2->SetScale({200.f, 200.f});
 			mDebugBox2->SetColor(FLinearColor::BlackPearl);
 			mDebugBox2->SetOwnerActor(this);
-			
+
 
 			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
 			mMovementComponent->SetupAttachment(this);
@@ -60,8 +59,8 @@ namespace LJG
 					std::bind(&APawn::OnMovementInputPressed, this, std::placeholders::_1, true));
 				InputManager::Get().AddInputBinding(
 					EKeyCode::Space, EKeyState::Down, std::bind(&APawn::Jump, this));
-				InputManager::Get().AddInputBinding(
-					EKeyCode::LButton, EKeyState::Down, std::bind(&APawn::Attack, this));
+				// InputManager::Get().AddInputBinding(
+				// 	EKeyCode::LButton, EKeyState::Down, std::bind(&APawn::Attack, this));
 			}
 
 

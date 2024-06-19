@@ -6,21 +6,12 @@ namespace LJG
 	class TGUI_Inspector : public TGUI_Base
 	{
 	public:
-		TGUI_Inspector(HWND InHwnd);
+		TGUI_Inspector();
 
 	public:
-#pragma region Core Interface
-		void Initialize() override;
-		void Update(float DeltaTime) override;
-		void Render() override;
-		void Release() override;
-#pragma endregion
-
+		virtual void RenderCustomGUI() override;
 
 	private:
-		void ShowInspector();
-
-	private:
-		bool     bExit;
+		bool bExit;
 	};
 }

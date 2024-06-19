@@ -5,18 +5,19 @@
 #include "XBlendState.h"
 #include "XSamplerState.h"
 #include "XTexture.h"
+#include "Component/Manager/TextureManager.h"
 
 
 namespace LJG
 {
-	XSprite2D::XSprite2D(const std::wstring& TextureFile)
+	XSprite2D::XSprite2D(const WText& TextureFile)
 	{
 		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
 
 		mVertexBufferArray.reserve(4);
 
-		mTexture               = std::make_unique<XTexture>(TextureFile);
+		mTexture               = Manager_Texture.Load(TextureFile, TextureFile);
 		mSamplerState          = std::make_unique<XSamplerState>();
 		mBlendState_AlphaBlend = std::make_unique<XBlendState>(EBlendType::AlphaBlend);
 
@@ -30,7 +31,6 @@ namespace LJG
 
 	void XSprite2D::Initialize()
 	{
-		mTexture->Initialize();
 		mSamplerState->Initialize();
 		mBlendState_AlphaBlend->Initialize();
 
@@ -89,6 +89,5 @@ namespace LJG
 	}
 
 	void XSprite2D::OnResizeCallback()
-	{
-	}
+	{}
 }

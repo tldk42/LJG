@@ -3,10 +3,11 @@
 #include "AHUD.h"
 #include "APawn.h"
 #include "InputManager.h"
-#include "ObjectManager.h"
+#include "Component/Manager/ObjectManager.h"
 #include "Renderer.h"
 #include "FTimer.h"
 #include "Window.h"
+#include "Component/Manager/GUIManager.h"
 #include "GUI/TGUI_Inspector.h"
 
 namespace LJG
@@ -41,11 +42,10 @@ namespace LJG
 		Initialize_Application();
 
 		Renderer::Initialize();
+
+		GUIManager::Initialize();
+
 		ObjectManager::Initialize();
-
-
-		mMainGUI = std::make_unique<TGUI_Inspector>(mWindow->GetHandle());
-		mMainGUI->Initialize();
 	}
 
 	void Application_Base::Update(float DeltaTime)
@@ -54,7 +54,7 @@ namespace LJG
 
 		ObjectManager::Update(DeltaTime);
 
-		mMainGUI->Update(DeltaTime);
+		GUIManager::Update(DeltaTime);
 
 		Renderer::Update(DeltaTime);
 	}
@@ -68,7 +68,7 @@ namespace LJG
 		ObjectManager::Render();
 
 		// GUI Draw
-		mMainGUI->Render();
+		GUIManager::Render();
 
 		// TODO: UI Draw
 
@@ -78,7 +78,7 @@ namespace LJG
 
 	void Application_Base::Release()
 	{
-		mMainGUI->Release();
+		GUIManager::Release();
 		Renderer::Release();
 	}
 
@@ -132,15 +132,14 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			APawn* pc  = ObjectManager::Get().CreateObject<APawn>(L"PC");
-			AHUD*  hud = ObjectManager::Get().CreateObject<AHUD>(L"HUD");
+			TGUI_Inspector* gui = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
+			APawn*          pc  = Manager_Object.Load<APawn>(L"PC");
+			AHUD*           hud = Manager_Object.Load<AHUD>(L"HUD");
 
-			mMainGUI->BindSceneComponent(pc);
+			gui->BindSceneComponent(pc);
 
 			while (bIsRunning)
 			{
-				mWindow->Clear();
-
 				currentTime = mTimer->ElapsedMillis();
 
 #pragma region Update Per 1 / 60 Seconds
@@ -154,7 +153,6 @@ namespace LJG
 #pragma endregion
 
 #pragma region Update Every Frame
-
 				{
 					FTimer frameTimer;
 					{
@@ -167,8 +165,8 @@ namespace LJG
 					frameCounter++;
 					mDeltaTime = frameTimer.ElapsedSeconds();
 				}
-
 				mWindow->Update();
+
 #pragma endregion
 
 #pragma region Update Per Seconds

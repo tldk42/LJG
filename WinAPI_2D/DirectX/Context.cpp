@@ -56,7 +56,7 @@ namespace LJG
 		// Step 5. Alt + Enter로 자동 창변환을 제어
 		CHECK_RESULT(mGIFactory->MakeWindowAssociation(GetHWND(), DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
 
-		Window::GetWindow()->OnResize.emplace_back([this](UINT Width, UINT Height)
+		Window::GetWindow()->OnResize.Bind([this](UINT Width, UINT Height)
 		{
 			OnResizeCallback(Width, Height);
 		});
@@ -68,6 +68,8 @@ namespace LJG
 
 	void Context::Render()
 	{
+		// TODO: ImGui에서 렌더링 마다 초기화 해버리기 때문에 관리해 줘야함
+		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
 		Present();
 	}
 

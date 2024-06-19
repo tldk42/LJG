@@ -3,6 +3,8 @@
 
 namespace LJG
 {
+	DECLARE_DYNAMIC_DELEGATE(FOnWindowResize, UINT, UINT)
+
 	class Window
 	{
 	public:
@@ -39,7 +41,7 @@ namespace LJG
 #pragma endregion
 
 	public:
-		std::vector<ResizeDelegate> OnResize;
+		FOnWindowResize OnResize;
 
 	private:
 		HINSTANCE   mInstanceHandle;

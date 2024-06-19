@@ -14,7 +14,8 @@ namespace LJG
 	{
 		Window* window = Window::GetWindow(HWnd);
 
-		ImGui_ImplWin32_WndProcHandler(HWnd, Message, WParam, LParam);
+		if (ImGui_ImplWin32_WndProcHandler(HWnd, Message, WParam, LParam))
+			return true;
 
 		if (window == nullptr)
 			return DefWindowProc(HWnd, Message, WParam, LParam);
@@ -116,7 +117,7 @@ namespace LJG
 
 		SetTitle(mWindowTitle);
 
-		OnResize.emplace_back([this](UINT Width, UINT Height){
+		OnResize.Bind([this](UINT Width, UINT Height){
 			SetWindowSize(Width, Height);
 		});
 
@@ -169,12 +170,6 @@ namespace LJG
 
 	void ResizeCallback(Window* Window, UINT Width, UINT Height)
 	{
-		if (!Window->OnResize.empty())
-		{
-			for (ResizeDelegate& delegate : Window->OnResize)
-			{
-				delegate(Width, Height);
-			}
-		}
+		Window->OnResize.Execute(Width, Height);
 	}
 }

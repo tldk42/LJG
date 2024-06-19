@@ -1,16 +1,11 @@
 #pragma once
 #include "CommonInclude.h"
+#include "Component/Manager/Manager.h"
 
 namespace LJG
 {
-	class Renderer
+	class Renderer : public TSingleton<Renderer>
 	{
-	public:
-		[[nodiscard]] inline static Renderer& Get()
-		{
-			static Renderer instance;
-			return instance;
-		}
 
 	public:
 		static void Initialize();
@@ -21,6 +16,7 @@ namespace LJG
 		static void Clear(const FLinearColor& InClearColor = FLinearColor::Gray);
 
 	private:
+		friend class TSingleton<Renderer>;
 		Renderer()  = default;
 		~Renderer() = default;
 

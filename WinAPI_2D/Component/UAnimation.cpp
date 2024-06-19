@@ -33,7 +33,7 @@ namespace LJG
 				for (const FAnimData& anim : mAnimDatas)
 				{
 					anim.Sprite->SetFlipX(mOwnerAnimator->FlipX() ? true : false);
-
+				
 					anim.Sprite->SetWorldTransform(ownerActor->GetWorldTransform());
 				}
 			}

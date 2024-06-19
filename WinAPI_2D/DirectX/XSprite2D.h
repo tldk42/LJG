@@ -7,7 +7,7 @@ namespace LJG
 	{
 	public:
 		XSprite2D() = delete;
-		explicit XSprite2D(const std::wstring& TextureFile = L"");
+		explicit XSprite2D(const WText& TextureFile = L"");
 		~XSprite2D() override;
 
 	public:
@@ -30,7 +30,7 @@ namespace LJG
 
 	protected:
 #pragma region Texture
-		XTextureUPtr mTexture;
+		XTexture* mTexture;
 #pragma endregion
 
 #pragma region Sampler
