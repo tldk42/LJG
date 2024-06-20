@@ -96,14 +96,14 @@ namespace LJG
 		{}
 
 		window_flags |= ImGuiWindowFlags_NoBackground;
-		ImGui::Begin("DockSpace Demo", &bDock, window_flags);
-		// if (!opt_padding)
+		
+		if (!opt_padding)
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		// ImGui::Begin("DockSpace Demo", &bDock, window_flags);
-		// if (!opt_padding)
+		ImGui::Begin("DockSpace Demo", &bDock, window_flags);
+		if (!opt_padding)
 		ImGui::PopStyleVar();
 
-		// if (opt_fullscreen)
+		if (opt_fullscreen)
 		ImGui::PopStyleVar(2);
 
 		// Submit the DockSpace

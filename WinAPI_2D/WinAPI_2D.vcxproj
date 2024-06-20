@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -80,13 +80,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../bin/$(Configuration)/$(ProjectName)/output/</OutDir>
     <IntDir>../../bin/$(Configuration)/$(ProjectName)/Intermediate/</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)fmod\inc;$(ProjectDir);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../../bin/$(Configuration)/$(ProjectName)/output</OutDir>
     <IntDir>../../bin/$(Configuration)/$(ProjectName)/Intermediate</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)fmod\inc;$(ProjectDir);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,6 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,7 +129,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;d2d1.lib;dwrite.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d2d1.lib;dwrite.lib;d3dcompiler.lib;$(ProjectDir)fmod\lib\x64\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
+      <AdditionalLibraryDirectories>$(ProjectDir)fmod\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -151,6 +154,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;d2d1.lib;dwrite.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)fmod\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -2081,6 +2085,8 @@
     <ClCompile Include="Shape\XDebugShape2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="FTimer.cpp" />
+    <ClCompile Include="Component\Manager\SoundManager.cpp" />
+    <ClCompile Include="Component\UAudio.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -2135,8 +2141,10 @@
     <ClInclude Include="PlayerData.h" />
     <ClInclude Include="Shape\XDebugShape2D.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Component\Manager\SoundManager.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="FTimer.h" />
+    <ClInclude Include="Component\UAudio.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
