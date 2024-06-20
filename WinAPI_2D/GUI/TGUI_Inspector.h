@@ -9,9 +9,7 @@ namespace LJG
 		TGUI_Inspector();
 
 	public:
+		void CheckResize() override;
 		virtual void RenderCustomGUI() override;
-
-	private:
-		bool bExit;
 	};
 }

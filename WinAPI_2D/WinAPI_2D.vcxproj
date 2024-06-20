@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -1692,8 +1692,9 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="GUI\imgui_filebrowser.cpp" />
     <ClCompile Include="GUI\TGUI_Base.cpp" />
-    <ClCompile Include="GUI\TGUI_Docking.cpp" />
+    <ClCompile Include="GUI\TGUI_FileBrowser.cpp" />
     <ClCompile Include="GUI\TGUI_Inspector.cpp" />
     <ClCompile Include="Helper\EngineHelper.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -2121,8 +2122,9 @@
     <ClInclude Include="DirectX\XVertex2D.h" />
     <ClInclude Include="DirectX\XViewBuffer.h" />
     <ClInclude Include="DirectX\XWorldBuffer.h" />
+    <ClInclude Include="GUI\imgui_filebrowser.h" />
     <ClInclude Include="GUI\TGUI_Base.h" />
-    <ClInclude Include="GUI\TGUI_Docking.h" />
+    <ClInclude Include="GUI\TGUI_FileBrowser.h" />
     <ClInclude Include="GUI\TGUI_Inspector.h" />
     <ClInclude Include="Helper\EngineHelper.h" />
     <ClInclude Include="Helper\UDXHelper.h" />

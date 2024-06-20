@@ -7,7 +7,10 @@
 #include "Renderer.h"
 #include "FTimer.h"
 #include "Window.h"
+#include "Component/UAudio.h"
 #include "Component/Manager/GUIManager.h"
+#include "Component/Manager/SoundManager.h"
+#include "GUI/TGUI_FileBrowser.h"
 #include "GUI/TGUI_Inspector.h"
 
 namespace LJG
@@ -37,6 +40,7 @@ namespace LJG
 		// Logger를 가장 먼저 초기화 해야 함 다른 초기화중에 Logger를 사용
 		Logger::Initialize();
 		InputManager::Initialize();
+		SoundManager::Initialize();
 
 		// 무조건 Device를 생성전에 Window Handle Instance를 반환해야 함 
 		Initialize_Application();
@@ -46,11 +50,14 @@ namespace LJG
 		GUIManager::Initialize();
 
 		ObjectManager::Initialize();
+
 	}
 
 	void Application_Base::Update(float DeltaTime)
 	{
 		InputManager::Update(DeltaTime);
+
+		SoundManager::Update(DeltaTime);
 
 		ObjectManager::Update(DeltaTime);
 
@@ -79,7 +86,10 @@ namespace LJG
 	void Application_Base::Release()
 	{
 		GUIManager::Release();
+
 		Renderer::Release();
+
+		SoundManager::Release();
 	}
 
 	void Application_Base::Initialize_Application()
@@ -132,11 +142,15 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			TGUI_Inspector* gui = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
-			APawn*          pc  = Manager_Object.Load<APawn>(L"PC");
-			AHUD*           hud = Manager_Object.Load<AHUD>(L"HUD");
+			TGUI_Inspector*   gui         = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
+			TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
+			APawn*            pc          = Manager_Object.Load<APawn>(L"PC");
+			AHUD*             hud         = Manager_Object.Load<AHUD>(L"HUD");
 
 			gui->BindSceneComponent(pc);
+
+			UAudio* audio = Manager_Audio.Load(L"BackgroundSound", L"rsc/Sound/BackgoundSound.wav");
+			audio->Play(true);
 
 			while (bIsRunning)
 			{

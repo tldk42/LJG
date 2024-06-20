@@ -25,12 +25,12 @@ namespace LJG
 #pragma endregion
 
 		void Present() const;
+		void SetViewport(UINT InWidth, UINT InHeight);
 
 	private:
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
 		HRESULT CreateSwapChain();
-		void    SetViewport();
 		void    SetRenderTarget();
 
 	private:
@@ -47,7 +47,8 @@ namespace LJG
 		inline static ID3D11RenderTargetView* GetRTV() { return Get()->mRenderTargetView.Get(); }
 		inline static ID3D11DepthStencilView* GetDepthStencilView() { return Get()->mDepthStencilView.Get(); }
 
-		inline static CHAR* GetVideoCardDesc() { return Get()->mVideoCardDescription; }
+		inline static CHAR*     GetVideoCardDesc() { return Get()->mVideoCardDescription; }
+		inline static FVector2f GetViewportSize() { return Get()->mViewportSize; }
 #pragma endregion
 
 	private:
@@ -64,6 +65,8 @@ namespace LJG
 		CHAR                           mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
 
 		ComPtr<IDXGIFactory> mGIFactory;
+
+		FVector2f mViewportSize;
 	};
 
 	/**

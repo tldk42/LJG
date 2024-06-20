@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,8 @@ using namespace DirectX;
 
 using ResizeDelegate = std::function<void(UINT, UINT)>;
 
+using Text = std::string;
+using TextView = std::string_view;
 using WText = std::wstring;
 using WTextView = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
 using Matrix = XMMATRIX;
@@ -96,6 +99,18 @@ namespace LJG
 	inline bool IsValid(T ValuePtr)
 	{
 		return ValuePtr != nullptr;
+	}
+
+	inline WText Text2WText(const Text& InString)
+	{
+		USES_CONVERSION;
+		return WText(A2W(InString.c_str()));
+	}
+
+	inline Text WText2Text(const WText& InWString)
+	{
+		USES_CONVERSION;
+		return Text(W2A(InWString.c_str()));
 	}
 
 	/** 이동 변환 행렬 생성 */

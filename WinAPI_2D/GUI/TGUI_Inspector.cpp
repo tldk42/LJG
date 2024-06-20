@@ -4,9 +4,25 @@
 
 #include "AActor.h"
 #include "InputManager.h"
+#include "DirectX/Context.h"
+#include "Helper/EngineHelper.h"
 
 LJG::TGUI_Inspector::TGUI_Inspector()
 {}
+
+void LJG::TGUI_Inspector::CheckResize()
+{
+	if (ImGui::IsWindowDocked())
+	{
+		const ImVec2 currentSize = ImGui::GetContentRegionAvail();
+		if (mCachedSize.x != currentSize.x || mCachedSize.y != currentSize.y)
+		{
+			Context::Get()->SetViewport(GetWindowWidth() - currentSize.x, Context::GetViewportSize().Y);
+
+			mCachedSize = currentSize;
+		}
+	}
+}
 
 void LJG::TGUI_Inspector::RenderCustomGUI()
 {
@@ -60,6 +76,9 @@ void LJG::TGUI_Inspector::RenderCustomGUI()
 			mObjectToShow->SetTransform({loc[0], loc[1]}, rot, {scale[0], scale[1]});
 		}
 	}
+	CheckResize();
 
 	ImGui::End();
+
+
 }

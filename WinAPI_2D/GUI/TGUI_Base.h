@@ -1,4 +1,6 @@
 #pragma once
+#include <imgui.h>
+
 #include "../CommonInclude.h"
 
 namespace LJG
@@ -13,6 +15,7 @@ namespace LJG
 	public:
 		void SetID(WTextView InKey) override;
 
+		virtual void CheckResize() = 0;
 		virtual void RenderCustomGUI() = 0;
 
 		void BindSceneComponent(USceneComponent* InBindObject) { mObjectToShow = InBindObject; }
@@ -20,5 +23,7 @@ namespace LJG
 	protected:
 		WText            mKey;
 		USceneComponent* mObjectToShow;
+		bool             bExit;
+		ImVec2           mCachedSize;
 	};
 }

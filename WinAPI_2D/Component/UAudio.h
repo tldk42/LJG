@@ -8,7 +8,7 @@ namespace LJG
 {
 	class UAudio : public ICoreAPI, public IManagedAPI
 	{
-	private:
+	public:
 		UAudio(const WText& InKey);
 		~UAudio() override;
 
@@ -24,15 +24,19 @@ namespace LJG
 		void SetID(WTextView InKey) override { mKey = InKey; }
 #pragma endregion
 
-	protected:
-		virtual void Load();
+		void Play(const bool bLoop = false);
+		void Pause();
+		void Stop();
 
 	protected:
 		friend class SoundManager;
 		WText mKey;
 
+		float mVolume;
+		bool  bIsPlaying;
+		bool  bPaused;
+
 #pragma region Fmod Interface
-		FMOD::System*  mFmodSystem;
 		FMOD::Sound*   mFmodSound;
 		FMOD::Channel* mFmodChannel;
 #pragma endregion

@@ -12,9 +12,7 @@ namespace LJG
 		void Initialize() override;
 		void Update(float DeltaTime) override;
 #pragma endregion
-
-		void AddMovementInput(const FVector2f& InInput);
-
+\
 #pragma region Get
 		[[nodiscard]] inline bool      IsMovingOnGround() const { return bIsMovingOnGround; }
 		[[nodiscard]] inline bool      IsJumping() const { return bIsJumping; }
@@ -32,6 +30,8 @@ namespace LJG
 		inline void SetJumpPower(const float_t InJumpPower) { mJumpPower_Value = InJumpPower; }
 		inline void Jump() { bIsJumping = true; }
 #pragma endregion
+
+		void AddMovementInput(const FVector2f& InInput);
 
 	protected:
 		void HandleJumpAction(const float DeltaTime);

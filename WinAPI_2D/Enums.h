@@ -52,4 +52,9 @@ namespace LJG
 		End
 	};
 
+	enum class EFileBrowserOption : uint8_t
+	{
+		Directory,
+		File
+	};
 }
