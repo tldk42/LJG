@@ -5,8 +5,9 @@
 
 namespace LJG
 {
-	XShaderData::XShaderData(WTextView InVertexShader, WTextView InPixelShader)
-		: mVertexShaderFile(InVertexShader),
+	XShaderData::XShaderData(const WText& InKey, WTextView InVertexShader, WTextView InPixelShader)
+		: mKey(InKey),
+		  mVertexShaderFile(InVertexShader),
 		  mPixelShaderFile(InPixelShader)
 	{
 		XShaderData::Initialize();

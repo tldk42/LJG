@@ -3,13 +3,14 @@
 
 namespace LJG
 {
-	UPawnMovementComponent2D::UPawnMovementComponent2D()
-		: bIsMovingOnGround(true),
+	UPawnMovementComponent2D::UPawnMovementComponent2D(const WText& InKey)
+		: UObject(InKey),
+		  bIsMovingOnGround(true),
 		  mMaxWalkSpeed(350.f),
 		  mGravity(3333.f),
 		  mJumpPower_Value(1000.f),
 		  mJumpPower_Current(1000.f),
-		  mVelocity({0,0}),
+		  mVelocity({0, 0}),
 		  mAirResistance(),
 		  mGroundFriction()
 	{}

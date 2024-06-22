@@ -11,7 +11,7 @@ namespace LJG
 	class AHUD : public AActor
 	{
 	public:
-		AHUD();
+		explicit AHUD(const WText& InKey);
 		~AHUD() override = default;
 
 	public:
@@ -27,8 +27,8 @@ namespace LJG
 	private:
 		UTextBlock* mFpsText;
 		UImage*     mBackgroundImage;
-		UImage*     mBackgroundImage_Copy;
 		UImage*     mSampleImage;
+		UImage*     mSampleImage2;
 	};
 
 }

@@ -8,8 +8,11 @@
 #include "FTimer.h"
 #include "Window.h"
 #include "Component/UAudio.h"
+#include "Component/USpriteAnimation.h"
 #include "Component/Manager/GUIManager.h"
 #include "Component/Manager/SoundManager.h"
+#include "Component/Manager/TextureManager.h"
+#include "DirectX/XTexture.h"
 #include "GUI/TGUI_FileBrowser.h"
 #include "GUI/TGUI_Inspector.h"
 
@@ -144,12 +147,12 @@ namespace LJG
 
 			TGUI_Inspector*   gui         = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
 			TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
-			APawn*            pc          = Manager_Object.Load<APawn>(L"PC");
 			AHUD*             hud         = Manager_Object.Load<AHUD>(L"HUD");
+			APawn*            pc          = Manager_Object.Load<APawn>(L"PC");
 
 			gui->BindSceneComponent(pc);
 
-			UAudio* audio = Manager_Audio.Load(L"BackgroundSound", L"rsc/Sound/BackgoundSound.wav");
+			UAudio* audio = Manager_Audio.Load(L"rsc/AudioClip/MUS_BotanicPanic.wav");
 			audio->Play(true);
 
 			while (bIsRunning)

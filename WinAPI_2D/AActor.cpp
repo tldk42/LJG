@@ -4,8 +4,8 @@
 
 namespace LJG
 {
-	AActor::AActor()
-
+	AActor::AActor(const WText& InKey)
+		: USceneComponent(InKey)
 	{
 		bVisibility = true;
 	}

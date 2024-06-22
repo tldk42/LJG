@@ -3,6 +3,10 @@
 
 namespace LJG
 {
+	class USpriteAnimation;
+}
+namespace LJG
+{
 	class UPawnMovementComponent2D;
 	class UPlayerAnimator;
 	class UBoxComponent;
@@ -11,7 +15,7 @@ namespace LJG
 	class APawn : public AActor
 	{
 	public:
-		APawn();
+		explicit  APawn(const WText& InKey);
 		~APawn() override;
 
 	public:
@@ -22,7 +26,6 @@ namespace LJG
 
 #pragma region Get
 		inline UPawnMovementComponent2D* GetMovementComponent() const { return mMovementComponent; }
-		inline UPlayerAnimator*          GetAnimator() const { return mAnimator; }
 #pragma endregion
 
 		void AddMovementInput(const FVector2f& MovementInputAmount);
@@ -32,13 +35,11 @@ namespace LJG
 
 	private:
 		UPawnMovementComponent2D* mMovementComponent;
-		UPlayerAnimator*          mAnimator;
+		USpriteAnimation*         mSprite;
 		UBoxComponent*            mDebugBox;
-		UBoxComponent*            mDebugBox2;
-
-		ACamera* mCamera;
+		ACamera*                  mCamera;
 
 		bool bMove = false;
-		bool  bAttacking;
+		bool bAttacking;
 	};
 }

@@ -7,8 +7,9 @@
 
 namespace LJG
 {
-	ACamera::ACamera()
-		: mZoom(1.f)
+	ACamera::ACamera(const WText& InKey)
+		: AActor(InKey),
+		  mZoom(1.f)
 	{
 		mViewMatrix       = XMMatrixIdentity();
 		mProjectionMatrix = XMMatrixIdentity();
@@ -83,7 +84,7 @@ namespace LJG
 	{
 		if (InScreenHeight > M_SMALL_NUMBER && InScreenHeight > M_SMALL_NUMBER)
 			mProjectionMatrix = XMMatrixOrthographicOffCenterLH(-InScreenWidth / 2.f, InScreenWidth / 2.f,
-																-InScreenHeight / 2.f, InScreenHeight / 2.f, -1.f, 1.f);
+																-InScreenHeight / 2.f, InScreenHeight / 2.f, 0.f, 1.f);
 	}
 
 	void ACamera::SetPosition(const FVector2f& InPosition)

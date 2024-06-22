@@ -6,9 +6,9 @@
 namespace LJG
 {
 
-	XTexture::XTexture(WTextView InFile, UINT InSlot)
+	XTexture::XTexture(const WText& InKey, UINT InSlot)
 		: mSlot(InSlot),
-		  mFilePath(InFile),
+		  mKey(InKey),
 		  mSRVDesc(),
 		  mTextureDesc()
 	{
@@ -22,9 +22,9 @@ namespace LJG
 
 	void XTexture::Initialize()
 	{
-		if (!mFilePath.empty())
+		if (!mKey.empty())
 		{
-			CHECK_RESULT(DirectX::CreateWICTextureFromFile(Context::GetDevice(), mFilePath.c_str(),
+			CHECK_RESULT(DirectX::CreateWICTextureFromFile(Context::GetDevice(), mKey.c_str(),
 														   mTextureResource.GetAddressOf(),
 														   mSRV.GetAddressOf()));
 			CHECK_RESULT(mTextureResource->QueryInterface(__uuidof(ID3D11Texture2D),
@@ -35,13 +35,13 @@ namespace LJG
 			mTexture->GetDesc(&mTextureDesc);
 
 			std::string texName;
-			texName.assign(mFilePath.begin(), mFilePath.end());
+			texName.assign(mKey.begin(), mKey.end());
 			LOG_DX_INFO("File: {}", texName);
 		}
 	}
 
 	void XTexture::Update(float DeltaTime) {}
-
+	
 	void XTexture::Render()
 	{
 		Context::GetDeviceContext()->PSSetShaderResources(mSlot, 1, mSRV.GetAddressOf());

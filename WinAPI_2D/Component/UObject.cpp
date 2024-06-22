@@ -5,8 +5,9 @@
 
 namespace LJG
 {
-	UObject::UObject()
-		: mOwnerActor(nullptr),
+	UObject::UObject(const WText& InKey)
+		: mObjectKey(InKey),
+		  mOwnerActor(nullptr),
 		  mParentObject(nullptr) {}
 
 	UObject::UObject(AActor* InOwnerActor)
@@ -38,7 +39,7 @@ namespace LJG
 
 	void UObject::SetupAttachment(UObject* InParentObj)
 	{
-		InParentObj->mChildObjects.try_emplace(mObjectID, this);
+		InParentObj->mChildObjects.try_emplace(mObjectKey, this);
 
 		mParentObject = InParentObj;
 	}

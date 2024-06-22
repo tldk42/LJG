@@ -31,6 +31,7 @@ namespace LJG
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
 		HRESULT CreateSwapChain();
+		HRESULT  SetDepthStencil();
 		void    SetRenderTarget();
 
 	private:
@@ -52,17 +53,18 @@ namespace LJG
 #pragma endregion
 
 	private:
-		static ContextUPtr             s_Context;                  /** DX Context 스태틱 개체 */
-		ComPtr<ID3D11Device>           mDevice;					   /** 디바이스 포인터 (리소스 생성) */
-		ComPtr<ID3D11DeviceContext>    mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
-		ComPtr<IDXGISwapChain>         mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
-		DXGI_SWAP_CHAIN_DESC           mSwapChainDesc;             /** 스왑체인 구조체 */
-		ComPtr<ID3D11RenderTargetView> mRenderTargetView;          /** 화면에 보여지는 버퍼 개체 (RTV) */
-		ComPtr<ID3D11DepthStencilView> mDepthStencilView;          /** 깊이/스텐실 정보 기반 뷰 관리 개체 */
-		ComPtr<ID3D11Texture2D>        mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
-		D3D11_VIEWPORT                 mViewport;                  /** 렌더링 뷰포트 */
-		D3D_FEATURE_LEVEL              mFeatureLevel;              /** DX기능 수준 레벨 */
-		CHAR                           mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
+		static ContextUPtr              s_Context;                  /** DX Context 스태틱 개체 */
+		ComPtr<ID3D11Device>            mDevice;					/** 디바이스 포인터 (리소스 생성) */
+		ComPtr<ID3D11DeviceContext>     mDeviceContext;             /** 디바이스 컨텍스트 포인터 (파이프라인 설정) */
+		ComPtr<IDXGISwapChain>          mSwapChain;                 /** 스왑체인 포인터 (디스플레이 제어) */
+		DXGI_SWAP_CHAIN_DESC            mSwapChainDesc;             /** 스왑체인 구조체 */
+		ComPtr<ID3D11RenderTargetView>  mRenderTargetView;          /** 화면에 보여지는 버퍼 개체 (RTV) */
+		ComPtr<ID3D11DepthStencilView>  mDepthStencilView;          /** 깊이/스텐실 정보 기반 뷰 관리 개체 */
+		ComPtr<ID3D11DepthStencilState> mDepthStencilState;			/** */
+		ComPtr<ID3D11Texture2D>         mDepthStencilBuffer;        /** 2D 이미지 관리 개체 인터페이스 */
+		D3D11_VIEWPORT                  mViewport;                  /** 렌더링 뷰포트 */
+		D3D_FEATURE_LEVEL               mFeatureLevel;              /** DX기능 수준 레벨 */
+		CHAR                            mVideoCardDescription[128]; /** 비디오카드 상세 정보 */
 
 		ComPtr<IDXGIFactory> mGIFactory;
 

@@ -10,14 +10,28 @@
 
 namespace LJG
 {
-	XSprite2D::XSprite2D(const WText& TextureFile)
+	XSprite2D::XSprite2D(const float InZOrder)
+		: XVertex2D(InZOrder)
 	{
 		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
 
 		mVertexBufferArray.reserve(4);
 
-		mTexture               = Manager_Texture.Load(TextureFile, TextureFile);
+		mSamplerState          = std::make_unique<XSamplerState>();
+		mBlendState_AlphaBlend = std::make_unique<XBlendState>(EBlendType::AlphaBlend);
+		XSprite2D::Initialize();
+	}
+
+	XSprite2D::XSprite2D(const WText& TextureFile, const float InZOrder)
+		: XVertex2D(InZOrder)
+	{
+		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
+
+		mVertexBufferArray.reserve(4);
+
+		mTexture               = Manager_Texture.Load(TextureFile);
 		mSamplerState          = std::make_unique<XSamplerState>();
 		mBlendState_AlphaBlend = std::make_unique<XBlendState>(EBlendType::AlphaBlend);
 
@@ -68,10 +82,14 @@ namespace LJG
 
 	void XSprite2D::AdjustTextureSize()
 	{
-		mTextureScale.X = mTexture->GetTextureDesc().Width;
-		mTextureScale.Y = mTexture->GetTextureDesc().Height;
+		if (mTexture)
+		{
+			mTextureScale.X = mTexture->GetTextureDesc().Width;
+			mTextureScale.Y = mTexture->GetTextureDesc().Height;
 
-		SetScale(GetScale());
+			SetScale(mTextureScale);
+		}
+
 	}
 
 	void XSprite2D::CreateVertexArray()

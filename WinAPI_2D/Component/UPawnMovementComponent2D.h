@@ -6,7 +6,7 @@ namespace LJG
 	class UPawnMovementComponent2D : public UObject
 	{
 	public:
-		UPawnMovementComponent2D();
+		UPawnMovementComponent2D(const WText& InKey);
 
 #pragma region Core Interface
 		void Initialize() override;

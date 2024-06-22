@@ -21,7 +21,7 @@ namespace LJG
 	class XVertex2D : public ICoreAPI
 	{
 	public:
-		XVertex2D(const float InZOrder = 0.f);
+		XVertex2D(const float InZOrder = 0.5f);
 		~XVertex2D() override;
 
 	public:
@@ -42,6 +42,7 @@ namespace LJG
 		virtual void SetWorldTransform(const Matrix& InMatrix);
 		virtual void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
 		virtual void SetFlipX(const bool bEnable);
+		void         SetZOrder(const float InZOrder) { mZOrder = InZOrder; }
 #pragma endregion
 
 #pragma region Get

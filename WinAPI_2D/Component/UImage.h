@@ -3,10 +3,10 @@
 
 namespace LJG
 {
-	class UImage : public	UObject
+	class UImage : public UObject
 	{
 	public:
-		explicit UImage(WTextView InTexturePath = nullptr);
+		explicit UImage(const WText& InKey, const WText& InPath, const float InZOrder);
 		~UImage() override;
 
 	public:
@@ -20,7 +20,7 @@ namespace LJG
 		void SetPosition(const FVector2f& InLocation) const;
 
 	protected:
-		WText         mImagePath;
+		WText         mTexturePath;
 		XSprite2DUPtr mSprite2D;
 	};
 }

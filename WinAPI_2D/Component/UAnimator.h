@@ -3,13 +3,13 @@
 
 namespace LJG
 {
-	struct FAnimData;
+	struct FAnimData_Deprecated;
 
 	class UAnimator : public UObject
 	{
 
 	public:
-		UAnimator();
+		explicit  UAnimator(const WText& InKey);
 		~UAnimator() override;
 
 	public:
@@ -26,7 +26,7 @@ namespace LJG
 		bool FlipX() const { return bFlipX; }
 
 	public:
-		static std::vector<FAnimData> LoadAnimation(WTextView      InPath, const uint32_t InMaxSprite,
+		static std::vector<FAnimData_Deprecated> LoadAnimation(WTextView      InPath, const uint32_t InMaxSprite,
 													const uint32_t InCustomFrame     = 60,
 													const bool     bForceCustomFrame = false);
 

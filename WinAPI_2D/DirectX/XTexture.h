@@ -3,10 +3,10 @@
 
 namespace LJG
 {
-	class XTexture : public ICoreAPI, public IManagedAPI
+	class XTexture : public ICoreAPI
 	{
 	public:
-		XTexture(WTextView InFile = L"", UINT InSlot = 0);
+		explicit XTexture(const WText& InKey, UINT InSlot = 0);
 		~XTexture() override;
 
 #pragma region Core Interface
@@ -16,16 +16,12 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-#pragma region Managed Interface
-		virtual void SetID(WTextView InKey) override { mFilePath = InKey; }
-#pragma endregion
-
-
-		inline D3D11_TEXTURE2D_DESC GetTextureDesc() const { return mTextureDesc; }
+		inline D3D11_TEXTURE2D_DESC      GetTextureDesc() const { return mTextureDesc; }
+		inline ID3D11ShaderResourceView* GetShaderResourceView() const { return mSRV.Get(); }
 
 	private:
 		UINT                             mSlot;
-		WText                            mFilePath;
+		WText                            mKey;
 		ComPtr<ID3D11Resource>           mTextureResource;
 		ComPtr<ID3D11ShaderResourceView> mSRV;
 		ComPtr<ID3D11Texture2D>          mTexture;

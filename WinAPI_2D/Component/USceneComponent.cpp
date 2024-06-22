@@ -5,8 +5,9 @@
 
 namespace LJG
 {
-	USceneComponent::USceneComponent()
-		: mLocalTransform(XMMatrixIdentity()),
+	USceneComponent::USceneComponent(const WText& InKey)
+		: UObject(InKey),
+		  mLocalTransform(XMMatrixIdentity()),
 		  mWorldTransform(XMMatrixIdentity())
 	{
 		USceneComponent::Initialize();

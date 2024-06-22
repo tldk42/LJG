@@ -4,7 +4,8 @@
 
 namespace LJG
 {
-	UBoxComponent::UBoxComponent()
+	UBoxComponent::UBoxComponent(const WText& Inkey)
+		: UObject(Inkey)
 	{
 		UBoxComponent::Initialize();
 	}

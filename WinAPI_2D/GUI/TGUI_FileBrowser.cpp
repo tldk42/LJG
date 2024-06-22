@@ -11,6 +11,11 @@
 
 namespace LJG
 {
+	namespace fs = std::filesystem;
+
+	TGUI_FileBrowser::TGUI_FileBrowser(const WText& InKey)
+		: TGUI_Base(InKey),
+		  mPath(L"./") {}
 
 	void TGUI_FileBrowser::CheckResize()
 	{
@@ -25,7 +30,6 @@ namespace LJG
 				mCachedSize = currentSize;
 			}
 		}
-
 	}
 
 	void TGUI_FileBrowser::RenderCustomGUI()
@@ -37,43 +41,29 @@ namespace LJG
 
 		CheckResize();
 
-		if (ImGui::Button("Pick File"))
-		{
-			ImGui::OpenFileBrowser("rsc/");
-		}
-		std::string result;
-		if (ImGui::FetchFileBrowserResult("rsc/", result))
-		{
-			// Do something with the result
-		}
 
 		ImGui::End();
 	}
 
 	bool TGUI_FileBrowser::Open_Internal(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent)
 	{
-		if (bIsOpen)
-		{
-			return mOriginalPath == InPath;
-		}
-
 		auto directory = InPath;
 
-		if (!std::filesystem::is_directory(GetRelative(directory)))
+		// 파일 디렉토리 경로가 아닐 경우 부모 디렉토리가 있는지 확인
+		if (!fs::is_directory(directory))
 		{
-			const auto dirPath = std::filesystem::path(directory);
+			const auto dirPath = fs::path(directory);
 			if (dirPath.has_parent_path())
 			{
 				directory = dirPath.parent_path().wstring();
 			}
 		}
 
-		bIsOpen            = true;
 		mOriginalPath      = InPath;
 		mFileBrowserOption = InOption;
 		mExtent            = InExtent;
-
-		TryApplyPath(directory);
+		if (!TryApplyPath(directory))
+			return false;
 
 		ImGui::OpenPopup(WText2Text(GetLabel()).c_str());
 
@@ -82,18 +72,20 @@ namespace LJG
 
 	bool TGUI_FileBrowser::Fetch_Internal(const WText& InPath, WText& OutSelectedPath)
 	{
+
+
 		return true;
 	}
 
 	bool TGUI_FileBrowser::TryApplyPath(const WText& InText)
 	{
-		std::filesystem::path path(GetRelative(InText));
-		if (!std::filesystem::exists(path))
+		const fs::path path(InText);
+		if (!fs::exists(path))
 		{
 			return false;
 		}
 
-		// mPath       = GetLocal(path.wstring());
+		mPath       = path.wstring();
 		mEditedPath = L"";
 
 		Refresh();
@@ -101,13 +93,25 @@ namespace LJG
 		return true;
 	}
 
+	bool TGUI_FileBrowser::TryPopPath()
+	{
+		fs::path path(mPath);
+
+		while (!fs::exists(path) && path.has_parent_path())
+		{
+			path = path.parent_path();
+		}
+
+		return TryApplyPath(path.parent_path().wstring());
+	}
+
 	void TGUI_FileBrowser::Refresh()
 	{
-		const std::filesystem::path path(GetRelative(mPath));
+		const fs::path path(mPath);
 
-		if (!std::filesystem::exists(path))
+		if (!fs::exists(path))
 		{
-			// TryPopPath();
+			TryPopPath();
 			return;
 		}
 
@@ -145,13 +149,20 @@ namespace LJG
 		// RefreshGuess();
 	}
 
+	void TGUI_FileBrowser::EditContent()
+	{
+		if (ImGui::Button("New", {100.f, 0.f}))
+		{
+			Refresh();
+
+			WText newFileName = L"새폴더";
+		}
+
+	}
+
 	WText TGUI_FileBrowser::GetLabel() const
 	{
 		return L"FileBrowser##" + mOriginalPath;
 	}
 
-	WTextView TGUI_FileBrowser::GetRelative(const WText& InPath)
-	{
-		return L"rsc/" + InPath;
-	}
 }

@@ -216,7 +216,7 @@ namespace LJG
 		XMMatrixDecompose(&scale, &rotation, &translation, mTransform);
 
 		// 새로운 스케일 행렬을 생성
-		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X * mTextureScale.X, InScale.Y * mTextureScale.Y, 1.0f);
+		const XMMATRIX newScaleMatrix = XMMatrixScaling(InScale.X, InScale.Y, 1.0f);
 
 		// 새로운 스케일 행렬과 기존의 회전 행렬을 결합
 		const XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(rotation);
@@ -257,12 +257,16 @@ namespace LJG
 
 	void XVertex2D::SetWorldLocation(const FVector2f& InLocation)
 	{
-		mTransform.r[3] = XMVectorSet(InLocation.X, InLocation.Y, 0.f, 1.f);
+		const float currentZ = XMVectorGetZ(mTransform.r[3]);
+
+		mTransform.r[3] = XMVectorSet(InLocation.X, InLocation.Y, currentZ, 1.f);
 	}
 
 	void XVertex2D::AddWorldLocation(const FVector2f& InAddLocation)
 	{
-		mTransform.r[3] = XMVectorSet(GetLocation().X + InAddLocation.X, GetLocation().Y + InAddLocation.Y, 0.f, 1.f);
+		const float currentZ = XMVectorGetZ(mTransform.r[3]);
+		
+		mTransform.r[3] = XMVectorSet(GetLocation().X + InAddLocation.X, GetLocation().Y + InAddLocation.Y, currentZ, 1.f);
 	}
 
 	void XVertex2D::SetWorldTransform(const Matrix& InMatrix)
@@ -272,7 +276,9 @@ namespace LJG
 
 	void XVertex2D::SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale)
 	{
-		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y);
+		const float currentZ = XMVectorGetZ(mTransform.r[3]);
+
+		const XMMATRIX translation = TranslationMatrix(InLocation.X, InLocation.Y, currentZ);
 		const XMMATRIX rotation    = RotationMatrix(InAngle);
 		const XMMATRIX scale       = ScaleMatrix(InScale.X * mTextureScale.X, InScale.Y * mTextureScale.Y);
 

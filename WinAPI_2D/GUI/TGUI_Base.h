@@ -7,14 +7,12 @@ namespace LJG
 {
 	class USceneComponent;
 
-	class TGUI_Base : public IManagedAPI
+	class TGUI_Base
 	{
 	public:
-		TGUI_Base();
+		explicit TGUI_Base(const WText& InKey);
 
 	public:
-		void SetID(WTextView InKey) override;
-
 		virtual void CheckResize() = 0;
 		virtual void RenderCustomGUI() = 0;
 

@@ -4,8 +4,9 @@
 
 namespace LJG
 {
-	UTextBlock::UTextBlock(WTextView InText)
-		: mText(InText)
+	UTextBlock::UTextBlock(const WText& InKey, WTextView InText)
+		: UObject(InKey),
+		  mText(InText)
 	{}
 
 	void UTextBlock::Initialize()

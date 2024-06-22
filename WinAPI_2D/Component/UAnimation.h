@@ -5,7 +5,7 @@
 
 namespace LJG
 {
-	struct FAnimData
+	struct FAnimData_Deprecated
 	{
 		XSprite2DUPtr Sprite = nullptr;
 		float         Time   = 1.f;
@@ -16,7 +16,7 @@ namespace LJG
 		using TransitionCondition = std::function<bool()>;
 
 	public:
-		UAnimation(std::vector<FAnimData>&& InAnims);
+		UAnimation(const WText& InKey, std::vector<FAnimData_Deprecated>&& InAnims);
 		~UAnimation() override;
 
 	public:
@@ -44,7 +44,7 @@ namespace LJG
 		UINT                     mFrames;
 		steady_clock::time_point mPlayTime; // 총 재생 시간
 
-		std::vector<FAnimData> mAnimDatas; // 1 프레임 스프라이트 집합
+		std::vector<FAnimData_Deprecated> mAnimDatas; // 1 프레임 스프라이트 집합
 
 	private:
 		UAnimator* mOwnerAnimator;

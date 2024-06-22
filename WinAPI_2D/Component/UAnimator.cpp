@@ -7,8 +7,9 @@
 namespace LJG
 {
 
-	UAnimator::UAnimator()
-		: bIsPlaying(false)
+	UAnimator::UAnimator(const WText& InKey)
+		: UObject(InKey),
+		  bIsPlaying(false)
 	{}
 
 	UAnimator::~UAnimator() {}
@@ -29,7 +30,7 @@ namespace LJG
 			if (currentAnim->GetNextAnimation() < MAXUINT8)
 			{
 				SetState(currentAnim->GetNextAnimation(), true);
-				
+
 			}
 		}
 
@@ -79,11 +80,11 @@ namespace LJG
 		}
 	}
 
-	std::vector<FAnimData> UAnimator::LoadAnimation(WTextView      InPath, const uint32_t    InMaxSprite,
-													const uint32_t InCustomFrame, const bool bForceCustomFrame)
+	std::vector<FAnimData_Deprecated> UAnimator::LoadAnimation(WTextView      InPath, const uint32_t    InMaxSprite,
+															   const uint32_t InCustomFrame, const bool bForceCustomFrame)
 	{
 		// C++11 이후에 local var를 반환하면 r-value로 간주되어서 이동생성자로 최적화 된다고하는데 과연...
-		std::vector<FAnimData> animSet;
+		std::vector<FAnimData_Deprecated> animSet;
 
 		for (uint32_t i = 1; i <= InMaxSprite; ++i)
 		{

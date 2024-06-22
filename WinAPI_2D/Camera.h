@@ -9,7 +9,7 @@ namespace LJG
 	class ACamera : public AActor
 	{
 	public:
-		ACamera();
+		explicit ACamera(const WText& InKey);
 		~ACamera() override;
 
 	public:

@@ -6,10 +6,10 @@ namespace LJG
 	class TGUI_Inspector : public TGUI_Base
 	{
 	public:
-		TGUI_Inspector();
+		explicit TGUI_Inspector(const WText& InKey);
 
 	public:
-		void CheckResize() override;
+		void         CheckResize() override;
 		virtual void RenderCustomGUI() override;
 	};
 }

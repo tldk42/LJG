@@ -3,12 +3,9 @@
 namespace LJG
 {
 
-	TGUI_Base::TGUI_Base()
+	TGUI_Base::TGUI_Base(const WText& InKey)
+		: mKey(InKey)
 	{}
-
-	void TGUI_Base::SetID(WTextView InKey)
-	{
-		mKey = InKey;
-	}
+	
 
 }

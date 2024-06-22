@@ -3,10 +3,10 @@
 
 namespace LJG
 {
-	class XShaderData : public ICoreAPI, public IManagedAPI
+	class XShaderData : public ICoreAPI
 	{
 	public:
-		XShaderData(WTextView InVertexShader, WTextView InPixelShader);
+		explicit XShaderData(const WText& InKey, WTextView InVertexShader, WTextView InPixelShader);
 		~XShaderData() override;
 
 	public:
@@ -15,10 +15,6 @@ namespace LJG
 		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
-#pragma endregion
-
-#pragma region Managed Interface
-		virtual void SetID(WTextView InKey) override { mKey = InKey; }
 #pragma endregion
 
 		ID3D11VertexShader* GetVertexShader() const { return mVertexShader.Get(); }

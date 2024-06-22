@@ -6,8 +6,8 @@ namespace LJG
 	class XSprite2D : public XVertex2D
 	{
 	public:
-		XSprite2D() = delete;
-		explicit XSprite2D(const WText& TextureFile = L"");
+		XSprite2D(const float InZOrder = 0.6f);
+		explicit XSprite2D(const WText& TextureFile, const float InZOrder = 0.6f);
 		~XSprite2D() override;
 
 	public:
@@ -17,6 +17,14 @@ namespace LJG
 		void Render() override;
 		void Release() override;
 #pragma endregion
+
+		inline XTexture* GetTexture() const { return mTexture; }
+
+		inline void SetTexture(XTexture* InTexture)
+		{
+			mTexture = InTexture;
+			AdjustTextureSize();
+		}
 
 	private:
 		void AdjustTextureSize();

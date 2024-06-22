@@ -6,7 +6,7 @@ namespace LJG
 	class UTextBlock : public UObject
 	{
 	public:
-		explicit UTextBlock(WTextView InText);
+		explicit UTextBlock(const WText& InKey, WTextView InText);
 		~UTextBlock() override = default;
 
 	public:

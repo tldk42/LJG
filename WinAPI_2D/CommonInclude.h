@@ -246,4 +246,5 @@ class delegateName {\
 	CLASS_PTR(AActor)
 	CLASS_PTR(APawn)
 #pragma endregion
+	
 }

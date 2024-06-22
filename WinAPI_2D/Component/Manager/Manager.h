@@ -37,7 +37,7 @@ namespace LJG
 	template <class ReturnClass, typename... Args>
 	ReturnClass* ManagerBase<ReturnType, ClassType>::Load(const WText& InName, Args&&... InArgs)
 	{
-		static_assert(std::is_base_of_v<IManagedAPI, ReturnClass>, L"ManagedAPI에서 상속 받아야 함");
+		// static_assert(std::is_base_of_v<IManagedAPI, ReturnClass>, L"ManagedAPI에서 상속 받아야 함");
 
 		// 경로일 경우 구분하고 아닐 경우 그대로
 		WText id = SplitPath(InName);
@@ -47,9 +47,8 @@ namespace LJG
 			return resource;
 		}
 
-		std::unique_ptr<ReturnClass> obj    = std::make_unique<ReturnClass>(std::forward<Args>(InArgs)...);
+		std::unique_ptr<ReturnClass> obj    = std::make_unique<ReturnClass>(InName, std::forward<Args>(InArgs)...);
 		ReturnClass*                 rawPtr = obj.get();
-		obj->SetID(id);
 		mManagedList.emplace(id, std::move(obj));
 
 		return rawPtr;

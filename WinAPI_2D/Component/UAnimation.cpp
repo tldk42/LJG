@@ -6,8 +6,9 @@
 
 namespace LJG
 {
-	UAnimation::UAnimation(std::vector<FAnimData>&& InAnims)
-		: bIsPlaying(false),
+	UAnimation::UAnimation(const WText& InKey, std::vector<FAnimData_Deprecated>&& InAnims)
+		: USceneComponent(InKey),
+		  bIsPlaying(false),
 		  mFrames(0),
 		  mAnimDatas(std::move(InAnims)),
 		  mCandidateState(MAXUINT8)
@@ -30,17 +31,17 @@ namespace LJG
 			{
 				const AActor* ownerActor = mOwnerAnimator->GetOwnerActor();
 
-				for (const FAnimData& anim : mAnimDatas)
+				for (const FAnimData_Deprecated& anim : mAnimDatas)
 				{
 					anim.Sprite->SetFlipX(mOwnerAnimator->FlipX() ? true : false);
-				
+
 					anim.Sprite->SetWorldTransform(ownerActor->GetWorldTransform());
 				}
 			}
 
 			// 스프라이트 업데이트
-			const FAnimData& frame       = mAnimDatas[mFrames];
-			const float      elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f /
+			const FAnimData_Deprecated& frame = mAnimDatas[mFrames];
+			const float elapsedTime = duration_cast<milliseconds>(steady_clock::now() - mPlayTime).count() * (1.f /
 				1000.f);
 			if (elapsedTime >= frame.Time)
 			{
@@ -95,7 +96,7 @@ namespace LJG
 
 	void UAnimation::Release()
 	{
-		for (FAnimData& sprite : mAnimDatas)
+		for (FAnimData_Deprecated& sprite : mAnimDatas)
 		{
 			sprite.Sprite = nullptr;
 		}

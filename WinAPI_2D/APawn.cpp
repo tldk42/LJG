@@ -2,14 +2,17 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Component/UAnimator.h"
-#include "PlayerData.h"
 #include "Component/UPawnMovementComponent2D.h"
-#include "Component/UPlayerAnimator.h"
+#include "DirectX/XTexture.h"
+#include "Component/USpriteAnimation.h"
+#include "DirectX/Context.h"
+#include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
 
 namespace LJG
 {
-	APawn::APawn()
+	APawn::APawn(const WText& InKey)
+		: AActor(InKey)
 	{
 		APawn::Initialize();
 	}
@@ -27,28 +30,23 @@ namespace LJG
 		{
 			mCamera = CreateDefaultSubObject<ACamera>(L"Camera");
 			mCamera->SetOwnerActor(this);
-			mCamera->SetProjection(1024, 768);
+			mCamera->SetProjection(Context::GetViewportSize().X, Context::GetViewportSize().Y);
 
 			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox");
-			mDebugBox->SetScale({120.f, 120.f});
-			mDebugBox->SetColor(FLinearColor::Green);
+			mDebugBox->SetScale({180.f, 180.f});
+			mDebugBox->SetColor(FLinearColor::GreenPea);
 			mDebugBox->SetOwnerActor(this);
-
-			mDebugBox2 = CreateDefaultSubObject<UBoxComponent>(L"DebugBox2");
-			mDebugBox2->SetScale({200.f, 200.f});
-			mDebugBox2->SetColor(FLinearColor::BlackPearl);
-			mDebugBox2->SetOwnerActor(this);
-
 
 			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
 			mMovementComponent->SetupAttachment(this);
 			mMovementComponent->SetOwnerActor(this);
 			mMovementComponent->Initialize();
 
-			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"PlayerAnimator");
-			mAnimator->SetupAttachment(this);
-			mAnimator->SetOwnerActor(this);
-			mAnimator->Initialize();
+			mSprite = CreateDefaultSubObject<USpriteAnimation>(L"PlayerAnimation");
+			mSprite->SetAnimData(AnimUtil::LoadAnimations(L"rsc/Player/chalice_idle_", 10, 10.f, true));
+			mSprite->SetupAttachment(this);
+			mSprite->SetOwnerActor(this);
+			mSprite->Play(true);
 
 			{
 				InputManager::Get().AddInputBinding(
@@ -62,8 +60,6 @@ namespace LJG
 				// InputManager::Get().AddInputBinding(
 				// 	EKeyCode::LButton, EKeyState::Down, std::bind(&APawn::Attack, this));
 			}
-
-
 		}
 	}
 
@@ -83,10 +79,6 @@ namespace LJG
 		{
 			mCamera->SetPosition(FMath::Lerp(mCamera->GetWorldLocation(), GetWorldLocation(), 5.f * DeltaTime));
 		}
-		else
-		{
-			// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Idle), true);
-		}
 	}
 
 	void APawn::AddMovementInput(const FVector2f& MovementInputAmount)
@@ -105,7 +97,7 @@ namespace LJG
 
 		if (mMovementComponent->GetVelocity().X * moveDirection >= 0)
 		{
-			mAnimator->SetFlipX(bFlip);
+			// mAnimator->SetFlipX(bFlip);
 
 			AddMovementInput({
 				moveDirection,
@@ -122,6 +114,6 @@ namespace LJG
 	void APawn::Attack()
 	{
 		bAttacking = true;
-		mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
+		// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
 	}
 }

@@ -6,7 +6,7 @@ namespace LJG
 	class UBoxComponent : public UObject
 	{
 	public:
-		UBoxComponent();
+		explicit  UBoxComponent(const WText& Inkey);
 		~UBoxComponent() override = default;
 
 	public:

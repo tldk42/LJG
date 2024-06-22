@@ -51,7 +51,7 @@ namespace LJG
 
 		// Step 4. RenderTargetView, Viewport 생성
 		OnResizeCallback(GetWindowWidth(), GetWindowHeight());
-		LOG_DX_TRACE("4. RTV..., Viewport...");
+		LOG_DX_TRACE("4. RTV..., Viewport...");;
 
 		// Step 5. Alt + Enter로 자동 창변환을 제어
 		CHECK_RESULT(mGIFactory->MakeWindowAssociation(GetHWND(), DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER));
@@ -66,8 +66,10 @@ namespace LJG
 
 	void Context::Render()
 	{
+		mDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		mDeviceContext->OMSetDepthStencilState(mDepthStencilState.Get(), 1);
 		// TODO: ImGui에서 렌더링 마다 초기화 해버리기 때문에 관리해 줘야함
-		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
+		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 		Present();
 	}
 
@@ -79,6 +81,10 @@ namespace LJG
 		mSwapChain          = nullptr;
 		mGIFactory          = nullptr;
 		mDeviceContext      = nullptr;
+
+		mDepthStencilState  = nullptr;
+		mDepthStencilView   = nullptr;
+		mDepthStencilBuffer = nullptr;
 
 		ComPtr<ID3D11Debug> debug;
 		if (mDevice.Get() && SUCCEEDED(mDevice->QueryInterface(IID_PPV_ARGS(&debug))))
@@ -169,6 +175,35 @@ namespace LJG
 		return S_OK;
 	}
 
+	HRESULT Context::SetDepthStencil()
+	{
+		D3D11_TEXTURE2D_DESC depthStencilDesc{};
+		depthStencilDesc.Width              = mSwapChainDesc.BufferDesc.Width;
+		depthStencilDesc.Height             = mSwapChainDesc.BufferDesc.Height;
+		depthStencilDesc.MipLevels          = 1;
+		depthStencilDesc.ArraySize          = 1;
+		depthStencilDesc.Format             = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilDesc.SampleDesc.Count   = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+		depthStencilDesc.Usage              = D3D11_USAGE_DEFAULT;
+		depthStencilDesc.BindFlags          = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.CPUAccessFlags     = 0;
+		depthStencilDesc.MiscFlags          = 0;
+
+		D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc{};
+		depthStencilStateDesc.DepthEnable    = true;
+		depthStencilStateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilStateDesc.DepthFunc      = D3D11_COMPARISON_LESS;
+
+		HRESULT result;
+		result = mDevice->CreateTexture2D(&depthStencilDesc, nullptr, mDepthStencilBuffer.GetAddressOf());
+		result = mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr,
+												 mDepthStencilView.GetAddressOf());
+		result = mDevice->CreateDepthStencilState(&depthStencilStateDesc, mDepthStencilState.GetAddressOf());
+
+		return result;
+	}
+
 	void Context::OnResizeCallback(UINT InWidth, UINT InHeight)
 	{
 		if (mDevice.Get())
@@ -177,6 +212,10 @@ namespace LJG
 			{
 				DXWrite::Get()->DiscardDeviceResources();
 			}
+			mDepthStencilState  = nullptr;
+			mDepthStencilView   = nullptr;
+			mDepthStencilBuffer = nullptr;
+
 			mDeviceContext->OMSetRenderTargets(0, nullptr, nullptr);
 
 			mRenderTargetView = nullptr;
@@ -187,6 +226,7 @@ namespace LJG
 												   mSwapChainDesc.Flags));
 			mSwapChain->GetDesc(&mSwapChainDesc);
 
+			SetDepthStencil();
 			SetRenderTarget();
 			SetViewport(mSwapChainDesc.BufferDesc.Width, mSwapChainDesc.BufferDesc.Height);
 		}
@@ -194,12 +234,13 @@ namespace LJG
 
 	void Context::SetRenderTarget()
 	{
+
 		ComPtr<ID3D11Texture2D> backBuffer;
 		CHECK_RESULT(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
 										   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf())));
 		CHECK_RESULT(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
-		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), nullptr);
+		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
 		backBuffer = nullptr;
 	}

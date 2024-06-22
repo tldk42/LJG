@@ -4,10 +4,10 @@
 
 namespace LJG
 {
-	class UObject : public ICoreAPI, public IManagedAPI
+	class UObject : public ICoreAPI
 	{
 	public:
-		UObject();
+		explicit UObject(const WText& InKey);
 		explicit UObject(AActor* InOwnerActor);
 		~UObject() override;
 
@@ -17,10 +17,6 @@ namespace LJG
 		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
-#pragma endregion
-
-#pragma region Managed Interface
-		virtual void SetID(WTextView InKey) override { mObjectID = InKey; }
 #pragma endregion
 
 		inline AActor*  GetOwnerActor() const { return mOwnerActor; }
@@ -37,7 +33,7 @@ namespace LJG
 		void SetupAttachment(UObject* InParentObj);
 
 	protected:
-		WText                               mObjectID;
+		WText                               mObjectKey;
 		AActor*                             mOwnerActor;
 		UObject*                            mParentObject;
 		std::unordered_map<WText, UObject*> mChildObjects;

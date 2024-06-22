@@ -1,18 +1,16 @@
 #pragma once
 #include "UObject.h"
 
-namespace LJG
-{
-	class UBoxComponent;
-}
 
 namespace LJG
 {
+	class UBoxComponent;
+
 	/** Scene에 뿌려질 수 있는 오브젝트 */
 	class USceneComponent : public UObject
 	{
 	public:
-		USceneComponent();
+		explicit USceneComponent(const WText& InKey);
 		~USceneComponent() override;
 
 	public:

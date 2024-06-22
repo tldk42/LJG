@@ -6,7 +6,7 @@ namespace LJG
 	class AActor : public USceneComponent
 	{
 	public:
-		AActor();
+		explicit AActor(const WText& InKey);
 		~AActor() override = default;
 
 	public:

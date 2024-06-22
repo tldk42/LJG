@@ -6,7 +6,7 @@
 
 namespace LJG
 {
-	struct FAnimData;
+	struct FAnimData_Deprecated;
 
 	class EngineHelper
 	{

@@ -6,10 +6,10 @@
 
 namespace LJG
 {
-	class UAudio : public ICoreAPI, public IManagedAPI
+	class UAudio : public ICoreAPI
 	{
 	public:
-		UAudio(const WText& InKey);
+		explicit UAudio(const WText& InKey);
 		~UAudio() override;
 
 	public:
@@ -18,10 +18,6 @@ namespace LJG
 		void Update(float DeltaTime) override;
 		void Render() override;
 		void Release() override;
-#pragma endregion
-
-#pragma region Manager Interface
-		void SetID(WTextView InKey) override { mKey = InKey; }
 #pragma endregion
 
 		void Play(const bool bLoop = false);

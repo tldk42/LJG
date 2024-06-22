@@ -4,9 +4,12 @@
 
 namespace LJG
 {
-	UImage::UImage(WTextView InTexturePath)
-		: mImagePath(InTexturePath)
-	{}
+	UImage::UImage(const WText& InKey, const WText& InPath, const float InZOrder)
+		: UObject(InKey),
+		  mTexturePath(InPath)
+	{
+		mSprite2D = std::make_unique<XSprite2D>(mTexturePath, InZOrder);
+	}
 
 	UImage::~UImage()
 	{}
@@ -14,8 +17,6 @@ namespace LJG
 	void UImage::Initialize()
 	{
 		UObject::Initialize();
-
-		mSprite2D = std::make_unique<XSprite2D>(mImagePath);
 	}
 
 	void UImage::Update(float DeltaTime)
