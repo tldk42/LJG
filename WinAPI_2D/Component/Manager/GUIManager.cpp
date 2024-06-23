@@ -17,7 +17,8 @@ namespace LJG
 
 		ImGuiIO& io = ImGui::GetIO();
 
-
+		io.Fonts->AddFontFromFileTTF("rsc/CupHead/Font/KCC-Hanbit.ttf", 18.f,
+									 nullptr, io.Fonts->GetGlyphRangesKorean());
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
@@ -43,10 +44,10 @@ namespace LJG
 		style.Colors[ImGuiCol_PopupBg]              = ImVec4(0.09f, 0.02f, 0.09f, 1.00f);
 		style.Colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 		style.Colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-		style.Colors[ImGuiCol_FrameBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		style.Colors[ImGuiCol_FrameBg]              = ImVec4(0.08f, 0.09f, 0.1f, 1.00f);
 		style.Colors[ImGuiCol_FrameBgHovered]       = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		style.Colors[ImGuiCol_FrameBgActive]        = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		style.Colors[ImGuiCol_TitleBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		style.Colors[ImGuiCol_FrameBgActive]        = ImVec4(0.56f, 0.57f, 0.58f, 1.00f);
+		style.Colors[ImGuiCol_TitleBg]              = ImVec4(0.09f, 0.09f, 0.11f, 1.00f);
 		style.Colors[ImGuiCol_TitleBgCollapsed]     = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
 		style.Colors[ImGuiCol_TitleBgActive]        = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		style.Colors[ImGuiCol_MenuBarBg]            = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);

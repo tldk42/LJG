@@ -1,11 +1,16 @@
 #include "APawn.h"
+
+#include <imgui.h>
+
 #include "Camera.h"
 #include "InputManager.h"
 #include "Component/UAnimator.h"
 #include "Component/UPawnMovementComponent2D.h"
 #include "DirectX/XTexture.h"
 #include "Component/USpriteAnimation.h"
+#include "Component/Manager/GUIManager.h"
 #include "DirectX/Context.h"
+#include "GUI/TGUI_Inspector.h"
 #include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
 
@@ -66,6 +71,13 @@ namespace LJG
 	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
+
+		if (InputManager::IsKeyDown(EKeyCode::LButton) && (InputManager::GetMousePosition() - GetWorldLocation()).
+			GetLength() < 30.f)
+		{
+			auto ins = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
+			ins->BindSceneComponent(this);
+		}
 
 		if (bAttacking)
 			return;

@@ -125,6 +125,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalOptions>/Zc:char8_t-</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -1623,6 +1625,7 @@
     <ClCompile Include="GUI\TGUI_Base.cpp" />
     <ClCompile Include="GUI\TGUI_FileBrowser.cpp" />
     <ClCompile Include="GUI\TGUI_Inspector.cpp" />
+    <ClCompile Include="GUI\TGUI_MapEditor.cpp" />
     <ClCompile Include="Helper\EngineHelper.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2056,6 +2059,7 @@
     <ClInclude Include="GUI\TGUI_Base.h" />
     <ClInclude Include="GUI\TGUI_FileBrowser.h" />
     <ClInclude Include="GUI\TGUI_Inspector.h" />
+    <ClInclude Include="GUI\TGUI_MapEditor.h" />
     <ClInclude Include="Helper\EngineHelper.h" />
     <ClInclude Include="Helper\UDXHelper.h" />
     <ClInclude Include="HighLevelApp\Application_Base.h" />

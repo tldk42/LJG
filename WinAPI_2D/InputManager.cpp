@@ -1,4 +1,6 @@
 #include "InputManager.h"
+
+#include "DirectX/Context.h"
 #include "Helper/EngineHelper.h"
 
 
@@ -151,8 +153,9 @@ namespace LJG
 		GetCursorPos(&mousePoint);                 // 커서 좌표 받아오기
 		ScreenToClient(WindowHandle, &mousePoint); // 커서의 좌표를 클라이언트 윈도우 기준으로 잡아준다.
 
-		mMousePosition.X = mousePoint.x;
-		mMousePosition.Y = mousePoint.y;
+		// 마우스 포지션 보정 (뷰포트는 0,0이 기준임)
+		mMousePosition.X = mousePoint.x - Context::GetViewportSize().X / 2;
+		mMousePosition.Y = mousePoint.y - Context::GetViewportSize().Y / 2;
 	}
 
 	void InputManager::ClearKeys()
@@ -198,6 +201,8 @@ namespace LJG
 					std::cout << "Key " << ASCIIString[EnumAsByte(key.KeyCode)] << " was pressed for " <<
 					key.PressDuration.count() * (1.f / 1000.f) << " seconds\n";
 				}
+
+				LOG_CORE_INFO("Mouse X: {}, Mouse Y: {}", mMousePosition.X, mMousePosition.Y);
 			}
 		}
 	}

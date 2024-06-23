@@ -28,6 +28,10 @@ namespace LJG
 				mCachedSize = currentSize;
 			}
 		}
+		else
+		{
+			Context::Get()->SetViewport(GetWindowWidth(), Context::GetViewportSize().Y);
+		}
 	}
 
 	void TGUI_Inspector::RenderCustomGUI()
@@ -57,11 +61,11 @@ namespace LJG
 
 		ImGui::NewLine();
 
-		XTexture* sampleTexture = Manager_Texture.Load<XTexture>(L"rsc/Player/chalice_idle_0001.png");
-		if (sampleTexture)
-		{
-			if (ImGui::ImageButton(sampleTexture->GetShaderResourceView(), {50, 50}));
-		}
+		// XTexture* sampleTexture = Manager_Texture.Load<XTexture>(L"rsc/Player/chalice_idle_0001.png");
+		// if (sampleTexture)
+		// {
+		// 	if (ImGui::ImageButton(sampleTexture->GetShaderResourceView(), {50, 50}));
+		// }
 
 
 		if (mObjectToShow)

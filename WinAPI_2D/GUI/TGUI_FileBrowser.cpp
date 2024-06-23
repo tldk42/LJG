@@ -3,9 +3,10 @@
 #include <filesystem>
 #include <imgui.h>
 #include <imgui_stdlib.h>
-
 #include "imgui_filebrowser.h"
+#include "Component/Manager/TextureManager.h"
 #include "DirectX/Context.h"
+#include "DirectX/XTexture.h"
 #include "Helper/EngineHelper.h"
 
 
@@ -19,6 +20,7 @@ namespace LJG
 
 	void TGUI_FileBrowser::CheckResize()
 	{
+		// ImGui::GetWindowDockID()
 		if (ImGui::IsWindowDocked())
 		{
 			const ImVec2 currentSize = ImGui::GetContentRegionAvail();
@@ -30,6 +32,10 @@ namespace LJG
 				mCachedSize = currentSize;
 			}
 		}
+		else
+		{
+			Context::Get()->SetViewport(Context::GetViewportSize().X, GetWindowHeight());
+		}
 	}
 
 	void TGUI_FileBrowser::RenderCustomGUI()
@@ -37,15 +43,24 @@ namespace LJG
 		ImGui::GetIO().NavActive        = false;
 		ImGui::GetIO().WantCaptureMouse = true;
 
-		ImGui::Begin("FileBrowser", &bExit, ImGuiWindowFlags_MenuBar);
+		ImGui::Begin(u8"파일 탐색기", &bExit, ImGuiWindowFlags_MenuBar);
 
-		CheckResize();
+		// CheckResize();
 
+		if (TryOpen(mPath))
+		{
+			WText result;
+
+			ShowDirectories(mPath, result);
+		}
+
+		// if (ImGui::FetchFileBrowserResult("rsc/", result))
+		// {}
 
 		ImGui::End();
 	}
 
-	bool TGUI_FileBrowser::Open_Internal(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent)
+	bool TGUI_FileBrowser::TryOpen(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent)
 	{
 		auto directory = InPath;
 
@@ -62,17 +77,17 @@ namespace LJG
 		mOriginalPath      = InPath;
 		mFileBrowserOption = InOption;
 		mExtent            = InExtent;
+
 		if (!TryApplyPath(directory))
 			return false;
-
-		ImGui::OpenPopup(WText2Text(GetLabel()).c_str());
 
 		return true;
 	}
 
-	bool TGUI_FileBrowser::Fetch_Internal(const WText& InPath, WText& OutSelectedPath)
+	bool TGUI_FileBrowser::ShowDirectories(const WText& InPath, WText& OutSelectedPath)
 	{
 
+		EditContent();
 
 		return true;
 	}
@@ -123,7 +138,7 @@ namespace LJG
 			{
 				mDirectories.emplace_back(entry.path().filename().wstring());
 			}
-			else if (mFileBrowserOption != EFileBrowserOption::Directory)
+			else if (mFileBrowserOption != EFileBrowserOption::Directory || mDirectories.empty())
 			{
 				if (!mExtent.empty())
 				{
@@ -141,23 +156,135 @@ namespace LJG
 			}
 		}
 
-		mSelected.clear();
-		mRenameResult.clear();
-		mNavigationGuess.clear();
-		bNewEntry = false;
+		// mSelected.clear();
+		// mRenameResult.clear();
+		// mNavigationGuess.clear();
+		// bNewEntry = false;
 
 		// RefreshGuess();
 	}
 
 	void TGUI_FileBrowser::EditContent()
 	{
-		if (ImGui::Button("New", {100.f, 0.f}))
+		constexpr ImVec2 buttonSize(100.f, 0.f);
+
+
+		if (ImGui::Button(u8"새폴더", buttonSize))
 		{
 			Refresh();
 
 			WText newFileName = L"새폴더";
+			mSelected         = newFileName;
+			mRenameResult     = newFileName;
 		}
 
+		bool bDisabled = mSelected.empty();
+		if (bDisabled)
+		{
+			ImGui::BeginDisabled();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button(u8"복제", buttonSize))
+		{}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button(u8"삭제", buttonSize))
+		{}
+
+		if (bDisabled)
+		{
+			ImGui::EndDisabled();
+		}
+
+		const ImGuiStyle style = ImGui::GetStyle();
+
+		if (ImGui::BeginListBox("##FileBrowserContent"))
+		{
+			ImGui::Spacing();
+			ImGui::Spacing();
+
+			if (!mPath.empty())
+				if (ImGui::Selectable("  ..##FileListBack"))
+					TryPopPath();
+
+			bool renaming = !mRenameResult.empty();
+
+			WText newDir;
+			for (auto& dir : mDirectories)
+			{
+				if (ContentEntry(dir, true))
+				{
+					if (dir == mSelected)
+					{
+						newDir = dir;
+					}
+					else
+					{
+						mSelected     = dir;
+						mRenameResult = L"";
+					}
+				}
+			}
+
+
+			for (auto& file : mFiles)
+			{
+				if (ContentEntry(file, false))
+				{
+					mSelected     = file;
+					mRenameResult = L"";
+				}
+			}
+
+			if (!newDir.empty())
+				TryApplyPath(mPath + L"\\" + newDir);
+
+			if (renaming && mRenameResult.empty())
+				Refresh();
+
+			ImGui::Spacing();
+			ImGui::Spacing();
+
+			ImGui::EndListBox();
+		}
+	}
+
+	bool TGUI_FileBrowser::ContentEntry(const std::wstring& InDir, bool InCond)
+	{
+		const bool selected = mSelected == InDir;
+		if (selected && !mRenameResult.empty())
+		{
+			constexpr ImGuiInputTextFlags flags =
+			ImGuiInputTextFlags_EnterReturnsTrue |
+			ImGuiInputTextFlags_EscapeClearsAll |
+			ImGuiInputTextFlags_CharsNoBlank;
+			// if (ImGui::InputText("##ListEntryRename", &mRenameResult, flags))
+			// {
+			// 	// TryApplyRename(Selected, RenameResult);
+			// 	// RenameResult = "";
+			// }
+			return false;
+		}
+
+		if (fs::path(InDir).extension() == ".png")
+		{
+			ImGui::SetItemAllowOverlap();
+
+			XTexture* tex = Manager_Texture.Load(mPath + L"\\" + InDir);
+			ImGui::ImageButton(tex->GetShaderResourceView(), {32.f, 32.f});
+
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				ImGui::SetDragDropPayload("MAP_Editor_DD", &tex, sizeof(tex));
+				ImGui::EndDragDropSource();
+			}
+			ImGui::SameLine();
+		}
+
+		return ImGui::Selectable(((InCond ? "- " : "  ") + WText2Text(InDir) + "##ListEntry").c_str(), selected);
 	}
 
 	WText TGUI_FileBrowser::GetLabel() const

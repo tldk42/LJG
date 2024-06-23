@@ -25,8 +25,7 @@ namespace LJG
 		mBackgroundImage->SetOwnerActor(this);
 		mBackgroundImage->Initialize();
 		mBackgroundImage->SetPosition({0, 0.f});
-
-
+		
 		mSampleImage = CreateDefaultSubObject<UImage>(L"2", L"rsc/BG/lv2-1_bg_close-hills-loop.png", 0.5f);
 		mSampleImage->SetupAttachment(this);
 		mSampleImage->SetOwnerActor(this);
@@ -38,6 +37,7 @@ namespace LJG
 		mSampleImage2->SetOwnerActor(this);
 		mSampleImage2->Initialize();
 		mSampleImage2->SetPosition({512, 0.f});
+		
 	}
 
 	void AHUD::Update(float DeltaTime)

@@ -15,6 +15,7 @@
 #include "DirectX/XTexture.h"
 #include "GUI/TGUI_FileBrowser.h"
 #include "GUI/TGUI_Inspector.h"
+#include "GUI/TGUI_MapEditor.h"
 
 namespace LJG
 {
@@ -146,11 +147,12 @@ namespace LJG
 			int32_t updateCounter = 0;
 
 			TGUI_Inspector*   gui         = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
-			TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
+			// TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
+			// TGUI_MapEditor*   mapEditor   = Manager_GUI.Load<TGUI_MapEditor>(L"MapEditor");
 			AHUD*             hud         = Manager_Object.Load<AHUD>(L"HUD");
 			APawn*            pc          = Manager_Object.Load<APawn>(L"PC");
 
-			gui->BindSceneComponent(pc);
+			// gui->BindSceneComponent(pc);
 
 			UAudio* audio = Manager_Audio.Load(L"rsc/AudioClip/MUS_BotanicPanic.wav");
 			audio->Play(true);

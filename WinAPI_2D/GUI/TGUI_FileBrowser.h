@@ -14,8 +14,9 @@ namespace LJG
 		virtual void RenderCustomGUI() override;
 
 	private:
-		bool Open_Internal(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent);
-		bool Fetch_Internal(const WText& InPath, WText& OutSelectedPath);
+		bool TryOpen(const WText&           InPath, EFileBrowserOption InOption = EFileBrowserOption::Directory,
+					 const std::set<WText>& InExtent                            = {});
+		bool ShowDirectories(const WText& InPath, WText& OutSelectedPath);
 
 
 		bool TryApplyPath(const WText& InText);
@@ -24,7 +25,8 @@ namespace LJG
 
 		void EditNavigation();
 		void EditContent();
-		
+		bool ContentEntry(const std::wstring& InDir, bool InCond);
+
 		WText GetLabel() const;
 
 	protected:
