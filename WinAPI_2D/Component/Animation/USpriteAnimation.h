@@ -1,7 +1,7 @@
 #pragma once
-#include "USceneComponent.h"
+#include "Component/USceneComponent.h"
+#include "Component/Manager/TextureManager.h"
 #include "DirectX/XSprite2D.h"
-#include "Manager/TextureManager.h"
 
 namespace LJG
 {
@@ -9,6 +9,9 @@ namespace LJG
 	{
 		std::vector<XTexture*> Textures;
 		float_t                FrameTime;
+
+		FAnimData() = default;
+		FAnimData(const WText& InKey) {};
 	};
 
 	namespace AnimUtil
@@ -64,16 +67,26 @@ namespace LJG
 		}
 
 		void SetLoop(const bool InLoop) { bLoop = InLoop; }
+		void SetFlip(const bool bEnable) { bFlipX = bEnable; }
+
+		uint8_t GetNextAnim() const { return mNextAnimState; }
+
+		void AddTransition(const uint8_t InState, const std::function<bool()>& InCond);
 
 	private:
 		XSprite2DUPtr            mSprite2D;
 		uint32_t                 mCurrentFrame;
 		time_point<steady_clock> mElapsedTime;
 		bool                     bLoop;
+		bool                     bFlipX;
 		bool                     bIsPlaying;
 		bool                     bIsPaused;
 
 		FAnimData mAnimationData;
+		uint8_t   mNextAnimState;
+
+		std::unordered_map<uint8_t, std::vector<std::function<bool()>>> mTransitions;
+
 	};
 
 }

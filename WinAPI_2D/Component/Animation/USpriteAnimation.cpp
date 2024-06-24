@@ -29,6 +29,28 @@ namespace LJG
 
 		if (bIsPlaying)
 		{
+			mSprite2D->SetWorldTransform(mWorldTransform);
+			mSprite2D->SetFlipX(bFlipX);
+			mSprite2D->Update(DeltaTime);
+
+			for (auto& transition : mTransitions)
+			{
+				bool bCanEnter = true;
+				mNextAnimState = UINT8_MAX;
+				for (auto& condition : transition.second)
+				{
+					if (!condition())
+					{
+						bCanEnter = false;
+					}
+				}
+				if (bCanEnter)
+				{
+					mNextAnimState = transition.first;
+					return;
+				}
+			}
+
 			const float currentTime = duration_cast<milliseconds>(steady_clock::now() - mElapsedTime).count()
 			* (1.f / 1000.f);
 
@@ -49,7 +71,7 @@ namespace LJG
 				mElapsedTime = steady_clock::now();
 				mSprite2D->SetTexture(mAnimationData.Textures[mCurrentFrame]);
 			}
-			mSprite2D->Update(DeltaTime);
+
 		}
 	}
 
@@ -91,5 +113,10 @@ namespace LJG
 	{
 		bIsPlaying = false;
 		bIsPaused  = false;
+	}
+
+	void USpriteAnimation::AddTransition(const uint8_t InState, const std::function<bool()>& InCond)
+	{
+		mTransitions[InState].emplace_back(InCond);
 	}
 }

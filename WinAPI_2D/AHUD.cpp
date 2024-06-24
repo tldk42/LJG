@@ -25,19 +25,19 @@ namespace LJG
 		mBackgroundImage->SetOwnerActor(this);
 		mBackgroundImage->Initialize();
 		mBackgroundImage->SetPosition({0, 0.f});
-		
+
 		mSampleImage = CreateDefaultSubObject<UImage>(L"2", L"rsc/BG/lv2-1_bg_close-hills-loop.png", 0.5f);
 		mSampleImage->SetupAttachment(this);
 		mSampleImage->SetOwnerActor(this);
 		mSampleImage->Initialize();
 		mSampleImage->SetPosition({0, 0.f});
 
-		mSampleImage2 = CreateDefaultSubObject<UImage>(L"7", L"rsc/BG/lv2-1_bg_outside_A.png", 0.3f);
+		mSampleImage2 = CreateDefaultSubObject<UImage>(L"7", L"rsc/BG/lv2-1_bg_outside_A.png", 0.33f);
 		mSampleImage2->SetupAttachment(this);
 		mSampleImage2->SetOwnerActor(this);
 		mSampleImage2->Initialize();
 		mSampleImage2->SetPosition({512, 0.f});
-		
+
 	}
 
 	void AHUD::Update(float DeltaTime)

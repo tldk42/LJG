@@ -201,8 +201,6 @@ namespace LJG
 					std::cout << "Key " << ASCIIString[EnumAsByte(key.KeyCode)] << " was pressed for " <<
 					key.PressDuration.count() * (1.f / 1000.f) << " seconds\n";
 				}
-
-				LOG_CORE_INFO("Mouse X: {}, Mouse Y: {}", mMousePosition.X, mMousePosition.Y);
 			}
 		}
 	}

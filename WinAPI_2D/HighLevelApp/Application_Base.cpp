@@ -8,7 +8,8 @@
 #include "FTimer.h"
 #include "Window.h"
 #include "Component/UAudio.h"
-#include "Component/USpriteAnimation.h"
+#include "Component/Animation/USpriteAnimation.h"
+#include "Component/Manager/AnimManager.h"
 #include "Component/Manager/GUIManager.h"
 #include "Component/Manager/SoundManager.h"
 #include "Component/Manager/TextureManager.h"
@@ -55,6 +56,7 @@ namespace LJG
 
 		ObjectManager::Initialize();
 
+		AnimManager::LoadAllAnims();
 	}
 
 	void Application_Base::Update(float DeltaTime)
@@ -146,11 +148,11 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			TGUI_Inspector*   gui         = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
+			TGUI_Inspector* gui = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
 			// TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
 			// TGUI_MapEditor*   mapEditor   = Manager_GUI.Load<TGUI_MapEditor>(L"MapEditor");
-			AHUD*             hud         = Manager_Object.Load<AHUD>(L"HUD");
-			APawn*            pc          = Manager_Object.Load<APawn>(L"PC");
+			AHUD*  hud = Manager_Object.Load<AHUD>(L"HUD");
+			APawn* pc  = Manager_Object.Load<APawn>(L"PC");
 
 			// gui->BindSceneComponent(pc);
 

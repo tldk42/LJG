@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 
+#include "AActor.h"
 #include "Component/UObject.h"
 #include "Window.h"
 
@@ -18,7 +19,7 @@ namespace LJG
 
 		for (const auto& [key, object] : Get().mManagedList)
 		{
-			if (!object->GetParent())
+			if (dynamic_cast<AActor*>(object.get()))
 			{
 				object->Update(DeltaTime);
 			}
@@ -29,7 +30,7 @@ namespace LJG
 	{
 		for (const auto& [key, object] : Get().mManagedList)
 		{
-			if (!object->GetParent())
+			if (dynamic_cast<AActor*>(object.get()))
 			{
 				object->Render();
 			}

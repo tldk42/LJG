@@ -1,21 +1,19 @@
 #pragma once
 #include "AActor.h"
 
-namespace LJG
-{
-	class USpriteAnimation;
-}
+
 namespace LJG
 {
 	class UPawnMovementComponent2D;
-	class UPlayerAnimator;
 	class UBoxComponent;
+	class UPlayerAnimator;
+	class USpriteAnimation;
 	class ACamera;
 
 	class APawn : public AActor
 	{
 	public:
-		explicit  APawn(const WText& InKey);
+		explicit APawn(const WText& InKey);
 		~APawn() override;
 
 	public:
@@ -35,7 +33,7 @@ namespace LJG
 
 	private:
 		UPawnMovementComponent2D* mMovementComponent;
-		USpriteAnimation*         mSprite;
+		UPlayerAnimator*          mAnimator;
 		UBoxComponent*            mDebugBox;
 		ACamera*                  mCamera;
 

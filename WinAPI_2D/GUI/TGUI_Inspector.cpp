@@ -4,6 +4,8 @@
 
 #include "AActor.h"
 #include "InputManager.h"
+#include "Component/UAudio.h"
+#include "Component/Manager/SoundManager.h"
 #include "Component/Manager/TextureManager.h"
 #include "DirectX/Context.h"
 #include "DirectX/XTexture.h"
@@ -59,17 +61,18 @@ namespace LJG
 		ImGui::Checkbox("Input debug?", &bEnableDebug);
 		InputManager::EnableDebug(bEnableDebug);
 
-		ImGui::NewLine();
+		ImGui::SameLine();
 
-		// XTexture* sampleTexture = Manager_Texture.Load<XTexture>(L"rsc/Player/chalice_idle_0001.png");
-		// if (sampleTexture)
-		// {
-		// 	if (ImGui::ImageButton(sampleTexture->GetShaderResourceView(), {50, 50}));
-		// }
-
+		static bool bMusic = true;
+		if (ImGui::Checkbox("BGM?", &bMusic))
+		{
+			Manager_Audio.Load(L"MUS_BotanicPanic.wav")->Pause();
+		}
 
 		if (mObjectToShow)
 		{
+			ImGui::NewLine();
+
 			static float loc[2] = {0.f, 0.f};
 			{
 				loc[0] = mObjectToShow->GetWorldLocation().X;

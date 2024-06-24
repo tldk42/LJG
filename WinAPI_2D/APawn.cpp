@@ -4,10 +4,13 @@
 
 #include "Camera.h"
 #include "InputManager.h"
-#include "Component/UAnimator.h"
+#include "PlayerData.h"
+#include "Component/Animation/UAnimator.h"
 #include "Component/UPawnMovementComponent2D.h"
+#include "Component/Animation/UPlayerAnimator.h"
 #include "DirectX/XTexture.h"
-#include "Component/USpriteAnimation.h"
+#include "Component/Animation/USpriteAnimation.h"
+#include "Component/Manager/AnimManager.h"
 #include "Component/Manager/GUIManager.h"
 #include "DirectX/Context.h"
 #include "GUI/TGUI_Inspector.h"
@@ -47,11 +50,11 @@ namespace LJG
 			mMovementComponent->SetOwnerActor(this);
 			mMovementComponent->Initialize();
 
-			mSprite = CreateDefaultSubObject<USpriteAnimation>(L"PlayerAnimation");
-			mSprite->SetAnimData(AnimUtil::LoadAnimations(L"rsc/Player/chalice_idle_", 10, 10.f, true));
-			mSprite->SetupAttachment(this);
-			mSprite->SetOwnerActor(this);
-			mSprite->Play(true);
+			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"Animator");
+			mAnimator->SetupAttachment(this);
+			mAnimator->SetOwnerActor(this);
+			mAnimator->Initialize();
+
 
 			{
 				InputManager::Get().AddInputBinding(
@@ -109,7 +112,7 @@ namespace LJG
 
 		if (mMovementComponent->GetVelocity().X * moveDirection >= 0)
 		{
-			// mAnimator->SetFlipX(bFlip);
+			mAnimator->SetFlipX(bFlip);
 
 			AddMovementInput({
 				moveDirection,

@@ -4,5 +4,6 @@ enum class EPlayerAnimState : uint8_t
 {
 	Idle,
 	Move,
-	Attack
+	Attack,
+	Jump
 };
