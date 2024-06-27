@@ -16,11 +16,9 @@ namespace LJG
 		virtual void CheckResize() = 0;
 		virtual void RenderCustomGUI() = 0;
 
-		void BindSceneComponent(USceneComponent* InBindObject) { mObjectToShow = InBindObject; }
 
 	protected:
 		WText            mKey;
-		USceneComponent* mObjectToShow;
 		bool             bExit;
 		ImVec2           mCachedSize;
 	};

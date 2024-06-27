@@ -17,7 +17,7 @@ namespace LJG
 									   std::make_unique<FAnimData>(
 										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_death_body_", 16, 16.f,
 																	true)));
-		Get().mManagedList.try_emplace(L"cuphead_duck_",
+		Get().mManagedList.try_emplace(L"cuphead_duck",
 									   std::make_unique<FAnimData>(
 										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_duck_", 7, 7.f, true)));
 		Get().mManagedList.try_emplace(L"cuphead_duck_idle",
@@ -47,7 +47,7 @@ namespace LJG
 										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_hit_", 6, 6.f, true)));
 		Get().mManagedList.try_emplace(L"cuphead_idle",
 									   std::make_unique<FAnimData>(
-										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_idle_", 5, 5.f, true)));
+										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_idle_", 5, 12.f, true)));
 		Get().mManagedList.try_emplace(L"cuphead_intro_a",
 									   std::make_unique<FAnimData>(
 										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_intro_a_", 28, 28.f,

@@ -4,6 +4,7 @@
 
 namespace LJG
 {
+
 	UImage::UImage(const WText& InKey, const WText& InPath, const float InZOrder)
 		: UObject(InKey),
 		  mTexturePath(InPath)

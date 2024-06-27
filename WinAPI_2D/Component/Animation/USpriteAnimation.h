@@ -33,7 +33,7 @@ namespace LJG
 
 				WText filePath = stringstream.str();
 
-				animData.Textures.emplace_back(Manager_Texture.Load<XTexture>(filePath));
+				animData.Textures.emplace_back(Manager_Texture.CreateOrLoad<XTexture>(filePath));
 			}
 
 			return animData;

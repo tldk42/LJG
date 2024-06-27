@@ -16,6 +16,7 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		inline WText                     GetTexturePath() const { return mKey; }
 		inline D3D11_TEXTURE2D_DESC      GetTextureDesc() const { return mTextureDesc; }
 		inline ID3D11ShaderResourceView* GetShaderResourceView() const { return mSRV.Get(); }
 

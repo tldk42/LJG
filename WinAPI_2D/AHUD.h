@@ -1,5 +1,5 @@
 #pragma once
-#include "AActor.h"
+#include "Component/Actor/AActor.h"
 
 namespace LJG
 {

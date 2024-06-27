@@ -101,7 +101,6 @@ namespace LJG
 
 	void GUIManager::Render()
 	{
-
 		for (const auto& gui : Get().mManagedList)
 		{
 			gui.second->RenderCustomGUI();

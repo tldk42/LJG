@@ -31,5 +31,7 @@ namespace LJG
 		USpriteAnimation* State_Dash_Ground;
 		USpriteAnimation* State_Dash_Air;
 		USpriteAnimation* State_Jump;
+		USpriteAnimation* State_Duck_Start;
+		USpriteAnimation* State_Duck_Loop;
 	};
 }

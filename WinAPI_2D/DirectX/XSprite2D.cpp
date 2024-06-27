@@ -31,7 +31,7 @@ namespace LJG
 
 		mVertexBufferArray.reserve(4);
 
-		mTexture               = Manager_Texture.Load(TextureFile);
+		mTexture               = Manager_Texture.CreateOrLoad(TextureFile);
 		mSamplerState          = std::make_unique<XSamplerState>();
 		mBlendState_AlphaBlend = std::make_unique<XBlendState>(EBlendType::AlphaBlend);
 

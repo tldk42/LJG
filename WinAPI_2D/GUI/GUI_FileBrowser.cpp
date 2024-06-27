@@ -1,4 +1,4 @@
-#include "TGUI_FileBrowser.h"
+#include "GUI_FileBrowser.h"
 
 #include <filesystem>
 #include <imgui.h>
@@ -14,11 +14,11 @@ namespace LJG
 {
 	namespace fs = std::filesystem;
 
-	TGUI_FileBrowser::TGUI_FileBrowser(const WText& InKey)
+	GUI_FileBrowser::GUI_FileBrowser(const WText& InKey)
 		: TGUI_Base(InKey),
 		  mPath(L"./") {}
 
-	void TGUI_FileBrowser::CheckResize()
+	void GUI_FileBrowser::CheckResize()
 	{
 		// ImGui::GetWindowDockID()
 		if (ImGui::IsWindowDocked())
@@ -38,7 +38,7 @@ namespace LJG
 		}
 	}
 
-	void TGUI_FileBrowser::RenderCustomGUI()
+	void GUI_FileBrowser::RenderCustomGUI()
 	{
 		ImGui::GetIO().NavActive        = false;
 		ImGui::GetIO().WantCaptureMouse = true;
@@ -47,20 +47,18 @@ namespace LJG
 
 		// CheckResize();
 
-		if (TryOpen(mPath))
+		if (!bOpen)
 		{
-			WText result;
-
-			ShowDirectories(mPath, result);
+			TryOpen(mPath);
 		}
+		WText result;
+		ShowDirectories(mPath, result);
 
-		// if (ImGui::FetchFileBrowserResult("rsc/", result))
-		// {}
 
 		ImGui::End();
 	}
 
-	bool TGUI_FileBrowser::TryOpen(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent)
+	bool GUI_FileBrowser::TryOpen(const WText& InPath, EFileBrowserOption InOption, const std::set<WText>& InExtent)
 	{
 		auto directory = InPath;
 
@@ -84,7 +82,7 @@ namespace LJG
 		return true;
 	}
 
-	bool TGUI_FileBrowser::ShowDirectories(const WText& InPath, WText& OutSelectedPath)
+	bool GUI_FileBrowser::ShowDirectories(const WText& InPath, WText& OutSelectedPath)
 	{
 
 		EditContent();
@@ -92,7 +90,7 @@ namespace LJG
 		return true;
 	}
 
-	bool TGUI_FileBrowser::TryApplyPath(const WText& InText)
+	bool GUI_FileBrowser::TryApplyPath(const WText& InText)
 	{
 		const fs::path path(InText);
 		if (!fs::exists(path))
@@ -108,7 +106,7 @@ namespace LJG
 		return true;
 	}
 
-	bool TGUI_FileBrowser::TryPopPath()
+	bool GUI_FileBrowser::TryPopPath()
 	{
 		fs::path path(mPath);
 
@@ -120,7 +118,7 @@ namespace LJG
 		return TryApplyPath(path.parent_path().wstring());
 	}
 
-	void TGUI_FileBrowser::Refresh()
+	void GUI_FileBrowser::Refresh()
 	{
 		const fs::path path(mPath);
 
@@ -164,7 +162,7 @@ namespace LJG
 		// RefreshGuess();
 	}
 
-	void TGUI_FileBrowser::EditContent()
+	void GUI_FileBrowser::EditContent()
 	{
 		constexpr ImVec2 buttonSize(100.f, 0.f);
 
@@ -252,7 +250,7 @@ namespace LJG
 		}
 	}
 
-	bool TGUI_FileBrowser::ContentEntry(const std::wstring& InDir, bool InCond)
+	bool GUI_FileBrowser::ContentEntry(const std::wstring& InDir, bool InCond)
 	{
 		const bool selected = mSelected == InDir;
 		if (selected && !mRenameResult.empty())
@@ -273,12 +271,14 @@ namespace LJG
 		{
 			ImGui::SetItemAllowOverlap();
 
-			XTexture* tex = Manager_Texture.Load(mPath + L"\\" + InDir);
+			XTexture* tex = Manager_Texture.CreateOrLoad(mPath + L"\\" + InDir);
 			ImGui::ImageButton(tex->GetShaderResourceView(), {32.f, 32.f});
 
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
-				ImGui::SetDragDropPayload("MAP_Editor_DD", &tex, sizeof(tex));
+				const WText texPath = tex->GetTexturePath();
+
+				ImGui::SetDragDropPayload("MAP_Editor_DD", texPath.c_str(), sizeof(wchar_t) * (texPath.size() + 1));
 				ImGui::EndDragDropSource();
 			}
 			ImGui::SameLine();
@@ -287,7 +287,7 @@ namespace LJG
 		return ImGui::Selectable(((InCond ? "- " : "  ") + WText2Text(InDir) + "##ListEntry").c_str(), selected);
 	}
 
-	WText TGUI_FileBrowser::GetLabel() const
+	WText GUI_FileBrowser::GetLabel() const
 	{
 		return L"FileBrowser##" + mOriginalPath;
 	}

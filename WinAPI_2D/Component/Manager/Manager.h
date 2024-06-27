@@ -4,6 +4,8 @@
 
 namespace LJG
 {
+#define ManagerTemplate template<typename ReturnType, class ClassType>
+
 	template <class ClassType>
 	class TSingleton
 	{
@@ -15,15 +17,18 @@ namespace LJG
 		}
 	};
 
-
-	template <typename ReturnType, class ClassType>
+	ManagerTemplate
 	class ManagerBase : public TSingleton<ClassType>
 	{
 	public:
+		// 사용자 지정 생성
 		template <class ReturnClass = ReturnType, typename... Args>
-		ReturnClass* Load(const WText& InName, Args&&... InArgs);
+		ReturnClass* CreateOrLoad(const WText& InName, Args&&... InArgs);
+
 		template <class ReturnClass = ReturnType>
 		ReturnClass* GetResource(const WText& InName);
+
+		void TrySafeRemove(WTextView InName);
 
 	protected:
 		[[nodiscard]] static WText SplitPath(const WText& InPath, const WText& InEntry = L"");
@@ -33,12 +38,10 @@ namespace LJG
 		std::unordered_map<WText, std::unique_ptr<ReturnType>> mManagedList;
 	};
 
-	template <typename ReturnType, class ClassType>
+	ManagerTemplate
 	template <class ReturnClass, typename... Args>
-	ReturnClass* ManagerBase<ReturnType, ClassType>::Load(const WText& InName, Args&&... InArgs)
+	ReturnClass* ManagerBase<ReturnType, ClassType>::CreateOrLoad(const WText& InName, Args&&... InArgs)
 	{
-		// static_assert(std::is_base_of_v<IManagedAPI, ReturnClass>, L"ManagedAPI에서 상속 받아야 함");
-
 		// 경로일 경우 구분하고 아닐 경우 그대로
 		WText id = SplitPath(InName);
 
@@ -49,12 +52,12 @@ namespace LJG
 
 		std::unique_ptr<ReturnClass> obj    = std::make_unique<ReturnClass>(InName, std::forward<Args>(InArgs)...);
 		ReturnClass*                 rawPtr = obj.get();
-		mManagedList.emplace(id, std::move(obj));
+		mManagedList.try_emplace(id, std::move(obj));
 
 		return rawPtr;
 	}
 
-	template <typename ReturnType, class ClassType>
+	ManagerTemplate
 	template <class ReturnClass = ReturnType>
 	ReturnClass* ManagerBase<ReturnType, ClassType>::GetResource(const WText& InName)
 	{
@@ -65,10 +68,24 @@ namespace LJG
 			return static_cast<ReturnClass*>(mManagedList[InName].get());
 		}
 
+		WText maybeID = SplitPath(InName);
+		if (mManagedList.contains(maybeID))
+		{
+			return static_cast<ReturnClass*>(mManagedList[maybeID].get());
+		}
 		return nullptr;
 	}
 
 	template <typename ReturnType, class ClassType>
+	void ManagerBase<ReturnType, ClassType>::TrySafeRemove(WTextView InName)
+	{
+		if (mManagedList.contains(InName))
+		{
+			mManagedList[InName] = nullptr;
+		}
+	}
+
+	ManagerTemplate
 	WText ManagerBase<ReturnType, ClassType>::SplitPath(const WText& InPath, const WText& InEntry)
 	{
 		wchar_t drive[MAX_PATH]      = {0,};
@@ -89,19 +106,14 @@ namespace LJG
 		return key;
 	}
 
-	template <typename ReturnType, class ClassType>
+	ManagerTemplate
 	void ManagerBase<ReturnType, ClassType>::RemoveInvalidResource()
 	{
-		for (auto it = mManagedList.begin(); it != mManagedList.end();)
-		{
-			if (!it->second)
-			{
-				it = mManagedList.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
+		// mManagedList.erase(
+		// 	std::remove_if(
+		// 		mManagedList.begin(),
+		// 		mManagedList.end(),
+		// 		[](std::pair<WText, std::unique_ptr<ReturnType>>& obj){ return obj.second == nullptr; }),
+		// 	mManagedList.end());
 	}
 }

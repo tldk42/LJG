@@ -1,6 +1,6 @@
 #include "UAnimator.h"
 
-#include "AActor.h"
+#include "Component/Actor/AActor.h"
 #include "USpriteAnimation.h"
 #include "DirectX/XSprite2D.h"
 #include "DirectX/XTexture.h"
@@ -28,6 +28,8 @@ namespace LJG
 		{
 			USpriteAnimation* currentAnim = mStateMachine[mCurrentState];
 			currentAnim->Update(DeltaTime);
+			currentAnim->SetTransform(mOwnerActor->GetWorldTransform());
+			currentAnim->SetFlip(bFlipX);
 
 			if (currentAnim->GetNextAnim() < MAXUINT8)
 			{

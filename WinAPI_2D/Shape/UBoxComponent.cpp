@@ -1,5 +1,5 @@
 #include "UBoxComponent.h"
-#include "../AActor.h"
+#include "Component/Actor/AActor.h"
 #include "../Shape/XDebugShape2D.h"
 
 namespace LJG

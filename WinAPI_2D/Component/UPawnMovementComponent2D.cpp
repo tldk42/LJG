@@ -1,5 +1,5 @@
 #include "UPawnMovementComponent2D.h"
-#include "AActor.h"
+#include "Component/Actor/AActor.h"
 
 namespace LJG
 {
@@ -8,8 +8,8 @@ namespace LJG
 		  bIsMovingOnGround(true),
 		  mMaxWalkSpeed(350.f),
 		  mGravity(3333.f),
-		  mJumpPower_Value(1000.f),
-		  mJumpPower_Current(1000.f),
+		  mJumpPower_Value(1250.f),
+		  mJumpPower_Current(1250.f),
 		  mVelocity({0, 0}),
 		  mAirResistance(),
 		  mGroundFriction()

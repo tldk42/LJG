@@ -31,13 +31,9 @@ namespace LJG
 		void Jump();
 		void Attack();
 
-	private:
+	protected:
 		UPawnMovementComponent2D* mMovementComponent;
 		UPlayerAnimator*          mAnimator;
 		UBoxComponent*            mDebugBox;
-		ACamera*                  mCamera;
-
-		bool bMove = false;
-		bool bAttacking;
 	};
 }

@@ -125,7 +125,7 @@ namespace LJG
 	{
 		HRESULT result = S_OK;
 
-		mShaderData = Manager_Shader.Load(L"SimpleShader", L"Shader/sample2_vert.vsh", L"Shader/sample2_frag.psh");
+		mShaderData = Manager_Shader.CreateOrLoad(L"SimpleShader", L"Shader/sample2_vert.vsh", L"Shader/sample2_frag.psh");
 
 		constexpr D3D11_INPUT_ELEMENT_DESC layout[] =
 		{

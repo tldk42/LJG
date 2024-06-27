@@ -5,16 +5,15 @@ namespace LJG
 {
 	#define Manager_Object ObjectManager::Get()
 
-	class ObjectManager : public ManagerBase<UObject, ObjectManager>
+	class ObjectManager : public ManagerBase<UObject, ObjectManager>, public ICoreAPI
 	{
 	public:
-		static void Initialize();
-		static void Update(float DeltaTime);
-		static void Render();
-
-	private:
-		// Resize Callback
-		void OnResizeCallback(UINT InWidth, UINT InHeight);
+#pragma region Core Interface
+		void Initialize() override;
+		void Update(float DeltaTime) override;
+		void Render() override;
+		void Release() override;
+#pragma endregion
 
 	private:
 		friend class TSingleton<ObjectManager>;
@@ -24,7 +23,6 @@ namespace LJG
 	public:
 		ObjectManager(const ObjectManager&)            = delete;
 		ObjectManager& operator=(const ObjectManager&) = delete;
-
 	};
 
 }

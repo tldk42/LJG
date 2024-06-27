@@ -4,10 +4,10 @@
 namespace LJG
 {
 
-	class TGUI_FileBrowser : public TGUI_Base
+	class GUI_FileBrowser : public TGUI_Base
 	{
 	public:
-		explicit TGUI_FileBrowser(const WText& InKey);
+		explicit GUI_FileBrowser(const WText& InKey);
 
 	public:
 		virtual void CheckResize() override;
@@ -31,6 +31,7 @@ namespace LJG
 
 	protected:
 		bool bNewEntry;
+		bool bOpen;
 
 		WText mOriginalPath;
 		WText mPath;

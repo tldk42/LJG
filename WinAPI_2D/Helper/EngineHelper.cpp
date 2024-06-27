@@ -1,6 +1,5 @@
 #include "EngineHelper.h"
 
-#include "Component/UAnimation.h"
 #include "Window.h"
 #include "DirectX/XSprite2D.h"
 

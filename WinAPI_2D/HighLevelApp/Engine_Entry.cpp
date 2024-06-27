@@ -17,5 +17,6 @@ int main()
 		Application_Base::Get(L"Renderer", testWindowData);
 		Application_Base::Get().Start();
 	}
+
 	return 0;
 }

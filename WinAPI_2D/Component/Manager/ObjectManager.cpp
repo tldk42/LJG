@@ -1,48 +1,42 @@
 #include "ObjectManager.h"
 
-#include "AActor.h"
+#include "Component/Actor/AActor.h"
 #include "Component/UObject.h"
 #include "Window.h"
 
 namespace LJG
 {
 	void ObjectManager::Initialize()
-	{
-		Window::GetWindow()->OnResize.Bind([](UINT InWidth, UINT InHeight){
-			Get().OnResizeCallback(InWidth, InHeight);
-		});
-	}
+	{}
 
 	void ObjectManager::Update(float DeltaTime)
 	{
 		Get().RemoveInvalidResource();
 
-		for (const auto& [key, object] : Get().mManagedList)
+		for (const auto& [key, object] : mManagedList)
 		{
-			if (dynamic_cast<AActor*>(object.get()))
-			{
-				object->Update(DeltaTime);
-			}
+			object->Update(DeltaTime);
 		}
 	}
 
 	void ObjectManager::Render()
 	{
-		for (const auto& [key, object] : Get().mManagedList)
+		for (const auto& [key, object] : mManagedList)
 		{
-			if (dynamic_cast<AActor*>(object.get()))
+			object->Render();
+		}
+	}
+
+	void ObjectManager::Release()
+	{
+		for (auto it = mManagedList.cbegin(), next_it = it; it != mManagedList.cend(); it = next_it)
+		{
+			++next_it;
+			if (!it->second->bDontDestroyOnLoad)
 			{
-				object->Render();
+				mManagedList.erase(it);
 			}
 		}
 	}
 
-
-	void ObjectManager::OnResizeCallback(UINT InWidth, UINT InHeight)
-	{
-		for (const auto& obj : mManagedList)
-		{
-			// obj_ptr->OnResize();
-		}
-	}
 }

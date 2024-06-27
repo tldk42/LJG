@@ -1,8 +1,8 @@
-#include "TGUI_Inspector.h"
+#include "GUI_Inspector.h"
 
 #include <imgui.h>
 
-#include "AActor.h"
+#include "Component/Actor/AActor.h"
 #include "InputManager.h"
 #include "Component/UAudio.h"
 #include "Component/Manager/SoundManager.h"
@@ -13,11 +13,11 @@
 
 namespace LJG
 {
-	TGUI_Inspector::TGUI_Inspector(const WText& InKey)
+	GUI_Inspector::GUI_Inspector(const WText& InKey)
 		: TGUI_Base(InKey)
 	{}
 
-	void TGUI_Inspector::CheckResize()
+	void GUI_Inspector::CheckResize()
 	{
 		if (ImGui::IsWindowDocked())
 		{
@@ -36,26 +36,26 @@ namespace LJG
 		}
 	}
 
-	void TGUI_Inspector::RenderCustomGUI()
+	void GUI_Inspector::RenderCustomGUI()
 	{
 		ImGui::GetIO().NavActive        = false;
 		ImGui::GetIO().WantCaptureMouse = true;
 
 		ImGui::Begin("Inspector", &bExit, ImGuiWindowFlags_MenuBar);
 
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Save"))
-				{}
-				ImGui::Separator();
-				if (ImGui::MenuItem("Open"))
-				{}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
+		// if (ImGui::BeginMenuBar())
+		// {
+		// 	if (ImGui::BeginMenu("File"))
+		// 	{
+		// 		if (ImGui::MenuItem("Save"))
+		// 		{}
+		// 		ImGui::Separator();
+		// 		if (ImGui::MenuItem("Open"))
+		// 		{}
+		// 		ImGui::EndMenu();
+		// 	}
+		// 	ImGui::EndMenuBar();
+		// }
 
 		static bool bEnableDebug = true;
 		ImGui::Checkbox("Input debug?", &bEnableDebug);
@@ -66,7 +66,7 @@ namespace LJG
 		static bool bMusic = true;
 		if (ImGui::Checkbox("BGM?", &bMusic))
 		{
-			Manager_Audio.Load(L"MUS_BotanicPanic.wav")->Pause();
+			Manager_Audio.CreateOrLoad(L"MUS_BotanicPanic.wav")->Pause();
 		}
 
 		if (mObjectToShow)

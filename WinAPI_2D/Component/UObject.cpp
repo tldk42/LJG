@@ -5,14 +5,18 @@
 
 namespace LJG
 {
+	UObject::UObject()
+	{
+		static uint32_t objectNum = 0;
+		mObjectKey                = std::format(L"{}_{}", Text2WText(__func__), objectNum++);
+	}
+
 	UObject::UObject(const WText& InKey)
 		: mObjectKey(InKey),
-		  mOwnerActor(nullptr),
-		  mParentObject(nullptr) {}
+		  mOwnerActor(nullptr) {}
 
 	UObject::UObject(AActor* InOwnerActor)
-		: mOwnerActor(InOwnerActor),
-		  mParentObject(nullptr) {}
+		: mOwnerActor(InOwnerActor) {}
 
 	UObject::~UObject()
 	{
@@ -40,8 +44,6 @@ namespace LJG
 	void UObject::SetupAttachment(UObject* InParentObj)
 	{
 		InParentObj->mChildObjects.try_emplace(mObjectKey, this);
-
-		mParentObject = InParentObj;
 	}
 
 

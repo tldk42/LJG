@@ -1,5 +1,7 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include "HighLevelApp/Application_Base.h"
 #include "CommonInclude.h"
 #include "Window.h"
@@ -20,6 +22,20 @@ namespace LJG
 #pragma endregion
 
 		static HWND GetWindowHandle(void* WindowHandle = nullptr);
+
+		static nlohmann::json LoadFile(const WText& InFileName)
+		{
+			std::ifstream file(InFileName + L".json", std::ios::in);
+			if (std::filesystem::exists(InFileName + L".json"))
+			{
+				nlohmann::json jsonData;
+				file >> jsonData;
+				file.close();
+
+				return jsonData;
+			}
+			return nullptr;
+		}
 	};
 
 	inline HWND GetHWND(void* WindowHandle = nullptr)

@@ -1,22 +1,25 @@
 #include "Application_Base.h"
 
 #include "AHUD.h"
-#include "APawn.h"
+#include "Component/Actor/APawn.h"
 #include "InputManager.h"
 #include "Component/Manager/ObjectManager.h"
 #include "Renderer.h"
 #include "FTimer.h"
 #include "Window.h"
 #include "Component/UAudio.h"
+#include "Component/Actor/ACharacter.h"
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
 #include "Component/Manager/GUIManager.h"
 #include "Component/Manager/SoundManager.h"
 #include "Component/Manager/TextureManager.h"
 #include "DirectX/XTexture.h"
-#include "GUI/TGUI_FileBrowser.h"
-#include "GUI/TGUI_Inspector.h"
-#include "GUI/TGUI_MapEditor.h"
+#include "GUI/GUI_FileBrowser.h"
+#include "GUI/GUI_Hierarchy.h"
+#include "GUI/GUI_Inspector.h"
+#include "GUI/GUI_Inspector_MapEdit.h"
+#include "GUI/GUI_MapEditor.h"
 
 namespace LJG
 {
@@ -54,7 +57,7 @@ namespace LJG
 
 		GUIManager::Initialize();
 
-		ObjectManager::Initialize();
+		Manager_Object.Initialize();
 
 		AnimManager::LoadAllAnims();
 	}
@@ -65,7 +68,7 @@ namespace LJG
 
 		SoundManager::Update(DeltaTime);
 
-		ObjectManager::Update(DeltaTime);
+		Manager_Object.Update(DeltaTime);
 
 		GUIManager::Update(DeltaTime);
 
@@ -78,7 +81,7 @@ namespace LJG
 		Renderer::Clear(FLinearColor::Gallary);
 
 		// 모든 렌더링 오브젝트 Draw
-		ObjectManager::Render();
+		Manager_Object.Render();
 
 		// GUI Draw
 		GUIManager::Render();
@@ -148,16 +151,16 @@ namespace LJG
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
 
-			TGUI_Inspector* gui = Manager_GUI.Load<TGUI_Inspector>(L"Inspector");
-			// TGUI_FileBrowser* fileBrowser = Manager_GUI.Load<TGUI_FileBrowser>(L"FileBrowser");
-			// TGUI_MapEditor*   mapEditor   = Manager_GUI.Load<TGUI_MapEditor>(L"MapEditor");
-			AHUD*  hud = Manager_Object.Load<AHUD>(L"HUD");
-			APawn* pc  = Manager_Object.Load<APawn>(L"PC");
+			// TGUI_Inspector*   gui         = Manager_GUI.Create<TGUI_Inspector>(L"Inspector");
+			// GUI_Inspector_MapEdit* mapInspec   = Manager_GUI.CreateOrLoad<GUI_Inspector_MapEdit>(L"MapInspector");
+			// GUI_FileBrowser*       fileBrowser = Manager_GUI.CreateOrLoad<GUI_FileBrowser>(L"FileBrowser");
+			// GUI_MapEditor*         mapEditor   = Manager_GUI.CreateOrLoad<GUI_MapEditor>(L"MapEditor");
+			// GUI_Hierarchy*         hierarchy   = Manager_GUI.CreateOrLoad<GUI_Hierarchy>(L"Hierarchy");
+			AHUD*       hud = Manager_Object.CreateOrLoad<AHUD>(L"HUD");
+			ACharacter* pc  = Manager_Object.CreateOrLoad<ACharacter>(L"PC");
 
-			// gui->BindSceneComponent(pc);
-
-			UAudio* audio = Manager_Audio.Load(L"rsc/AudioClip/MUS_BotanicPanic.wav");
-			audio->Play(true);
+			UAudio* audio = Manager_Audio.CreateOrLoad(L"rsc/AudioClip/MUS_BotanicPanic.wav");
+			// audio->Play(true);
 
 			while (bIsRunning)
 			{
@@ -178,8 +181,8 @@ namespace LJG
 					FTimer frameTimer;
 					{
 						Update(mDeltaTime);
-						hud->UpdateFpsText(
-							std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds()));
+						// hud->UpdateFpsText(
+						// 	std::format(L"FPS: {:d}, Time: {:.2f}", mFramesPerSec, mTimer->ElapsedSeconds()));
 
 						Render();
 					}

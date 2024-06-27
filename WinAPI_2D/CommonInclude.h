@@ -25,7 +25,7 @@
 #include <wrl.h>
 
 // Custom Classes
-#include "Logger.h"
+#include "Helper/Logger.h"
 #include "Structs.h"
 
 #include "Math/MathFwd.h"
@@ -220,7 +220,7 @@ class delegateName {\
 	using klassName##WPtr = std::weak_ptr<klassName>;
 
 	CLASS_PTR(TGUI_Base)
-	CLASS_PTR(TGUI_Inspector)
+	CLASS_PTR(GUI_Inspector)
 
 	CLASS_PTR(Window)
 
@@ -246,5 +246,5 @@ class delegateName {\
 	CLASS_PTR(AActor)
 	CLASS_PTR(APawn)
 #pragma endregion
-	
+
 }

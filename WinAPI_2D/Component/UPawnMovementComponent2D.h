@@ -12,10 +12,12 @@ namespace LJG
 		void Initialize() override;
 		void Update(float DeltaTime) override;
 #pragma endregion
-\
+
+
 #pragma region Get
 		[[nodiscard]] inline bool      IsMovingOnGround() const { return bIsMovingOnGround; }
 		[[nodiscard]] inline bool      IsJumping() const { return bIsJumping; }
+		[[nodiscard]] inline bool      IsCrouching() const { return bIsCrouching; }
 		[[nodiscard]] inline float_t   GetJumpPower() const { return mJumpPower_Value; }
 		[[nodiscard]] inline float_t   GetMaxWalkSpeed() const { return mMaxWalkSpeed; }
 		[[nodiscard]] inline float_t   GetGravity() const { return mGravity; }
@@ -39,6 +41,7 @@ namespace LJG
 	protected:
 		bool bIsMovingOnGround;
 		bool bIsJumping;
+		bool bIsCrouching;
 
 		float_t mMaxWalkSpeed;
 		float_t mGravity;
