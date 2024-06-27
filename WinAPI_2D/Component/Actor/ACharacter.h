@@ -15,7 +15,5 @@ namespace LJG
 		void Update(float DeltaTime) override;
 #pragma endregion
 
-	private:
-		ACamera* mCamera;
 	};
 }

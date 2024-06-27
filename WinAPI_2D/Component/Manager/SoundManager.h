@@ -15,10 +15,10 @@ namespace LJG
 	class SoundManager : public ManagerBase<UAudio, SoundManager>
 	{
 	public:
-		static void Initialize();
-		static void Update(float DeltaTime);
-		static void Render();
-		static void Release();
+		void Initialize();
+		void Update(float DeltaTime);
+		void Render();
+		void Release();
 
 	private:
 		void Initialize_Internal();

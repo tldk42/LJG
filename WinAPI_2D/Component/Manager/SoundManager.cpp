@@ -7,24 +7,24 @@ namespace LJG
 {
 	void SoundManager::Initialize()
 	{
-		Get().Initialize_Internal();
+		Initialize_Internal();
 	}
 
 	void SoundManager::Update(float DeltaTime)
 	{
-		Get().mFmodSystem->update();
+		mFmodSystem->update();
 	}
 
 	void SoundManager::Render() {}
 
 	void SoundManager::Release()
 	{
-		for (auto& audio : Get().mManagedList)
+		for (auto& audio : mManagedList)
 		{
 			audio.second.release();
 		}
 
-		Get().Release_Internal();
+		Release_Internal();
 	}
 
 	void SoundManager::Initialize_Internal()

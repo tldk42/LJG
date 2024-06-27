@@ -11,7 +11,7 @@ namespace LJG
 	class AnimManager : public ManagerBase<FAnimData, AnimManager>
 	{
 	public:
-		static void LoadAllAnims();
+		void LoadAllAnims();
 
 	private:
 		friend class TSingleton<AnimManager>;

@@ -26,8 +26,6 @@ namespace LJG
 		inline UPawnMovementComponent2D* GetMovementComponent() const { return mMovementComponent; }
 #pragma endregion
 
-		void AddMovementInput(const FVector2f& MovementInputAmount);
-		void OnMovementInputPressed(float DeltaTime, bool bFlip);
 		void Jump();
 		void Attack();
 

@@ -21,20 +21,20 @@ namespace LJG
 
 	void InputManager::Initialize()
 	{
-		Get().CreateKeys();
+		CreateKeys();
 
-		Get().ClearKeys();
-		Get().ClearMouse();
+		ClearKeys();
+		ClearMouse();
 	}
 
 	void InputManager::Update(float DeltaTime)
 	{
-		Get().UpdateKeys();
-		Get().UpdateMouseWindowPosition();
+		UpdateKeys();
+		UpdateMouseWindowPosition();
 
-		Get().Debug_Input();
+		Debug_Input();
 
-		Get().UpdateKeyBindings(DeltaTime);
+		UpdateKeyBindings(DeltaTime);
 	}
 
 

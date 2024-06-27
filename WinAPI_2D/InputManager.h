@@ -7,12 +7,14 @@ namespace LJG
 
 	DECLARE_DYNAMIC_DELEGATE(FOnInputEvent, float_t)
 
+	#define Manager_Input InputManager::Get()
+	
 	class InputManager : public TSingleton<InputManager>
 	{
 
 	public:
-		static void Initialize();
-		static void Update(float DeltaTime);
+		void Initialize();
+		void Update(float DeltaTime);
 
 	public:
 		FORCEINLINE static bool             IsKeyDown(const EKeyCode Key) { return Get().IsKeyDown_Internal(Key); }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Manager.h"
+#include "Component/UObject.h"
 
 namespace LJG
 {

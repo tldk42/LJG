@@ -322,6 +322,7 @@
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="Component\Actor\ACharacter.cpp" />
+    <ClCompile Include="Component\Actor\APlayerCharacter.cpp" />
     <ClCompile Include="Component\Animation\UPlayerAnimator.cpp" />
     <ClCompile Include="Component\Animation\UAnimator.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -2189,6 +2190,7 @@
     <ClInclude Include="Component\Actor\AActor.h" />
     <ClInclude Include="Component\Actor\APawn.h" />
     <ClInclude Include="Component\Actor\ACharacter.h" />
+    <ClInclude Include="Component\Actor\APlayerCharacter.h" />
     <ClInclude Include="Component\Animation\UPlayerAnimator.h" />
     <ClInclude Include="Component\Animation\UAnimator.h" />
     <ClInclude Include="Component\Animation\USpriteAnimation.h" />

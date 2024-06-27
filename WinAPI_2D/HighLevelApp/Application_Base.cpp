@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "Component/UAudio.h"
 #include "Component/Actor/ACharacter.h"
+#include "Component/Actor/APlayerCharacter.h"
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
 #include "Component/Manager/GUIManager.h"
@@ -47,30 +48,30 @@ namespace LJG
 	{
 		// Logger를 가장 먼저 초기화 해야 함 다른 초기화중에 Logger를 사용
 		Logger::Initialize();
-		InputManager::Initialize();
-		SoundManager::Initialize();
+		Manager_Input.Initialize();
+		Manager_Audio.Initialize();
 
 		// 무조건 Device를 생성전에 Window Handle Instance를 반환해야 함 
 		Initialize_Application();
 
 		Renderer::Initialize();
 
-		GUIManager::Initialize();
+		Manager_GUI.Initialize();
 
 		Manager_Object.Initialize();
 
-		AnimManager::LoadAllAnims();
+		Manager_Anim.LoadAllAnims();
 	}
 
 	void Application_Base::Update(float DeltaTime)
 	{
-		InputManager::Update(DeltaTime);
+		Manager_Input.Update(DeltaTime);
 
-		SoundManager::Update(DeltaTime);
+		Manager_Audio.Update(DeltaTime);
 
 		Manager_Object.Update(DeltaTime);
 
-		GUIManager::Update(DeltaTime);
+		Manager_GUI.Update(DeltaTime);
 
 		Renderer::Update(DeltaTime);
 	}
@@ -84,7 +85,7 @@ namespace LJG
 		Manager_Object.Render();
 
 		// GUI Draw
-		GUIManager::Render();
+		Manager_GUI.Render();
 
 		// TODO: UI Draw
 
@@ -94,11 +95,11 @@ namespace LJG
 
 	void Application_Base::Release()
 	{
-		GUIManager::Release();
+		Manager_GUI.Release();
 
 		Renderer::Release();
 
-		SoundManager::Release();
+		Manager_Audio.Release();
 	}
 
 	void Application_Base::Initialize_Application()
@@ -156,10 +157,9 @@ namespace LJG
 			// GUI_FileBrowser*       fileBrowser = Manager_GUI.CreateOrLoad<GUI_FileBrowser>(L"FileBrowser");
 			// GUI_MapEditor*         mapEditor   = Manager_GUI.CreateOrLoad<GUI_MapEditor>(L"MapEditor");
 			// GUI_Hierarchy*         hierarchy   = Manager_GUI.CreateOrLoad<GUI_Hierarchy>(L"Hierarchy");
-			AHUD*       hud = Manager_Object.CreateOrLoad<AHUD>(L"HUD");
-			ACharacter* pc  = Manager_Object.CreateOrLoad<ACharacter>(L"PC");
-
-			UAudio* audio = Manager_Audio.CreateOrLoad(L"rsc/AudioClip/MUS_BotanicPanic.wav");
+			AHUD*             hud   = Manager_Object.CreateOrLoad<AHUD>(L"HUD");
+			APlayerCharacter* pc    = Manager_Object.CreateOrLoad<APlayerCharacter>(L"PC");
+			UAudio*           audio = Manager_Audio.CreateOrLoad(L"rsc/AudioClip/MUS_BotanicPanic.wav");
 			// audio->Play(true);
 
 			while (bIsRunning)

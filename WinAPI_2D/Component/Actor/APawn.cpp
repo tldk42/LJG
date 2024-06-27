@@ -1,18 +1,9 @@
 #include "APawn.h"
 
-#include <imgui.h>
-#include "Camera.h"
 #include "InputManager.h"
-#include "PlayerData.h"
 #include "Component/Animation/UAnimator.h"
 #include "Component/UPawnMovementComponent2D.h"
 #include "Component/Animation/UPlayerAnimator.h"
-#include "DirectX/XTexture.h"
-#include "Component/Animation/USpriteAnimation.h"
-#include "Component/Manager/AnimManager.h"
-#include "Component/Manager/GUIManager.h"
-#include "DirectX/Context.h"
-#include "GUI/GUI_Inspector.h"
 #include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
 
@@ -20,9 +11,7 @@ namespace LJG
 {
 	APawn::APawn(const WText& InKey)
 		: AActor(InKey)
-	{
-		APawn::Initialize();
-	}
+	{}
 
 	APawn::~APawn()
 	{
@@ -49,49 +38,12 @@ namespace LJG
 			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
 			mAnimator->Initialize();
-			
-			{
-				InputManager::Get().AddInputBinding(
-					EKeyCode::D, EKeyState::Pressed,
-					std::bind(&APawn::OnMovementInputPressed, this, std::placeholders::_1, false));
-				InputManager::Get().AddInputBinding(
-					EKeyCode::A, EKeyState::Pressed,
-					std::bind(&APawn::OnMovementInputPressed, this, std::placeholders::_1, true));
-				InputManager::Get().AddInputBinding(
-					EKeyCode::Space, EKeyState::Down, std::bind(&APawn::Jump, this));
-				// InputManager::Get().AddInputBinding(
-				// 	EKeyCode::LButton, EKeyState::Down, std::bind(&APawn::Attack, this));
-			}
 		}
 	}
 
 	void APawn::Update(float DeltaTime)
 	{
 		AActor::Update(DeltaTime);
-	}
-
-	void APawn::AddMovementInput(const FVector2f& MovementInputAmount)
-	{
-		mMovementComponent->AddMovementInput(MovementInputAmount);
-		// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Move), true);
-		SetWorldLocation(GetWorldLocation() + MovementInputAmount);
-	}
-
-	void APawn::OnMovementInputPressed(float DeltaTime, bool bFlip)
-	{
-		const float_t moveDirection = bFlip
-										  ? DeltaTime * -mMovementComponent->GetMaxWalkSpeed()
-										  : DeltaTime * mMovementComponent->GetMaxWalkSpeed();
-
-		if (mMovementComponent->GetVelocity().X * moveDirection >= 0)
-		{
-			mAnimator->SetFlipX(bFlip);
-
-			AddMovementInput({
-				moveDirection,
-				0.f
-			});
-		}
 	}
 
 	void APawn::Jump()
