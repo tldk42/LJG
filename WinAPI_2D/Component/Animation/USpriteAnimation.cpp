@@ -32,11 +32,11 @@ namespace LJG
 			mSprite2D->SetWorldTransform(mWorldTransform);
 			mSprite2D->SetFlipX(bFlipX);
 			mSprite2D->Update(DeltaTime);
+			mNextAnimState = UINT8_MAX;
 
 			for (auto& transition : mTransitions)
 			{
 				bool bCanEnter = true;
-				mNextAnimState = UINT8_MAX;
 				for (auto& condition : transition.second)
 				{
 					if (!condition())
@@ -47,6 +47,7 @@ namespace LJG
 				if (bCanEnter)
 				{
 					mNextAnimState = transition.first;
+					Stop();
 					return;
 				}
 			}
@@ -71,14 +72,11 @@ namespace LJG
 				mElapsedTime = steady_clock::now();
 				mSprite2D->SetTexture(mAnimationData.Textures[mCurrentFrame]);
 			}
-
 		}
 	}
 
 	void USpriteAnimation::Render()
 	{
-		USceneComponent::Render();
-
 		if (bIsPlaying && !mAnimationData.Textures.empty())
 		{
 			mSprite2D->Render();
@@ -87,8 +85,6 @@ namespace LJG
 
 	void USpriteAnimation::Release()
 	{
-		USceneComponent::Release();
-
 		mSprite2D = nullptr;
 	}
 

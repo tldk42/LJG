@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 
 #include "TGUI_Base.h"
+#include "Helper/EngineHelper.h"
 
 // wstring, FVector2f에 대해서 저장할 수 있도록 지정
 namespace nlohmann
@@ -72,7 +73,7 @@ namespace LJG
 		bool LoadScene(const Text& FileName);
 
 	private:
-		Text                  mCurrentSceneName = "TestScene";
+		Text                  mCurrentSceneName = "";
 		std::vector<FMapData> mMapDatas;
 		FMapData*             mSelectedData;
 

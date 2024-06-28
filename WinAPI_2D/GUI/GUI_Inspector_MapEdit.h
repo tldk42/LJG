@@ -21,7 +21,7 @@ namespace LJG
 	private:
 		FMapData* mImgData;
 
-		char    name[256];
+		char    name[32];
 		float_t pos[2];
 		float_t scale[2];
 		float_t rot;

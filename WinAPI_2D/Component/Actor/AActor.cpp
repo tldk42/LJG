@@ -13,12 +13,12 @@ namespace LJG
 
 	void AActor::Initialize()
 	{
-		UObject::Initialize();
+		USceneComponent::Initialize();
 	}
 
 	void AActor::Update(float DeltaTime)
 	{
-		UObject::Update(DeltaTime);
+		USceneComponent::Update(DeltaTime);
 	}
 
 	void AActor::Render()
@@ -34,7 +34,7 @@ namespace LJG
 
 	void AActor::Release()
 	{
-		UObject::Release();
+		USceneComponent::Release();
 	}
 
 	void AActor::AttachComponent(const WText& InCompID, UObject* InComp)

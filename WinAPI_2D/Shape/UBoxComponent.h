@@ -1,12 +1,12 @@
 #pragma once
-#include "Component/UObject.h"
+#include "Component/USceneComponent.h"
 
 namespace LJG
 {
-	class UBoxComponent : public UObject
+	class UBoxComponent : public USceneComponent
 	{
 	public:
-		explicit  UBoxComponent(const WText& Inkey);
+		explicit UBoxComponent(const WText& Inkey);
 		~UBoxComponent() override = default;
 
 	public:
@@ -23,7 +23,7 @@ namespace LJG
 		bool IsInArea(const FVector2f& InPos) const;
 
 	protected:
-		XDebugShape2DUPtr mDebugShape;
-		FBox2f            mBox;
+		XShape2D_BoxUPtr mDebugShape;
+		FBox2f           mBox;
 	};
 }

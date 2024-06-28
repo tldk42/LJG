@@ -106,6 +106,4 @@ namespace LJG
 		};
 	}
 
-	void XSprite2D::OnResizeCallback()
-	{}
 }

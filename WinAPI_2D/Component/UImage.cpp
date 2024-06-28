@@ -1,6 +1,7 @@
 #include "UImage.h"
 
 #include "DirectX/XSprite2D.h"
+#include "Helper/EngineHelper.h"
 
 namespace LJG
 {
@@ -51,5 +52,10 @@ namespace LJG
 		{
 			mSprite2D->SetWorldLocation(InLocation);
 		}
+	}
+
+	void UImage::SetScale(const FVector2f& InScale)
+	{
+		mSprite2D->SetScale(mSprite2D->GetScale() * InScale);
 	}
 }

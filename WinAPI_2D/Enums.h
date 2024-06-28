@@ -49,6 +49,10 @@ namespace LJG
 		MButton,
 		RButton,
 		Space,
+		F1,
+		F2,
+		F3,
+		F4,
 		End
 	};
 
@@ -57,4 +61,6 @@ namespace LJG
 		Directory,
 		File
 	};
+
+
 }

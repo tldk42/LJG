@@ -47,7 +47,7 @@ namespace LJG
 		style.Colors[ImGuiCol_FrameBg]              = ImVec4(0.08f, 0.09f, 0.1f, 1.00f);
 		style.Colors[ImGuiCol_FrameBgHovered]       = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 		style.Colors[ImGuiCol_FrameBgActive]        = ImVec4(0.56f, 0.57f, 0.58f, 1.00f);
-		style.Colors[ImGuiCol_TitleBg]              = ImVec4(0.09f, 0.09f, 0.11f, 1.00f);
+		style.Colors[ImGuiCol_TitleBg]              = ImVec4(0.19f, 0.09f, 0.11f, 1.00f);
 		style.Colors[ImGuiCol_TitleBgCollapsed]     = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
 		style.Colors[ImGuiCol_TitleBgActive]        = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		style.Colors[ImGuiCol_MenuBarBg]            = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
@@ -92,28 +92,34 @@ namespace LJG
 
 	void GUIManager::Update(float DeltaTime)
 	{
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
+		if (bEnableGUI)
+		{
+			ImGui_ImplDX11_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
 
-		SetDocking();
+			SetDocking();
+		}
 	}
 
 	void GUIManager::Render()
 	{
-		for (const auto& gui : Get().mManagedList)
+		if (bEnableGUI)
 		{
-			gui.second->RenderCustomGUI();
-		}
+			for (const auto& gui : Get().mManagedList)
+			{
+				gui.second->RenderCustomGUI();
+			}
 
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+			ImGui::Render();
+			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-		ImGuiIO& io = ImGui::GetIO();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
+			ImGuiIO& io = ImGui::GetIO();
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			{
+				ImGui::UpdatePlatformWindows();
+				ImGui::RenderPlatformWindowsDefault();
+			}
 		}
 	}
 
@@ -122,6 +128,14 @@ namespace LJG
 		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
+	}
+
+	void GUIManager::ToggleGUI()
+	{
+		bEnableGUI = !bEnableGUI;
+		bEnableGUI
+			? Initialize()
+			: Release();
 	}
 
 

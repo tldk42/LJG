@@ -38,13 +38,13 @@ namespace LJG
 		ImGui::NewLine();
 		if (mImgData)
 		{
-			// ImGui::InputText("Name", name, sizeof(name));
-			ImGui::InputFloat2("Location", pos);
-			ImGui::InputFloat2("Scale", scale);
-			ImGui::InputFloat("Rotation", &rot);
-			ImGui::InputFloat("Z-Order", &zOrder);
+			ImGui::InputText("Key", name, sizeof(name), ImGuiInputTextFlags_CharsNoBlank);
+			ImGui::DragFloat2("Location", pos);
+			ImGui::DragFloat2("Scale", scale);
+			ImGui::DragFloat("Rotation", &rot);
+			ImGui::DragFloat("Z-Order", &zOrder);
 
-			// mImgData->Key      = name;
+			mImgData->Key      = name;
 			mImgData->Position = {pos[0], pos[1]};
 			mImgData->Rotation = rot;
 			mImgData->Scale    = {scale[0], scale[1]};

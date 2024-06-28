@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Component/Scene/UScene.h"
+#include "Helper/EngineHelper.h"
 
 namespace LJG
 {
@@ -15,4 +16,26 @@ namespace LJG
 
 		return returnValue;
 	}
+
+	void SceneManager::MoveScene(const Text& NewSceneName)
+	{
+		if (!mCurrentSceneName.empty())
+		{
+			GetResource(Text2WText(mCurrentSceneName))->EndScene();
+		}
+		CreateOrLoad(Text2WText(NewSceneName))->LoadScene();
+
+	}
+
+	void SceneManager::Initialize()
+	{
+		CreateOrLoad(L"data/scenes/Intro");
+		CreateOrLoad(L"data/scenes/menu");
+		CreateOrLoad(L"data/scenes/Tutorial");
+		CreateOrLoad(L"data/scenes/game1_1");
+	}
+
+	void SceneManager::Update(float DeltaTime) {}
+	void SceneManager::Render() {}
+	void SceneManager::Release() {}
 }

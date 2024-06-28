@@ -35,6 +35,9 @@ namespace LJG
 
 		void AddMovementInput(const FVector2f& InInput);
 
+		void TryCrouch();
+		void TryUnCrouch();
+
 	protected:
 		void HandleJumpAction(const float DeltaTime);
 

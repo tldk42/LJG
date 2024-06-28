@@ -27,12 +27,14 @@
 // Custom Classes
 #include "Helper/Logger.h"
 #include "Structs.h"
+#include "data/constant.h"
 
 #include "Math/MathFwd.h"
 #include "Math/Vector2D.h"
 #include "Math/Vector.h"
 #include "Math/Color.h"
 #include "Math/Box2D.h"
+#include "Math/Line.h"
 #include <DirectXMath.h>
 
 #include "TManagedEntity.h"
@@ -52,28 +54,7 @@ using Matrix = XMMATRIX;
 
 namespace LJG
 {
-	//=========================== 상수 ==============================
-#pragma region 상수
-	constexpr int ASCII[static_cast<UINT>(EKeyCode::End)] =
-	{
-		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-		'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-		'Z', 'X', 'C', 'V', 'B', 'N', 'M',
-		VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
-		VK_LBUTTON, VK_MBUTTON, VK_RBUTTON,
-		VK_SPACE
-	};
 
-	constexpr const char* ASCIIString[static_cast<UINT>(EKeyCode::End)] =
-	{
-		"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-		"A", "S", "D", "F", "G", "H", "J", "K", "L",
-		"Z", "X", "C", "V", "B", "N", "M",
-		"LEFT", "RIGHT", "DOWN", "UP",
-		"LBUTTON", "MBUTTON", "RBUTTON",
-		"Space"
-	};
-#pragma endregion
 
 	// =========================== 인라인 함수 =============================
 #pragma region 인라인 함수
@@ -86,79 +67,6 @@ namespace LJG
 			ComPtr->Release();
 			ComPtr = nullptr;
 		}
-	}
-
-	template <typename EnumType>
-	inline uint8_t EnumAsByte(EnumType value)
-	{
-		return static_cast<uint8_t>(value);
-	}
-
-	/** UObject 유효성 검사 */
-	template <typename T>
-	inline bool IsValid(T ValuePtr)
-	{
-		return ValuePtr != nullptr;
-	}
-
-	inline WText Text2WText(const Text& InString)
-	{
-		USES_CONVERSION;
-		return WText(A2W(InString.c_str()));
-	}
-
-	inline Text WText2Text(const WText& InWString)
-	{
-		USES_CONVERSION;
-		return Text(W2A(InWString.c_str()));
-	}
-
-	/** 이동 변환 행렬 생성 */
-	inline XMMATRIX TranslationMatrix(float InX, float InY, float InZ = 0.f)
-	{
-		return XMMatrixTranslation(InX, InY, InZ);
-	}
-
-	/** 회전 변환 행렬 생성 */
-	inline XMMATRIX RotationMatrix(float InDegree)
-	{
-		float radians = XMConvertToRadians(InDegree);
-		return XMMatrixRotationZ(radians);
-	}
-
-	/** 스케일 변환 행렬 생성 */
-	inline XMMATRIX ScaleMatrix(float InX, float InY)
-	{
-		return XMMatrixScaling(InX, InY, 1.0f);
-	}
-
-	/** 4x4 행렬 -> 위치벡터 반환 */
-	inline FVector2f Mat2LocVector2(const Matrix& InMatrix)
-	{
-		XMFLOAT4X4 locationVec;
-		XMStoreFloat4x4(&locationVec, InMatrix);
-		return {locationVec._41, locationVec._42};
-	}
-
-	/** 4x4 행렬 -> 회전 각 반환 */
-	inline float Mat2RotDegree(const Matrix& InMatrix)
-	{
-		XMFLOAT4X4 matrixValues;
-		XMStoreFloat4x4(&matrixValues, InMatrix);
-
-		return XMConvertToDegrees(atan2f(matrixValues._21, matrixValues._11));
-	}
-
-	/** 4x4 행렬 -> 크기벡터 반환 */
-	inline FVector2f Mat2ScaleVector2(const Matrix& InMatrix)
-	{
-		XMFLOAT4X4 matrixValues;
-		XMStoreFloat4x4(&matrixValues, InMatrix);
-
-		const float scaleX = sqrtf(matrixValues._11 * matrixValues._11 + matrixValues._12 * matrixValues._12);
-		const float scaleY = sqrtf(matrixValues._21 * matrixValues._21 + matrixValues._22 * matrixValues._22);
-
-		return FVector2f{scaleX, scaleY};
 	}
 #pragma endregion
 
@@ -231,7 +139,8 @@ class delegateName {\
 	CLASS_PTR(XVertex2D)
 	CLASS_PTR(XTexture)
 	CLASS_PTR(XSprite2D)
-	CLASS_PTR(XDebugShape2D)
+	CLASS_PTR(XShape2D_Box)
+	CLASS_PTR(XShape2D_Line)
 	CLASS_PTR(XWorldBuffer)
 	CLASS_PTR(XViewBuffer)
 	CLASS_PTR(XProjectionBuffer)

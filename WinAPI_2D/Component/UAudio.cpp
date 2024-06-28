@@ -1,5 +1,6 @@
 #include "UAudio.h"
 
+#include "Helper/EngineHelper.h"
 #include "Manager/SoundManager.h"
 
 namespace LJG

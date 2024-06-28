@@ -1,6 +1,7 @@
 #include "USceneComponent.h"
 
 #include "InputManager.h"
+#include "Helper/UDXHelper.h"
 #include "Shape/UBoxComponent.h"
 
 namespace LJG

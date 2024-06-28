@@ -41,6 +41,16 @@ namespace LJG
 		mInputVector = InInput;
 	}
 
+	void UPawnMovementComponent2D::TryCrouch()
+	{
+		bIsCrouching = true;
+	}
+
+	void UPawnMovementComponent2D::TryUnCrouch()
+	{
+		bIsCrouching = false;
+	}
+
 	void UPawnMovementComponent2D::HandleJumpAction(const float DeltaTime)
 	{
 		if (bIsJumping)

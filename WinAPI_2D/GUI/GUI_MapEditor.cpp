@@ -79,18 +79,18 @@ namespace LJG
 		}
 
 		ImGui::SameLine();
-		const char* items[]          = {"TestScene", "LoadingScene"};
-		static int  item_current_idx = 0;
+		static int item_current_idx = 0;
 		ImGui::SetNextItemWidth(150);
-		static std::vector<bool> bSceneInitialized(IM_ARRAYSIZE(items), false);
-		if (ImGui::BeginCombo("Scene", item_current_idx == -1 ? "Select" : items[item_current_idx]))
+		static std::vector<bool> bSceneInitialized(IM_ARRAYSIZE(SceneList), false);
+		if (ImGui::BeginCombo("Scene", item_current_idx == -1 ? "Select" : SceneList[item_current_idx]))
 		{
-			for (int i = 0; i < IM_ARRAYSIZE(items); ++i)
+			for (int i = 0; i < IM_ARRAYSIZE(SceneList); ++i)
 			{
 				const bool is_selected = item_current_idx == i;
-				if (ImGui::Selectable(items[i], is_selected))
+				if (ImGui::Selectable(SceneList[i], is_selected))
 				{
-					item_current_idx = i;
+					item_current_idx  = i;
+					mCurrentSceneName = SceneList[item_current_idx];
 				}
 
 				if (is_selected)
@@ -98,7 +98,7 @@ namespace LJG
 					ImGui::SetItemDefaultFocus();
 					if (!bSceneInitialized[i])
 					{
-						if (LoadScene(items[i]))
+						if (LoadScene(mCurrentSceneName))
 						{
 							bSceneInitialized[i] = true;
 						}
@@ -281,7 +281,7 @@ namespace LJG
 
 	void GUI_MapEditor::SaveJsonFile()
 	{
-		std::ofstream file(mCurrentSceneName + ".json");
+		std::ofstream file("data/scene/" + mCurrentSceneName + ".json");
 
 		auto jsonObjects = json::array();
 		for (const FMapData& mapData : mMapDatas)
@@ -297,7 +297,7 @@ namespace LJG
 
 	bool GUI_MapEditor::LoadScene(const Text& FileName)
 	{
-		nlohmann::json jsonData = EngineHelper::LoadFile(Text2WText(FileName));
+		nlohmann::json jsonData = EngineHelper::LoadFile(L"data/scenes/" + Text2WText(FileName));
 
 		if (jsonData == nullptr)
 			return false;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Manager.h"
+#include "Component/UAudio.h"
 
 namespace FMOD
 {
@@ -10,8 +11,6 @@ namespace LJG
 {
 	#define Manager_Audio SoundManager::Get()
 
-	class UAudio;
-
 	class SoundManager : public ManagerBase<UAudio, SoundManager>
 	{
 	public:
@@ -20,9 +19,11 @@ namespace LJG
 		void Render();
 		void Release();
 
-	private:
-		void Initialize_Internal();
-		void Release_Internal();
+	public:
+		void Stop();
+		void StopAll();
+		void Pause();
+		void PauseAll();
 
 	private:
 		FMOD::System* mFmodSystem;

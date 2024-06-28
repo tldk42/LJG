@@ -560,6 +560,7 @@
     <ClCompile Include="Component\Manager\ShaderManager.cpp" />
     <ClCompile Include="Component\Manager\TextureManager.cpp" />
     <ClCompile Include="Component\Scene\EditorScene.cpp" />
+    <ClCompile Include="Component\Scene\TutorialScene.cpp" />
     <ClCompile Include="Component\Scene\UScene.cpp" />
     <ClCompile Include="Component\UImage.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -1705,6 +1706,7 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="DirectX\XZBuffer.cpp" />
     <ClCompile Include="GUI\GUI_Hierarchy.cpp" />
     <ClCompile Include="GUI\imgui_filebrowser.cpp" />
     <ClCompile Include="GUI\TGUI_Base.cpp" />
@@ -1941,7 +1943,7 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="HighLevelApp\Application_Base.cpp">
+    <ClCompile Include="HighLevelApp\Application.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -2169,19 +2171,22 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="Math\Line.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Shape\UBoxComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Math\Color.cpp" />
     <ClCompile Include="Math\Math.cpp" />
-    <ClCompile Include="Shape\XDebugShape2D.cpp" />
+    <ClCompile Include="Shape\ULineComponent.cpp" />
+    <ClCompile Include="Shape\XShape2D_Box.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="FTimer.cpp" />
     <ClCompile Include="Component\Manager\SoundManager.cpp" />
     <ClCompile Include="Component\UAudio.cpp" />
+    <ClCompile Include="Shape\XShape2D_Line.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="World\GWorld.cpp" />
+    <ClCompile Include="World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AHUD.h" />
@@ -2202,12 +2207,14 @@
     <ClInclude Include="Component\Manager\ShaderManager.h" />
     <ClInclude Include="Component\Manager\TextureManager.h" />
     <ClInclude Include="Component\Scene\EditorScene.h" />
+    <ClInclude Include="Component\Scene\TutorialScene.h" />
     <ClInclude Include="Component\Scene\UScene.h" />
     <ClInclude Include="Component\UImage.h" />
     <ClInclude Include="Component\UObject.h" />
     <ClInclude Include="Component\UPawnMovementComponent2D.h" />
     <ClInclude Include="Component\USceneComponent.h" />
     <ClInclude Include="Component\UTextBlock.h" />
+    <ClInclude Include="data\constant.h" />
     <ClInclude Include="DirectX\Context.h" />
     <ClInclude Include="DirectX\DXWrite.h" />
     <ClInclude Include="DirectX\XDepthStencil.h" />
@@ -2222,6 +2229,7 @@
     <ClInclude Include="DirectX\XVertex2D.h" />
     <ClInclude Include="DirectX\XViewBuffer.h" />
     <ClInclude Include="DirectX\XWorldBuffer.h" />
+    <ClInclude Include="DirectX\XZBuffer.h" />
     <ClInclude Include="GUI\GUI_Hierarchy.h" />
     <ClInclude Include="GUI\imgui_filebrowser.h" />
     <ClInclude Include="GUI\TGUI_Base.h" />
@@ -2232,8 +2240,9 @@
     <ClInclude Include="Helper\EngineHelper.h" />
     <ClInclude Include="Helper\Logger.h" />
     <ClInclude Include="Helper\UDXHelper.h" />
-    <ClInclude Include="HighLevelApp\Application_Base.h" />
+    <ClInclude Include="HighLevelApp\Application.h" />
     <ClInclude Include="Math\Box2D.h" />
+    <ClInclude Include="Math\Line.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Shape\UBoxComponent.h" />
     <ClInclude Include="Enums.h" />
@@ -2244,14 +2253,16 @@
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector2D.h" />
     <ClInclude Include="PlayerData.h" />
-    <ClInclude Include="Shape\XDebugShape2D.h" />
+    <ClInclude Include="Shape\ULineComponent.h" />
+    <ClInclude Include="Shape\XShape2D_Box.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Component\Manager\SoundManager.h" />
+    <ClInclude Include="Shape\XShape2D_Line.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="FTimer.h" />
     <ClInclude Include="Component\UAudio.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="World\GWorld.h" />
+    <ClInclude Include="World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\sample2_frag.psh">
@@ -2302,7 +2313,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestScene.json" />
+    <Content Include="data\scenes\Intro.json" />
+    <Content Include="data\scenes\Tutorial.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

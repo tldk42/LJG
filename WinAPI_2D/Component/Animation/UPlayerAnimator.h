@@ -19,7 +19,7 @@ namespace LJG
 		void Render() override;
 		void Release() override;
 #pragma endregion
-
+	
 	private:
 		// Properties
 		UPawnMovementComponent2D* mOwnerMovementComp;
@@ -33,5 +33,7 @@ namespace LJG
 		USpriteAnimation* State_Jump;
 		USpriteAnimation* State_Duck_Start;
 		USpriteAnimation* State_Duck_Loop;
+		USpriteAnimation* State_Attack_Idle;
+		USpriteAnimation* State_Attack_Move;
 	};
 }

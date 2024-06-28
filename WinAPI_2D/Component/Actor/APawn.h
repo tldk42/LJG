@@ -4,6 +4,7 @@
 
 namespace LJG
 {
+	class ULineComponent;
 	class UPawnMovementComponent2D;
 	class UBoxComponent;
 	class UPlayerAnimator;
@@ -26,12 +27,13 @@ namespace LJG
 		inline UPawnMovementComponent2D* GetMovementComponent() const { return mMovementComponent; }
 #pragma endregion
 
-		void Jump();
-		void Attack();
+		void         Jump();
+		virtual void Attack(bool bAttack);
 
 	protected:
 		UPawnMovementComponent2D* mMovementComponent;
 		UPlayerAnimator*          mAnimator;
 		UBoxComponent*            mDebugBox;
+		ULineComponent*           mDebugLine;
 	};
 }

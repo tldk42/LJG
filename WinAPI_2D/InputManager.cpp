@@ -10,10 +10,6 @@ namespace LJG
 	InputManager::InputManager()
 		: mMousePosition(), bEnableDebug(false)
 	{
-// #ifdef _DEBUG
-// 		bEnableDebug = true;
-// #endif
-
 		InputBindings_Up.reserve(30);
 		InputBindings_Down.reserve(30);
 		InputBindings_Pressed.reserve(30);

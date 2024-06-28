@@ -1,5 +1,6 @@
 #pragma once
 #include "CommonInclude.h"
+#include "Helper/UDXHelper.h"
 
 namespace LJG
 {
@@ -60,8 +61,6 @@ namespace LJG
 		virtual void CreateIndexArray();
 
 		void SetShaderParams() const;
-
-		virtual void OnResizeCallback();
 
 	protected:
 #pragma region Buffer & Layout

@@ -11,48 +11,62 @@ namespace LJG
 
 	UScene::UScene(const WText& InKey)
 		: mSceneFile(InKey)
-	{}
+	{
+		mSavedData = EngineHelper::LoadFile(mSceneFile);
+	}
 
 	UScene::~UScene() {}
 
 	void UScene::Initialize()
-	{
-		Manager_Object.Initialize();
-	}
+	{}
 
 	void UScene::Update(float DeltaTime)
 	{
-		Manager_Object.Update(DeltaTime);
+		// Manager_Object.Update(DeltaTime);
 	}
 
 	void UScene::Render()
 	{
-		Manager_Object.Render();
+		// Manager_Object.Render();
 	}
 
 	void UScene::Release()
-	{
-		Manager_Object.Release();
-	}
+	{}
 
 	void UScene::LoadScene()
 	{
+		if (mSavedData != nullptr)
+		{
+			for (const auto& element : mSavedData)
+			{
+				FMapData savedData;
+				savedData     = element.get<FMapData>();
+				UImage* image = Manager_Object.CreateOrLoad<UImage>(Text2WText(savedData.Key), savedData.TexPath,
+																	savedData.ZOrder);
+				image->SetScale(savedData.Scale);
+				image->SetPosition(savedData.Position);
+			}
+			return;
+		}
+
 		// TODO: 파일 매니저에서 씬 경로 \\ 키값이름.json 확인
 		nlohmann::json jsonData = EngineHelper::LoadFile(mSceneFile);
 
-		if (!jsonData)
+		if (jsonData == nullptr)
 			return;
 
-		std::vector<FMapData> mapDataVec;
-		// for (const auto& element : jsonData)
-		// {
-		// 	FMapData savedData;
-		// 	savedData     = element.get<FMapData>();
-		// 	UImage* image = Manager_Object.CreateOrLoad<UImage>(Text2WText(savedData.Key), savedData.TexPath);
-		// 	image->SetPosition(savedData.Position);
-		// 	// mapDataVec.push_back(savedData);
-		// }
+		for (const auto& element : jsonData)
+		{
+			FMapData savedData;
+			savedData     = element.get<FMapData>();
+			UImage* image = Manager_Object.CreateOrLoad<UImage>(Text2WText(savedData.Key), savedData.TexPath,
+																savedData.ZOrder);
+			image->SetPosition(savedData.Position);
+		}
 	}
 
-	void UScene::EndScene() {}
+	void UScene::EndScene()
+	{
+		Manager_Object.Release();
+	}
 }

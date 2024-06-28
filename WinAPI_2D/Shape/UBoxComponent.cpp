@@ -1,18 +1,18 @@
 #include "UBoxComponent.h"
 #include "Component/Actor/AActor.h"
-#include "../Shape/XDebugShape2D.h"
+#include "../Shape/XShape2D_Box.h"
 
 namespace LJG
 {
 	UBoxComponent::UBoxComponent(const WText& Inkey)
-		: UObject(Inkey)
+		: USceneComponent(Inkey)
 	{
 		UBoxComponent::Initialize();
 	}
 
 	void UBoxComponent::Initialize()
 	{
-		mDebugShape = std::make_unique<XDebugShape2D>();
+		mDebugShape = std::make_unique<XShape2D_Box>();
 		mDebugShape->Initialize();
 
 		mBox.Min = mDebugShape->GetLocation() - mDebugShape->GetScale() / 2.f;

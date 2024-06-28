@@ -2,7 +2,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "HighLevelApp/Application_Base.h"
+#include "HighLevelApp/Application.h"
 #include "CommonInclude.h"
 #include "Window.h"
 
@@ -65,6 +65,36 @@ namespace LJG
 
 	inline float_t GetDeltaSeconds()
 	{
-		return Application_Base::Get().GetDeltaSeconds();
+		return App.GetDeltaSeconds();
+	}
+
+	inline int32_t GetFramePerSeconds()
+	{
+		return App.GetFramePerSeconds();
+	}
+
+	template <typename EnumType>
+	inline uint8_t EnumAsByte(EnumType value)
+	{
+		return static_cast<uint8_t>(value);
+	}
+
+	/** UObject 유효성 검사 */
+	template <typename T>
+	inline bool IsValid(T ValuePtr)
+	{
+		return ValuePtr != nullptr;
+	}
+
+	inline WText Text2WText(const Text& InString)
+	{
+		USES_CONVERSION;
+		return WText(A2W(InString.c_str()));
+	}
+
+	inline Text WText2Text(const WText& InWString)
+	{
+		USES_CONVERSION;
+		return Text(W2A(InWString.c_str()));
 	}
 }

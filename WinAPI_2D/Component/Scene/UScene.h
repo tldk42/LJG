@@ -1,4 +1,5 @@
 #pragma once
+#include <nlohmann/json.hpp>
 #include "CommonInclude.h"
 
 namespace LJG
@@ -23,7 +24,8 @@ namespace LJG
 		inline const WText& GetName() const { return mSceneFile; }
 
 	protected:
-		WText mSceneFile;
+		WText          mSceneFile;
+		nlohmann::json mSavedData;
 	};
 
 }

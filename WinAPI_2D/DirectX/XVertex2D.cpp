@@ -11,6 +11,7 @@ namespace LJG
 		: mTextureScale(FVector2f::UnitVector),
 		  mZOrder(InZOrder)
 	{
+		// XMVectorSetZ(mTransform.r[3], mZOrder);
 		mWorldBuffer = std::make_unique<XWorldBuffer>();
 	}
 
@@ -265,7 +266,7 @@ namespace LJG
 	void XVertex2D::AddWorldLocation(const FVector2f& InAddLocation)
 	{
 		const float currentZ = XMVectorGetZ(mTransform.r[3]);
-		
+
 		mTransform.r[3] = XMVectorSet(GetLocation().X + InAddLocation.X, GetLocation().Y + InAddLocation.Y, currentZ, 1.f);
 	}
 
@@ -303,7 +304,4 @@ namespace LJG
 	}
 
 #pragma endregion
-
-	void XVertex2D::OnResizeCallback()
-	{}
 }

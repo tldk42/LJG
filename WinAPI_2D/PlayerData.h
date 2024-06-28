@@ -4,8 +4,10 @@ enum class EPlayerAnimState : uint8_t
 {
 	Idle,
 	Move,
-	Attack,
+	Move_Shoot,
+	Shoot,
 	Jump,
 	Duck_Start,
-	Duck_Loop
+	Duck_Idle,
+	Duck_Shoot
 };

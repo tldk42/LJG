@@ -1,13 +1,12 @@
 #pragma once
 #include "Manager.h"
+#include "Component/Animation/USpriteAnimation.h"
 
 
 namespace LJG
 {
-	struct FAnimData;
-
 	#define Manager_Anim AnimManager::Get()
-	
+
 	class AnimManager : public ManagerBase<FAnimData, AnimManager>
 	{
 	public:

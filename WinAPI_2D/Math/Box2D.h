@@ -13,7 +13,6 @@ namespace LJG
 		public:
 			using FReal = T;
 
-
 			TVector2<T> Min;
 			TVector2<T> Max;
 
@@ -70,7 +69,7 @@ namespace LJG
 
 		public:
 			TBox2<T>    Overlap(const TBox2<T>& Other) const;
-			inline bool Intersect(const TBox2<T>& Other) const;
+			inline bool Intersect(const TBox2<T>& Other) const;	
 		};
 
 		template <typename T> TBox2<T>::TBox2(const TVector2<T>* Points, const int32_t Count)

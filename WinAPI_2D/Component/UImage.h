@@ -18,6 +18,7 @@ namespace LJG
 #pragma endregion
 
 		void SetPosition(const FVector2f& InLocation) const;
+		void SetScale(const FVector2f& InScale);
 
 	protected:
 		WText         mTexturePath;

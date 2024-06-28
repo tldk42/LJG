@@ -4,12 +4,10 @@
 
 #include "Component/Actor/AActor.h"
 #include "InputManager.h"
-#include "Component/UAudio.h"
 #include "Component/Manager/SoundManager.h"
-#include "Component/Manager/TextureManager.h"
 #include "DirectX/Context.h"
-#include "DirectX/XTexture.h"
 #include "Helper/EngineHelper.h"
+#include "World/World.h"
 
 namespace LJG
 {
@@ -43,6 +41,8 @@ namespace LJG
 
 		ImGui::Begin("Inspector", &bExit, ImGuiWindowFlags_MenuBar);
 
+		CheckResize();
+
 		// if (ImGui::BeginMenuBar())
 		// {
 		// 	if (ImGui::BeginMenu("File"))
@@ -57,7 +57,7 @@ namespace LJG
 		// 	ImGui::EndMenuBar();
 		// }
 
-		static bool bEnableDebug = true;
+		static bool bEnableDebug = false;
 		ImGui::Checkbox("Input debug?", &bEnableDebug);
 		InputManager::EnableDebug(bEnableDebug);
 
@@ -66,7 +66,7 @@ namespace LJG
 		static bool bMusic = true;
 		if (ImGui::Checkbox("BGM?", &bMusic))
 		{
-			Manager_Audio.CreateOrLoad(L"MUS_BotanicPanic.wav")->Pause();
+			Manager_Audio.PauseAll();
 		}
 
 		if (mObjectToShow)
@@ -96,7 +96,36 @@ namespace LJG
 				mObjectToShow->SetTransform({loc[0], loc[1]}, rot, {scale[0], scale[1]});
 			}
 		}
-		CheckResize();
+
+		ImGui::NewLine();
+
+		static int  item_current_idx = 0; // Here we store our selection data as an index.
+		static bool bInitialized     = false;
+		if (ImGui::BeginListBox(u8"¾À ¸ñ·Ï"))
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(SceneList); n++)
+			{
+				const bool is_selected = (item_current_idx == n);
+				if (ImGui::Selectable(SceneList[n], is_selected))
+				{
+					item_current_idx = n;
+				}
+
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+
+					if (!bInitialized)
+					{
+						GWorld.MoveScene(SceneList[item_current_idx]);
+						bInitialized = true;
+					}
+
+				}
+			}
+			ImGui::EndListBox();
+		}
 
 		ImGui::End();
 

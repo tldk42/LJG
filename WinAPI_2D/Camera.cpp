@@ -2,30 +2,31 @@
 
 #include "InputManager.h"
 #include "Window.h"
-#include "DirectX/XProjectionBuffer.h"
-#include "DirectX/XViewBuffer.h"
+#include "DirectX/Context.h"
+
 
 namespace LJG
 {
-	ACamera::ACamera(const WText& InKey)
-		: AActor(InKey),
-		  mZoom(1.f)
+
+	ACamera::ACamera()
+		: AActor(L"MainCam"),
+		  mZoom(1.f),
+		  mCameraSpeed(300.f)
 	{
 		mViewMatrix       = XMMatrixIdentity();
 		mProjectionMatrix = XMMatrixIdentity();
-
-		ACamera::Initialize();
 	}
 
-	ACamera::~ACamera()
-	{}
 
 	void ACamera::Initialize()
 	{
+		AActor::Initialize();
+
 		Window::GetWindow()->OnResize.Bind([&](UINT InWidth, UINT InHeight){
 			SetProjection(InWidth, InHeight);
 		});
-		AActor::Initialize();
+
+		SetProjection(Context::GetViewportSize().X, Context::GetViewportSize().Y);
 
 		mViewBuffer       = std::make_unique<XViewBuffer>();
 		mProjectionBuffer = std::make_unique<XProjectionBuffer>();
@@ -35,24 +36,23 @@ namespace LJG
 	{
 		AActor::Update(DeltaTime);
 
-		if (InputManager::IsKeyPressed(EKeyCode::Up))
+		if (InputManager::IsKeyPressed(EKeyCode::I))
 		{
 			AddWorldLocation(FVector2f{0.f, 200.f} * DeltaTime);
 		}
-		if (InputManager::IsKeyPressed(EKeyCode::Down))
+		if (InputManager::IsKeyPressed(EKeyCode::K))
 		{
 			AddWorldLocation(FVector2f{0.f, -200.f} * DeltaTime);
 
 		}
-		if (InputManager::IsKeyPressed(EKeyCode::Left))
+		if (InputManager::IsKeyPressed(EKeyCode::J))
 		{
 			AddWorldLocation(FVector2f{-200.f, 0.f} * DeltaTime);
 
 		}
-		if (InputManager::IsKeyPressed(EKeyCode::Right))
+		if (InputManager::IsKeyPressed(EKeyCode::L))
 		{
 			AddWorldLocation(FVector2f{200.f, 0.f} * DeltaTime);
-
 		}
 
 		UpdateViewMatrix();
@@ -103,4 +103,6 @@ namespace LJG
 		mViewMatrix = XMMatrixTranslation(-GetWorldLocation().X, -GetWorldLocation().Y, 0.f) *
 		XMMatrixScaling(mZoom, mZoom, 1.f);
 	}
+
+
 }

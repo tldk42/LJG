@@ -6,6 +6,7 @@
 #include "Component/Animation/UPlayerAnimator.h"
 #include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
+#include "Shape/ULineComponent.h"
 
 namespace LJG
 {
@@ -22,12 +23,16 @@ namespace LJG
 	{
 		AActor::Initialize();
 
-		// DELETE BELOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
 			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox");
-			mDebugBox->SetScale({180.f, 180.f});
-			mDebugBox->SetColor(FLinearColor::GreenPea);
+			mDebugBox->SetScale({125.f, 150.f});
+			mDebugBox->SetColor(FLinearColor::Green);
 			mDebugBox->SetOwnerActor(this);
+
+			mDebugLine = CreateDefaultSubObject<ULineComponent>(L"DebugLine");
+			mDebugLine->SetScale({200.f, 200.f});
+			mDebugLine->SetColor(FLinearColor::Green);
+			mDebugLine->SetOwnerActor(this);
 
 			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
 			mMovementComponent->SetupAttachment(this);
@@ -51,8 +56,6 @@ namespace LJG
 		mMovementComponent->Jump();
 	}
 
-	void APawn::Attack()
-	{
-		// mAnimator->SetState(EnumAsByte(EPlayerAnimState::Attack), false);
-	}
+	void APawn::Attack(bool bAttack)
+	{}
 }

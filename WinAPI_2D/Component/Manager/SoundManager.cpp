@@ -7,28 +7,6 @@ namespace LJG
 {
 	void SoundManager::Initialize()
 	{
-		Initialize_Internal();
-	}
-
-	void SoundManager::Update(float DeltaTime)
-	{
-		mFmodSystem->update();
-	}
-
-	void SoundManager::Render() {}
-
-	void SoundManager::Release()
-	{
-		for (auto& audio : mManagedList)
-		{
-			audio.second.release();
-		}
-
-		Release_Internal();
-	}
-
-	void SoundManager::Initialize_Internal()
-	{
 		FMOD_RESULT result;
 
 		// Creates an instance of the FMOD system.
@@ -42,7 +20,14 @@ namespace LJG
 		assert(result == FMOD_OK, "fmod system initialize failed");
 	}
 
-	void SoundManager::Release_Internal()
+	void SoundManager::Update(float DeltaTime)
+	{
+		mFmodSystem->update();
+	}
+
+	void SoundManager::Render() {}
+
+	void SoundManager::Release()
 	{
 		if (mFmodSystem)
 		{
@@ -51,4 +36,25 @@ namespace LJG
 			mFmodSystem = nullptr;
 		}
 	}
+
+	void SoundManager::Stop() {}
+
+	void SoundManager::StopAll()
+	{
+		for (auto& list : mManagedList)
+		{
+			list.second->Stop();
+		}
+	}
+
+	void SoundManager::Pause() {}
+
+	void SoundManager::PauseAll()
+	{
+		for (auto& list : mManagedList)
+		{
+			list.second->Pause();
+		}
+	}
+
 }

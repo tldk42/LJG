@@ -33,7 +33,6 @@ namespace LJG
 		void CreateIndexArray() override;
 
 	private:
-		void OnResizeCallback() override;
 		friend class UObject;
 
 	protected:

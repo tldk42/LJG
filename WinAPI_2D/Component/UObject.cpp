@@ -1,6 +1,7 @@
 #include "UObject.h"
 
 #include "DirectX/XSprite2D.h"
+#include "Helper/EngineHelper.h"
 
 
 namespace LJG

@@ -1,17 +1,14 @@
 #pragma once
 #include "Component/Actor/AActor.h"
+#include "DirectX/XProjectionBuffer.h"
+#include "DirectX/XViewBuffer.h"
 
 namespace LJG
 {
-	class XProjectionBuffer;
-	class XViewBuffer;
+	#define MainCam ACamera::Get()
 
-	class ACamera : public AActor
+	class ACamera : public AActor, public TSingleton<ACamera>
 	{
-	public:
-		explicit ACamera(const WText& InKey);
-		~ACamera() override;
-
 	public:
 #pragma region Core Interface
 		void Initialize() override;
@@ -39,6 +36,17 @@ namespace LJG
 		XViewBufferUPtr       mViewBuffer;
 		XProjectionBufferUPtr mProjectionBuffer;
 
-		float mZoom;
+		float_t mZoom;
+		float_t mCameraSpeed;
+
+	private:
+		friend class TSingleton<ACamera>;
+
+		ACamera();
+		~ACamera() = default;
+
+	public:
+		ACamera(const ACamera&)            = delete;
+		ACamera& operator=(const ACamera&) = delete;
 	};
 }

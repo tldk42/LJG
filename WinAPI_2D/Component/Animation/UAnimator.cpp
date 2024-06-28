@@ -22,15 +22,15 @@ namespace LJG
 
 	void UAnimator::Update(float DeltaTime)
 	{
-		UObject::Update(DeltaTime);
-
+		// 현재 StateMachine 검사
 		if (mStateMachine.contains(mCurrentState))
 		{
 			USpriteAnimation* currentAnim = mStateMachine[mCurrentState];
-			currentAnim->Update(DeltaTime);
 			currentAnim->SetTransform(mOwnerActor->GetWorldTransform());
 			currentAnim->SetFlip(bFlipX);
+			currentAnim->Update(DeltaTime);
 
+			// 유효한 Transition 존재
 			if (currentAnim->GetNextAnim() < MAXUINT8)
 			{
 				SetState(currentAnim->GetNextAnim(), true);
@@ -41,8 +41,6 @@ namespace LJG
 
 	void UAnimator::Render()
 	{
-		UObject::Render();
-
 		if (mStateMachine.contains(mCurrentState))
 		{
 			mStateMachine[mCurrentState]->Render();
@@ -72,9 +70,6 @@ namespace LJG
 				bIsPlaying = true;
 				mStateMachine[mCurrentState]->Play(bLoop);
 			}
-			if (cachedState != mCurrentState)
-				mStateMachine[cachedState]->Stop();
-
 		}
 	}
 

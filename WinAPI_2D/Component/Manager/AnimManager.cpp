@@ -71,10 +71,10 @@ namespace LJG
 																16.f, true)));
 		mManagedList.try_emplace(L"cuphead_shoot_straight",
 								   std::make_unique<FAnimData>(
-									   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_straight_", 3, 3.f,
+									   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_straight_", 3, 9.f,
 																true)));
 		mManagedList.try_emplace(L"cuphead_shoot_up",
 									   std::make_unique<FAnimData>(
-										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_up_", 3, 3.f, true)));
+										   AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_up_", 3, 9.f, true)));
 	}
 }
