@@ -1,5 +1,4 @@
 #include "UAnimator.h"
-
 #include "Component/Actor/AActor.h"
 #include "USpriteAnimation.h"
 #include "DirectX/XSprite2D.h"
@@ -11,7 +10,9 @@ namespace LJG
 	UAnimator::UAnimator(const WText& InKey)
 		: UObject(InKey),
 		  bIsPlaying(false)
-	{}
+	{
+		mSprite2D = std::make_unique<XSprite2D>(0.3f);
+	}
 
 	UAnimator::~UAnimator() {}
 
@@ -22,39 +23,66 @@ namespace LJG
 
 	void UAnimator::Update(float DeltaTime)
 	{
-		// 현재 StateMachine 검사
+		if (!bIsPlaying)
+			return;
+		// ???? StateMachine ???
 		if (mStateMachine.contains(mCurrentState))
 		{
 			USpriteAnimation* currentAnim = mStateMachine[mCurrentState];
-			currentAnim->SetTransform(mOwnerActor->GetWorldTransform());
-			currentAnim->SetFlip(bFlipX);
-			currentAnim->Update(DeltaTime);
+			mSprite2D->SetWorldTransform(mOwnerActor->GetWorldTransform());
+			mSprite2D->SetFlipX(bFlipX);
+			mSprite2D->Update(DeltaTime);
 
-			// 유효한 Transition 존재
+			currentAnim->Update(DeltaTime);
+			// ????? Transition ????
 			if (currentAnim->GetNextAnim() < MAXUINT8)
 			{
 				SetState(currentAnim->GetNextAnim(), true);
 			}
+			mSprite2D->SetTexture(currentAnim->GetCurrentTexture());
+
+
 		}
 
 	}
 
 	void UAnimator::Render()
 	{
+		if (!bIsPlaying)
+			return;
 		if (mStateMachine.contains(mCurrentState))
 		{
-			mStateMachine[mCurrentState]->Render();
+			mSprite2D->Render();
 		}
 	}
 
 	void UAnimator::Release()
 	{
-		UObject::Release();
+		mSprite2D = nullptr;
+	}
+
+	void UAnimator::PlayDefaultTrack(bool bReverse, bool bLoop)
+	{
+		bIsPlaying = true;
+		mSprite2D->SetTexture(mStateMachine[mCurrentState]->GetCurrentTexture());
+		if (bReverse)
+		{
+			mStateMachine[mCurrentState]->PlayReverse(bLoop);
+		}
+		else
+		{
+			mStateMachine[mCurrentState]->Play(bLoop);
+		}
 	}
 
 	void UAnimator::AddTransition(const uint8_t InSrc, const uint8_t InDest, const std::function<bool()>& InCond)
 	{
 		mStateMachine[InSrc]->AddTransition(InDest, InCond);
+	}
+
+	void UAnimator::SetZOrder(const float_t InZOrder) const
+	{
+		mSprite2D->SetZOrder(InZOrder);
 	}
 
 	void UAnimator::SetState(const uint8_t InState, const bool bLoop)
@@ -65,6 +93,7 @@ namespace LJG
 
 		if (mStateMachine.contains(mCurrentState))
 		{
+			mSprite2D->SetTexture(mStateMachine[mCurrentState]->GetCurrentTexture());
 			if (!bIsPlaying || cachedState != mCurrentState)
 			{
 				bIsPlaying = true;

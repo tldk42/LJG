@@ -6,8 +6,8 @@ namespace LJG
 	class UBoxComponent : public USceneComponent
 	{
 	public:
-		explicit UBoxComponent(const WText& Inkey);
-		~UBoxComponent() override = default;
+		explicit UBoxComponent(const WText& Inkey, const ETraceType InTraceType);
+		~UBoxComponent() override;
 
 	public:
 #pragma region Core Interface
@@ -17,7 +17,11 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void SetScale(const FVector2f& InScale);
+		FBox2f     GetBox() const { return mBox; }
+		ETraceType GetTraceType() const { return Type; }
+
+		void SetWorldLocation(const FVector2f& InLocation) override;
+		void SetScale(const FVector2f& InScale) override;
 		void SetColor(const FLinearColor& InColor) const;
 
 		bool IsInArea(const FVector2f& InPos) const;
@@ -25,5 +29,6 @@ namespace LJG
 	protected:
 		XShape2D_BoxUPtr mDebugShape;
 		FBox2f           mBox;
+		ETraceType       Type;
 	};
 }

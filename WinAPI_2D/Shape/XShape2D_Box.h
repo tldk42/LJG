@@ -12,5 +12,7 @@ namespace LJG
 		~XShape2D_Box() override = default;
 
 		void Render() override;
+		
+		HRESULT LoadShaderAndInputLayout() override;
 	};
 }

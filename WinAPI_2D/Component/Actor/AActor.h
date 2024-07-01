@@ -21,6 +21,8 @@ namespace LJG
 
 		void AttachComponent(const WText& InCompID, UObject* InComp);
 
+		void HideInGame(bool bHide) { bVisibility = bHide; }
+
 	protected:
 	};
 }

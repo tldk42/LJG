@@ -56,4 +56,11 @@ struct FMath
 	{
 		return (T)(Current + ((Target - Current) * Alpha));
 	}
+
+	template <typename T>
+	static bool Sign(T A)
+	{
+		return A >= 0;
+	};
+
 };

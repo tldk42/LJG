@@ -19,6 +19,7 @@ namespace LJG
 #pragma endregion
 
 		virtual void LoadScene();
+		virtual void MoveScene(WTextView InNextScene);
 		virtual void EndScene();
 
 		inline const WText& GetName() const { return mSceneFile; }

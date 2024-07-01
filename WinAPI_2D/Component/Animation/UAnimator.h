@@ -20,15 +20,18 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		void PlayDefaultTrack(bool bReverse = false, bool bLoop = false);
 		void AddState(uint8_t InState, USpriteAnimation* InAnimation);
 		void AddTransition(const uint8_t InSrc, const uint8_t InDest, const std::function<bool()>& InCond);
 
 		void SetFlipX(const bool bEnable) { bFlipX = bEnable; }
+		void SetZOrder(const float_t InZOrder) const;
 
 	private:
 		void SetState(const uint8_t InState, const bool bLoop);
 
 	protected:
+		XSprite2DUPtr                                  mSprite2D;
 		bool                                           bIsPlaying;
 		bool                                           bFlipX;
 		uint8_t                                        mCurrentState;

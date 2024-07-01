@@ -43,19 +43,20 @@ namespace LJG
 		virtual void SetWorldTransform(const Matrix& InMatrix);
 		virtual void SetWorldTransform(const FVector2f& InLocation, const float InAngle, const FVector2f& InScale);
 		virtual void SetFlipX(const bool bEnable);
-		void         SetZOrder(const float InZOrder) { mZOrder = InZOrder; }
+		void         SetZOrder(const float InZOrder);
 #pragma endregion
 
 #pragma region Get
 		inline const FVector2f& GetLocation() const { return Mat2LocVector2(mTransform); }
 		inline const FVector2f& GetScale() const { return Mat2ScaleVector2(mTransform); }
+		inline const float_t    GetRotation() const { return Mat2RotDegree(mTransform); }
 #pragma endregion
 
 	protected:
-		HRESULT CreateShape();
-		HRESULT CreateVertexBuffer();
-		HRESULT CreateIndexBuffer();
-		HRESULT LoadShaderAndInputLayout();
+		HRESULT         CreateShape();
+		HRESULT         CreateVertexBuffer();
+		HRESULT         CreateIndexBuffer();
+		virtual HRESULT LoadShaderAndInputLayout();
 
 		virtual void CreateVertexArray();
 		virtual void CreateIndexArray();
@@ -64,14 +65,13 @@ namespace LJG
 
 	protected:
 #pragma region Buffer & Layout
-		ComPtr<ID3D11InputLayout> mVertexLayout;
-		ComPtr<ID3D11Buffer>      mVertexBuffer;
-		ComPtr<ID3D11Buffer>      mIndexBuffer;
-		XWorldBufferUPtr          mWorldBuffer;
-		D3D_PRIMITIVE_TOPOLOGY    mPrimType;
-		FLinearColor              mDrawColor;
-		std::vector<FVertexBase>  mVertexBufferArray;
-		std::vector<WORD>         mIndices;
+		ComPtr<ID3D11Buffer>     mVertexBuffer;
+		ComPtr<ID3D11Buffer>     mIndexBuffer;
+		XWorldBufferUPtr         mWorldBuffer;
+		D3D_PRIMITIVE_TOPOLOGY   mPrimType;
+		FLinearColor             mDrawColor;
+		std::vector<FVertexBase> mVertexBufferArray;
+		std::vector<WORD>        mIndices;
 #pragma endregion
 
 #pragma region Shader

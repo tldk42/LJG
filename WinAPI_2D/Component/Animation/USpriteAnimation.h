@@ -40,6 +40,12 @@ namespace LJG
 		}
 	}
 
+
+	// 프레임에 해도 되고 시간에 해도 됨
+	DECLARE_DYNAMIC_DELEGATE(FOnAnimNotifyBegin)
+
+	DECLARE_DYNAMIC_DELEGATE(FOnAnimFinished)
+
 	class USpriteAnimation : public USceneComponent
 	{
 	public:
@@ -56,16 +62,20 @@ namespace LJG
 
 	public:
 		void Play(const bool InLoop);
+		void PlayReverse(const bool InLoop);
 		void Pause();
 		void Stop();
+
+		XTexture* GetCurrentTexture() const { return mAnimationData.Textures[mCurrentFrame]; }
 
 	public:
 		void SetAnimData(const FAnimData& InAnimData)
 		{
 			mAnimationData = InAnimData;
-			mSprite2D->SetTexture(mAnimationData.Textures[0]);
+			OnAnimNotifyBegin.resize(InAnimData.Textures.size());
 		}
 
+		void SetSpeed(const float_t InSpeed) { mSpeed = InSpeed; }
 		void SetLoop(const bool InLoop) { bLoop = InLoop; }
 		void SetFlip(const bool bEnable) { bFlipX = bEnable; }
 
@@ -73,11 +83,16 @@ namespace LJG
 
 		void AddTransition(const uint8_t InState, const std::function<bool()>& InCond);
 
+	public:
+		std::vector<FOnAnimNotifyBegin> OnAnimNotifyBegin;
+		FOnAnimFinished                 OnAnimFinished;
+
 	private:
-		XSprite2DUPtr            mSprite2D;
 		uint32_t                 mCurrentFrame;
 		time_point<steady_clock> mElapsedTime;
+		float_t                  mSpeed;
 		bool                     bLoop;
+		bool                     bReverse;
 		bool                     bFlipX;
 		bool                     bIsPlaying;
 		bool                     bIsPaused;

@@ -14,7 +14,7 @@ namespace LJG
 		: XVertex2D(InZOrder)
 	{
 		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
+		mDrawColor = FLinearColor(1.f, 1.f, 1.f, 1.f);
 
 		mVertexBufferArray.reserve(4);
 
@@ -27,7 +27,7 @@ namespace LJG
 		: XVertex2D(InZOrder)
 	{
 		mPrimType  = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		mDrawColor = FLinearColor(0.f, 0.f, 0.f, 0);
+		mDrawColor = FLinearColor(1.f, 1.f, 1.f, 1.f);
 
 		mVertexBufferArray.reserve(4);
 

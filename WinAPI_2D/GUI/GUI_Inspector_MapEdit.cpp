@@ -44,7 +44,7 @@ namespace LJG
 			ImGui::DragFloat("Rotation", &rot);
 			ImGui::DragFloat("Z-Order", &zOrder);
 
-			mImgData->Key      = name;
+			mImgData->Key.assign(name);
 			mImgData->Position = {pos[0], pos[1]};
 			mImgData->Rotation = rot;
 			mImgData->Scale    = {scale[0], scale[1]};

@@ -1,17 +1,21 @@
 #include "XVertex2D.h"
 #include "XWorldBuffer.h"
 #include "Context.h"
+#include "Window.h"
 #include "XShaderData.h"
 #include "Component/Manager/ShaderManager.h"
 #include "Helper/UDXHelper.h"
 
+
 namespace LJG
 {
+	extern float_t g_GlobalScaleX;
+	extern float_t g_GlobalScaleY;
+
 	XVertex2D::XVertex2D(const float InZOrder)
 		: mTextureScale(FVector2f::UnitVector),
 		  mZOrder(InZOrder)
 	{
-		// XMVectorSetZ(mTransform.r[3], mZOrder);
 		mWorldBuffer = std::make_unique<XWorldBuffer>();
 	}
 
@@ -23,6 +27,17 @@ namespace LJG
 	void XVertex2D::Initialize()
 	{
 		mVertexBufferArray.reserve(4);
+
+		// Window::GetWindow()->OnResize.Bind([this](UINT Width, UINT Height){
+		// 	const auto originalScale    = GetScale();
+		// 	const auto originalLocation = GetLocation();
+		//
+		// 	SetScale({originalScale.X * g_GlobalScaleX, originalScale.Y * g_GlobalScaleY});
+		// 	SetWorldLocation({
+		// 		originalLocation.X * g_GlobalScaleX,
+		// 		originalLocation.Y * g_GlobalScaleY
+		// 	});
+		// });
 
 		mWorldBuffer->Initialize();
 		CHECK_RESULT(CreateShape());
@@ -36,9 +51,6 @@ namespace LJG
 
 	void XVertex2D::Render()
 	{
-		// Input Layout
-		Context::GetDeviceContext()->IASetInputLayout(mVertexLayout.Get());
-
 		// Shader
 		mShaderData->Render();
 
@@ -61,7 +73,6 @@ namespace LJG
 	void XVertex2D::Release()
 	{
 		mWorldBuffer->Release();
-		mVertexLayout = nullptr;
 		mVertexBuffer = nullptr;
 		mIndexBuffer  = nullptr;
 		mShaderData   = nullptr;
@@ -126,47 +137,8 @@ namespace LJG
 	{
 		HRESULT result = S_OK;
 
-		mShaderData = Manager_Shader.CreateOrLoad(L"SimpleShader", L"Shader/sample2_vert.vsh", L"Shader/sample2_frag.psh");
-
-		constexpr D3D11_INPUT_ELEMENT_DESC layout[] =
-		{
-			{
-				"POSITION",                  // 셰이더 입력 서명에서 이 요소와 연결된 의미체계 
-				0,                           // 의미상 인덱스
-				DXGI_FORMAT_R32G32B32_FLOAT, // 데이터 형식 (float2)
-				0,                           // 입력 어셈블러 식별정수
-				0,                           // 요소 사이 오프셋 
-				D3D11_INPUT_PER_VERTEX_DATA, // 단일 입력 슬롯 입력 데이터 클래스
-				0                            // 정점 버퍼에서 렌더링 되는 인스턴스의 수 (D3D11_INPUT_PER_VERTEX_DATA -> 0)
-			},
-			{
-				"TEX",
-				0,
-				DXGI_FORMAT_R32G32_FLOAT,
-				0,
-				D3D11_APPEND_ALIGNED_ELEMENT,
-				D3D11_INPUT_PER_VERTEX_DATA,
-				0
-			},
-			{
-				"COLOR",
-				0,
-				DXGI_FORMAT_R32G32B32A32_FLOAT,
-				0,
-				D3D11_APPEND_ALIGNED_ELEMENT,
-				D3D11_INPUT_PER_VERTEX_DATA,
-				0
-			}
-		};
-
-		result = Context::GetDevice()->CreateInputLayout(
-			layout,
-			3,
-			mShaderData->GetVertexShaderBuffer()->GetBufferPointer(),
-			mShaderData->GetVertexShaderBuffer()->GetBufferSize(),
-			mVertexLayout.GetAddressOf());
-
-
+		mShaderData = Manager_Shader.CreateOrLoad(L"AlphaBlend", L"Shader/alphablend.vsh", L"Shader/alphablend.psh");
+		
 		return result;
 	}
 
@@ -298,6 +270,18 @@ namespace LJG
 			}
 
 			bFlipX = bEnable;
+		}
+
+		SetShaderParams();
+	}
+
+	void XVertex2D::SetZOrder(const float InZOrder)
+	{
+		mZOrder = InZOrder;
+
+		for (auto& vertex : mVertexBufferArray)
+		{
+			vertex.Pos.Z = mZOrder;
 		}
 
 		SetShaderParams();

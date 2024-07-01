@@ -101,7 +101,7 @@ namespace LJG
 		timer       = 0.f;
 		updateTimer = mTimer->ElapsedMillis();
 
-		Run();
+			Run();
 	}
 
 	void Application::Pause()
@@ -125,9 +125,6 @@ namespace LJG
 		{
 			int32_t frameCounter  = 0;
 			int32_t updateCounter = 0;
-			
-			// UAudio* audio = Manager_Audio.CreateOrLoad(L"rsc/AudioClip/MUS_BotanicPanic.wav");
-			// audio->Play(true);
 
 			while (bIsRunning)
 			{

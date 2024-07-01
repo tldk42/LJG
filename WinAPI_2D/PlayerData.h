@@ -9,5 +9,7 @@ enum class EPlayerAnimState : uint8_t
 	Jump,
 	Duck_Start,
 	Duck_Idle,
-	Duck_Shoot
+	Duck_Shoot,
+	Dash_Ground,
+	Dash_Air
 };

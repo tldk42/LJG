@@ -1,13 +1,13 @@
 #pragma once
-#include "UScene.h"
+#include "Component/Animation/UAnimator.h"
 
 namespace LJG
 {
-	class TutorialScene : public UScene
+	class TitleScreenAnimator : public UAnimator
 	{
 	public:
-		TutorialScene();
-		~TutorialScene() override;
+		explicit TitleScreenAnimator();
+		~TitleScreenAnimator() override;
 
 	public:
 #pragma region Core Interface
@@ -16,5 +16,8 @@ namespace LJG
 		void Render() override;
 		void Release() override;
 #pragma endregion
+
+	private:
+		USpriteAnimation* State_Default;
 	};
 }

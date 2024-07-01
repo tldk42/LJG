@@ -69,7 +69,17 @@ namespace LJG
 
 		public:
 			TBox2<T>    Overlap(const TBox2<T>& Other) const;
-			inline bool Intersect(const TBox2<T>& Other) const;	
+			inline bool Intersect(const TBox2<T>& Other) const;
+
+			inline std::vector<std::pair<TVector2<T>, TVector2<T>>> GetEdges() const
+			{
+				return {
+					{Min, TVector2<T>(Max.X, Min.Y)}, // 상단
+					{TVector2<T>(Max.X, Min.Y), Max}, // 우측
+					{Max, TVector2<T>(Min.X, Max.Y)}, // 하단
+					{TVector2<T>(Min.X, Max.Y), Min}  // 좌측
+				};
+			}
 		};
 
 		template <typename T> TBox2<T>::TBox2(const TVector2<T>* Points, const int32_t Count)

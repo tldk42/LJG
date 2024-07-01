@@ -37,7 +37,6 @@
 #include "Math/Line.h"
 #include <DirectXMath.h>
 
-#include "TManagedEntity.h"
 
 using namespace Microsoft::WRL;
 using namespace std::chrono;
@@ -91,6 +90,15 @@ namespace LJG
 		virtual void SetID(WTextView InKey) = 0;
 	};
 
+	class IInteractableAPI
+	{
+	public:
+		virtual ~IInteractableAPI() = default;
+
+		virtual void OnBeginInteract() = 0;
+		virtual void OnEndInteract() = 0;
+	};
+
 	// ======================== 매크로 ================================
 #pragma region 매크로
 
@@ -106,7 +114,7 @@ class delegateName {\
 	void Bind(FunctionType func) { functions.push_back(func); }\
 	template<typename... Args>\
 	void Execute(Args&&... args) { for (auto& func : functions) { func(std::forward<Args>(args)...); } }\
-	private:\
+	public:\
 	std::vector<FunctionType> functions;\
 };
 

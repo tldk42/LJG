@@ -20,6 +20,7 @@ namespace LJG
 		ID3D11VertexShader* GetVertexShader() const { return mVertexShader.Get(); }
 		ID3D11PixelShader*  GetPixelShader() const { return mPixelShader.Get(); }
 		ID3DBlob*           GetVertexShaderBuffer() const { return mVertexShaderBuf.Get(); }
+		ID3D11InputLayout*  GetInputLayout() const { return mVertexLayout.Get(); }
 
 	private:
 		WText mKey;
@@ -30,6 +31,7 @@ namespace LJG
 		ComPtr<ID3D11VertexShader> mVertexShader;
 		ComPtr<ID3D11PixelShader>  mPixelShader;
 		ComPtr<ID3DBlob>           mVertexShaderBuf;
+		ComPtr<ID3D11InputLayout>  mVertexLayout;
 #pragma endregion
 	};
 }

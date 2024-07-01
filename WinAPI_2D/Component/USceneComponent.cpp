@@ -2,10 +2,12 @@
 
 #include "InputManager.h"
 #include "Helper/UDXHelper.h"
-#include "Shape/UBoxComponent.h"
 
 namespace LJG
 {
+	extern float_t g_GlobalScaleX;
+	extern float_t g_GlobalScaleY;
+	
 	USceneComponent::USceneComponent(const WText& InKey)
 		: UObject(InKey),
 		  mLocalTransform(XMMatrixIdentity()),

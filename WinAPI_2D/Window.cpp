@@ -8,6 +8,9 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace LJG
 {
+	float_t g_GlobalScaleX = 1.0f;
+	float_t g_GlobalScaleY = 1.0f;
+
 	std::map<void*, Window*> Window::s_WindowHandles{};
 
 	LRESULT CALLBACK WndProc(HWND HWnd, UINT Message, WPARAM WParam, LPARAM LParam)
@@ -170,6 +173,9 @@ namespace LJG
 
 	void ResizeCallback(Window* Window, UINT Width, UINT Height)
 	{
+		g_GlobalScaleX = static_cast<float_t>(Width) / static_cast<float_t>(GetWindowWidth());
+		g_GlobalScaleY = static_cast<float_t>(Height) / static_cast<float_t>(GetWindowHeight());
+
 		Window->OnResize.Execute(Width, Height);
 	}
 }

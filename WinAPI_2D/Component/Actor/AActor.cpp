@@ -1,6 +1,7 @@
 #include "AActor.h"
 
 #include <memory>
+#include <ranges>
 
 namespace LJG
 {
@@ -25,9 +26,9 @@ namespace LJG
 	{
 		if (bVisibility)
 		{
-			for (auto& [key, object] : mChildObjects)
+			for (auto it = mChildObjects.begin(); it != mChildObjects.end(); ++it)
 			{
-				object->Render();
+				it->second->Render();
 			}
 		}
 	}

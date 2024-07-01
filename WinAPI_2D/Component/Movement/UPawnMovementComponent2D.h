@@ -1,8 +1,11 @@
 #pragma once
-#include "UObject.h"
+#include "Component/UObject.h"
+
 
 namespace LJG
 {
+	class UBoxComponent;
+
 	class UPawnMovementComponent2D : public UObject
 	{
 	public:
@@ -30,7 +33,8 @@ namespace LJG
 
 #pragma region Set
 		inline void SetJumpPower(const float_t InJumpPower) { mJumpPower_Value = InJumpPower; }
-		inline void Jump() { bIsJumping = true; }
+
+		void Jump();
 #pragma endregion
 
 		void AddMovementInput(const FVector2f& InInput);
@@ -39,17 +43,22 @@ namespace LJG
 		void TryUnCrouch();
 
 	protected:
-		void HandleJumpAction(const float DeltaTime);
+		void HandleJumpAction(const float_t DeltaTime);
+		void CheckGround(const float_t DeltaTime);
 
 	protected:
-		bool bIsMovingOnGround;
-		bool bIsJumping;
-		bool bIsCrouching;
+		APawn* mOwnerPawn;
+		bool   bIsMovingOnGround;
+		bool   bIsJumping;
+		bool   bIsCrouching;
 
 		float_t mMaxWalkSpeed;
 		float_t mGravity;
 		float_t mJumpPower_Value;
 		float_t mJumpPower_Current;
+		float_t mCachedBoxHeight;
+		float_t mCurrentBoxHeight;
+		float_t mTargetCrouchHeight;
 
 		FVector2f mInputVector;
 		FVector2f mVelocity;
@@ -57,5 +66,7 @@ namespace LJG
 		FVector2f mAirResistance;
 		FVector2f mGroundFriction;
 		FVector2f mPreviousLocation;
+
+		UBoxComponent* mCachedGround;
 	};
 }

@@ -4,9 +4,9 @@
 namespace LJG
 {
 	#define Manager_Shader ShaderManager::Get()
-	
+
 	class XShaderData;
-	
+
 	class ShaderManager : public ManagerBase<XShaderData, ShaderManager>
 	{
 	private:

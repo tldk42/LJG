@@ -34,6 +34,8 @@ namespace LJG
 		UPawnMovementComponent2D* mMovementComponent;
 		UPlayerAnimator*          mAnimator;
 		UBoxComponent*            mDebugBox;
-		ULineComponent*           mDebugLine;
+
+	private:
+		friend class UPawnMovementComponent2D;
 	};
 }

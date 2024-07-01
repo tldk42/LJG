@@ -2,11 +2,9 @@
 
 #include "InputManager.h"
 #include "Component/Animation/UAnimator.h"
-#include "Component/UPawnMovementComponent2D.h"
 #include "Component/Animation/UPlayerAnimator.h"
-#include "Helper/EngineHelper.h"
+#include "Component/Movement/UPawnMovementComponent2D.h"
 #include "Shape/UBoxComponent.h"
-#include "Shape/ULineComponent.h"
 
 namespace LJG
 {
@@ -24,20 +22,18 @@ namespace LJG
 		AActor::Initialize();
 
 		{
-			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox");
-			mDebugBox->SetScale({125.f, 150.f});
+			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
+			mDebugBox->SetScale({125.f, 140.f});
 			mDebugBox->SetColor(FLinearColor::Green);
 			mDebugBox->SetOwnerActor(this);
 
-			mDebugLine = CreateDefaultSubObject<ULineComponent>(L"DebugLine");
-			mDebugLine->SetScale({200.f, 200.f});
-			mDebugLine->SetColor(FLinearColor::Green);
-			mDebugLine->SetOwnerActor(this);
-
-			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
-			mMovementComponent->SetupAttachment(this);
-			mMovementComponent->SetOwnerActor(this);
-			mMovementComponent->Initialize();
+			if (!mMovementComponent)
+			{
+				mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
+				mMovementComponent->SetupAttachment(this);
+				mMovementComponent->SetOwnerActor(this);
+				mMovementComponent->Initialize();
+			}
 
 			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"Animator");
 			mAnimator->SetupAttachment(this);

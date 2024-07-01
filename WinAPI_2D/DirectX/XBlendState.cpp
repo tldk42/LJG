@@ -70,7 +70,8 @@ namespace LJG
 
 	void XBlendState::Render()
 	{
-		Context::GetDeviceContext()->OMSetBlendState(mBlendState.Get(), nullptr, 0xFF);
+		static constexpr float_t blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+		Context::GetDeviceContext()->OMSetBlendState(mBlendState.Get(), blendFactor, 0xffffffff);
 	}
 
 }

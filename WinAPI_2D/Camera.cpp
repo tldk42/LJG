@@ -56,12 +56,11 @@ namespace LJG
 		}
 
 		UpdateViewMatrix();
-
-		mViewBuffer->SetViewMatrix(mViewMatrix);
-		mViewBuffer->Update(DeltaTime);
-
 		mProjectionBuffer->SetProjectionMatrix(mProjectionMatrix);
+		mViewBuffer->SetViewMatrix(mViewMatrix);
+		
 		mProjectionBuffer->Update(DeltaTime);
+		mViewBuffer->Update(DeltaTime);
 	}
 
 	void ACamera::Render()
@@ -82,9 +81,10 @@ namespace LJG
 
 	void ACamera::SetProjection(float InScreenWidth, float InScreenHeight)
 	{
-		if (InScreenHeight > M_SMALL_NUMBER && InScreenHeight > M_SMALL_NUMBER)
-			mProjectionMatrix = XMMatrixOrthographicOffCenterLH(-InScreenWidth / 2.f, InScreenWidth / 2.f,
-																-InScreenHeight / 2.f, InScreenHeight / 2.f, 0.f, 1.f);
+		if (InScreenWidth > M_SMALL_NUMBER && InScreenHeight > M_SMALL_NUMBER)
+			mProjectionMatrix = XMMatrixOrthographicOffCenterLH(
+				-InScreenWidth / 2.f, InScreenWidth / 2.f,
+				-InScreenHeight / 2.f, InScreenHeight / 2.f, 0.f, 1.f);
 	}
 
 	void ACamera::SetPosition(const FVector2f& InPosition)

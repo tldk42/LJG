@@ -20,20 +20,23 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		inline WText   GetName() const { return mObjectKey; }
 		inline AActor* GetOwnerActor() const { return mOwnerActor; }
 		inline void    SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
 
 		template <class ReturnType, typename... Args>
-		ReturnType* CreateDefaultSubObject(const WText& InName, Args&&... args)
+		ReturnType* CreateDefaultSubObject(Args&&... args)
 		{
 			static_assert(std::is_base_of_v<UObject, ReturnType>, L"UObject에서 상속 받아야 함");
 
-			std::unique_ptr<ReturnType> managedPtr = std::make_unique<ReturnType>(InName, std::forward<Args>(args)...);
+			std::unique_ptr<ReturnType> managedPtr = std::make_unique<ReturnType>(std::forward<Args>(args)...);
 			ReturnType*                 rawPtr     = managedPtr.get();
-			mChildObjects.try_emplace(InName, std::move(managedPtr));
+			mChildObjects.try_emplace(rawPtr->GetName(), std::move(managedPtr));
 
 			return rawPtr;
 		}
+
+		void Destroy(const WText& InKey);
 
 		void AttachComponent(UObject* ComponentToAttach);
 		void SetupAttachment(UObject* InParentObj);

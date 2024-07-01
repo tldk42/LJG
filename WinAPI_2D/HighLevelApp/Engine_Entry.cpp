@@ -5,8 +5,8 @@ FWindowData testWindowData;
 
 int main()
 {
-	testWindowData.Width       = 1024;
-	testWindowData.Height      = 768;
+	testWindowData.Width       = 1280;
+	testWindowData.Height      = 720;
 	testWindowData.bFullScreen = false;
 	testWindowData.bVsync      = false;
 

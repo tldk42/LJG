@@ -62,14 +62,14 @@ namespace LJG
 	}
 
 	void Context::Update(float InDeltaTime)
-	{}
+	{
+		mDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
+		mDeviceContext->OMSetDepthStencilState(mDepthStencilState.Get(), 1);
+	}
 
 	void Context::Render()
 	{
-		mDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		mDeviceContext->OMSetDepthStencilState(mDepthStencilState.Get(), 1);
-		// TODO: ImGui에서 렌더링 마다 초기화 해버리기 때문에 관리해 줘야함
-		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 		Present();
 	}
 
@@ -190,14 +190,20 @@ namespace LJG
 		depthStencilDesc.CPUAccessFlags     = 0;
 		depthStencilDesc.MiscFlags          = 0;
 
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
+		depthStencilViewDesc.Format             = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilViewDesc.ViewDimension      = D3D11_DSV_DIMENSION_TEXTURE2D;
+		depthStencilViewDesc.Texture2D.MipSlice = 0;
+
 		D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc{};
 		depthStencilStateDesc.DepthEnable    = true;
 		depthStencilStateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depthStencilStateDesc.DepthFunc      = D3D11_COMPARISON_LESS;
 
+
 		HRESULT result;
 		result = mDevice->CreateTexture2D(&depthStencilDesc, nullptr, mDepthStencilBuffer.GetAddressOf());
-		result = mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr,
+		result = mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), &depthStencilViewDesc,
 												 mDepthStencilView.GetAddressOf());
 		result = mDevice->CreateDepthStencilState(&depthStencilStateDesc, mDepthStencilState.GetAddressOf());
 

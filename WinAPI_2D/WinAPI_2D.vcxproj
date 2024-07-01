@@ -244,6 +244,7 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="Component\Actor\AAnimatedImage.cpp" />
     <ClCompile Include="Component\Actor\APawn.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -323,6 +324,8 @@
     </ClCompile>
     <ClCompile Include="Component\Actor\ACharacter.cpp" />
     <ClCompile Include="Component\Actor\APlayerCharacter.cpp" />
+    <ClCompile Include="Component\Actor\AProjectile.cpp" />
+    <ClCompile Include="Component\Actor\Interactable\AInteractObject.cpp" />
     <ClCompile Include="Component\Animation\UPlayerAnimator.cpp" />
     <ClCompile Include="Component\Animation\UAnimator.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -559,8 +562,85 @@
     <ClCompile Include="Component\Manager\SceneManager.cpp" />
     <ClCompile Include="Component\Manager\ShaderManager.cpp" />
     <ClCompile Include="Component\Manager\TextureManager.cpp" />
+    <ClCompile Include="Component\Movement\UPawnMovementComponent2D.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>../../bin/Debug/WinAPI_2D/Intermediate/</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>../../bin/Debug/WinAPI_2D/Intermediate/</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleDependenciesFile>
+      <ModuleOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>../../bin/Debug/WinAPI_2D/Intermediate/</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>../../bin/Debug/WinAPI_2D/Intermediate/vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>../../bin/Debug/WinAPI_2D/Intermediate/</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/Zc:char8_t-</AdditionalOptions>
+      <LinkCompiled>true</LinkCompiled>
+      <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="Component\Movement\UPlayerMovementComponent.cpp" />
     <ClCompile Include="Component\Scene\EditorScene.cpp" />
-    <ClCompile Include="Component\Scene\TutorialScene.cpp" />
     <ClCompile Include="Component\Scene\UScene.cpp" />
     <ClCompile Include="Component\UImage.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -639,82 +719,6 @@
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="Component\UObject.cpp">
-      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <Optimization>Disabled</Optimization>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <AssemblerOutput>NoListing</AssemblerOutput>
-      <AssemblerListingLocation>../../bin/Debug/WinAPI_2D/Intermediate/</AssemblerListingLocation>
-      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
-      <BrowseInformation>false</BrowseInformation>
-      <BrowseInformationFile>../../bin/Debug/WinAPI_2D/Intermediate/</BrowseInformationFile>
-      <CompileAs>Default</CompileAs>
-      <ConformanceMode>true</ConformanceMode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
-      <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <ErrorReporting>Prompt</ErrorReporting>
-      <ExpandAttributedSource>false</ExpandAttributedSource>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <EnableASAN>false</EnableASAN>
-      <EnableFuzzer>false</EnableFuzzer>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Precise</FloatingPointModel>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <GenerateModuleDependencies>false</GenerateModuleDependencies>
-      <GenerateSourceDependencies>false</GenerateSourceDependencies>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>Default</LanguageStandard_C>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ModuleDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleDependenciesFile>
-      <ModuleOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleOutputFile>
-      <OmitDefaultLibName>false</OmitDefaultLibName>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <ObjectFileName>../../bin/Debug/WinAPI_2D/Intermediate/</ObjectFileName>
-      <CallingConvention>Cdecl</CallingConvention>
-      <ProgramDataBaseFileName>../../bin/Debug/WinAPI_2D/Intermediate/vc143.pdb</ProgramDataBaseFileName>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.pch</PrecompiledHeaderOutputFile>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessKeepComments>false</PreprocessKeepComments>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
-      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <ShowIncludes>false</ShowIncludes>
-      <SourceDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</SourceDependenciesFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
-      <SpectreMitigation>false</SpectreMitigation>
-      <StructMemberAlignment>Default</StructMemberAlignment>
-      <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
-      <TranslateIncludes>false</TranslateIncludes>
-      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
-      <TreatWarningAsError>false</TreatWarningAsError>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <UseFullPaths>true</UseFullPaths>
-      <WarningLevel>Level3</WarningLevel>
-      <XMLDocumentationFileName>../../bin/Debug/WinAPI_2D/Intermediate/</XMLDocumentationFileName>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <IntelJCCErratum>false</IntelJCCErratum>
-      <BuildStlModules>false</BuildStlModules>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
-      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
-      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LinkCompiled>true</LinkCompiled>
-      <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <ClCompile Include="Component\UPawnMovementComponent2D.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -1019,7 +1023,6 @@
       <LinkCompiled>true</LinkCompiled>
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="DirectX\XDepthStencil.cpp" />
     <ClCompile Include="DirectX\XLayer.cpp" />
     <ClCompile Include="DirectX\XShaderData.cpp" />
     <ClCompile Include="DirectX\XBlendState.cpp">
@@ -1707,6 +1710,90 @@
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="DirectX\XZBuffer.cpp" />
+    <ClCompile Include="Game\Animator\TitleScreenAnimator.cpp" />
+    <ClCompile Include="Game\Ground.cpp" />
+    <ClCompile Include="Game\Image\FadeInImage.cpp" />
+    <ClCompile Include="Game\Image\TitleScreenImage.cpp" />
+    <ClCompile Include="Game\Object\Tutorial\Background_Tut.cpp" />
+    <ClCompile Include="Game\Scene\IntroScene.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>../../bin/Debug/WinAPI_2D/Intermediate/</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>../../bin/Debug/WinAPI_2D/Intermediate/</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleDependenciesFile>
+      <ModuleOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>../../bin/Debug/WinAPI_2D/Intermediate/</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>../../bin/Debug/WinAPI_2D/Intermediate/vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>../../bin/Debug/WinAPI_2D/Intermediate/</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>../../bin/Debug/WinAPI_2D/Intermediate/</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;;IMGUI_DEFINE_MATH_OPERATORS</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/Zc:char8_t-</AdditionalOptions>
+      <LinkCompiled>true</LinkCompiled>
+      <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="Game\Scene\MenuScene.cpp" />
+    <ClCompile Include="Game\Scene\TutorialScene.cpp" />
     <ClCompile Include="GUI\GUI_Hierarchy.cpp" />
     <ClCompile Include="GUI\imgui_filebrowser.cpp" />
     <ClCompile Include="GUI\TGUI_Base.cpp" />
@@ -2193,9 +2280,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Component\Actor\AActor.h" />
+    <ClInclude Include="Component\Actor\AAnimatedImage.h" />
     <ClInclude Include="Component\Actor\APawn.h" />
     <ClInclude Include="Component\Actor\ACharacter.h" />
     <ClInclude Include="Component\Actor\APlayerCharacter.h" />
+    <ClInclude Include="Component\Actor\AProjectile.h" />
+    <ClInclude Include="Component\Actor\Interactable\AInteractObject.h" />
     <ClInclude Include="Component\Animation\UPlayerAnimator.h" />
     <ClInclude Include="Component\Animation\UAnimator.h" />
     <ClInclude Include="Component\Animation\USpriteAnimation.h" />
@@ -2206,18 +2296,17 @@
     <ClInclude Include="Component\Manager\SceneManager.h" />
     <ClInclude Include="Component\Manager\ShaderManager.h" />
     <ClInclude Include="Component\Manager\TextureManager.h" />
+    <ClInclude Include="Component\Movement\UPawnMovementComponent2D.h" />
+    <ClInclude Include="Component\Movement\UPlayerMovementComponent.h" />
     <ClInclude Include="Component\Scene\EditorScene.h" />
-    <ClInclude Include="Component\Scene\TutorialScene.h" />
     <ClInclude Include="Component\Scene\UScene.h" />
     <ClInclude Include="Component\UImage.h" />
     <ClInclude Include="Component\UObject.h" />
-    <ClInclude Include="Component\UPawnMovementComponent2D.h" />
     <ClInclude Include="Component\USceneComponent.h" />
     <ClInclude Include="Component\UTextBlock.h" />
     <ClInclude Include="data\constant.h" />
     <ClInclude Include="DirectX\Context.h" />
     <ClInclude Include="DirectX\DXWrite.h" />
-    <ClInclude Include="DirectX\XDepthStencil.h" />
     <ClInclude Include="DirectX\XLayer.h" />
     <ClInclude Include="DirectX\XShaderData.h" />
     <ClInclude Include="DirectX\XBlendState.h" />
@@ -2230,6 +2319,14 @@
     <ClInclude Include="DirectX\XViewBuffer.h" />
     <ClInclude Include="DirectX\XWorldBuffer.h" />
     <ClInclude Include="DirectX\XZBuffer.h" />
+    <ClInclude Include="Game\Animator\TitleScreenAnimator.h" />
+    <ClInclude Include="Game\Ground.h" />
+    <ClInclude Include="Game\Image\FadeInImage.h" />
+    <ClInclude Include="Game\Image\TitleScreenImage.h" />
+    <ClInclude Include="Game\Object\Tutorial\Background_Tut.h" />
+    <ClInclude Include="Game\Scene\IntroScene.h" />
+    <ClInclude Include="Game\Scene\MenuScene.h" />
+    <ClInclude Include="Game\Scene\TutorialScene.h" />
     <ClInclude Include="GUI\GUI_Hierarchy.h" />
     <ClInclude Include="GUI\imgui_filebrowser.h" />
     <ClInclude Include="GUI\TGUI_Base.h" />
@@ -2244,6 +2341,7 @@
     <ClInclude Include="Math\Box2D.h" />
     <ClInclude Include="Math\Line.h" />
     <ClInclude Include="Math\Transform.h" />
+    <ClInclude Include="Shape\Tracer.h" />
     <ClInclude Include="Shape\UBoxComponent.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="InputManager.h" />
@@ -2265,7 +2363,7 @@
     <ClInclude Include="World\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\sample2_frag.psh">
+    <FxCompile Include="Shader\alphablend.psh">
       <ObjectFileOutput>../../bin/Debug/WinAPI_2D/output/sample2_frag.cso</ObjectFileOutput>
       <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
       <EntryPointName>ps</EntryPointName>
@@ -2276,7 +2374,7 @@
       <EnableDebuggingInformation>true</EnableDebuggingInformation>
       <ShaderType>Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\sample2_vert.vsh">
+    <FxCompile Include="Shader\alphablend.vsh">
       <ObjectFileOutput>../../bin/Debug/WinAPI_2D/output/sample2_vert.cso</ObjectFileOutput>
       <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
       <EntryPointName>vs</EntryPointName>
@@ -2288,7 +2386,7 @@
       <FileType>Document</FileType>
       <ShaderType>Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\sample_frag.psh">
+    <FxCompile Include="Shader\simple.psh">
       <ObjectFileOutput>../../bin/Debug/WinAPI_2D/output/%(Filename).cso</ObjectFileOutput>
       <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
       <EntryPointName>ps</EntryPointName>
@@ -2299,7 +2397,7 @@
       <EnableDebuggingInformation>true</EnableDebuggingInformation>
       <ShaderType>Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\sample_vert.vsh">
+    <FxCompile Include="Shader\simple.vsh">
       <ObjectFileOutput>../../bin/Debug/WinAPI_2D/output/%(Filename).cso</ObjectFileOutput>
       <TrackerLogDirectory>../../bin/Debug/WinAPI_2D/Intermediate/WinAPI_2D.tlog\</TrackerLogDirectory>
       <EntryPointName>vs</EntryPointName>

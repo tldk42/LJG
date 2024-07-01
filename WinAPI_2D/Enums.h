@@ -53,6 +53,7 @@ namespace LJG
 		F2,
 		F3,
 		F4,
+		LShift,
 		End
 	};
 
@@ -62,5 +63,12 @@ namespace LJG
 		File
 	};
 
+	enum class ETraceType : uint8_t
+	{
+		Pawn,
+		Ground,
+		Projectile,
+		UI
+	};
 
 }

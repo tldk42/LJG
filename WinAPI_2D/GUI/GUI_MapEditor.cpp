@@ -12,7 +12,7 @@
 namespace LJG
 {
 
-	void ImageRotated(ImTextureID tex_id, ImVec2 center, ImVec2 size, float angle)
+	void DrawRotatedImage(ImTextureID tex_id, ImVec2 center, ImVec2 size, float angle)
 	{
 
 		angle *= (M_PI / 180);
@@ -108,6 +108,7 @@ namespace LJG
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
+
 		if (ImGui::Button(u8"새로고침"))
 		{
 			mSelectedData = nullptr;
@@ -148,7 +149,7 @@ namespace LJG
 		// Pan (we use a zero mouse threshold when there's no context menu)
 		// You may decide to make that threshold dynamic based on whether the mouse is hovering something etc.
 		const float mouse_threshold_for_pan = bEnableContextMenu ? -1.0f : 0.0f;
-		if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
 		{
 			mScrolling.x += io.MouseDelta.x;
 			mScrolling.y += io.MouseDelta.y;
@@ -212,7 +213,7 @@ namespace LJG
 				mMapDatas.emplace_back(mapData);
 			}
 		}
-
+		bool bRightClicked = false;
 		for (auto image = mMapDatas.begin(); image != mMapDatas.end();)
 		{
 			const XTexture* texRef = Manager_Texture.CreateOrLoad(image->TexPath);
@@ -229,8 +230,8 @@ namespace LJG
 			ImVec2 min = {canvasImagePos.x - clampedScale.X / 2, canvasImagePos.y - clampedScale.Y / 2};
 			ImVec2 max = {canvasImagePos.x + clampedScale.X / 2, canvasImagePos.y + clampedScale.Y / 2};
 
-			ImageRotated(texRef->GetShaderResourceView(), canvasImagePos, {clampedScale.X, clampedScale.Y},
-						 image->Rotation);
+			DrawRotatedImage(texRef->GetShaderResourceView(), canvasImagePos, {clampedScale.X, clampedScale.Y},
+							 image->Rotation);
 
 			ImGui::SetNextItemAllowOverlap(); // InvisibleButton 다음에 오는 Item은 Overlap 가능
 			ImGui::SetCursorScreenPos(min);
@@ -246,12 +247,12 @@ namespace LJG
 				Manager_GUI.GetResource<GUI_Inspector_MapEdit>(L"MapInspector")->BindImage(mSelectedData);
 			}
 
-			if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+			if (!bRightClicked)
 			{
-				// ImGui::OpenPopupOnItemClick("context", ImGuiPopupFlags_MouseButtonRight);
-				ImGui::BeginPopupModal("context");
+				ImGui::OpenPopupOnItemClick("context", ImGuiPopupFlags_MouseButtonRight);
 				if (ImGui::BeginPopup("context"))
 				{
+					bRightClicked = true;
 					if (ImGui::MenuItem("Remove one", NULL, false))
 					{
 						image = mMapDatas.erase(image);
@@ -267,7 +268,6 @@ namespace LJG
 					ImGui::EndPopup();
 				}
 			}
-
 
 			if (mSelectedData && image->Key == mSelectedData->Key)
 			{

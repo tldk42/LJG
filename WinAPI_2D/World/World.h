@@ -25,7 +25,7 @@ namespace LJG
 #pragma endregion
 
 	public:
-		void MoveScene(const Text& InSceneName);
+		void MoveScene(const WText& InSceneName);
 
 	public:
 		FOnDebugModeChanged OnDebugModeChanged;

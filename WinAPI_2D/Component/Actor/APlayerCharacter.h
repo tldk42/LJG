@@ -23,8 +23,11 @@ namespace LJG
 
 		void Attack(bool bAttack) override;
 
+		void OnTraceDown(const FVector2f, const FVector2f, struct FHitResult&);
+
 	private:
-		bool            bIsAttacking;
+		bool bIsAttacking;
+		
 
 	private:
 		friend class TSingleton<APlayerCharacter>;

@@ -19,6 +19,28 @@ namespace LJG
 				: Origin(InOrigin),
 				  Target(InTarget) {}
 
+		public:
+			inline bool Intersect(const TLine& Other, FVector2f& OutIntersection) const
+			{
+				FVector2f B   = Target - Origin;
+				FVector2f D   = Other.Target - Other.Origin;
+				float     BxD = FVector2f::CrossProduct(B, D);
+
+				if (BxD == 0) // ÆòÇà
+					return false;
+
+				FVector2f C = Other.Origin - Origin;
+				float     t = FVector2f::CrossProduct(C, D) / BxD;
+				float     u = FVector2f::CrossProduct(C, B) / BxD;
+
+				if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
+				{
+					OutIntersection = Origin + B * t;
+					return true;
+				}
+
+				return false;
+			}
 		};
 	}
 }

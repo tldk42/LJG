@@ -32,14 +32,16 @@ namespace LJG
 #pragma endregion
 
 #pragma region Set
-		void SetWorldLocation(const FVector2f& InLocation);
+		virtual void SetWorldLocation(const FVector2f& InLocation);
+		virtual void AddWorldLocation(const FVector2f& InAddLocation);
+		virtual void SetWorldRotation(const float InDegree);
+		virtual void SetScale(const FVector2f& InScale);
+		virtual void SetTransform(const Matrix& InMatrix);
+		virtual void SetTransform(const FVector2f& InLocation, const float_t InRotation, const FVector2f& InScale);
+
 		void SetRelativeLocation(const FVector2f& InLocation);
-		void AddWorldLocation(const FVector2f& InAddLocation);
-		void SetWorldRotation(const float InDegree);
 		void SetRelativeRotation(const float InDegree);
-		void SetScale(const FVector2f& InScale);
-		void SetTransform(const Matrix& InMatrix);
-		void SetTransform(const FVector2f& InLocation, const float_t InRotation, const FVector2f& InScale);
+
 #pragma endregion
 
 	public:

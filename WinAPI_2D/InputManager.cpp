@@ -34,6 +34,16 @@ namespace LJG
 	}
 
 
+	bool InputManager::IsAnyKeyDown()
+	{
+		for (auto& key : mKeys)
+		{
+			if (IsKeyDown_Internal(key.KeyCode))
+				return true;
+		}
+		return false;
+	}
+
 	void InputManager::AddInputBinding(const EKeyCode                     InKeyCode, const EKeyState BindType,
 									   const FOnInputEvent::FunctionType& Callback)
 	{

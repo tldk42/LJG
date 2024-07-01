@@ -10,7 +10,9 @@ namespace LJG
 	{
 	public:
 		std::vector<WText> GetSceneNames() const;
-		void               MoveScene(const Text& NewSceneName);
+		UScene*            GetCurrentScene() { return GetResource<UScene>(mCurrentSceneName); }
+		void               MoveScene(const WText& NewSceneName);
+		void               SetScene(const WText& InSceneName);
 
 	public:
 #pragma region Core Interface
@@ -21,7 +23,7 @@ namespace LJG
 #pragma endregion
 
 	private:
-		Text mCurrentSceneName;
+		WText mCurrentSceneName;
 
 	private:
 		friend class TSingleton<SceneManager>;

@@ -1,10 +1,10 @@
 #pragma once
 #include "UAnimator.h"
 
-
 namespace LJG
 {
-	class UPawnMovementComponent2D;
+	class AProjectile;
+	class UPlayerMovementComponent;
 
 	class UPlayerAnimator : public UAnimator
 	{
@@ -19,10 +19,13 @@ namespace LJG
 		void Render() override;
 		void Release() override;
 #pragma endregion
-	
+
+	private:
+		void ShootProjectile();
+
 	private:
 		// Properties
-		UPawnMovementComponent2D* mOwnerMovementComp;
+		UPlayerMovementComponent* mOwnerMovementComp;
 
 		// Anim States
 		USpriteAnimation* State_Idle;
@@ -35,5 +38,8 @@ namespace LJG
 		USpriteAnimation* State_Duck_Loop;
 		USpriteAnimation* State_Attack_Idle;
 		USpriteAnimation* State_Attack_Move;
+		USpriteAnimation* State_Attack_Duck;
+
+		std::vector<AProjectile*> mProjectiles;
 	};
 }

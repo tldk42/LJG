@@ -118,7 +118,7 @@ namespace LJG
 
 					if (!bInitialized)
 					{
-						GWorld.MoveScene(SceneList[item_current_idx]);
+						// GWorld.MoveScene(SceneList[item_current_idx]);
 						bInitialized = true;
 					}
 

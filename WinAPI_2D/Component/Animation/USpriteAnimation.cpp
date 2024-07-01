@@ -9,14 +9,13 @@ namespace LJG
 	USpriteAnimation::USpriteAnimation(const WText& InKey)
 		: USceneComponent(InKey),
 		  mCurrentFrame(0),
+		  mSpeed(1.f),
 		  bLoop(false),
 		  bIsPlaying(false),
 		  bIsPaused(false)
-	{
-		mSprite2D = std::make_unique<XSprite2D>(0.3f);
-	}
+	{}
 
-	USpriteAnimation::~USpriteAnimation() {}
+	USpriteAnimation::~USpriteAnimation() = default;
 
 	void USpriteAnimation::Initialize()
 	{
@@ -29,9 +28,6 @@ namespace LJG
 
 		if (bIsPlaying)
 		{
-			mSprite2D->SetWorldTransform(mWorldTransform);
-			mSprite2D->SetFlipX(bFlipX);
-			mSprite2D->Update(DeltaTime);
 			mNextAnimState = UINT8_MAX;
 
 			for (auto& transition : mTransitions)
@@ -55,38 +51,57 @@ namespace LJG
 			const float currentTime = duration_cast<milliseconds>(steady_clock::now() - mElapsedTime).count()
 			* (1.f / 1000.f);
 
-			if (currentTime >= mAnimationData.FrameTime)
+			if (currentTime >= mAnimationData.FrameTime / mSpeed)
 			{
-				mCurrentFrame++;
-
-				if (mCurrentFrame >= mAnimationData.Textures.size())
+				if (bReverse)
 				{
-					mCurrentFrame = 0;
-
-					if (!bLoop)
+					if (mCurrentFrame == 0)
 					{
-						Pause();
+						mCurrentFrame = mAnimationData.Textures.size() - 1;
+						if (!bLoop)
+						{
+							Stop();
+							OnAnimFinished.Execute();
+						}
+					}
+					else
+					{
+						mCurrentFrame--;
+					}
+				}
+				else
+				{
+					mCurrentFrame++;
+
+					if (mCurrentFrame >= mAnimationData.Textures.size())
+					{
+						mCurrentFrame = 0;
+
+						if (!bLoop)
+						{
+							Stop();
+							OnAnimFinished.Execute();
+						}
 					}
 				}
 
+
+				OnAnimNotifyBegin[mCurrentFrame].Execute();
 				mElapsedTime = steady_clock::now();
-				mSprite2D->SetTexture(mAnimationData.Textures[mCurrentFrame]);
 			}
 		}
 	}
 
 	void USpriteAnimation::Render()
 	{
-		if (bIsPlaying && !mAnimationData.Textures.empty())
-		{
-			mSprite2D->Render();
-		}
+		// if (bIsPlaying && !mAnimationData.Textures.empty())
+		// {
+		// 	mSprite2D->Render();
+		// }
 	}
 
 	void USpriteAnimation::Release()
-	{
-		mSprite2D = nullptr;
-	}
+	{}
 
 	void USpriteAnimation::Play(const bool InLoop)
 	{
@@ -98,6 +113,16 @@ namespace LJG
 			mCurrentFrame = 0;
 			mElapsedTime  = steady_clock::now();
 		}
+	}
+
+	void USpriteAnimation::PlayReverse(const bool InLoop)
+	{
+		bIsPlaying    = true;
+		bReverse      = true;
+		bIsPaused     = false;
+		bLoop         = InLoop;
+		mCurrentFrame = mAnimationData.Textures.size() - 1;
+		mElapsedTime  = steady_clock::now();
 	}
 
 	void USpriteAnimation::Pause()

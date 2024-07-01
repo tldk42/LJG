@@ -37,6 +37,14 @@ namespace LJG
 	void UObject::Render() {}
 	void UObject::Release() {}
 
+	void UObject::Destroy(const WText& InKey)
+	{
+		if (mChildObjects.contains(InKey))
+		{
+			mChildObjects.erase(InKey);
+		}
+	}
+
 	void UObject::AttachComponent(UObject* ComponentToAttach)
 	{
 		ComponentToAttach->SetupAttachment(this);
