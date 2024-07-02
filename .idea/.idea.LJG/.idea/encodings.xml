@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/WinAPI_2D/DirectX/XVertex2D.cpp" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/WinAPI_2D/GUI/GUI_FileBrowser.cpp" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/WinAPI_2D/GUI/GUI_MapEditor.cpp" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/WinAPI_2D/Helper/UDXHelper.h" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/WinAPI_2D/InputManager.cpp" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/WinAPI_2D/Shader/alphablend.psh" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/WinAPI_2D/World/World.cpp" charset="x-windows-949" />

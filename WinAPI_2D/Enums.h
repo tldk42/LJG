@@ -71,4 +71,13 @@ namespace LJG
 		UI
 	};
 
+	enum class ENodeState : uint8_t
+	{
+		Running,
+		Success,
+		Failure
+	};
+
+	
+
 }

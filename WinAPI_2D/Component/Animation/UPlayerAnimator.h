@@ -9,7 +9,7 @@ namespace LJG
 	class UPlayerAnimator : public UAnimator
 	{
 	public:
-		explicit UPlayerAnimator(const WText& InKey);
+		explicit UPlayerAnimator();
 		~UPlayerAnimator() override;
 
 	public:

@@ -84,5 +84,27 @@ namespace LJG
 		mManagedList.try_emplace(L"transition_fade",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/IrisTransitionSheet_", 17, 17.f, true)));
+
+		#pragma region °³±¸¸®
+		mManagedList.try_emplace(L"shortFrog_idle",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Sprite/Game_1/Ribby/Idle/shortFrog_idle2_",
+															  13, 13.f, true)));
+		mManagedList.try_emplace(L"shortFrog_intro",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Sprite/Game_1/Ribby/Intro/shortFrog_intro_",
+															  15, 15.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_intro",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 L"rsc/CupHead/Sprite/Game_1/Croaks - Slot Machine/Intro/tallfrog_intro_",
+										 15, 15.f, true)));
+		mManagedList.try_emplace(L"tallfrog_idle",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 L"rsc/CupHead/Sprite/Game_1/Croaks - Slot Machine/Idle/tallfrog_idle2_",
+										 18, 18.f, true)));
+		#pragma endregion
 	}
 }

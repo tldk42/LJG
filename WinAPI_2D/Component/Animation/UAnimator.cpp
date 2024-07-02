@@ -7,8 +7,8 @@
 namespace LJG
 {
 
-	UAnimator::UAnimator(const WText& InKey)
-		: UObject(InKey),
+	UAnimator::UAnimator()
+		: UObject(L"Animator"),
 		  bIsPlaying(false)
 	{
 		mSprite2D = std::make_unique<XSprite2D>(0.3f);

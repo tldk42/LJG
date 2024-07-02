@@ -1,5 +1,7 @@
 #include "Background_Tut.h"
 
+#include <ranges>
+
 #include "Camera.h"
 #include "Component/UImage.h"
 #include "Game/Ground.h"
@@ -39,10 +41,15 @@ namespace LJG
 
 	void Tutorial_Map::Render()
 	{
-		Image_Background->Render();
-		Image_BackgroundMask->Render();
-		Ground_InvisibleBox->Render();
-		Ground_Cube->Render();
+		for (auto& obj : mChildObjects | std::views::values)
+		{
+			obj->Render();
+		}
+		
+		// Image_Background->Render();
+		// Image_BackgroundMask->Render();
+		// Ground_InvisibleBox->Render();
+		// Ground_Cube->Render();
 	}
 
 }

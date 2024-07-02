@@ -33,7 +33,7 @@ namespace LJG
 
 	void UPlayerMovementComponent::HandleDash(const float_t DeltaTime) const
 	{
-		if (bIsDashing)
+		if (bIsDashing && !bIsCrouching)
 		{
 			const FVector2f dashVelocity = {FMath::Sign(mInputVector.X) ? mDashPower : -mDashPower, 0};
 			mOwnerActor->AddWorldLocation(dashVelocity * DeltaTime);

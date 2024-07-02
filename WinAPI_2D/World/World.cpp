@@ -3,6 +3,7 @@
 #include "AHUD.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "AI/BehaviorTree.h"
 #include "Component/UImage.h"
 #include "Component/Actor/APlayerCharacter.h"
 #include "Component/Manager/AnimManager.h"
@@ -28,7 +29,7 @@ namespace LJG
 		GUI_MapEditor*         mapEditor   = Manager_GUI.CreateOrLoad<GUI_MapEditor>(L"MapEditor");
 		GUI_Hierarchy*         hierarchy   = Manager_GUI.CreateOrLoad<GUI_Hierarchy>(L"Hierarchy");
 
-		Manager_Scene.MoveScene(L"Intro");
+		Manager_Scene.MoveScene(L"Game_2");
 	}
 
 	void World::Initialize()
@@ -49,8 +50,7 @@ namespace LJG
 
 		Manager_Input.AddInputBinding(EKeyCode::F1, EKeyState::Down,
 									  [&](float_t DeltaTime){ OnDebugModeChanged.Execute(); });
-
-
+		
 	}
 
 	void World::Update(float DeltaTime)

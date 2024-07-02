@@ -22,6 +22,11 @@ namespace LJG
 		mMovementComponent->SetOwnerActor(this);
 		mMovementComponent->Initialize();
 
+		mAnimator = CreateDefaultSubObject<UPlayerAnimator>();
+		mAnimator->SetupAttachment(this);
+		mAnimator->SetOwnerActor(this);
+		mAnimator->Initialize();
+
 		ACharacter::Initialize();
 
 		mDebugBox->SetScale({100.f, 135.f});
@@ -62,10 +67,10 @@ namespace LJG
 	{
 		ACharacter::Update(DeltaTime);
 
-		if (!mMovementComponent->GetVelocity().IsNearlyZero())
-		{
-			MainCam.SetPosition(FMath::Lerp(MainCam.GetWorldLocation(), GetWorldLocation(), 5.f * DeltaTime));
-		}
+		// if (!mMovementComponent->GetVelocity().IsNearlyZero())
+		// {
+		// 	MainCam.SetPosition(FMath::Lerp(MainCam.GetWorldLocation(), GetWorldLocation(), 5.f * DeltaTime));
+		// }
 	}
 
 	void APlayerCharacter::AddMovementInput(const FVector2f& MovementInputAmount)

@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 
 
+#include "Game/Scene/Game1Scene.h"
+#include "Game/Scene/Game2Scene.h"
 #include "Game/Scene/IntroScene.h"
 #include "Game/Scene/MenuScene.h"
 #include "Game/Scene/TutorialScene.h"
@@ -45,7 +47,8 @@ namespace LJG
 		CreateOrLoad<IntroScene>(L"Intro");
 		CreateOrLoad<MenuScene>(L"Menu");
 		CreateOrLoad<TutorialScene>(L"Tutorial");
-		// CreateOrLoad(L"data/scenes/game1_1");
+		CreateOrLoad<Game1Scene>(L"Game_1");
+		CreateOrLoad<Game2Scene>(L"Game_2");
 	}
 
 	void SceneManager::Update(float DeltaTime)

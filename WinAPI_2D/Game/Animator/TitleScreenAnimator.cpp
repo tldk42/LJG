@@ -7,7 +7,7 @@ namespace LJG
 {
 
 	TitleScreenAnimator::TitleScreenAnimator()
-		: UAnimator(L"Anim_TitleScreen")
+		: UAnimator()
 	{
 		State_Default = CreateDefaultSubObject<USpriteAnimation>(L"S_Default");
 

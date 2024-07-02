@@ -10,10 +10,12 @@ namespace LJG
 	int32_t AProjectile::mObjectNum = 0;
 
 	AProjectile::AProjectile()
-		: AActor(std::format(L"Projectile_{}", mObjectNum++).c_str())
+		: AActor(std::format(L"Projectile_{}", mObjectNum++).c_str()),
+		  mVelocity({1000.f, 0}),
+		  mLifeTime(10.f)
 	{
 		mSprite2D = std::make_unique<XSprite2D>();
-		Initialize();
+		AProjectile::Initialize();
 	}
 
 	AProjectile::~AProjectile()
@@ -28,7 +30,7 @@ namespace LJG
 		mBoxComponent->SetScale({80, 40});
 
 		mVelocity = {1000.f, 0};
-		mAnim     = CreateDefaultSubObject<USpriteAnimation>(L"Projectile_Text");
+		mAnim     = CreateDefaultSubObject<USpriteAnimation>(L"Projectile");
 		mAnim->SetAnimData(*Manager_Anim.CreateOrLoad(L"projectile_shoot"));
 	}
 
@@ -45,6 +47,8 @@ namespace LJG
 
 			mAnim->Update(DeltaTime);
 			mSprite2D->Update(DeltaTime);
+
+		
 		}
 	}
 

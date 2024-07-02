@@ -20,7 +20,7 @@ float4 ps(VS_OUTPUT input) : SV_TARGET
 	
     texColor = shaderTexture.Sample(SampleType, input.Texture);
     
-    if (texColor.a <= .1f)
+    if (texColor.a <= .5f)
     {
         discard;
     }

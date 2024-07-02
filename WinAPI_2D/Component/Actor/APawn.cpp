@@ -21,25 +21,28 @@ namespace LJG
 	{
 		AActor::Initialize();
 
+
+		mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
+		mDebugBox->SetScale({125.f, 140.f});
+		mDebugBox->SetColor(FLinearColor::Green);
+		mDebugBox->SetOwnerActor(this);
+
+		if (!mMovementComponent)
 		{
-			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
-			mDebugBox->SetScale({125.f, 140.f});
-			mDebugBox->SetColor(FLinearColor::Green);
-			mDebugBox->SetOwnerActor(this);
+			mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
+			mMovementComponent->SetupAttachment(this);
+			mMovementComponent->SetOwnerActor(this);
+			mMovementComponent->Initialize();
+		}
 
-			if (!mMovementComponent)
-			{
-				mMovementComponent = CreateDefaultSubObject<UPawnMovementComponent2D>(L"MovementComponent");
-				mMovementComponent->SetupAttachment(this);
-				mMovementComponent->SetOwnerActor(this);
-				mMovementComponent->Initialize();
-			}
-
-			mAnimator = CreateDefaultSubObject<UPlayerAnimator>(L"Animator");
+		if (!mAnimator)
+		{
+			mAnimator = CreateDefaultSubObject<UAnimator>();
 			mAnimator->SetupAttachment(this);
 			mAnimator->SetOwnerActor(this);
 			mAnimator->Initialize();
 		}
+
 	}
 
 	void APawn::Update(float DeltaTime)

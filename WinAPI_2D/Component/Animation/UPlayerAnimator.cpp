@@ -12,8 +12,7 @@
 
 namespace LJG
 {
-	UPlayerAnimator::UPlayerAnimator(const WText& InKey)
-		: UAnimator(InKey)
+	UPlayerAnimator::UPlayerAnimator()
 	{
 		State_Idle        = CreateDefaultSubObject<USpriteAnimation>(L"PA_Idle");
 		State_Move_Ground = CreateDefaultSubObject<USpriteAnimation>(L"PA_Move_Ground");

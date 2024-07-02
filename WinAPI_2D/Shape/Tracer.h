@@ -36,7 +36,7 @@ namespace LJG
 		const std::vector<ShapeType*>& Types() const { return mPrimitiveType; }
 
 	private:
-		std::vector<ShapeType*> mPrimitiveType;
+		std::unordered_map<ETraceType, std::vector<ShapeType*>> mPrimitiveType;
 	};
 
 	// Trace

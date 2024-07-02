@@ -11,7 +11,7 @@ namespace LJG
 	FadeInImage::FadeInImage(const WText& InName)
 		: AAnimatedImage(InName)
 	{
-		mAnimator = CreateDefaultSubObject<UAnimator>(L"Animator");
+		mAnimator = CreateDefaultSubObject<UAnimator>();
 		mAnimator->SetZOrder(0.1f);
 		State_Default = CreateDefaultSubObject<USpriteAnimation>(L"Default");
 

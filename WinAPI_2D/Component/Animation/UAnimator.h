@@ -9,7 +9,7 @@ namespace LJG
 	class UAnimator : public UObject
 	{
 	public:
-		explicit UAnimator(const WText& InKey);
+		explicit UAnimator();
 		~UAnimator() override;
 
 	public:
@@ -27,7 +27,7 @@ namespace LJG
 		void SetFlipX(const bool bEnable) { bFlipX = bEnable; }
 		void SetZOrder(const float_t InZOrder) const;
 
-	private:
+	protected:
 		void SetState(const uint8_t InState, const bool bLoop);
 
 	protected:

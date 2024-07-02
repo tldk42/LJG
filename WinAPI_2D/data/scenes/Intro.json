@@ -1,0 +1,30 @@
+[
+  {
+    "Key": "BackGround",
+    "Position": [
+      0.0,
+      0.0
+    ],
+    "Rotation": 0.0,
+    "Scale": [
+      1.4,
+      1.4
+    ],
+    "TexPath": "./\\rsc\\CupHead\\Texture2D\\title_screen_background.png",
+    "ZOrder": 0.8
+  },
+  {
+    "Key": "Anim_Players",
+    "Position": [
+      0.0,
+      -35.7
+    ],
+    "Rotation": 0.0,
+    "Scale": [
+      1,
+      1
+    ],
+    "TexPath": "./\\rsc\\CupHead\\Texture2D\\cuphead_title_screen_0001.png",
+    "ZOrder": 0.5
+  }
+]

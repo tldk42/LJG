@@ -32,7 +32,7 @@ namespace LJG
 
 	protected:
 		UPawnMovementComponent2D* mMovementComponent;
-		UPlayerAnimator*          mAnimator;
+		UAnimator*                mAnimator;
 		UBoxComponent*            mDebugBox;
 
 	private:

@@ -17,6 +17,7 @@ namespace LJG
 
 	void XShape2D_Box::Render()
 	{
+		
 		XVertex2D::Render();
 
 		Context::GetDeviceContext()->DrawIndexed(8, 0, 0);
