@@ -3,18 +3,19 @@
 #include "Camera.h"
 #include "AI/BehaviorTree.h"
 #include "Component/Actor/APlayerCharacter.h"
-#include "Game/AI/Test/TestBT.h"
+#include "Component/Manager/SceneManager.h"
+#include "Game/AI/Test/RibbyBT.h"
 #include "Game/Object/Game_2/Background_Game2.h"
 #include "Game/Object/Game_2/Enemy/ARibby.h"
 #include "Game/Object/Game_2/Enemy/ACroaks.h"
+#include "Shape/CollisionManager.h"
 
 namespace LJG
 {
 
 	Game2Scene::Game2Scene(const WText& InName)
 		: UScene(InName)
-	{
-	}
+	{}
 
 	Game2Scene::~Game2Scene() {}
 
@@ -26,12 +27,18 @@ namespace LJG
 	void Game2Scene::Update(float DeltaTime)
 	{
 		UScene::Update(DeltaTime);
+		Croaks.Update(DeltaTime);
+		Ribby.Update(DeltaTime);
 		LocalPlayer.Update(DeltaTime);
 	}
 
 	void Game2Scene::Render()
 	{
 		UScene::Render();
+		//
+		// Croaks.Render();
+		// Ribby.Render();
+
 		LocalPlayer.Render();
 	}
 
@@ -44,16 +51,19 @@ namespace LJG
 	{
 		UScene::LoadScene();
 
+		Obj_Background = Manager_Object.CreateOrLoad<Background_Game2>(L"Background");
+
+		Manager_Collision.EnableLayerCheck(ETraceType::Pawn, ETraceType::Ground, true);
+
+		Croaks.Initialize();
+		Ribby.Initialize();
 		LocalPlayer.Initialize();
 
-		Obj_Background = Manager_Object.CreateOrLoad<Background_Game2>(L"Background");
-		Enemy_Ribby    = Manager_Object.CreateOrLoad<ARibby>(L"Ribby");
-		Enemy_Ribby->Initialize();
-		Enemy_Ribby->SetWorldLocation({300.f, -300.f});
-		Enemy_Croaks = Manager_Object.CreateOrLoad<ACroaks>(L"Croaks");
-		Enemy_Croaks->Initialize();
-		Enemy_Croaks->SetWorldLocation({400.f, -320.f});
+		//
+		Ribby.SetWorldLocation({300.f, -300.f});
+		Croaks.SetWorldLocation({400.f, -320.f});
 
+		
 		MainCam.SetWorldLocation({0, -110.f});
 	}
 

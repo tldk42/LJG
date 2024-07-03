@@ -198,7 +198,7 @@ namespace LJG
 		D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc{};
 		depthStencilStateDesc.DepthEnable    = true;
 		depthStencilStateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		depthStencilStateDesc.DepthFunc      = D3D11_COMPARISON_LESS;
+		depthStencilStateDesc.DepthFunc      = D3D11_COMPARISON_LESS_EQUAL;
 
 
 		HRESULT result;

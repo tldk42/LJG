@@ -3,7 +3,10 @@
 namespace LJG::AI
 {
 
-	Selector::Selector(const Text& NodeName, const std::vector<Node*>& InChildNodes)
+	Selector::Selector(Text InText)
+		: Node(std::move(InText)){}
+
+	Selector::Selector(const Text& NodeName, const std::vector<NodeSPtr>& InChildNodes)
 		: Node(NodeName, InChildNodes) {}
 
 	Selector::~Selector() {}

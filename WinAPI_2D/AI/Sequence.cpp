@@ -3,7 +3,7 @@
 namespace LJG::AI
 {
 
-	Sequence::Sequence(const Text& NodeName, const std::vector<Node*>& InChildNodes)
+	Sequence::Sequence(const Text& NodeName, const std::vector<NodeSPtr>& InChildNodes)
 		: Node(NodeName, InChildNodes) {}
 
 	Sequence::~Sequence() {}

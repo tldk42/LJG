@@ -2,7 +2,7 @@
 
 #include "Component/Actor/AActor.h"
 #include "Component/Actor/APawn.h"
-#include "Shape/Tracer.h"
+#include "Shape/CollisionManager.h"
 #include "Shape/UBoxComponent.h"
 
 namespace LJG
@@ -26,13 +26,16 @@ namespace LJG
 		assert(mOwnerActor != nullptr);
 
 		mOwnerPawn = dynamic_cast<APawn*>(mOwnerActor);
+		mOwnerPawn->mDebugBox->OnCollisionEnter_Delegate.Bind(
+			std::bind(&UPawnMovementComponent2D::HandleGroundCollision, this, std::placeholders::_1));
+		mOwnerPawn->mDebugBox->OnCollisionExit_Delegate.Bind(
+			std::bind(&UPawnMovementComponent2D::HandleGroundCollision, this, std::placeholders::_1));
 	}
 
 	void UPawnMovementComponent2D::Update(float DeltaTime)
 	{
 		UObject::Update(DeltaTime);
 
-		CheckGround(DeltaTime);
 		HandleJumpAction(DeltaTime);
 		// HandleCrouchAction(DeltaTime);
 
@@ -83,7 +86,7 @@ namespace LJG
 			mOwnerPawn->mDebugBox->SetScale({debugBoxScale.X, debugBoxScale.Y * 2});
 			mOwnerPawn->AddWorldLocation({0, debugBoxScale.Y / 2});
 
-			bIsCrouching             = false;
+			bIsCrouching = false;
 
 			mTargetCrouchHeight = mCachedBoxHeight;
 			mCurrentBoxHeight   = mCachedBoxHeight;
@@ -103,48 +106,33 @@ namespace LJG
 		}
 	}
 
-	void UPawnMovementComponent2D::CheckGround(const float_t DeltaTime)
+	void UPawnMovementComponent2D::HandleGroundCollision(FHitResult_Box2D& HitResult)
 	{
-		if (mCachedGround)
+		if (HitResult.Dest && HitResult.Dest->GetTraceType() == ETraceType::Ground)
 		{
-			if (mOwnerPawn->mDebugBox->GetBox().Intersect(mCachedGround->GetBox()))
+			if (HitResult.Distance < 0.f)
 			{
-				if (bIsJumping && (mJumpPower_Value - mJumpPower_Current) > 10.f)
-				{
-					bIsJumping        = false;
-					bIsMovingOnGround = true;
-				}
+				bIsMovingOnGround = false;
+				return;
+			}
+
+
+			if (HitResult.Dest->GetBox().Max.Y <= mPreviousLocation.Y)
+			{
+				float_t groundPos = HitResult.Dest->GetBox().Max.Y + mOwnerPawn->mDebugBox->GetScale().Y / 2;
+				mOwnerActor->SetWorldLocation({
+					mOwnerPawn->GetWorldLocation().X, groundPos
+				});
+
+				bIsJumping        = false;
+				bIsMovingOnGround = true;
 				return;
 			}
 		}
-
-		for (UBoxComponent* box : BoxTypes.Types())
-		{
-			// Ground Box¸¸ Check
-			if (box->GetTraceType() != ETraceType::Ground)
-				continue;
-			if (mOwnerPawn->mDebugBox->GetBox().Intersect(box->GetBox()))
-			{
-				if (box->GetBox().Max.Y <= mPreviousLocation.Y)
-				{
-					float_t groundPos = box->GetBox().Max.Y + mOwnerPawn->mDebugBox->GetScale().Y / 2;
-					mOwnerActor->SetWorldLocation({
-						mOwnerPawn->GetWorldLocation().X, groundPos
-					});
-
-					bIsJumping        = false;
-					mCachedGround     = box;
-					bIsMovingOnGround = true;
-					return;
-				}
-
-			}
-		}
-
-		if (!bIsCrouching)
-		{
-			bIsMovingOnGround = false;
-		}
+		// if (!bIsCrouching)
+		// {
+		// 	bIsMovingOnGround = false;
+		// }
 	}
 
 

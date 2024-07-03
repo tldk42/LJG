@@ -3,12 +3,20 @@
 namespace LJG::AI
 {
 
-	BehaviorTree::BehaviorTree() {}
-	BehaviorTree::~BehaviorTree() {}
+	BehaviorTree::BehaviorTree(AActor* OwnerActor)
+	{
+		mOwnerActor = OwnerActor;
+	}
+
+	BehaviorTree::~BehaviorTree()
+	{
+		Release();
+	}
 
 	void BehaviorTree::Initialize()
 	{
-		mRootNode = SetupTree();
+		SetupTree();
+		mRootNode->Owner = mOwnerActor;
 	}
 
 	void BehaviorTree::Update(float DeltaTime)
@@ -23,10 +31,6 @@ namespace LJG::AI
 
 	void BehaviorTree::Release()
 	{
-		for (auto& node : mRootNode->ChildNodes)
-		{
-			delete node;
-			node = nullptr;
-		}
+		mRootNode.reset();
 	}
 }

@@ -95,6 +95,12 @@ namespace LJG
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Sprite/Game_1/Ribby/Intro/shortFrog_intro_",
 															  15, 15.f, true)));
 
+		mManagedList.try_emplace(L"shortfrog_fist",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 L"rsc/CupHead/Sprite/Game_1/Ribby/Fist Attack/Fists/Normal/shortfrog_fist_",
+										 15, 15.f, true)));
+
 		mManagedList.try_emplace(L"tallfrog_intro",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(
@@ -105,6 +111,8 @@ namespace LJG
 									 AnimUtil::LoadAnimations(
 										 L"rsc/CupHead/Sprite/Game_1/Croaks - Slot Machine/Idle/tallfrog_idle2_",
 										 18, 18.f, true)));
+
+
 		#pragma endregion
 	}
 }

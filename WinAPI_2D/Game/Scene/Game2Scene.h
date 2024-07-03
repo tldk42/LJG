@@ -5,14 +5,8 @@
 namespace LJG
 {
 	class Background_Game2;
-	class ARibby;
-	class ACroaks;
 
-	namespace AI
-	{
-		class TestBT;
-	};
-
+	
 	class Game2Scene : public UScene
 	{
 	public:
@@ -32,7 +26,6 @@ namespace LJG
 
 	private:
 		Background_Game2* Obj_Background;
-		ARibby*           Enemy_Ribby;
-		ACroaks*          Enemy_Croaks;
+
 	};
 }

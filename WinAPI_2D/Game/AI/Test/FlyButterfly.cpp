@@ -1,23 +1,25 @@
-#include "TestNode.h"
+#include "FlyButterfly.h"
 
 #include "InputManager.h"
 
 namespace LJG::AI
 {
 
-	TestNode::TestNode()
-		: Node("Test!") {}
+	FlyButterfly::FlyButterfly()
+		: Node("Test!")
+	{
+	}
 
-	ENodeState TestNode::Evaluate()
+	ENodeState FlyButterfly::Evaluate()
 	{
 		if (Manager_Input.IsKeyDown(EKeyCode::LButton))
 		{
-			LOG_CORE_INFO("TestNode SUCCESS");
+			LOG_CORE_INFO("FlyButterfly SUCCESS");
 			return ENodeState::Success;
 		}
 		if (Manager_Input.IsKeyDown(EKeyCode::RButton))
 		{
-			LOG_CORE_INFO("TestNode FAIL");
+			LOG_CORE_INFO("FlyButterfly FAIL");
 			return ENodeState::Failure;
 		}
 		else

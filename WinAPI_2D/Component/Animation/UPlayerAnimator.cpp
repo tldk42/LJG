@@ -43,7 +43,12 @@ namespace LJG
 		State_Attack_Move->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_run_shoot"));
 		State_Attack_Duck->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_duck_shoot"));
 
-		State_Attack_Idle->OnAnimNotifyBegin[1].Bind(std::bind(&UPlayerAnimator::ShootProjectile, this));
+		State_Attack_Idle->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		State_Attack_Duck->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[5].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[10].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		// State_Attack_Move->OnAnimNotifyBegin[11].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[15].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
 
 		AddState(EnumAsByte(EPlayerAnimState::Idle), State_Idle);
 		AddState(EnumAsByte(EPlayerAnimState::Move), State_Move_Ground);
@@ -190,13 +195,5 @@ namespace LJG
 		UAnimator::Release();
 	}
 
-	void UPlayerAnimator::ShootProjectile()
-	{
-		auto* proj = CreateDefaultSubObject<AProjectile>();
-		mProjectiles.emplace_back(proj);
 
-		proj->SetWorldLocation({mOwnerActor->GetWorldLocation().X + 65.f, mOwnerActor->GetWorldLocation().Y});
-		proj->Launch();
-	}\
-\
 }

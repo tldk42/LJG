@@ -4,10 +4,10 @@
 namespace LJG::AI
 {
 
-	class TestNode : public Node
+	class FlyButterfly : public Node
 	{
 	public:
-		TestNode();
+		FlyButterfly();
 
 	public:
 		ENodeState Evaluate() override;

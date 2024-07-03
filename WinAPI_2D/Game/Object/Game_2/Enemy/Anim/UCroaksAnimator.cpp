@@ -2,7 +2,7 @@
 
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
-#include "Game/GameData.h"
+#include "data/MonsterData.h"
 #include "Helper/EngineHelper.h"
 
 namespace LJG

@@ -1,16 +1,40 @@
 #pragma once
-#include "Component/Actor/APawn.h"
+#include "Game/Actor/AEnemy.h"
 
+namespace LJG::AI
+{
+	class RibbyBT;
+}
 namespace LJG
 {
-	class ARibby : public APawn
+	#define Ribby ARibby::Get()
+
+	class ARibby : public AEnemy, public TSingleton<ARibby>
 	{
 	public:
-		ARibby(const WText& InText);
+#pragma region Core Interface
+		void Initialize() override;
+		void Update(float DeltaTime) override;
+#pragma endregion
+
+	public:
+#pragma region IDamage Interface
+		void OnDead() override;
+		void OnHit(float InDamage) override;
+#pragma endregion
+
+	private:
+		AI::RibbyBT* mBehaviorTree;
+
+		friend class ACroaks;
+
+	private:
+		friend class TSingleton<ARibby>;
+		ARibby();
 		~ARibby() override;
 
 	public:
-		void Initialize() override;
-		void Update(float DeltaTime) override;
+		ARibby(const ARibby&)            = delete;
+		ARibby& operator=(const ARibby&) = delete;
 	};
 }

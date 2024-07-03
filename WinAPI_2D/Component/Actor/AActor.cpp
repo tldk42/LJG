@@ -1,7 +1,5 @@
 #include "AActor.h"
-
 #include <memory>
-#include <ranges>
 
 namespace LJG
 {
@@ -25,12 +23,7 @@ namespace LJG
 	void AActor::Render()
 	{
 		if (bVisibility)
-		{
-			for (auto it = mChildObjects.begin(); it != mChildObjects.end(); ++it)
-			{
-				it->second->Render();
-			}
-		}
+			USceneComponent::Render();
 	}
 
 	void AActor::Release()

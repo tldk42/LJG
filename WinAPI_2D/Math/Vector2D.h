@@ -269,7 +269,7 @@ namespace LJG
 		template <typename T>
 		T TVector2<T>::DistanceSquared(const TVector2& A, const TVector2& B)
 		{
-			return pow(B.X - A.X) + pow(B.Y - A.Y);
+			return pow((B.X - A.X), 2) + pow((B.Y - A.Y), 2);
 		}
 
 		template <typename T>

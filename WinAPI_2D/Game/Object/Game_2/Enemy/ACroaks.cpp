@@ -7,8 +7,8 @@
 namespace LJG
 {
 
-	ACroaks::ACroaks(const WText& InKey)
-		: APawn(InKey) {}
+	ACroaks::ACroaks()
+		: AEnemy(L"Croaks") {}
 
 	ACroaks::~ACroaks() {}
 
@@ -21,11 +21,21 @@ namespace LJG
 
 		APawn::Initialize();
 
-		mDebugBox->SetScale({300.f, 400.f});
+		mDebugBox->SetScale({440.f, 550.f});
 	}
 
 	void ACroaks::Update(float DeltaTime)
 	{
 		APawn::Update(DeltaTime);
+	}
+
+	void ACroaks::OnDead()
+	{
+		AEnemy::OnDead();
+	}
+
+	void ACroaks::OnHit(float InDamage)
+	{
+		AEnemy::OnHit(InDamage);
 	}
 }

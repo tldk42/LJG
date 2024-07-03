@@ -44,7 +44,7 @@ namespace LJG
 
 	protected:
 		void HandleJumpAction(const float_t DeltaTime);
-		void CheckGround(const float_t DeltaTime);
+		void HandleGroundCollision(FHitResult_Box2D& HitResult);
 
 	protected:
 		APawn* mOwnerPawn;
@@ -67,6 +67,6 @@ namespace LJG
 		FVector2f mGroundFriction;
 		FVector2f mPreviousLocation;
 
-		UBoxComponent* mCachedGround;
+		// UBoxComponent* mCachedGround;
 	};
 }

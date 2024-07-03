@@ -28,21 +28,37 @@ namespace LJG
 
 	void UObject::Update(float DeltaTime)
 	{
+		if (!bActive)
+			return;
 		for (const auto& object : mChildObjects)
 		{
 			object.second->Update(DeltaTime);
 		}
 	}
 
-	void UObject::Render() {}
+	void UObject::Render()
+	{
+		if (!bActive)
+		{
+			return;
+		}
+
+
+		for (auto& obj : mChildObjects | std::views::values)
+		{
+			if (obj)
+			{
+				obj->Render();
+			}
+		}
+
+	}
+
 	void UObject::Release() {}
 
-	void UObject::Destroy(const WText& InKey)
+	void UObject::Destroy() const
 	{
-		if (mChildObjects.contains(InKey))
-		{
-			mChildObjects.erase(InKey);
-		}
+		Manager_Object.DestroyObject(mObjectKey);
 	}
 
 	void UObject::AttachComponent(UObject* ComponentToAttach)

@@ -1,22 +1,25 @@
 #include "UBoxComponent.h"
 
-#include "Tracer.h"
+#include "CollisionManager.h"
 #include "Component/Actor/AActor.h"
 #include "../Shape/XShape2D_Box.h"
 
 namespace LJG
 {
+	uint32_t UBoxComponent::s_CollisionID = 0;
+
 	UBoxComponent::UBoxComponent(const WText& Inkey, const ETraceType InTraceType)
 		: USceneComponent(Inkey),
-		  Type(InTraceType)
+		  Type(InTraceType),
+		  mcollisionID(s_CollisionID++)
 	{
-		BoxTypes.AddComponent(this);
+		Manager_Collision.EnrollLayer(this);
 		UBoxComponent::Initialize();
 	}
 
 	UBoxComponent::~UBoxComponent()
 	{
-		BoxTypes.RemoveComponent(this);
+		Manager_Collision.ReleaseLayer(this);
 	}
 
 	void UBoxComponent::Initialize()
@@ -48,6 +51,21 @@ namespace LJG
 		mDebugShape->Release();
 	}
 
+	void UBoxComponent::OnCollisionEnter(FHitResult_Box2D& HitResult)
+	{
+		OnCollisionEnter_Delegate.Execute(HitResult);
+	}
+
+	void UBoxComponent::OnCollision(FHitResult_Box2D& HitResult)
+	{
+		OnCollisionStay_Delegate.Execute(HitResult);
+	}
+
+	void UBoxComponent::OnCollisionExit(FHitResult_Box2D& HitResult)
+	{
+		OnCollisionExit_Delegate.Execute(HitResult);
+	}
+
 	void UBoxComponent::SetWorldLocation(const FVector2f& InLocation)
 	{
 		USceneComponent::SetWorldLocation(InLocation);
@@ -61,7 +79,7 @@ namespace LJG
 	void UBoxComponent::SetScale(const FVector2f& InScale)
 	{
 		USceneComponent::SetScale(InScale);
-		
+
 		mDebugShape->SetScale(InScale);
 
 		mBox.Min = GetWorldLocation() - mDebugShape->GetScale() / 2.f;

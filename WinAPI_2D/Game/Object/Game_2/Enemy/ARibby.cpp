@@ -1,5 +1,6 @@
 #include "ARibby.h"
 
+#include "Game/AI/Test/RibbyBT.h"
 #include "Anim/URibbyAnimator.h"
 #include "Component/Animation/UAnimator.h"
 #include "Shape/UBoxComponent.h"
@@ -7,10 +8,14 @@
 namespace LJG
 {
 
-	ARibby::ARibby(const WText& InName)
-		: APawn(InName) {}
+	ARibby::ARibby()
+		: AEnemy(L"Ribby")
+	{
+		mCurrentHP = 408.f;
+	}
 
-	ARibby::~ARibby() {}
+	ARibby::~ARibby()
+	{}
 
 	void ARibby::Initialize()
 	{
@@ -21,11 +26,26 @@ namespace LJG
 
 		APawn::Initialize();
 
-		mDebugBox->SetScale({300.f, 400.f});
+		mDebugBox->SetScale({320.f, 300.f});
+
+		mBehaviorTree = CreateDefaultSubObject<AI::RibbyBT>(this);
+		mBehaviorTree->Initialize();
 	}
 
 	void ARibby::Update(float DeltaTime)
 	{
 		APawn::Update(DeltaTime);
+	}
+
+	void ARibby::OnDead()
+	{
+		AEnemy::OnDead();
+	}
+
+	void ARibby::OnHit(float InDamage)
+	{
+		AEnemy::OnHit(InDamage);
+
+		mCurrentHP -= InDamage;
 	}
 }

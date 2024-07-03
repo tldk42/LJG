@@ -68,7 +68,8 @@ namespace LJG
 		Pawn,
 		Ground,
 		Projectile,
-		UI
+		UI,
+		Max
 	};
 
 	enum class ENodeState : uint8_t

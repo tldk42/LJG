@@ -1,13 +1,13 @@
 #pragma once
-#include "CommonInclude.h"
 #include "Node.h"
+#include "Component/UObject.h"
 
 namespace LJG::AI
 {
-	class BehaviorTree : public ICoreAPI
+	class BehaviorTree : public UObject
 	{
 	public:
-		BehaviorTree();
+		BehaviorTree(AActor* OwnerActor);
 		~BehaviorTree() override;
 
 	public:
@@ -19,9 +19,9 @@ namespace LJG::AI
 #pragma endregion
 
 	protected:
-		virtual Node* SetupTree() = 0;
+		virtual void SetupTree() = 0;
 
 	protected:
-		Node* mRootNode;
+		NodeSPtr mRootNode;
 	};
 }

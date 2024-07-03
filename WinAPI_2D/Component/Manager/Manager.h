@@ -28,7 +28,7 @@ namespace LJG
 		template <class ReturnClass = ReturnType>
 		ReturnClass* GetResource(const WText& InName);
 
-		void TrySafeRemove(WTextView InName);
+		void TrySafeRemove(const WText& InName);
 
 	protected:
 		[[nodiscard]] static WText SplitPath(const WText& InPath, const WText& InEntry = L"");
@@ -77,11 +77,11 @@ namespace LJG
 	}
 
 	template <typename ReturnType, class ClassType>
-	void ManagerBase<ReturnType, ClassType>::TrySafeRemove(WTextView InName)
+	void ManagerBase<ReturnType, ClassType>::TrySafeRemove(const WText& InName)
 	{
 		if (mManagedList.contains(InName))
 		{
-			mManagedList[InName] = nullptr;
+			mManagedList.erase(InName);
 		}
 	}
 

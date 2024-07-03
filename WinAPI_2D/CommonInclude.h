@@ -45,11 +45,11 @@ using namespace DirectX;
 
 using ResizeDelegate = std::function<void(UINT, UINT)>;
 
-using Text = std::string;
-using TextView = std::string_view;
-using WText = std::wstring;
+using Text      = std::string;
+using TextView  = std::string_view;
+using WText     = std::wstring;
 using WTextView = std::wstring_view; // 읽기 전용 문자열의 경우 view를 쓰자
-using Matrix = XMMATRIX;
+using Matrix    = XMMATRIX;
 
 namespace LJG
 {
@@ -97,6 +97,20 @@ namespace LJG
 
 		virtual void OnBeginInteract() = 0;
 		virtual void OnEndInteract() = 0;
+	};
+
+	class ICollisionAPI
+	{
+	public:
+		virtual ~ICollisionAPI() = default;
+
+		virtual ETraceType GetTraceType() = 0;
+
+		virtual void OnCollisionEnter(struct FHitResult_Box2D& HitResult) = 0;
+		virtual void OnCollision(struct FHitResult_Box2D& HitResult) = 0;
+		virtual void OnCollisionExit(struct FHitResult_Box2D& HitResult) = 0;
+
+		virtual uint32_t GetCollisionID() = 0;
 	};
 
 	// ======================== 매크로 ================================

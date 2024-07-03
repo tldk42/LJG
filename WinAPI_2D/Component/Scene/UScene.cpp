@@ -8,6 +8,7 @@
 #include "Game/Animator/TitleScreenAnimator.h"
 #include "GUI/GUI_MapEditor.h"
 #include "Helper/EngineHelper.h"
+#include "Shape/CollisionManager.h"
 
 namespace LJG
 {
@@ -21,20 +22,25 @@ namespace LJG
 	UScene::~UScene() {}
 
 	void UScene::Initialize()
-	{}
+	{
+		Manager_Collision.Initialize();
+	}
 
 	void UScene::Update(float DeltaTime)
 	{
 		Manager_Object.Update(DeltaTime);
+		Manager_Collision.Update(DeltaTime);
 	}
 
 	void UScene::Render()
 	{
 		Manager_Object.Render();
+		Manager_Collision.Render();
 	}
 
 	void UScene::Release()
 	{
+		Manager_Collision.Release();
 		Manager_Object.Release();
 		Manager_Audio.StopAll();
 	}

@@ -21,9 +21,6 @@ namespace LJG
 #pragma endregion
 
 	private:
-		void ShootProjectile();
-
-	private:
 		// Properties
 		UPlayerMovementComponent* mOwnerMovementComp;
 

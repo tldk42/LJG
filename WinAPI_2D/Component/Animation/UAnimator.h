@@ -27,6 +27,8 @@ namespace LJG
 		void SetFlipX(const bool bEnable) { bFlipX = bEnable; }
 		void SetZOrder(const float_t InZOrder) const;
 
+		bool GetFlip() const { return bFlipX; }
+
 	protected:
 		void SetState(const uint8_t InState, const bool bLoop);
 

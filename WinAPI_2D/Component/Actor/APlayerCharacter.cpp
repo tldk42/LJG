@@ -1,13 +1,11 @@
 #include "APlayerCharacter.h"
 
-#include "Camera.h"
+#include "AProjectile.h"
 #include "InputManager.h"
 #include "Component/Animation/UPlayerAnimator.h"
 #include "Component/Movement/UPlayerMovementComponent.h"
 #include "DirectX/Context.h"
-#include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
-#include "Shape/ULineComponent.h"
 
 namespace LJG
 {
@@ -16,6 +14,10 @@ namespace LJG
 
 	void APlayerCharacter::Initialize()
 	{
+		mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
+		mDebugBox->SetScale({125.f, 140.f});
+		mDebugBox->SetColor(FLinearColor::Green);
+		mDebugBox->SetOwnerActor(this);
 
 		mMovementComponent = CreateDefaultSubObject<UPlayerMovementComponent>();
 		mMovementComponent->SetupAttachment(this);
@@ -26,8 +28,6 @@ namespace LJG
 		mAnimator->SetupAttachment(this);
 		mAnimator->SetOwnerActor(this);
 		mAnimator->Initialize();
-
-		ACharacter::Initialize();
 
 		mDebugBox->SetScale({100.f, 135.f});
 
@@ -73,6 +73,18 @@ namespace LJG
 		// }
 	}
 
+	void APlayerCharacter::Shoot()
+	{
+		auto*      proj           = Manager_Object.Spawn<AProjectile>();
+		const bool bFacingForward = !mAnimator->GetFlip();
+
+		proj->SetOwnerActor(this);
+		proj->SetWorldLocation({GetWorldLocation().X + (bFacingForward ? +65.f : -65.f), GetWorldLocation().Y});
+		proj->SetVelocity({(bFacingForward ? 1200.f : -1200.f), 0.f});
+		proj->SetDamage(50.f);
+		proj->Launch();
+	}
+
 	void APlayerCharacter::AddMovementInput(const FVector2f& MovementInputAmount)
 	{
 		if (!mMovementComponent->IsCrouching())
@@ -104,8 +116,5 @@ namespace LJG
 		bIsAttacking = bAttack;
 	}
 
-
-	void APlayerCharacter::OnTraceDown(const FVector2f, const FVector2f, FHitResult&)
-	{}
 
 }

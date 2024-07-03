@@ -1,20 +1,20 @@
 #include "ULineComponent.h"
 
-#include "Tracer.h"
+#include "CollisionManager.h"
 #include "XShape2D_Line.h"
 #include "Component/Actor/AActor.h"
 
 LJG::ULineComponent::ULineComponent(const WText& Inkey)
 	: USceneComponent(Inkey)
 {
-	LineTypes.AddComponent(this);
+	// LineTypes.AddComponent(ETraceType::Ground, this);
 
 	ULineComponent::Initialize();
 }
 
 LJG::ULineComponent::~ULineComponent()
 {
-	LineTypes.RemoveComponent(this);
+	// LineTypes.RemoveComponent(this);
 }
 
 void LJG::ULineComponent::Initialize()
@@ -26,14 +26,14 @@ void LJG::ULineComponent::Initialize()
 void LJG::ULineComponent::Update(float DeltaTime)
 {
 	mLineShape->Update(DeltaTime);
-	if (!OnComponentBeginOverlap.functions.empty())
-	{
-		FHitResult hitResult;
-		if (LineTrace2Box(mLine.Origin, mLine.Target, ETraceType::Ground, hitResult))
-		{
-			OnComponentBeginOverlap.Execute(mLine.Origin, mLine.Target, hitResult);
-		}
-	}
+	// if (!OnComponentBeginOverlap.functions.empty())
+	// {
+	// 	FHitResult hitResult;
+	// 	if (LineTrace2Box(mLine.Origin, mLine.Target, ETraceType::Ground, hitResult))
+	// 	{
+	// 		OnComponentBeginOverlap.Execute(mLine.Origin, mLine.Target, hitResult);
+	// 	}
+	// }
 
 	if (mOwnerActor)
 	{

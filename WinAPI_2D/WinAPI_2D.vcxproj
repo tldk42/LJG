@@ -1715,9 +1715,10 @@
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="DirectX\XZBuffer.cpp" />
-    <ClCompile Include="Game\AI\Test\TestBT.cpp" />
-    <ClCompile Include="Game\AI\Test\TestNode.cpp" />
-    <ClCompile Include="Game\AI\Test\TestNode2.cpp">
+    <ClCompile Include="Game\Actor\AEnemy.cpp" />
+    <ClCompile Include="Game\AI\Test\RibbyBT.cpp" />
+    <ClCompile Include="Game\AI\Test\FlyButterfly.cpp" />
+    <ClCompile Include="Game\AI\Test\DoPunch.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -1879,6 +1880,7 @@
     <ClCompile Include="Game\Object\Game_2\Enemy\Anim\UCroaksAnimator.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\ACroaks.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\Anim\URibbyAnimator.cpp" />
+    <ClCompile Include="Game\Object\Game_2\Enemy\FrogProjectile.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\ARibby.cpp" />
     <ClCompile Include="Game\Object\Tutorial\Background_Tut.cpp" />
     <ClCompile Include="Game\Scene\Game1Scene.cpp" />
@@ -2504,6 +2506,7 @@
     </ClCompile>
     <ClCompile Include="Math\Line.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
+    <ClCompile Include="Shape\CollisionManager.cpp" />
     <ClCompile Include="Shape\UBoxComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MathUtility.cpp" />
@@ -2554,6 +2557,7 @@
     <ClInclude Include="Component\USceneComponent.h" />
     <ClInclude Include="Component\UTextBlock.h" />
     <ClInclude Include="data\constant.h" />
+    <ClInclude Include="data\MonsterData.h" />
     <ClInclude Include="DirectX\Context.h" />
     <ClInclude Include="DirectX\DXWrite.h" />
     <ClInclude Include="DirectX\XLayer.h" />
@@ -2568,19 +2572,22 @@
     <ClInclude Include="DirectX\XViewBuffer.h" />
     <ClInclude Include="DirectX\XWorldBuffer.h" />
     <ClInclude Include="DirectX\XZBuffer.h" />
-    <ClInclude Include="Game\AI\Test\TestBT.h" />
-    <ClInclude Include="Game\AI\Test\TestNode.h" />
-    <ClInclude Include="Game\AI\Test\TestNode2.h" />
+    <ClInclude Include="Game\Actor\AEnemy.h" />
+    <ClInclude Include="Game\AI\Test\RibbyBT.h" />
+    <ClInclude Include="Game\AI\Test\FlyButterfly.h" />
+    <ClInclude Include="Game\AI\Test\DoPunch.h" />
     <ClInclude Include="Game\Animator\TitleScreenAnimator.h" />
     <ClInclude Include="Game\GameData.h" />
     <ClInclude Include="Game\Ground.h" />
     <ClInclude Include="Game\Image\FadeInImage.h" />
     <ClInclude Include="Game\Image\TitleScreenImage.h" />
+    <ClInclude Include="Game\Interface\Interrfaces.h" />
     <ClInclude Include="Game\Object\Game_1\Background_Game1.h" />
     <ClInclude Include="Game\Object\Game_2\Background_Game2.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\Anim\UCroaksAnimator.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\ACroaks.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\Anim\URibbyAnimator.h" />
+    <ClInclude Include="Game\Object\Game_2\Enemy\FrogProjectile.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\ARibby.h" />
     <ClInclude Include="Game\Object\Tutorial\Background_Tut.h" />
     <ClInclude Include="Game\Scene\Game1Scene.h" />
@@ -2602,7 +2609,7 @@
     <ClInclude Include="Math\Box2D.h" />
     <ClInclude Include="Math\Line.h" />
     <ClInclude Include="Math\Transform.h" />
-    <ClInclude Include="Shape\Tracer.h" />
+    <ClInclude Include="Shape\CollisionManager.h" />
     <ClInclude Include="Shape\UBoxComponent.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="InputManager.h" />
@@ -2674,9 +2681,6 @@
   <ItemGroup>
     <Content Include="data\scenes\Intro.json" />
     <Content Include="data\scenes\Tutorial.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Actor\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

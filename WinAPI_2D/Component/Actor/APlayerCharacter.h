@@ -7,12 +7,14 @@ namespace LJG
 
 	class APlayerCharacter : public ACharacter, public TSingleton<APlayerCharacter>
 	{
-
 	public:
 #pragma region Core Interface
 		void Initialize() override;
 		void Update(float DeltaTime) override;
 #pragma endregion
+
+	public:
+		void Shoot();
 
 	public:
 		bool IsAttacking() const { return bIsAttacking; }
@@ -23,11 +25,8 @@ namespace LJG
 
 		void Attack(bool bAttack) override;
 
-		void OnTraceDown(const FVector2f, const FVector2f, struct FHitResult&);
-
 	private:
 		bool bIsAttacking;
-		
 
 	private:
 		friend class TSingleton<APlayerCharacter>;

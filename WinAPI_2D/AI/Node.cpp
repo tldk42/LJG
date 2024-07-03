@@ -3,30 +3,40 @@ namespace LJG::AI
 {
 
 	Node::Node()
-		: ParentNode(nullptr)
 	{}
 
-	Node::Node(const Text& NodeName, const std::vector<Node*>& InChildNodes)
+	Node::Node(Text InNodeName)
+		: NodeName(std::move(InNodeName))
+	{}
+
+	Node::Node(Text InNodeName, const std::vector<NodeSPtr>& InChildNodes)
+		: NodeName(std::move(InNodeName))
 	{
-		for (Node* node : InChildNodes)
+		for (NodeSPtr node : InChildNodes)
 		{
 			Attach(node);
 		}
 	}
 
 	Node::~Node()
-	{
-		
-	}
+	{}
 
 	ENodeState Node::Evaluate()
 	{
 		return ENodeState::Failure;
 	}
 
-	void Node::Attach(Node* InNode)
+	void Node::SetNodes(const std::vector<NodeSPtr>& InChildNodes)
 	{
-		InNode->ParentNode = this;
+		for (NodeSPtr node : InChildNodes)
+		{
+			Attach(node);
+		}
+	}
+
+	void Node::Attach(NodeSPtr InNode)
+	{
+		InNode->ParentNode = weak_from_this();
 		ChildNodes.emplace_back(InNode);
 	}
 
@@ -49,14 +59,14 @@ namespace LJG::AI
 			return DataContext[InKey];
 		}
 
-		Node* node = ParentNode;
+		// NodeSPtr node = ParentNode;
 
-		while (node != nullptr)
-		{
-			if (UObject* value = node->GetData(InKey); value != nullptr)
-				return value;
-			node = node->ParentNode;
-		}
+		// while (node != nullptr)
+		// {
+		// 	if (UObject* value = node->GetData(InKey); value != nullptr)
+		// 		return value;
+		// 	node = node->ParentNode;
+		// }
 
 		return nullptr;
 	}
@@ -69,23 +79,23 @@ namespace LJG::AI
 			return true;
 		}
 
-		Node* node = ParentNode;
-		while (node != nullptr)
-		{
-			if (bool cleared = node->ClearData(InKey))
-				return true;
-			node = node->ParentNode;
-		}
+		// NodeSPtr node = ParentNode;
+		// while (node != nullptr)
+		// {
+		// 	if (bool cleared = node->ClearData(InKey))
+		// 		return true;
+		// 	node = node->ParentNode;
+		// }
 
 		return false;
 	}
 
-	Node* Node::GetRoot()
+	NodeSPtr Node::GetRoot()
 	{
-		Node* node = this;
-		while (node->ParentNode != nullptr)
+		NodeSPtr node = shared_from_this();
+		while (!node->ParentNode.expired())
 		{
-			node = node->ParentNode;
+			node = node->ParentNode.lock();
 		}
 
 		return node;

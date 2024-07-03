@@ -1,52 +1,59 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "Manager.h"
+
 
 namespace LJG
 {
+
 	template <class ClassType>
-	class PoolManager : public ICoreAPI
+	class PoolManager : public TSingleton<PoolManager<ClassType>>
 	{
 	public:
 		PoolManager();
-		~PoolManager() override;
+		~PoolManager();
 
-#pragma region Core Interface
-		void Initialize() override
-		{
-			mObjects.reserve(mMaxPoolSize);
-		}
+		template <typename... Args>
+		std::unique_ptr<ClassType> Spawn(Args&&... InArgs);
 
-		void Update(float DeltaTime) override
-		{
-			for (std::unique_ptr<ClassType>& obj : mObjects)
-			{
-				obj->Update(DeltaTime);
-			}
-		}
-
-		void Render() override
-		{
-			for (std::unique_ptr<ClassType>& obj : mObjects)
-			{
-				obj->Render();
-			}
-		}
-
-		void Release() override
-		{
-			for (std::unique_ptr<ClassType>& obj : mObjects)
-			{
-				obj->Release();
-			}
-		}
-#pragma endregion
+		void DeSpawn(std::unique_ptr<ClassType> Object);
 
 	protected:
 		int32_t                                 mMaxPoolSize = 20.f;
-		std::vector<std::unique_ptr<ClassType>> mObjects;
+		std::vector<std::unique_ptr<ClassType>> mPoolObjects;
 	};
 
+	template <class ClassType>
+	PoolManager<ClassType>::PoolManager()
+	{}
 
-	class ProjectileManager : public PoolManager<ProjectileManager>, public TSingleton<ProjectileManager>
-	{};
+	template <class ClassType>
+	PoolManager<ClassType>::~PoolManager() {}
+
+	template <class ClassType>
+	template <typename... Args>
+	std::unique_ptr<ClassType> PoolManager<ClassType>::Spawn(Args&&... InArgs)
+	{
+		if (mPoolObjects.empty())
+		{
+			for (size_t i = 0; i < mMaxPoolSize; ++i)
+			{
+				mPoolObjects.emplace_back(std::make_unique<ClassType>(std::forward<Args>(InArgs)...));
+			}
+		}
+		std::unique_ptr<ClassType> obj = std::move(mPoolObjects.back());
+		obj->SetActive(true);
+		mPoolObjects.pop_back();
+		return obj;
+	}
+
+	template <class ClassType>
+	void PoolManager<ClassType>::DeSpawn(std::unique_ptr<ClassType> Object)
+	{
+		Object->SetActive(false);
+		mPoolObjects.emplace_back(std::move(Object));
+	}
+
 }

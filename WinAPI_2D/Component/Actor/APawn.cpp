@@ -21,11 +21,14 @@ namespace LJG
 	{
 		AActor::Initialize();
 
+		if (!mDebugBox)
+		{
+			mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
+			mDebugBox->SetScale({125.f, 140.f});
+			mDebugBox->SetColor(FLinearColor::Green);
+			mDebugBox->SetOwnerActor(this);
+		}
 
-		mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
-		mDebugBox->SetScale({125.f, 140.f});
-		mDebugBox->SetColor(FLinearColor::Green);
-		mDebugBox->SetOwnerActor(this);
 
 		if (!mMovementComponent)
 		{

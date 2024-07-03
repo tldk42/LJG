@@ -36,7 +36,8 @@ namespace LJG
 			return rawPtr;
 		}
 
-		void Destroy(const WText& InKey);
+		void SetActive(const bool bActivate) { bActive = bActivate; }
+		void Destroy() const;
 
 		void AttachComponent(UObject* ComponentToAttach);
 		void SetupAttachment(UObject* InParentObj);
@@ -48,6 +49,7 @@ namespace LJG
 		WText   mObjectKey;			// 고유 키
 		AActor* mOwnerActor;			// 오브젝트 소유 액터 
 		bool    bDontDestroyOnLoad; // 씬 이동시 삭제?
+		bool    bActive = true;
 		/*  자식 컴포넌트 (이 개체에 붙는 순간 소유권은 이 오브젝트가 소유) Update,Render, 모두 이 액터에서 진행 */
 		std::unordered_map<WText, UObjectUPtr> mChildObjects;
 

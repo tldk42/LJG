@@ -39,4 +39,11 @@ namespace LJG
 		}
 	}
 
+	bool ObjectManager::DestroyObject(const WText& InObjName)
+	{
+		TrySafeRemove(InObjName);
+
+		return true;
+	}
+
 }
