@@ -22,7 +22,7 @@ namespace LJG::AI
 		{
 			if (Croaks.GetCurrentHealth() > 0.f)
 			{
-				Ribby.SetState(EnumAsByte(ERibbyState::Attack_Fist_Start));
+				Ribby.SetState(EnumAsByte(ERibbyState::Attack_Punch_Start));
 				Croaks.SetState(EnumAsByte(ECroaksState::Idle));
 				return ENodeState::Success;
 			}

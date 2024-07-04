@@ -7,41 +7,27 @@
 #include "Component/Movement/UPlayerMovementComponent.h"
 #include "Component/Actor/APlayerCharacter.h"
 #include "Component/Actor/AProjectile.h"
-#include "Component/Manager/AnimManager.h"
 #include "Helper/EngineHelper.h"
 
 namespace LJG
 {
 	UPlayerAnimator::UPlayerAnimator()
 	{
-		State_Idle        = CreateDefaultSubObject<USpriteAnimation>(L"PA_Idle");
-		State_Move_Ground = CreateDefaultSubObject<USpriteAnimation>(L"PA_Move_Ground");
-		State_Move_Air    = CreateDefaultSubObject<USpriteAnimation>(L"PA_Move_Air");
-		State_Dash_Ground = CreateDefaultSubObject<USpriteAnimation>(L"PA_Dash_Ground");
-		State_Dash_Air    = CreateDefaultSubObject<USpriteAnimation>(L"PA_Dash_Air");
-		State_Jump        = CreateDefaultSubObject<USpriteAnimation>(L"PA_Jump");
-		State_Duck_Start  = CreateDefaultSubObject<USpriteAnimation>(L"PA_Duck_Start");
-		State_Duck_Loop   = CreateDefaultSubObject<USpriteAnimation>(L"PA_Duck_Loop");
-
-		State_Attack_Idle = CreateDefaultSubObject<USpriteAnimation>(L"PA_Attack_Idle");
-		State_Attack_Move = CreateDefaultSubObject<USpriteAnimation>(L"PA_Attack_Move");
-		State_Attack_Duck = CreateDefaultSubObject<USpriteAnimation>(L"PA_Attack_Duck");
+		State_Idle        = CreateSprite(L"cuphead_idle");
+		State_Move_Ground = CreateSprite(L"cuphead_run");
+		State_Move_Air    = CreateSprite(L"PA_Move_Air");
+		State_Dash_Ground = CreateSprite(L"cuphead_dash");
+		State_Dash_Air    = CreateSprite(L"cuphead_dash_air");
+		State_Jump        = CreateSprite(L"cuphead_jump");
+		State_Duck_Start  = CreateSprite(L"cuphead_duck");
+		State_Duck_Loop   = CreateSprite(L"cuphead_duck_idle");
+		State_Attack_Idle = CreateSprite(L"cuphead_shoot_straight");
+		State_Attack_Move = CreateSprite(L"cuphead_run_shoot");
+		State_Attack_Duck = CreateSprite(L"cuphead_duck_shoot");
 		State_Attack_Idle->SetSpeed(1.5f);
 		State_Attack_Move->SetSpeed(1.5f);
 		State_Attack_Duck->SetSpeed(1.5f);
 
-
-		State_Idle->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_idle"));
-		State_Move_Ground->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_run"));
-		State_Move_Air->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_dash_air"));
-		State_Dash_Ground->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_dash"));
-		State_Dash_Air->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_dash_air"));
-		State_Jump->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_jump"));
-		State_Duck_Start->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_duck"));
-		State_Duck_Loop->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_duck_idle"));
-		State_Attack_Idle->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_shoot_straight"));
-		State_Attack_Move->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_run_shoot"));
-		State_Attack_Duck->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_duck_shoot"));
 
 		State_Attack_Idle->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
 		State_Attack_Duck->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));

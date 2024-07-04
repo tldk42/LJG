@@ -10,11 +10,8 @@ namespace LJG
 
 	URibbyAnimator::URibbyAnimator()
 	{
-		State_Intro = CreateDefaultSubObject<USpriteAnimation>(L"Ribby_Intro");
-		State_Idle  = CreateDefaultSubObject<USpriteAnimation>(L"Ribby_Idle");
-
-		State_Intro->SetAnimData(*Manager_Anim.CreateOrLoad(L"shortFrog_intro"));
-		State_Idle->SetAnimData(*Manager_Anim.CreateOrLoad(L"shortFrog_idle"));
+		State_Intro = CreateSprite(L"shortFrog_intro");
+		State_Idle  = CreateSprite(L"shortFrog_idle");
 
 
 		AddState(EnumAsByte(ERibbyState::Intro), State_Intro);

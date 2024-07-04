@@ -9,11 +9,15 @@ namespace LJG
 {
 	UCroaksAnimator::UCroaksAnimator()
 	{
-		State_Intro = CreateDefaultSubObject<USpriteAnimation>(L"Croaks_Intro");
-		State_Idle  = CreateDefaultSubObject<USpriteAnimation>(L"Croaks_Idle");
 
-		State_Intro->SetAnimData(*Manager_Anim.CreateOrLoad(L"tallfrog_intro"));
-		State_Idle->SetAnimData(*Manager_Anim.CreateOrLoad(L"tallfrog_idle"));
+		State_Intro            = CreateSprite(L"tallfrog_intro");
+		State_Idle             = CreateSprite(L"tallfrog_idle");
+		// State_Roll_Left        = CreateSprite(L"Croaks_Roll_Right");
+		// State_Roll_Right       = CreateSprite(L"Croaks_Roll_Left");
+		// State_Attack_Butterfly = CreateSprite(L"Croaks_Attack_Butterfly");
+		// State_Attack_Fan       = CreateSprite(L"Croaks_Attack_Fan");
+		// State_Dead             = CreateSprite(L"Croaks_Dead");
+		
 
 
 		AddState(EnumAsByte(ECroaksState::Intro), State_Intro);
@@ -50,4 +54,3 @@ namespace LJG
 	}
 
 }
-

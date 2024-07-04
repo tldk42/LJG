@@ -1,6 +1,6 @@
 #include "USpriteAnimation.h"
 
-#include "DirectX/XSprite2D.h"
+#include "Component/Manager/AnimManager.h"
 #include "DirectX/XTexture.h"
 
 namespace LJG
@@ -13,7 +13,9 @@ namespace LJG
 		  bLoop(false),
 		  bIsPlaying(false),
 		  bIsPaused(false)
-	{}
+	{
+		SetAnimData(*Manager_Anim.CreateOrLoad(InKey));
+	}
 
 	USpriteAnimation::~USpriteAnimation() = default;
 

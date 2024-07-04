@@ -7,11 +7,8 @@ namespace LJG
 {
 
 	TitleScreenAnimator::TitleScreenAnimator()
-		: UAnimator()
 	{
-		State_Default = CreateDefaultSubObject<USpriteAnimation>(L"S_Default");
-
-		State_Default->SetAnimData(*Manager_Anim.CreateOrLoad(L"cuphead_title_screen"));
+		State_Default = CreateSprite(L"cuphead_title_screen");
 
 		AddState(0, State_Default);
 	}

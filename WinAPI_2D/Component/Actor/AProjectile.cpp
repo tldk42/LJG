@@ -24,8 +24,7 @@ namespace LJG
 		mBoxComponent->OnCollisionEnter_Delegate.Bind(
 			std::bind(&AProjectile::OnCollisionEnter, this, std::placeholders::_1));
 
-		mAnim = CreateDefaultSubObject<USpriteAnimation>(L"Animation");
-		mAnim->SetAnimData(*Manager_Anim.CreateOrLoad(L"projectile_shoot"));
+		mAnim = CreateSprite(L"projectile_shoot");
 		mAnim->SetOwnerActor(this);
 
 		Manager_Collision.EnableLayerCheck(ETraceType::Projectile, ETraceType::Pawn, true);

@@ -55,7 +55,7 @@ namespace LJG
 		Ribby.Initialize();
 		Ribby.SetWorldLocation({300.f, -300.f});
 		Croaks.Initialize();
-		Croaks.SetWorldLocation({400.f, -320.f});
+		Croaks.SetWorldLocation({400.f, -250.f});
 
 		MainCam.SetWorldLocation({0, -110.f});
 	}

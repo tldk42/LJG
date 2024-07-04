@@ -27,7 +27,15 @@ namespace LJG
 		USpriteAnimation* State_Intro;
 
 		USpriteAnimation* State_Idle;
-		USpriteAnimation* State_Roll;
-		USpriteAnimation* State_Attack_Idle;
+
+		USpriteAnimation* State_Roll_Left;
+		USpriteAnimation* State_Roll_Right;
+
+		USpriteAnimation* State_Attack_Punch_Start;
+		USpriteAnimation* State_Attack_Punch_Loop;
+		USpriteAnimation* State_Attack_Spike;
+
+		USpriteAnimation* Dead;
+
 	};
 }
