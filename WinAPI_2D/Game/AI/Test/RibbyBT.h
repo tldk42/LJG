@@ -1,10 +1,7 @@
 #pragma once
 #include "AI/BehaviorTree.h"
+#include "data/MonsterData.h"
 
-namespace LJG
-{
-	class ARibby;
-}
 namespace LJG::AI
 {
 	class RibbyBT : public BehaviorTree
@@ -13,9 +10,10 @@ namespace LJG::AI
 		RibbyBT(AActor* OwnerActor);
 		~RibbyBT();
 
-	protected:
-		void SetupTree() override;
+	
 
+	protected:
+		void        SetupTree() override;
 
 	};
 }

@@ -1,5 +1,7 @@
 #include "AActor.h"
+
 #include <memory>
+#include <ranges>
 
 namespace LJG
 {

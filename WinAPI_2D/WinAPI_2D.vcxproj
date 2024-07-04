@@ -1716,8 +1716,9 @@
     </ClCompile>
     <ClCompile Include="DirectX\XZBuffer.cpp" />
     <ClCompile Include="Game\Actor\AEnemy.cpp" />
+    <ClCompile Include="Game\AI\Test\Node_CheckPhase.cpp" />
     <ClCompile Include="Game\AI\Test\RibbyBT.cpp" />
-    <ClCompile Include="Game\AI\Test\FlyButterfly.cpp" />
+    <ClCompile Include="Game\AI\Test\TestNode.cpp" />
     <ClCompile Include="Game\AI\Test\DoPunch.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2573,11 +2574,11 @@
     <ClInclude Include="DirectX\XWorldBuffer.h" />
     <ClInclude Include="DirectX\XZBuffer.h" />
     <ClInclude Include="Game\Actor\AEnemy.h" />
+    <ClInclude Include="Game\AI\Test\Node_CheckPhase.h" />
     <ClInclude Include="Game\AI\Test\RibbyBT.h" />
-    <ClInclude Include="Game\AI\Test\FlyButterfly.h" />
+    <ClInclude Include="Game\AI\Test\TestNode.h" />
     <ClInclude Include="Game\AI\Test\DoPunch.h" />
     <ClInclude Include="Game\Animator\TitleScreenAnimator.h" />
-    <ClInclude Include="Game\GameData.h" />
     <ClInclude Include="Game\Ground.h" />
     <ClInclude Include="Game\Image\FadeInImage.h" />
     <ClInclude Include="Game\Image\TitleScreenImage.h" />

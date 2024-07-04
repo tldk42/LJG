@@ -17,7 +17,7 @@ namespace LJG
 		  mBoxSize(FVector2f(80, 40))
 	{
 		mSprite2D = std::make_unique<XSprite2D>();
-		mSprite2D->SetZOrder(.01f);
+		mSprite2D->SetZOrder(.1f);
 
 		mBoxComponent = CreateDefaultSubObject<UBoxComponent>(L"CollisionBox", ETraceType::Projectile);
 		mBoxComponent->SetOwnerActor(this);
@@ -39,6 +39,7 @@ namespace LJG
 
 		mAnim->SetAnimData(InAnimData);
 	}
+
 
 	AProjectile::~AProjectile()
 	{}

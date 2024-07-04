@@ -1,9 +1,9 @@
 #include "RibbyBT.h"
 
-#include "FlyButterfly.h"
+#include "TestNode.h"
 #include "DoPunch.h"
+#include "Node_CheckPhase.h"
 #include "AI/Selector.h"
-#include "AI/Sequence.h"
 
 namespace LJG::AI
 {
@@ -17,8 +17,11 @@ namespace LJG::AI
 		mRootNode = std::make_shared<Selector>("Selector");
 		mRootNode->SetNodes(
 			std::vector<NodeSPtr>{
-				//   ----------					 -------------
-				// Punch ? ------------------------- Butterfly?
-				std::make_shared<DoPunch>(), std::make_shared<FlyButterfly>()});
+				std::make_shared<Node_CheckPhase>(
+					"Phase1?", std::vector<NodeSPtr>{std::make_shared<Fire_Punch>(), std::make_shared<TestNode>()},
+					EGame2Phase::Phase1),
+				std::make_shared<Node_CheckPhase>("Phase2?", std::vector<NodeSPtr>{}, EGame2Phase::Phase2),
+				std::make_shared<Node_CheckPhase>("Phase3?", std::vector<NodeSPtr>{}, EGame2Phase::Phase3)
+			});
 	}
 }

@@ -4,9 +4,9 @@
 
 #include "Manager.h"
 
-
 namespace LJG
 {
+	class AProjectile;
 
 	template <class ClassType>
 	class PoolManager : public TSingleton<PoolManager<ClassType>>
@@ -56,4 +56,6 @@ namespace LJG
 		mPoolObjects.emplace_back(std::move(Object));
 	}
 
+	class ProjectileManager : public PoolManager<AProjectile>
+	{};
 }

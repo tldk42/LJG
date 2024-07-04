@@ -4,11 +4,10 @@
 namespace LJG::AI
 {
 
-	/** 작은 개구리가 펀치를 날린다. */
-	class DoPunch : public Node
+	class Fire_Punch : public Node
 	{
 	public:
-		DoPunch();
+		Fire_Punch();
 
 	public:
 		ENodeState Evaluate() override;

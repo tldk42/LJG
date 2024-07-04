@@ -4,7 +4,6 @@
 #include "AI/BehaviorTree.h"
 #include "Component/Actor/APlayerCharacter.h"
 #include "Component/Manager/SceneManager.h"
-#include "Game/AI/Test/RibbyBT.h"
 #include "Game/Object/Game_2/Background_Game2.h"
 #include "Game/Object/Game_2/Enemy/ARibby.h"
 #include "Game/Object/Game_2/Enemy/ACroaks.h"
@@ -35,10 +34,8 @@ namespace LJG
 	void Game2Scene::Render()
 	{
 		UScene::Render();
-		//
-		// Croaks.Render();
-		// Ribby.Render();
-
+		Croaks.Render();
+		Ribby.Render();
 		LocalPlayer.Render();
 	}
 
@@ -50,20 +47,16 @@ namespace LJG
 	void Game2Scene::LoadScene()
 	{
 		UScene::LoadScene();
-
-		Obj_Background = Manager_Object.CreateOrLoad<Background_Game2>(L"Background");
-
 		Manager_Collision.EnableLayerCheck(ETraceType::Pawn, ETraceType::Ground, true);
 
-		Croaks.Initialize();
-		Ribby.Initialize();
 		LocalPlayer.Initialize();
 
-		//
+		Obj_Background = Manager_Object.CreateOrLoad<Background_Game2>(L"Background");
+		Ribby.Initialize();
 		Ribby.SetWorldLocation({300.f, -300.f});
+		Croaks.Initialize();
 		Croaks.SetWorldLocation({400.f, -320.f});
 
-		
 		MainCam.SetWorldLocation({0, -110.f});
 	}
 

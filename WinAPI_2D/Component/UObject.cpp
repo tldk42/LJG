@@ -42,14 +42,9 @@ namespace LJG
 		{
 			return;
 		}
-
-
-		for (auto& obj : mChildObjects | std::views::values)
+		for (auto it = mChildObjects.begin(); it != mChildObjects.end(); ++it)
 		{
-			if (obj)
-			{
-				obj->Render();
-			}
+			it->second->Render();
 		}
 
 	}
