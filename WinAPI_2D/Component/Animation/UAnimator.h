@@ -29,7 +29,6 @@ namespace LJG
 
 		bool GetFlip() const { return bFlipX; }
 
-	protected:
 		void SetState(const uint8_t InState, const bool bLoop);
 
 	protected:

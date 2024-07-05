@@ -69,6 +69,7 @@ namespace LJG
 		Ground,
 		Projectile,
 		UI,
+		None,
 		Max
 	};
 
@@ -79,6 +80,5 @@ namespace LJG
 		Failure
 	};
 
-	
 
 }

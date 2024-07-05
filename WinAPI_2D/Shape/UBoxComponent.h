@@ -32,6 +32,7 @@ namespace LJG
 		void       OnCollisionExit(FHitResult_Box2D& HitResult) override;
 
 		void SetWorldLocation(const FVector2f& InLocation) override;
+		void SetWorldRotation(const float InDegree) override;
 		void SetScale(const FVector2f& InScale) override;
 		void SetColor(const FLinearColor& InColor) const;
 

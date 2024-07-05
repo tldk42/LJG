@@ -177,8 +177,8 @@ namespace LJG
 		 */
 		mVertexBufferArray =
 		{
-			{FVector3f(0.f, 0.f, 0.01f), {0, 0}, mDrawColor},
-			{FVector3f(0.f, -1.f, 0.01f), {1, 0}, mDrawColor}
+			{FVector3f(0.f, 0.f, 0.01f), mDrawColor, {0, 0}},
+			{FVector3f(0.f, -1.f, 0.01f), mDrawColor, {1, 0}}
 		};
 	}
 

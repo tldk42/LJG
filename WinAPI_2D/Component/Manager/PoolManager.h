@@ -41,6 +41,7 @@ namespace LJG
 			for (size_t i = 0; i < mMaxPoolSize; ++i)
 			{
 				mPoolObjects.emplace_back(std::make_unique<ClassType>(std::forward<Args>(InArgs)...));
+				mPoolObjects[i]->SetActive(false);
 			}
 		}
 		std::unique_ptr<ClassType> obj = std::move(mPoolObjects.back());

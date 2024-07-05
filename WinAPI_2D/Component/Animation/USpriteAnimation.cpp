@@ -10,7 +10,7 @@ namespace LJG
 		: USceneComponent(InKey),
 		  mCurrentFrame(0),
 		  mSpeed(1.f),
-		  bLoop(false),
+		  bLoop(true),
 		  bIsPlaying(false),
 		  bIsPaused(false)
 	{
@@ -107,13 +107,14 @@ namespace LJG
 
 	void USpriteAnimation::Play(const bool InLoop)
 	{
+		bLoop = InLoop;
+		bIsPlaying    = true;
+		bIsPaused     = false;
+		mCurrentFrame = 0;
+		mElapsedTime  = steady_clock::now();
 		if (!bIsPlaying)
 		{
-			bIsPlaying    = true;
-			bIsPaused     = false;
-			bLoop         = InLoop;
-			mCurrentFrame = 0;
-			mElapsedTime  = steady_clock::now();
+	
 		}
 	}
 

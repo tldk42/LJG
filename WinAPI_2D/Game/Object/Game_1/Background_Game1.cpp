@@ -37,14 +37,14 @@ namespace LJG
 																  L"rsc/CupHead/Sprite/BackgroundSheet_11.png",
 																  0.508f);
 
-		Image_BackgroundSheet_0->SetPosition(FVector2f(25.2000004, -01.28999993));
-		Image_BackgroundSheet_1->SetPosition(FVector2f(7.19999969, 115.3));
-		Image_BackgroundSheet_2->SetPosition(FVector2f(3.9, 155.5));
-		Image_BackgroundSheet_3->SetPosition(FVector2f(3.16, 78.8));
-		Image_BackgroundSheet_4->SetPosition(FVector2f(31.8, 109.3));
-		Image_BackgroundSheet_8->SetPosition(FVector2f(-256.3, 265.4));
-		Image_BackgroundSheet_10->SetPosition({-55.3f, 117.2f});
-		Image_BackgroundSheet_11->SetPosition({348.4, 163.3f});
+		Image_BackgroundSheet_0->SetWorldLocation(FVector2f(25.2000004, -01.28999993));
+		Image_BackgroundSheet_1->SetWorldLocation(FVector2f(7.19999969, 115.3));
+		Image_BackgroundSheet_2->SetWorldLocation(FVector2f(3.9, 155.5));
+		Image_BackgroundSheet_3->SetWorldLocation(FVector2f(3.16, 78.8));
+		Image_BackgroundSheet_4->SetWorldLocation(FVector2f(31.8, 109.3));
+		Image_BackgroundSheet_8->SetWorldLocation(FVector2f(-256.3, 265.4));
+		Image_BackgroundSheet_10->SetWorldLocation({-55.3f, 117.2f});
+		Image_BackgroundSheet_11->SetWorldLocation({348.4, 163.3f});
 
 		Image_BackgroundSheet_0->SetScale({1.5f, 1.5f});
 		Image_BackgroundSheet_1->SetScale({1.5f, 1.5f});
@@ -60,17 +60,17 @@ namespace LJG
 												   L"rsc/CupHead/Sprite/BackgroundSheet_9.png",
 												   0.9f);
 		Image_Sky->SetScale({2.66f, 2.66f});
-		Image_Sky->SetPosition({23.15f, 129.5f});
+		Image_Sky->SetWorldLocation({23.15f, 129.5f});
 
 
 		Image_Grass_0 = CreateDefaultSubObject<UImage>(L"Image_Grass_0",
 													   L"rsc/CupHead/Sprite/BackgroundSheet_12.png",
 													   0.511f);
-		Image_Grass_0->SetPosition(FVector2f(78.2736897, 78.2736897));
+		Image_Grass_0->SetWorldLocation(FVector2f(78.2736897, 78.2736897));
 		Image_Grass_1 = CreateDefaultSubObject<UImage>(L"Image_Grass_1",
 													   L"rsc/CupHead/Sprite/BackgroundSheet_14.png",
 													   0.511f);
-		Image_Grass_1->SetPosition(FVector2f(71.2000012, 155.599999));
+		Image_Grass_1->SetWorldLocation(FVector2f(71.2000012, 155.599999));
 		Image_Grass_1->SetScale({1.5f, 1.5f});
 
 

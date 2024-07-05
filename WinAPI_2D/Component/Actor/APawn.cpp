@@ -55,6 +55,7 @@ namespace LJG
 
 	void APawn::Jump()
 	{
+		
 		mMovementComponent->Jump();
 	}
 

@@ -76,6 +76,13 @@ namespace LJG
 		mBox.Max = GetWorldLocation() + mDebugShape->GetScale() / 2.f;
 	}
 
+	void UBoxComponent::SetWorldRotation(const float InDegree)
+	{
+		USceneComponent::SetWorldRotation(InDegree);
+
+		mDebugShape->SetWorldRotation(InDegree);
+	}
+
 	void UBoxComponent::SetScale(const FVector2f& InScale)
 	{
 		USceneComponent::SetScale(InScale);

@@ -9,7 +9,6 @@ namespace LJG
 	class UBoxComponent;
 	class UPlayerAnimator;
 	class USpriteAnimation;
-	class ACamera;
 
 	class APawn : public AActor
 	{
@@ -27,7 +26,7 @@ namespace LJG
 		inline UPawnMovementComponent2D* GetMovementComponent() const { return mMovementComponent; }
 #pragma endregion
 
-		void         Jump();
+		virtual void Jump();
 		virtual void Attack(bool bAttack);
 
 	protected:

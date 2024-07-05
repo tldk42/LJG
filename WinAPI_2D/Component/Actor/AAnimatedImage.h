@@ -17,7 +17,7 @@ namespace LJG
 		void Release() override;
 	#pragma endregion
 
-		void Play(bool bReverse = false, bool bEnableLoop = false) const;
+		virtual void Play(bool bReverse = false, bool bEnableLoop = false);
 
 		void SetScale(const FVector2f& InScale) override;
 

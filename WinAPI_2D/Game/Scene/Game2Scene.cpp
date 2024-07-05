@@ -4,6 +4,7 @@
 #include "AI/BehaviorTree.h"
 #include "Component/Actor/APlayerCharacter.h"
 #include "Component/Manager/SceneManager.h"
+#include "Game/Object/Common/InGame_HUD.h"
 #include "Game/Object/Game_2/Background_Game2.h"
 #include "Game/Object/Game_2/Enemy/ARibby.h"
 #include "Game/Object/Game_2/Enemy/ACroaks.h"
@@ -29,6 +30,7 @@ namespace LJG
 		Croaks.Update(DeltaTime);
 		Ribby.Update(DeltaTime);
 		LocalPlayer.Update(DeltaTime);
+		GAME_HUD.Update(DeltaTime);
 	}
 
 	void Game2Scene::Render()
@@ -37,10 +39,12 @@ namespace LJG
 		Croaks.Render();
 		Ribby.Render();
 		LocalPlayer.Render();
+		GAME_HUD.Render();
 	}
 
 	void Game2Scene::Release()
 	{
+		GAME_HUD.Release();
 		UScene::Release();
 	}
 
@@ -48,16 +52,20 @@ namespace LJG
 	{
 		UScene::LoadScene();
 		Manager_Collision.EnableLayerCheck(ETraceType::Pawn, ETraceType::Ground, true);
+		Manager_Collision.EnableLayerCheck(ETraceType::Projectile, ETraceType::Pawn, true);
+		Manager_Collision.EnableLayerCheck(ETraceType::Pawn, ETraceType::Pawn, true);
 
-		LocalPlayer.Initialize();
+		GAME_HUD.Initialize();
+		LocalPlayer.SetWorldLocation({-200.f, 0.f});
 
 		Obj_Background = Manager_Object.CreateOrLoad<Background_Game2>(L"Background");
 		Ribby.Initialize();
-		Ribby.SetWorldLocation({300.f, -300.f});
 		Croaks.Initialize();
-		Croaks.SetWorldLocation({400.f, -250.f});
 
 		MainCam.SetWorldLocation({0, -110.f});
+
+		LocalPlayer.Initialize();
+
 	}
 
 	void Game2Scene::EndScene()

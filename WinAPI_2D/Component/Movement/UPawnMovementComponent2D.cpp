@@ -37,7 +37,6 @@ namespace LJG
 		UObject::Update(DeltaTime);
 
 		HandleJumpAction(DeltaTime);
-		// HandleCrouchAction(DeltaTime);
 
 		const FVector2f ownerLocation = mOwnerActor->GetWorldLocation();
 
@@ -45,6 +44,11 @@ namespace LJG
 		mAcceleration          = (newVelocity - mVelocity) / DeltaTime;
 		mVelocity              = newVelocity;
 		mPreviousLocation      = ownerLocation;
+
+		if (newVelocity.IsNearlyZero())
+		{
+			mInputVector = FVector2f::ZeroVector;
+		}
 	}
 
 	void UPawnMovementComponent2D::Jump()

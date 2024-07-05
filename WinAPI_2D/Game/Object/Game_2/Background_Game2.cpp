@@ -39,9 +39,9 @@ namespace LJG
 		Image_JazzbarTables->SetScale({1.5f, 1.5f});
 		Image_JazzbarPlants->SetScale({1.5f, 1.5f});
 
-		Image_JazzbarMid->SetPosition(FVector2f(0.f, -66.2f) * 1.5f);
-		Image_JazzbarPlants->SetPosition(FVector2f(-21.1f, -294.8f) * 1.5f);
-		Image_JazzbarTables->SetPosition(FVector2f(10.7f, -271.2f) * 1.5f);
+		Image_JazzbarMid->SetWorldLocation(FVector2f(0.f, -66.2f) * 1.5f);
+		Image_JazzbarPlants->SetWorldLocation(FVector2f(-21.1f, -294.8f) * 1.5f);
+		Image_JazzbarTables->SetWorldLocation(FVector2f(10.7f, -271.2f) * 1.5f);
 	}
 
 	Background_Game2::~Background_Game2() {}
@@ -54,10 +54,5 @@ namespace LJG
 	void Background_Game2::Render()
 	{
 		USceneComponent::Render();
-
-		for (auto& obj : mChildObjects | std::views::values)
-		{
-			obj->Render();
-		}
 	}
 }

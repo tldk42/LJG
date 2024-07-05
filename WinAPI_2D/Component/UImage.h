@@ -1,9 +1,10 @@
 #pragma once
-#include "UObject.h"
+#include "USceneComponent.h"
+#include "DirectX/XTexture.h"
 
 namespace LJG
 {
-	class UImage : public UObject
+	class UImage : public USceneComponent
 	{
 	public:
 		explicit UImage(const WText& InKey, const WText& InPath, const float InZOrder);
@@ -17,8 +18,10 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
-		void SetPosition(const FVector2f& InLocation) const;
-		void SetScale(const FVector2f& InScale);
+		void SetTexture(XTexture* InTexture) const;
+
+		void SetWorldLocation(const FVector2f& InLocation) override;
+		void SetScale(const FVector2f& InScale) override;
 
 	protected:
 		WText         mTexturePath;

@@ -9,8 +9,8 @@ SamplerState SampleType : register(s0);
 struct VS_OUTPUT
 {
     float4 Pos : SV_Position;
-	float2 Texture : TEXCOORD0;
 	float4 Color :COLOR;
+	float2 Texture : TEXCOORD0;
 };
 
 float4 ps(VS_OUTPUT input) : SV_TARGET
@@ -20,10 +20,10 @@ float4 ps(VS_OUTPUT input) : SV_TARGET
 	
     texColor = shaderTexture.Sample(SampleType, input.Texture);
     
-    if (texColor.a <= .5f)
+    if (texColor.a <= .4f)
     {
         discard;
     }
-	
+
 	return texColor;
 }

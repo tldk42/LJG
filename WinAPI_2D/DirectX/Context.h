@@ -31,12 +31,15 @@ namespace LJG
 		HRESULT CreateDevice();
 		HRESULT CreateGIFactory();
 		HRESULT CreateSwapChain();
-		HRESULT  SetDepthStencil();
+		HRESULT SetDepthStencil();
 		void    SetRenderTarget();
 
 	private:
 		// Resize Callback
 		void OnResizeCallback(UINT InWidth, UINT InHeight);
+
+	public:
+		static void SetDepthEnable(const bool bEnable);
 
 	public:
 #pragma region Get

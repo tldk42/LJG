@@ -10,18 +10,18 @@ namespace LJG
 {
 	XShape2D_Box::XShape2D_Box()
 	{
-		mZOrder    = 0.01f;
+		mZOrder    = 0.15f;
 		mPrimType  = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
-		mDrawColor = FLinearColor::Green;
+		mDrawColor = {0, 1, 0, 1};
 	}
 
 	void XShape2D_Box::Render()
 	{
-		
 		XVertex2D::Render();
 
 		Context::GetDeviceContext()->DrawIndexed(8, 0, 0);
 	}
+
 
 	HRESULT XShape2D_Box::LoadShaderAndInputLayout()
 	{

@@ -31,7 +31,7 @@ namespace LJG
 		AActor::Release();
 	}
 
-	void AAnimatedImage::Play(bool bReverse, bool bEnableLoop) const
+	void AAnimatedImage::Play(bool bReverse, bool bEnableLoop)
 	{
 		if (mAnimator)
 		{

@@ -75,6 +75,7 @@ namespace LJG
 			OnAnimNotifyBegin.resize(InAnimData.Textures.size());
 		}
 
+		bool IsLoopAnim() const { return bLoop; }
 		void SetSpeed(const float_t InSpeed) { mSpeed = InSpeed; }
 		void SetLoop(const bool InLoop) { bLoop = InLoop; }
 		void SetFlip(const bool bEnable) { bFlipX = bEnable; }

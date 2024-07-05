@@ -3,11 +3,10 @@
 
 namespace LJG::AI
 {
-
-	class Fire_Punch : public Node
+	class Ribby_Roll2 : public Node
 	{
 	public:
-		Fire_Punch();
+		Ribby_Roll2(Text InName);
 
 	public:
 		ENodeState Evaluate() override;

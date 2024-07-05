@@ -37,7 +37,7 @@ namespace LJG
 			// ????? Transition ????
 			if (currentAnim->GetNextAnim() < MAXUINT8)
 			{
-				SetState(currentAnim->GetNextAnim(), true);
+				SetState(currentAnim->GetNextAnim(), mStateMachine[currentAnim->GetNextAnim()]->IsLoopAnim());
 			}
 			mSprite2D->SetTexture(currentAnim->GetCurrentTexture());
 

@@ -4,6 +4,7 @@
 
 namespace LJG
 {
+
 	void AnimManager::LoadAllAnims()
 	{
 		mManagedList.try_emplace(L"cuphead_dash",
@@ -85,34 +86,229 @@ namespace LJG
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/IrisTransitionSheet_", 17, 17.f, true)));
 
-		#pragma region 俺备府
+
+#pragma region 俺备府
+		const WText RibbyPath = L"rsc/CupHead_re/Ribby/";
+
+		//================================================ Ribby =========================================================//
 		mManagedList.try_emplace(L"shortFrog_idle",
 								 std::make_unique<FAnimData>(
-									 AnimUtil::LoadAnimations(L"rsc/CupHead/Sprite/Game_1/Ribby/Idle/shortFrog_idle2_",
-															  13, 13.f, true)));
+									 AnimUtil::LoadAnimations(RibbyPath + L"Idle/shortFrog_idle_",
+															  36, 36.f, true)));
 		mManagedList.try_emplace(L"shortFrog_intro",
 								 std::make_unique<FAnimData>(
-									 AnimUtil::LoadAnimations(L"rsc/CupHead/Sprite/Game_1/Ribby/Intro/shortFrog_intro_",
+									 AnimUtil::LoadAnimations(RibbyPath + L"Intro/shortFrog_intro_",
 															  15, 15.f, true)));
 
 		mManagedList.try_emplace(L"shortfrog_fist",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(
-										 L"rsc/CupHead/Sprite/Game_1/Ribby/Fist Attack/Fists/Normal/shortfrog_fist_",
+										 RibbyPath + L"Fist Attack/Fists/Normal/shortfrog_fist_",
 										 15, 15.f, true)));
+		mManagedList.try_emplace(L"shortfrog_fist_pink",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Fist Attack/Fists/Pink/shortfrog_fist_p_",
+										 15, 15.f, true)));
+
+
+		mManagedList.try_emplace(L"shortFrog_fist_start",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Fist Attack/Start/shortFrog_fist_start_",
+										 22, 22.f, true)));
+		mManagedList.try_emplace(L"shortFrog_fist_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Fist Attack/Loop/shortFrog_fist_loop_",
+										 8, 15.f, true)));
+		mManagedList.try_emplace(L"shortFrog_fist_end",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Fist Attack/End/shortFrog_fist_end_",
+										 9, 9.f, true)));
+
+		mManagedList.try_emplace(L"shortFrog_roll_intro_start",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Roll/Intro/shortFrog_roll_intro_start_",
+										 5, 10.f, true)));
+		mManagedList.try_emplace(L"shortFrog_roll_intro_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Roll/Intro/Loop/shortFrog_roll_intro_loop_",
+										 3, 6.f, true)));
+		mManagedList.try_emplace(L"shortFrog_roll_intro_end",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Roll/Intro/shortFrog_roll_intro_end_",
+										 6, 12.f, true)));
+		mManagedList.try_emplace(L"shortFrog_roll_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Roll/Roll Loop/shortFrog_roll_",
+										 8, 16.f, true)));
+		mManagedList.try_emplace(L"shortFrog_roll_end",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Roll/Crash/shortFrog_roll_end_",
+										 16, 16.f, true)));
+
+		mManagedList.try_emplace(L"shortFrog_clap_intro_start",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/shortFrog_clap_intro_start_",
+										 7, 7.f, true)));
+		mManagedList.try_emplace(L"shortFrog_clap_intro_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/shortFrog_clap_intro_loop_",
+										 3, 6.f, true)));
+		mManagedList.try_emplace(L"shortFrog_clap_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/shortFrog_clap_loop_",
+										 11, 11.f, true)));
+
+		mManagedList.try_emplace(L"shorfrog_clap_ball_blue",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/Ball/shorfrog_clap_ball_b_",
+										 1, 1.f, true)));
+		mManagedList.try_emplace(L"shorfrog_clap_ball_yellow",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/Ball/shorfrog_clap_ball_y_",
+										 1, 1.f, true)));
+		mManagedList.try_emplace(L"shorfrog_clap_ball_green",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 RibbyPath + L"Clap Attack/Ball/shorfrog_clap_ball_g_",
+										 1, 1.f, true)));
+		//================================================ Ribby =========================================================//
+
+
+		//================================================ Croaks =========================================================//
+		const WText CroaksPath = L"rsc/CupHead_re/Croaks/";
 
 		mManagedList.try_emplace(L"tallfrog_intro",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(
-										 L"rsc/CupHead/Sprite/Game_1/Croaks - Slot Machine/Intro/tallfrog_intro_",
+										 CroaksPath + L"Intro/tallfrog_intro_",
 										 15, 15.f, true)));
 		mManagedList.try_emplace(L"tallfrog_idle",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(
-										 L"rsc/CupHead/Sprite/Game_1/Croaks - Slot Machine/Idle/tallfrog_idle2_",
-										 18, 18.f, true)));
+										 CroaksPath + L"Idle/tallfrog_idle_",
+										 36, 36.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_spit_start",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Spit/Start/tallfrog_spit_start_",
+										 14, 14.f, true)));
+		mManagedList.try_emplace(L"tallfrog_spit_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Spit/Loop/tallfrog_spit_loop_",
+										 8, 8.f, true)));
+		mManagedList.try_emplace(L"tallfrog_spit_end",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Spit/End/tallfrog_spit_end_",
+										 3, 3.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_fan_intro",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Fan/Intro/tallfrog_fan_",
+										 23, 23.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_fan_loop1",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Fan/Loop 1/tallfrog_fan_Loop1_",
+										 5, 5.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_fan_loop2",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Fan/Loop 2/tallfrog_fan_Loop2_",
+										 4, 4.f, true)));
+		mManagedList.try_emplace(L"tallfrog_fan_outro",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Fan/Outro/tallfrog_fan_outro_",
+										 14, 14.f, true)));
 
 
-		#pragma endregion
+		mManagedList.try_emplace(L"tallfrog_fan_wind",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Fan/Wind/tallfrog_fan_wind_",
+										 9, 9.f, true)));
+		//================================================ Croaks =========================================================//
+
+		//================================================ Firefly ========================================================//
+		mManagedList.try_emplace(L"firefly_down",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Down/tallfrog_firefly_down_",
+										 4, 4.f, true)));
+
+		mManagedList.try_emplace(L"firefly_up",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Up/tallfrog_firefly_up_",
+										 4, 4.f, true)));
+
+		mManagedList.try_emplace(L"firefly_left",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Left/tallfrog_firefly_left_",
+										 4, 4.f, true)));
+
+		mManagedList.try_emplace(L"firefly_idle",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Idle/tallfrog_firefly_idle_",
+										 10, 10.f, true)));
+
+		mManagedList.try_emplace(L"firefly_dead",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Death/tallfrog_firefly_death_",
+										 9, 9.f, true)));
+		//================================================ Firefly ========================================================//
+
+
+		//============================================== Slot Machine =====================================================//
+		// mManagedList.try_emplace(L"tallfrog_morph_start",
+		// 						 std::make_unique<FAnimData>(
+		// 							 AnimUtil::LoadAnimations(
+		// 								 CroaksPath + L"Slot Machine/Morph/Intro/tallfrog_morph_start_",
+		// 								 3, 9.f, true)));
+		//
+		// mManagedList.try_emplace(L"tallfrog_morph_loop",
+		// 						 std::make_unique<FAnimData>(
+		// 							 AnimUtil::LoadAnimations(
+		// 								 CroaksPath + L"Slot Machine/Morph/Intro/Loop/tallfrog_morph_loop_",
+		// 								 3, 9.f, true)));
+		//
+		// mManagedList.try_emplace(L"tallfrog_morph_end",
+		// 						 std::make_unique<FAnimData>(
+		// 							 AnimUtil::LoadAnimations(
+		// 								 CroaksPath + L"Slot Machine/Morph/Intro/Outro/tallfrog_morph_end_",
+		// 								 25, 25.f, true)));
+		//
+		// mManagedList.try_emplace(L"firefly_dead",
+		// 						 std::make_unique<FAnimData>(
+		// 							 AnimUtil::LoadAnimations(
+		// 								 CroaksPath + L"Firefly/Death/tallfrog_firefly_death_",
+		// 								 9, 9.f, true)));
+
+		//============================================== Slot Machine =====================================================//
+
+#pragma endregion
 	}
 }

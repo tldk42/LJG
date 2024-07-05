@@ -11,8 +11,8 @@ namespace LJG
 	struct FVertexBase
 	{
 		FVector3f    Pos;
-		FVector2f    Tex;
 		FLinearColor Color;
+		FVector2f    Tex;
 	};
 #pragma endregion
 

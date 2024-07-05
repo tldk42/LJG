@@ -1,5 +1,6 @@
 #pragma once
 #include "AActor.h"
+#include "FTimer.h"
 
 namespace LJG
 {
@@ -27,7 +28,9 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		void AddWorldLocation(const FVector2f& InAddLocation) override;
 		void SetWorldLocation(const FVector2f& InLocation) override;
+		void SetWorldRotation(const float InDegree) override;
 		void Launch();
 
 	public:
@@ -52,6 +55,8 @@ namespace LJG
 		XSprite2DUPtr     mSprite2D;
 		USpriteAnimation* mAnim;
 		UBoxComponent*    mBoxComponent; // Default Size 80,40
+
+		FTimer timer;
 
 	private:
 		static int32_t mObjectNum;

@@ -9,7 +9,7 @@ namespace LJG
 
 	namespace AI
 	{
-		class RibbyBT;
+		class Game2BT;
 	};
 
 	class Game2Scene : public UScene

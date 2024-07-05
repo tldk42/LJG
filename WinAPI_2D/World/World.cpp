@@ -28,7 +28,7 @@ namespace LJG
 		GUI_FileBrowser*       fileBrowser = Manager_GUI.CreateOrLoad<GUI_FileBrowser>(L"FileBrowser");
 		GUI_MapEditor*         mapEditor   = Manager_GUI.CreateOrLoad<GUI_MapEditor>(L"MapEditor");
 		GUI_Hierarchy*         hierarchy   = Manager_GUI.CreateOrLoad<GUI_Hierarchy>(L"Hierarchy");
-
+		
 		Manager_Scene.MoveScene(L"Game_2");
 	}
 

@@ -20,6 +20,8 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		inline bool    IsActive() const { return bActive; }
+		inline bool    IsPoolManagedComponent() const { return bIsPoolManaged; }
 		inline WText   GetName() const { return mObjectKey; }
 		inline AActor* GetOwnerActor() const { return mOwnerActor; }
 		inline void    SetOwnerActor(AActor* InActor) { mOwnerActor = InActor; }
@@ -36,7 +38,15 @@ namespace LJG
 			return rawPtr;
 		}
 
-		void SetActive(const bool bActivate) { bActive = bActivate; }
+		void SetActive(const bool bActivate)
+		{
+			bActive = bActivate;
+			for (auto& obj : mChildObjects)
+			{
+				obj.second->bActive = bActivate;
+			}
+		}
+
 		void Destroy() const;
 
 		void AttachComponent(UObject* ComponentToAttach);
@@ -49,7 +59,9 @@ namespace LJG
 		WText   mObjectKey;			// 고유 키
 		AActor* mOwnerActor;			// 오브젝트 소유 액터 
 		bool    bDontDestroyOnLoad; // 씬 이동시 삭제?
-		bool    bActive = true;
+		bool    bActive        = true;
+		bool    bIsPoolManaged = false;
+
 		/*  자식 컴포넌트 (이 개체에 붙는 순간 소유권은 이 오브젝트가 소유) Update,Render, 모두 이 액터에서 진행 */
 		std::unordered_map<WText, UObjectUPtr> mChildObjects;
 

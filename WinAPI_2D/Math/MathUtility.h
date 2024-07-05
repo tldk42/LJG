@@ -5,12 +5,15 @@
 #define M_INVERSE_SQRT_2	(0.70710678118654752440084436210485f)
 
 #pragma once
+#include <random>
+
 struct FMath
 {
-	// [[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
-	// {
-	// 	return abs(A - B) <= ErrorTolerance;
-	// }
+	[[nodiscard]] static inline bool IsNearlyEqual(float A, float B, float ErrorTolerance = M_SMALL_NUMBER)
+	{
+		return Abs(A - B) <= ErrorTolerance;
+	}
+
 	//----------------------- Min Max ------------------------------------
 	template <typename T>
 	[[nodiscard]] static constexpr inline T Max(const T A, const T B)
@@ -63,4 +66,17 @@ struct FMath
 		return A >= 0;
 	};
 
+	//--------------------------- Rand Generator -------------------------------------------
+	static float_t GenerateRandomfloat(float_t InMin, float_t InMax)
+	{
+		// 랜덤 장치를 초기화합니다.
+		std::random_device rd;
+		// 랜덤 숫자 생성기를 초기화합니다.
+		std::mt19937 gen(rd());
+		// 주어진 범위 내에서 부동 소수점 숫자를 생성하는 분포를 정의합니다.
+		std::uniform_real_distribution<> dis(InMin, InMax);
+
+		// 랜덤 부동 소수점 숫자를 반환합니다.
+		return dis(gen);
+	}
 };

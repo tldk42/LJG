@@ -65,7 +65,7 @@ namespace LJG
 	{
 		mDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
-		mDeviceContext->OMSetDepthStencilState(mDepthStencilState.Get(), 1);
+		SetDepthEnable(true);
 	}
 
 	void Context::Render()
@@ -238,13 +238,22 @@ namespace LJG
 		}
 	}
 
+	void Context::SetDepthEnable(const bool bEnable)
+	{
+		Get()->mDeviceContext->OMSetDepthStencilState(Get()->mDepthStencilState.Get(), 1);
+	}
+
 	void Context::SetRenderTarget()
 	{
 
 		ComPtr<ID3D11Texture2D> backBuffer;
 		CHECK_RESULT(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
 										   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf())));
-		CHECK_RESULT(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
+		D3D11_RENDER_TARGET_VIEW_DESC desc = {};
+		memset(&desc, 0, sizeof(desc));
+		desc.Format        = DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		CHECK_RESULT(mDevice->CreateRenderTargetView(backBuffer.Get(), &desc, mRenderTargetView.GetAddressOf()));
 
 		mDeviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 

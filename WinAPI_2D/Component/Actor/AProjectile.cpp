@@ -1,5 +1,6 @@
 #include "AProjectile.h"
 
+#include "APlayerCharacter.h"
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
 #include "Game/Actor/AEnemy.h"
@@ -12,12 +13,14 @@ namespace LJG
 
 	AProjectile::AProjectile()
 		: AActor(std::format(L"Projectile_{}", mObjectNum++).c_str()),
-		  mLifeTime(10.f),
+		  mLifeTime(5.f),
 		  mVelocity({1000.f, 0}),
 		  mBoxSize(FVector2f(80, 40))
 	{
-		mSprite2D = std::make_unique<XSprite2D>();
-		mSprite2D->SetZOrder(.1f);
+		bIsPoolManaged = true;
+		
+		mSprite2D      = std::make_unique<XSprite2D>();
+		mSprite2D->SetZOrder(.2f);
 
 		mBoxComponent = CreateDefaultSubObject<UBoxComponent>(L"CollisionBox", ETraceType::Projectile);
 		mBoxComponent->SetOwnerActor(this);
@@ -27,7 +30,6 @@ namespace LJG
 		mAnim = CreateSprite(L"projectile_shoot");
 		mAnim->SetOwnerActor(this);
 
-		Manager_Collision.EnableLayerCheck(ETraceType::Projectile, ETraceType::Pawn, true);
 	}
 
 	AProjectile::AProjectile(const FAnimData& InAnimData, const FVector2f& InSize, const FVector2f& InVelocity)
@@ -45,6 +47,8 @@ namespace LJG
 
 	void AProjectile::Initialize()
 	{
+		timer.Reset();
+
 		AActor::Initialize();
 
 		mBoxComponent->SetScale(mBoxSize);
@@ -54,10 +58,14 @@ namespace LJG
 	{
 		if (bLaunched && bActive)
 		{
+			if (timer.ElapsedSeconds() >= mLifeTime)
+			{
+				bLaunched = false;
+				SetActive(false);
+			}
 			AActor::Update(DeltaTime);
 
 			AddWorldLocation(mVelocity * DeltaTime);
-			mSprite2D->AddWorldLocation(mVelocity * DeltaTime);
 			mSprite2D->Update(DeltaTime);
 		}
 	}
@@ -78,11 +86,27 @@ namespace LJG
 		AActor::Release();
 	}
 
+	void AProjectile::AddWorldLocation(const FVector2f& InAddLocation)
+	{
+		AActor::AddWorldLocation(InAddLocation);
+		mSprite2D->AddWorldLocation(InAddLocation);
+
+	}
+
 	void AProjectile::SetWorldLocation(const FVector2f& InLocation)
 	{
 		AActor::SetWorldLocation(InLocation);
+		mBoxComponent->SetWorldLocation(InLocation);
 		mAnim->SetWorldLocation(InLocation);
 		mSprite2D->SetWorldLocation(InLocation);
+	}
+
+	void AProjectile::SetWorldRotation(const float InDegree)
+	{
+		AActor::SetWorldRotation(InDegree);
+		mBoxComponent->SetWorldRotation(InDegree);
+		mAnim->SetWorldRotation(InDegree);
+		mSprite2D->SetWorldRotation(InDegree);
 	}
 
 	void AProjectile::Launch()

@@ -1,8 +1,6 @@
 #include "ObjectManager.h"
-
-#include "Component/Actor/AActor.h"
+#include <ranges>
 #include "Component/UObject.h"
-#include "Window.h"
 
 namespace LJG
 {
@@ -11,19 +9,35 @@ namespace LJG
 
 	void ObjectManager::Update(float DeltaTime)
 	{
-		Get().RemoveInvalidResource();
-
-		for (const auto& [key, object] : mManagedList)
+		std::vector<UObject*> defferedDeSpawnObj;
+		for (const auto& object : mManagedList | std::views::values)
 		{
-			object->Update(DeltaTime);
+			if (object)
+			{
+				if (object->bActive)
+				{
+					object->Update(DeltaTime);
+				}
+				else if (object->bIsPoolManaged)
+				{
+					defferedDeSpawnObj.emplace_back(object.get());
+				}
+			}
+		}
+		for (UObject* obj : defferedDeSpawnObj)
+		{
+			DeSpawn(obj);
 		}
 	}
 
 	void ObjectManager::Render()
 	{
-		for (const auto& [key, object] : mManagedList)
+		for (const auto& object : mManagedList | std::views::values)
 		{
-			object->Render();
+			if (object->bActive)
+			{
+				object->Render();
+			}
 		}
 	}
 

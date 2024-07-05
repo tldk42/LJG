@@ -17,24 +17,24 @@ namespace LJG
 	void XBlendState::Initialize()
 	{
 		/**
-		 * Blend 구조??
-		 * RenderTarget[8] - 최?? 8개의 RenderTarget??블렌????정
+		 * Blend 구조체
+		 * RenderTarget[8] - 최대 8개의 RenderTarget에 블렌드 설정
 		 * 
-		 *	BlendEnable - ??성?????? 
+		 *	BlendEnable - 활성화 여부 
 		 *	
-		 *	SrcBlend  - 블렌????산????용??는 ??스 ??
-		 *	DestBlend - 블렌????산????용??는 ??????
-		 *	BlendOp   - 블렌????산
+		 *	SrcBlend  - 블렌딩 연산에 사용되는 소스 값
+		 *	DestBlend - 블렌딩 연산에 사용되는 타겟 값
+		 *	BlendOp   - 블렌딩 연산
 		 *
 		 *	SrcBlendAlpha  -
 		 *	DestBlendAlpha - 
 		 *	BlendOpAlpha   - 
 		 *
-		 *	RenderTargetWriteMask - ??더 ??켓의 ??상 마스??지??
+		 *	RenderTargetWriteMask - 렌더 타켓의 색상 마스크 지정
 		 */
 		D3D11_BLEND_DESC blendDesc{};
 		{
-			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // 모든 ??상 채널 ??성
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // 모든 색상 채널 활성
 
 			blendDesc.RenderTarget[0].BlendOp      = D3D11_BLEND_OP_ADD;
 			blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;

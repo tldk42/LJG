@@ -23,6 +23,7 @@ namespace LJG
 			std::unique_ptr<ClassType> pooledObj = PoolManager<ClassType>::Get().Spawn(std::forward<Args>(InArgs)...);
 			ClassType*                 rawPtr    = pooledObj.get();
 			mManagedList.try_emplace(pooledObj->GetName(), std::move(pooledObj));
+
 			return rawPtr;
 		}
 
@@ -36,10 +37,10 @@ namespace LJG
 				std::unique_ptr<ClassType> ptr(rawPtr);
 				PoolManager<ClassType>::Get().DeSpawn(std::move(ptr));
 			}
-			else
-			{
-				mManagedList[objName].reset(rawPtr);
-			}
+			// else
+			// {
+			// 	mManagedList[objName].reset(rawPtr);
+			// }
 		}
 
 		bool DestroyObject(const WText& InObjName);

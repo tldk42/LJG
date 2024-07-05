@@ -7,19 +7,21 @@
 namespace LJG
 {
 
-	AHUD::AHUD()
-		: AActor(L"HUD")
+	AHUD::AHUD(const WText& InKey)
+		: AActor(InKey)
 	{
 		AHUD::Initialize();
 	}
+
+	AHUD::~AHUD() {}
 
 	void AHUD::Initialize()
 	{
 		AActor::Initialize();
 
-		mFpsText = CreateDefaultSubObject<UTextBlock>(L"FpsTextBlock", L"");
-		mFpsText->SetupAttachment(this);
-		mFpsText->SetOwnerActor(this);;
+		// mFpsText = CreateDefaultSubObject<UTextBlock>(L"FpsTextBlock", L"");
+		// mFpsText->SetupAttachment(this);
+		// mFpsText->SetOwnerActor(this);;
 
 	}
 
@@ -27,7 +29,7 @@ namespace LJG
 	{
 		AActor::Update(DeltaTime);
 
-		mFpsText->SetText(std::format(L"FPS: {:d}", GetFramePerSeconds()));
+		// mFpsText->SetText(std::format(L"FPS: {:d}", GetFramePerSeconds()));
 	}
 
 	void AHUD::Render()

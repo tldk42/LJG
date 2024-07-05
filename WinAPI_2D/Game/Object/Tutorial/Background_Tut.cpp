@@ -35,8 +35,8 @@ namespace LJG
 	{
 		USceneComponent::Update(DeltaTime);
 
-		Image_Background->SetPosition(MainCam.GetWorldLocation());
-		Image_BackgroundMask->SetPosition(MainCam.GetWorldLocation());
+		Image_Background->SetWorldLocation(MainCam.GetWorldLocation());
+		Image_BackgroundMask->SetWorldLocation(MainCam.GetWorldLocation());
 	}
 
 	void Tutorial_Map::Render()

@@ -7,7 +7,7 @@ namespace LJG
 {
 
 	UImage::UImage(const WText& InKey, const WText& InPath, const float InZOrder)
-		: UObject(InKey),
+		: USceneComponent(InKey),
 		  mTexturePath(InPath)
 	{
 		mSprite2D = std::make_unique<XSprite2D>(mTexturePath, InZOrder);
@@ -46,12 +46,15 @@ namespace LJG
 		UObject::Release();
 	}
 
-	void UImage::SetPosition(const FVector2f& InLocation) const
+	void UImage::SetTexture(XTexture* InTexture) const
 	{
-		if (IsValid(mSprite2D.get()))
-		{
-			mSprite2D->SetWorldLocation(InLocation);
-		}
+		mSprite2D->SetTexture(InTexture);
+	}
+
+	void UImage::SetWorldLocation(const FVector2f& InLocation)
+	{
+		USceneComponent::SetWorldLocation(InLocation);
+		mSprite2D->SetWorldLocation(InLocation);
 	}
 
 	void UImage::SetScale(const FVector2f& InScale)

@@ -16,15 +16,15 @@ cbuffer ProjectionBuffer : register(b2)
 struct VS_INPUT
 {
     float3 Pos : POSITION;
-    float2 Tex : TEX;
     float4 Col : COLOR;
+    float2 Tex : TEX;
 };
 
 struct VS_OUTPUT
 {
 	float4 Pos : SV_Position;
-	float2 Tex : TEXCOORD0;
 	float4 Col : COLOR;
+	float2 Tex : TEXCOORD0;
 };
 
 VS_OUTPUT vs(VS_INPUT input)

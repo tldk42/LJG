@@ -28,23 +28,19 @@ namespace LJG
 
 	void UObject::Update(float DeltaTime)
 	{
-		if (!bActive)
-			return;
-		for (const auto& object : mChildObjects)
+		for (const auto& val : mChildObjects | std::views::values)
 		{
-			object.second->Update(DeltaTime);
+			if (val->IsActive())
+				val->Update(DeltaTime);
 		}
 	}
 
 	void UObject::Render()
 	{
-		if (!bActive)
+		for (const auto& val : mChildObjects | std::views::values)
 		{
-			return;
-		}
-		for (auto it = mChildObjects.begin(); it != mChildObjects.end(); ++it)
-		{
-			it->second->Render();
+			if (val->IsActive())
+				val->Render();
 		}
 
 	}

@@ -92,6 +92,7 @@ namespace LJG
 			TVector2 GetSafeNormal(T Tolerance = M_SMALL_NUMBER) const;
 
 			bool IsNearlyZero(T Tolerance = M_KINDA_SMALL_NUMBER) const;
+			bool IsNearlyEqual(const TVector2<T>& Other, T Tolerance= M_KINDA_SMALL_NUMBER) const;
 			bool IsZero() const;
 
 			inline std::string ToString() const;
@@ -355,7 +356,7 @@ namespace LJG
 		template <typename T>
 		TVector2<T> TVector2<T>::GetSafeNormal(T Tolerance) const
 		{
-			const T squareSum = GetLengthSquared();
+			const T squareSum = GetLength();
 
 			if (squareSum > Tolerance)
 			{
@@ -371,6 +372,13 @@ namespace LJG
 		bool TVector2<T>::IsNearlyZero(T Tolerance) const
 		{
 			return abs(X) <= Tolerance && abs(Y) <= Tolerance;
+		}
+
+		template <typename T>
+		bool TVector2<T>::IsNearlyEqual(const TVector2<T>& Other, T Tolerance ) const
+		{
+			
+			return operator-(Other).IsNearlyZero(Tolerance);
 		}
 
 		template <typename T>

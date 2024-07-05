@@ -31,10 +31,13 @@ namespace LJG
 		USpriteAnimation* State_Dash_Ground;
 		USpriteAnimation* State_Dash_Air;
 		USpriteAnimation* State_Jump;
+		USpriteAnimation* State_Parry;
 		USpriteAnimation* State_Duck_Start;
 		USpriteAnimation* State_Duck_Loop;
 		USpriteAnimation* State_Attack_Idle;
+		USpriteAnimation* State_Attack_Up;
 		USpriteAnimation* State_Attack_Move;
+		USpriteAnimation* State_Attack_Move_Diagonal;
 		USpriteAnimation* State_Attack_Duck;
 
 		std::vector<AProjectile*> mProjectiles;

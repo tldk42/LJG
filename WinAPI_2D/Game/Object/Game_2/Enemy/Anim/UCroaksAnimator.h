@@ -21,19 +21,24 @@ namespace LJG
 
 	private:
 		// Properties
-		UPawnMovementComponent2D* mOwnerMovementComp;
 
-		
+
 		// Anim States
 		USpriteAnimation* State_Intro;
 
 		USpriteAnimation* State_Idle;
-		
+
 		USpriteAnimation* State_Roll_Left;
 		USpriteAnimation* State_Roll_Right;
-		
-		USpriteAnimation* State_Attack_Butterfly;
-		USpriteAnimation* State_Attack_Fan;
+
+		USpriteAnimation* State_Attack_Spit_Start;
+		USpriteAnimation* State_Attack_Spit_Loop;
+		USpriteAnimation* State_Attack_Spit_End;
+
+		USpriteAnimation* State_Attack_Fan_Start;
+		USpriteAnimation* State_Attack_Fan_Loop1;
+		USpriteAnimation* State_Attack_Fan_Loop2;
+		USpriteAnimation* State_Attack_Fan_End;
 
 		USpriteAnimation* State_Dead;
 	};

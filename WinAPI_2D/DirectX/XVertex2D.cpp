@@ -1,7 +1,6 @@
 #include "XVertex2D.h"
 #include "XWorldBuffer.h"
 #include "Context.h"
-#include "Window.h"
 #include "XShaderData.h"
 #include "Component/Manager/ShaderManager.h"
 #include "Helper/UDXHelper.h"
@@ -138,7 +137,7 @@ namespace LJG
 		HRESULT result = S_OK;
 
 		mShaderData = Manager_Shader.CreateOrLoad(L"AlphaBlend", L"Shader/alphablend.vsh", L"Shader/alphablend.psh");
-		
+
 		return result;
 	}
 
@@ -152,10 +151,10 @@ namespace LJG
 		 */
 		mVertexBufferArray =
 		{
-			{FVector3f(-.5f, .5f, mZOrder), {0, 0}, mDrawColor},
-			{FVector3f(.5f, .5f, mZOrder), {1, 0}, mDrawColor},
-			{FVector3f(.5f, -.5f, mZOrder), {1, 1}, mDrawColor},
-			{FVector3f(-.5f, -.5f, mZOrder), {0, 1}, mDrawColor},
+			{FVector3f(-.5f, .5f, mZOrder), mDrawColor, {0, 0}},
+			{FVector3f(.5f, .5f, mZOrder), mDrawColor, {1, 0}},
+			{FVector3f(.5f, -.5f, mZOrder), mDrawColor, {1, 1}},
+			{FVector3f(-.5f, -.5f, mZOrder), mDrawColor, {0, 1}}
 		};
 	}
 

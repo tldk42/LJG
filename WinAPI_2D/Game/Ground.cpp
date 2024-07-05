@@ -36,7 +36,7 @@ namespace LJG
 		AActor::SetWorldLocation(InLocation);
 		if (mImage)
 		{
-			mImage->SetPosition(InLocation);
+			mImage->SetWorldLocation(InLocation);
 		}
 		if (mBoxComponent)
 		{
