@@ -20,6 +20,8 @@ namespace LJG
 		void Release() override;
 #pragma endregion
 
+		void RenderDefaultSprite() const;
+
 		void PlayDefaultTrack(bool bReverse = false, bool bLoop = false);
 		void AddState(uint8_t InState, USpriteAnimation* InAnimation);
 		void AddTransition(const uint8_t InSrc, const uint8_t InDest, const std::function<bool()>& InCond);

@@ -7,19 +7,20 @@
 #include "Component/Movement/UPlayerMovementComponent.h"
 #include "Component/Actor/APlayerCharacter.h"
 #include "Component/Actor/AProjectile.h"
+#include "Component/Manager/AnimManager.h"
 #include "Helper/EngineHelper.h"
 
 namespace LJG
 {
 	UPlayerAnimator::UPlayerAnimator()
 	{
-		State_Idle                 = CreateSprite(L"cuphead_idle");
-		State_Move_Ground          = CreateSprite(L"cuphead_run");
-		State_Move_Air             = CreateSprite(L"PA_Move_Air");
-		State_Dash_Ground          = CreateSprite(L"cuphead_dash");
-		State_Dash_Air             = CreateSprite(L"cuphead_dash_air");
-		State_Jump                 = CreateSprite(L"cuphead_jump");
-		State_Parry                = CreateSprite(L"cuphead_parry");
+		State_Idle        = CreateSprite(L"cuphead_idle");
+		State_Move_Ground = CreateSprite(L"cuphead_run");
+		State_Move_Air    = CreateSprite(L"PA_Move_Air");
+		State_Dash_Ground = CreateSprite(L"cuphead_dash");
+		State_Dash_Air    = CreateSprite(L"cuphead_dash_air");
+		State_Jump        = CreateSprite(L"cuphead_jump");
+		// State_Parry                = CreateSprite(L"cuphead_parry");
 		State_Duck_Start           = CreateSprite(L"cuphead_duck");
 		State_Duck_Loop            = CreateSprite(L"cuphead_duck_idle");
 		State_Attack_Idle          = CreateSprite(L"cuphead_shoot_straight");
@@ -55,7 +56,7 @@ namespace LJG
 		AddState(EnumAsByte(EPlayerAnimState::Duck_Shoot), State_Attack_Duck);
 		AddState(EnumAsByte(EPlayerAnimState::Dash_Ground), State_Dash_Ground);
 		AddState(EnumAsByte(EPlayerAnimState::Dash_Air), State_Dash_Air);
-		AddState(EnumAsByte(EPlayerAnimState::Parry), State_Parry);
+		// AddState(EnumAsByte(EPlayerAnimState::Parry), State_Parry);
 		AddState(EnumAsByte(EPlayerAnimState::Move_Shoot_Diagonal), State_Attack_Move_Diagonal);
 		AddState(EnumAsByte(EPlayerAnimState::Shoot_Up), State_Attack_Up);
 	}
@@ -65,6 +66,22 @@ namespace LJG
 	void UPlayerAnimator::Initialize()
 	{
 		UAnimator::Initialize();
+
+		LocalPlayer.OnPlayerParryStart.Bind([&](){
+			if (!bParryAnimApplied)
+			{
+				bParryAnimApplied = true;
+				State_Jump->SetAnimData(*Manager_Anim.GetResource(L"cuphead_parry"));
+			}
+		});
+
+		State_Jump->OnAnimBlendOut.Bind([&](){
+			if (bParryAnimApplied)
+			{
+				bParryAnimApplied = false;
+				State_Jump->SetAnimData(*Manager_Anim.GetResource(L"cuphead_jump"));
+			}
+		});
 
 		mOwnerMovementComp = static_cast<UPlayerMovementComponent*>(GetOwnerActor()->
 			GetComponentByID(L"PlayerMovementComp"));
@@ -196,21 +213,11 @@ namespace LJG
 
 	void UPlayerAnimator::Update(float DeltaTime)
 	{
-		for (auto& obj : mProjectiles)
-		{
-			obj->Update(DeltaTime);
-		}
-
 		UAnimator::Update(DeltaTime);
 	}
 
 	void UPlayerAnimator::Render()
 	{
-
-		for (auto& obj : mProjectiles)
-		{
-			obj->Render();
-		}
 		UAnimator::Render();
 	}
 

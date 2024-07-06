@@ -61,6 +61,18 @@ namespace LJG
 		mSprite2D = nullptr;
 	}
 
+	void UAnimator::RenderDefaultSprite() const
+	{
+		if (mStateMachine.contains(mCurrentState))
+		{
+			if (!mSprite2D->GetTexture())
+			{
+				mSprite2D->SetTexture(mStateMachine.at(mCurrentState)->GetCurrentTexture());
+			}
+			mSprite2D->Render();
+		}
+	}
+
 	void UAnimator::PlayDefaultTrack(bool bReverse, bool bLoop)
 	{
 		bIsPlaying = true;

@@ -1,13 +1,14 @@
-#include "Ribby_Roll2.h"
+#include "Ribby_Roll.h"
 #include "Game/Object/Game_2/Enemy/ARibby.h"
 
 namespace LJG::AI
 {
 
-	Ribby_Roll2::Ribby_Roll2(Text InName)
-		: Node(std::move(InName)) {}
+	Ribby_Roll::Ribby_Roll(Text InName, const bool bLeft)
+		: Node(std::move(InName)),
+		  bLeftRoll(bLeft) {}
 
-	ENodeState Ribby_Roll2::Evaluate()
+	ENodeState Ribby_Roll::Evaluate()
 	{
 		switch (static_cast<ERibbyState>(Ribby.GetState()))
 		{
@@ -18,8 +19,8 @@ namespace LJG::AI
 			}
 			return ENodeState::Running;
 		case ERibbyState::Roll_Loop:
-			// Target ÁöÁ¡ Roll
-			Ribby.Roll(true);
+			// Target ???? Roll
+			Ribby.Roll(bLeftRoll);
 			return ENodeState::Running;
 		}
 

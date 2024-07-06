@@ -46,6 +46,8 @@ namespace LJG
 
 	DECLARE_DYNAMIC_DELEGATE(FOnAnimFinished)
 
+	DECLARE_DYNAMIC_DELEGATE(FOnAnimBlendOut)
+
 	class USpriteAnimation : public USceneComponent
 	{
 	public:
@@ -87,6 +89,7 @@ namespace LJG
 	public:
 		std::vector<FOnAnimNotifyBegin> OnAnimNotifyBegin;
 		FOnAnimFinished                 OnAnimFinished;
+		FOnAnimBlendOut                 OnAnimBlendOut;
 
 	private:
 		uint32_t                 mCurrentFrame;

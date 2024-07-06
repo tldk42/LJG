@@ -107,15 +107,13 @@ namespace LJG
 
 	void USpriteAnimation::Play(const bool InLoop)
 	{
-		bLoop = InLoop;
+		bLoop         = InLoop;
 		bIsPlaying    = true;
 		bIsPaused     = false;
 		mCurrentFrame = 0;
 		mElapsedTime  = steady_clock::now();
 		if (!bIsPlaying)
-		{
-	
-		}
+		{}
 	}
 
 	void USpriteAnimation::PlayReverse(const bool InLoop)
@@ -137,6 +135,7 @@ namespace LJG
 	{
 		bIsPlaying = false;
 		bIsPaused  = false;
+		OnAnimBlendOut.Execute();
 	}
 
 	void USpriteAnimation::AddTransition(const uint8_t InState, const std::function<bool()>& InCond)

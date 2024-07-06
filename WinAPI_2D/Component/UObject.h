@@ -69,5 +69,5 @@ namespace LJG
 		friend class ObjectManager;
 	};
 
-	#define CreateSprite(str) CreateDefaultSubObject<USpriteAnimation>(str);
+	#define CreateSprite(str) CreateDefaultSubObject<USpriteAnimation>(str)
 }

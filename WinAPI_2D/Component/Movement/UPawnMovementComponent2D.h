@@ -33,6 +33,7 @@ namespace LJG
 
 #pragma region Set
 		inline void SetJumpPower(const float_t InJumpPower) { mJumpPower_Value = InJumpPower; }
+		inline void ResetJumpPower() { mJumpPower_Current = (mJumpPower_Value - 200); }
 
 		void Jump();
 #pragma endregion

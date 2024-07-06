@@ -74,7 +74,22 @@ struct FMath
 		// 랜덤 숫자 생성기를 초기화합니다.
 		std::mt19937 gen(rd());
 		// 주어진 범위 내에서 부동 소수점 숫자를 생성하는 분포를 정의합니다.
-		std::uniform_real_distribution<> dis(InMin, InMax);
+		std::uniform_real_distribution dis(InMin, InMax);
+
+
+		// 랜덤 부동 소수점 숫자를 반환합니다.
+		return dis(gen);
+	}
+
+	static int32_t GenerateNum(int32_t InMin, int32_t InMax)
+	{
+		// 랜덤 장치를 초기화합니다.
+		std::random_device rd;
+		// 랜덤 숫자 생성기를 초기화합니다.
+		std::mt19937 gen(rd());
+		// 주어진 범위 내에서 부동 소수점 숫자를 생성하는 분포를 정의합니다.
+		std::uniform_int_distribution dis(InMin, InMax);
+
 
 		// 랜덤 부동 소수점 숫자를 반환합니다.
 		return dis(gen);

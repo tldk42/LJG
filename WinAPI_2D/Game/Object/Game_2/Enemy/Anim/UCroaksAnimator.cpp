@@ -12,9 +12,9 @@ namespace LJG
 		State_Intro = CreateSprite(L"tallfrog_intro");
 		State_Idle  = CreateSprite(L"tallfrog_idle");
 
-		State_Attack_Spit_Start = CreateSprite(L"tallfrog_spit_start")
-		State_Attack_Spit_Loop  = CreateSprite(L"tallfrog_spit_loop")
-		State_Attack_Spit_End   = CreateSprite(L"tallfrog_spit_end")
+		State_Attack_Spit_Start = CreateSprite(L"tallfrog_spit_start");
+		State_Attack_Spit_Loop  = CreateSprite(L"tallfrog_spit_loop");
+		State_Attack_Spit_End   = CreateSprite(L"tallfrog_spit_end");
 
 		State_Attack_Fan_Start = CreateSprite(L"tallfrog_fan_intro");
 		State_Attack_Fan_Loop1 = CreateSprite(L"tallfrog_fan_loop1");

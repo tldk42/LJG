@@ -6,6 +6,8 @@ namespace LJG
 {
 	#define LocalPlayer APlayerCharacter::Get()
 
+	DECLARE_DYNAMIC_DELEGATE(FOnPlayerParryStart)
+
 	class APlayerCharacter : public ACharacter, public IDamagable, public TSingleton<APlayerCharacter>
 	{
 	public:
@@ -24,28 +26,39 @@ namespace LJG
 
 	public:
 		void Shoot();
+		void Jump() override;
 
 	public:
-		bool IsAttacking() const { return bIsAttacking; }
-		bool IsAttackingUp() const { return bAttackingUp; }
-		bool IsAttackingDiagonalUp() const { return bAttackingDiagonalUp; }
+		inline bool IsAttacking() const { return bIsAttacking; }
+		inline bool IsAttackingUp() const { return bAttackingUp; }
+		inline bool IsAttackingDiagonalUp() const { return bAttackingDiagonalUp; }
+		inline bool IsParring() const { return bParrying; }
 
 	private:
 		void AddMovementInput(const FVector2f& MovementInputAmount);
 		void OnMovementInputPressed(float DeltaTime, bool bFlip);
-		void LookUpTarget(const bool bLookUp);
 
 		void Attack(bool bAttack) override;
 
 	private:
+		void LookUpTarget(const bool bLookUp);
+		void HandleParry();
 		void OnCollisionEnter(FHitResult_Box2D& HitResult);
 
+	public:
+		FOnPlayerParryStart OnPlayerParryStart;
+
 	private:
-		bool    bIsAttacking;
-		bool    bAttackingUp;
-		bool    bAttackingDiagonalUp;
+		bool bIsAttacking;
+		bool bAttackingUp;
+		bool bAttackingDiagonalUp;
+		bool bParrying;
+
 		int32_t mCurrentHP;
 		int32_t mMaxHP;
+
+		int32_t mCurrentMP = 0;
+		int32_t mMaxMP     = 500;
 
 	private:
 		friend class TSingleton<APlayerCharacter>;

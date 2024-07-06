@@ -7,6 +7,14 @@ namespace LJG
 
 	void AnimManager::LoadAllAnims()
 	{
+		//============================================== HUD =====================================================//
+		mManagedList.try_emplace(L"hud_ch_card_flip",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/Sprite/hud_ch_card_flip_", 6, 12.f, true)));
+
+		//============================================== HUD =====================================================//
+
+
 		mManagedList.try_emplace(L"cuphead_dash",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_dash_", 6, 12.f, true)));

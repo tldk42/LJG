@@ -106,7 +106,16 @@ namespace LJG
 
 	void APlayerCharacter::OnHit(float InDamage)
 	{
-		mCurrentHP--;
+
+		// Parry °¡´É & Parrying
+		if (InDamage == 0 && bParrying)
+		{
+			HandleParry();
+		}
+		else
+		{
+			mCurrentHP--;
+		}
 
 		// if (mCurrentHP < 0)
 		// {
@@ -145,6 +154,22 @@ namespace LJG
 		proj->SetVelocity(ProjectileVelocity);
 		proj->SetDamage(20.f);
 		proj->Launch();
+	}
+
+	void APlayerCharacter::Jump()
+	{
+		if (!mMovementComponent->IsJumping())
+		{
+			ACharacter::Jump();
+			return;
+		}
+
+		if (!bParrying)
+		{
+			bParrying = true;
+			FTimer::SetTimer([&](){ bParrying = false; }, 0.3f);
+			OnPlayerParryStart.Execute();
+		}
 	}
 
 	void APlayerCharacter::AddMovementInput(const FVector2f& MovementInputAmount)
@@ -205,6 +230,14 @@ namespace LJG
 		bIsAttacking = bAttack;
 	}
 
+	void APlayerCharacter::HandleParry()
+	{
+		LOG_DX_INFO("PARRY!!!");
+		mMovementComponent->ResetJumpPower();
+
+		//TODO: Add MP
+	}
+
 	void APlayerCharacter::OnCollisionEnter(FHitResult_Box2D& HitResult)
 	{
 		if (HitResult.Src->GetTraceType() == ETraceType::Pawn || HitResult.Dest->GetTraceType() == ETraceType::Pawn)
@@ -216,11 +249,16 @@ namespace LJG
 			}
 			else if (HitResult.Src->GetTraceType() == ETraceType::Projectile)
 			{
-				if (dynamic_cast<FrogProjectile*>(HitResult.Src->GetOwnerActor()))
+				FrogProjectile* projectile = dynamic_cast<FrogProjectile*>(HitResult.Src->GetOwnerActor());
+				if (projectile)
 				{
-					OnHit(0);
+					OnHit(projectile->IsParriable() ? 0 : 1);
 				}
 			}
+		}
+		if (HitResult.Dest && HitResult.Dest->GetTraceType() == ETraceType::Ground)
+		{
+			bParrying = false;
 		}
 	}
 

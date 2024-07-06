@@ -7,8 +7,8 @@
 #include "Ribby_Fist.h"
 #include "Node_CheckPhase.h"
 #include "Ribby_Phase2.h"
-#include "Ribby_Roll2.h"
-#include "Ribby_Roll3.h"
+#include "Ribby_Roll.h"
+#include "Croaks_Morph.h"
 #include "AI/Selector.h"
 #include "AI/Sequence.h"
 
@@ -36,7 +36,7 @@ namespace LJG::AI
 				// Phase2는 같이 공격
 				std::make_shared<Node_CheckPhase>(
 					"Phase2?", std::vector<NodeSPtr>{
-						std::make_shared<Ribby_Roll2>("Change Roll!"),
+						std::make_shared<Ribby_Roll>("Change Roll!", true),
 						std::make_shared<Sequence>(
 							"Phase2",
 							std::vector<NodeSPtr>{/* | Decorator  <Phase 2> |*/
@@ -48,7 +48,18 @@ namespace LJG::AI
 					}, EGame2Phase::Phase2),
 				std::make_shared<Node_CheckPhase>(
 					"Phase3?", std::vector<NodeSPtr>{
-						std::make_shared<Ribby_Roll3>("Change Roll!")
+						std::make_shared<Selector>("Roll Or SlotMachine", std::vector<NodeSPtr>{
+						std::make_shared<Sequence>("Roll",
+							std::vector<NodeSPtr>{
+								std::make_shared<Ribby_Roll>("Change Roll!", false)
+								
+
+
+							}),
+							
+							
+					}),
+						
 						/*std::make_shared<Sequence>(
 							"Phase2",
 							std::vector<NodeSPtr>{/* | Decorator  <Phase 2> |#1#
@@ -59,5 +70,6 @@ namespace LJG::AI
 							})*/
 					}, EGame2Phase::Phase3)
 			});
+
 	}
 }

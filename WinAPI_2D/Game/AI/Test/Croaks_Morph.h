@@ -3,13 +3,12 @@
 
 namespace LJG::AI
 {
-	class Ribby_Roll2 : public Node
+	class Croaks_Morph : public Node
 	{
 	public:
-		Ribby_Roll2(Text InName);
+		Croaks_Morph(Text InName);
 
 	public:
 		ENodeState Evaluate() override;
 	};
-
 }

@@ -1,6 +1,4 @@
 #include "AProjectile.h"
-
-#include "APlayerCharacter.h"
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
 #include "Game/Actor/AEnemy.h"
@@ -13,13 +11,14 @@ namespace LJG
 
 	AProjectile::AProjectile()
 		: AActor(std::format(L"Projectile_{}", mObjectNum++).c_str()),
+		  mTypeFlag(EProjectileFlag::Player),
 		  mLifeTime(5.f),
 		  mVelocity({1000.f, 0}),
 		  mBoxSize(FVector2f(80, 40))
 	{
 		bIsPoolManaged = true;
-		
-		mSprite2D      = std::make_unique<XSprite2D>();
+
+		mSprite2D = std::make_unique<XSprite2D>();
 		mSprite2D->SetZOrder(.2f);
 
 		mBoxComponent = CreateDefaultSubObject<UBoxComponent>(L"CollisionBox", ETraceType::Projectile);

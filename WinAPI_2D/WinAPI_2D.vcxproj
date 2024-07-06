@@ -1721,7 +1721,7 @@
     <ClCompile Include="Game\AI\Test\Node_CheckPhase.cpp" />
     <ClCompile Include="Game\AI\Test\Game2BT.cpp" />
     <ClCompile Include="Game\AI\Test\Croaks_Spit.cpp" />
-    <ClCompile Include="Game\AI\Test\Ribby_Roll3.cpp" />
+    <ClCompile Include="Game\AI\Test\Croaks_Morph.cpp" />
     <ClCompile Include="Game\AI\Test\Ribby_Fist.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -1800,12 +1800,13 @@
       <AdditionalIncludeDirectories>;C:\Users\tldk4\.vcpkg-clion\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="Game\AI\Test\Ribby_Phase2.cpp" />
-    <ClCompile Include="Game\AI\Test\Ribby_Roll2.cpp" />
+    <ClCompile Include="Game\AI\Test\Ribby_Roll.cpp" />
     <ClCompile Include="Game\Animator\TitleScreenAnimator.cpp" />
     <ClCompile Include="Game\Ground.cpp" />
     <ClCompile Include="Game\Image\FadeInImage.cpp" />
     <ClCompile Include="Game\Image\TitleScreenImage.cpp" />
     <ClCompile Include="Game\Object\Common\InGame_HUD.cpp" />
+    <ClCompile Include="Game\Object\Common\MPCardSlot.cpp" />
     <ClCompile Include="Game\Object\Game_1\Background_Game1.cpp" />
     <ClCompile Include="Game\Object\Game_2\Background_Game2.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -1895,6 +1896,7 @@
     <ClCompile Include="Game\Object\Game_2\Enemy\Movement\UFlyingMovementComponent.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\AWindSprite.cpp" />
     <ClCompile Include="Game\Object\Tutorial\Background_Tut.cpp" />
+    <ClCompile Include="Game\Player\PeaShooter.cpp" />
     <ClCompile Include="Game\Scene\Game1Scene.cpp" />
     <ClCompile Include="Game\Scene\Game2Scene.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -2590,16 +2592,17 @@
     <ClInclude Include="Game\AI\Test\Node_CheckPhase.h" />
     <ClInclude Include="Game\AI\Test\Game2BT.h" />
     <ClInclude Include="Game\AI\Test\Croaks_Spit.h" />
-    <ClInclude Include="Game\AI\Test\Ribby_Roll3.h" />
+    <ClInclude Include="Game\AI\Test\Croaks_Morph.h" />
     <ClInclude Include="Game\AI\Test\Ribby_Fist.h" />
     <ClInclude Include="Game\AI\Test\Ribby_Phase2.h" />
-    <ClInclude Include="Game\AI\Test\Ribby_Roll2.h" />
+    <ClInclude Include="Game\AI\Test\Ribby_Roll.h" />
     <ClInclude Include="Game\Animator\TitleScreenAnimator.h" />
     <ClInclude Include="Game\Ground.h" />
     <ClInclude Include="Game\Image\FadeInImage.h" />
     <ClInclude Include="Game\Image\TitleScreenImage.h" />
     <ClInclude Include="Game\Interface\Interrfaces.h" />
     <ClInclude Include="Game\Object\Common\InGame_HUD.h" />
+    <ClInclude Include="Game\Object\Common\MPCardSlot.h" />
     <ClInclude Include="Game\Object\Game_1\Background_Game1.h" />
     <ClInclude Include="Game\Object\Game_2\Background_Game2.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\AFirefly.h" />
@@ -2613,6 +2616,7 @@
     <ClInclude Include="Game\Object\Game_2\Enemy\Movement\UFlyingMovementComponent.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\AWindSprite.h" />
     <ClInclude Include="Game\Object\Tutorial\Background_Tut.h" />
+    <ClInclude Include="Game\Player\PeaShooter.h" />
     <ClInclude Include="Game\Scene\Game1Scene.h" />
     <ClInclude Include="Game\Scene\Game2Scene.h" />
     <ClInclude Include="Game\Scene\IntroScene.h" />

@@ -6,6 +6,11 @@ namespace LJG
 {
 	class USpriteAnimation;
 
+	enum class EProjectileFlag
+	{
+		Player,
+		Enemy
+	};
 
 	/**
 	 * \brief πﬂªÁ√º Base
@@ -34,6 +39,8 @@ namespace LJG
 		void Launch();
 
 	public:
+		inline EProjectileFlag GetFlag() const { return mTypeFlag; }
+
 		void SetLifeTime(const float_t InLifeTime);
 		void SetDamage(const float_t InDamage);
 		void SetVelocity(const FVector2f& InVelocity);
@@ -45,11 +52,12 @@ namespace LJG
 
 	protected:
 		//======================== Data ==========================
-		bool      bLaunched;
-		float_t   mLifeTime;
-		float_t   mDamage;
-		FVector2f mVelocity;
-		FVector2f mBoxSize;
+		EProjectileFlag mTypeFlag;
+		bool            bLaunched;
+		float_t         mLifeTime;
+		float_t         mDamage;
+		FVector2f       mVelocity;
+		FVector2f       mBoxSize;
 
 		//====================== Resource =========================
 		XSprite2DUPtr     mSprite2D;
