@@ -28,8 +28,8 @@ namespace LJG
 		GUI_FileBrowser*       fileBrowser = Manager_GUI.CreateOrLoad<GUI_FileBrowser>(L"FileBrowser");
 		GUI_MapEditor*         mapEditor   = Manager_GUI.CreateOrLoad<GUI_MapEditor>(L"MapEditor");
 		GUI_Hierarchy*         hierarchy   = Manager_GUI.CreateOrLoad<GUI_Hierarchy>(L"Hierarchy");
-		
-		Manager_Scene.MoveScene(L"Game_2");
+
+		Manager_Scene.MoveScene(L"Tutorial");
 	}
 
 	void World::Initialize()
@@ -50,7 +50,7 @@ namespace LJG
 
 		Manager_Input.AddInputBinding(EKeyCode::F1, EKeyState::Down,
 									  [&](float_t DeltaTime){ OnDebugModeChanged.Execute(); });
-		
+
 	}
 
 	void World::Update(float DeltaTime)
@@ -60,7 +60,6 @@ namespace LJG
 
 		Manager_Scene.Update(DeltaTime);
 
-		// LocalPlayer.Update(DeltaTime);
 		MainCam.Update(DeltaTime);
 
 		Manager_GUI.Update(DeltaTime);
@@ -70,7 +69,6 @@ namespace LJG
 	{
 		Manager_Scene.Render();
 
-		// LocalPlayer.Render();
 		MainCam.Render();
 
 		Manager_GUI.Render();

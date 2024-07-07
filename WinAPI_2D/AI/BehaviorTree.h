@@ -7,7 +7,7 @@ namespace LJG::AI
 	class BehaviorTree : public UObject
 	{
 	public:
-		BehaviorTree(AActor* OwnerActor);
+		BehaviorTree(const WText& InKey);
 		~BehaviorTree() override;
 
 	public:

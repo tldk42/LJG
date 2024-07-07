@@ -3,6 +3,7 @@
 #include "Component/Animation/USpriteAnimation.h"
 #include "data/MonsterData.h"
 #include "Game/Object/Game_2/Enemy/ACroaks.h"
+#include "Game/Object/Game_2/Enemy/ASlotMachine.h"
 #include "Helper/EngineHelper.h"
 
 namespace LJG
@@ -20,6 +21,11 @@ namespace LJG
 		State_Attack_Fan_Loop1 = CreateSprite(L"tallfrog_fan_loop1");
 		State_Attack_Fan_Loop2 = CreateSprite(L"tallfrog_fan_loop2");
 		State_Attack_Fan_End   = CreateSprite(L"tallfrog_fan_outro");
+
+		State_Morph_Intro = CreateSprite(L"tallfrog_morph_start");
+		State_Morph_Loop  = CreateSprite(L"tallfrog_morph_loop");
+		State_Morph_Outro = CreateSprite(L"tallfrog_morph_end");
+
 		State_Attack_Fan_Start->SetSpeed(1.f);
 		State_Attack_Fan_Loop1->SetSpeed(3.f);
 		State_Attack_Fan_Loop2->SetSpeed(5.f);
@@ -37,12 +43,26 @@ namespace LJG
 		AddState(EnumAsByte(ECroaksState::Attack_Fan_Loop2), State_Attack_Fan_Loop2);
 		AddState(EnumAsByte(ECroaksState::Attack_Fan_End), State_Attack_Fan_End);
 
+		AddState(EnumAsByte(ECroaksState::Morph_Intro), State_Morph_Intro);
+		AddState(EnumAsByte(ECroaksState::Morph_Loop), State_Morph_Loop);
+		AddState(EnumAsByte(ECroaksState::Morph_Outro), State_Morph_Outro);
+
+
 		// On Animation Finished
 		State_Intro->OnAnimFinished.Bind([this](){
 			SetState(EnumAsByte(ECroaksState::Idle), true);
 		});
 		State_Attack_Spit_Start->OnAnimFinished.Bind([&](){
 			Croaks.SetState(EnumAsByte(ECroaksState::Attack_Spit_Loop));
+		});
+
+		State_Morph_Intro->OnAnimFinished.Bind([&](){
+			Croaks.SetState(EnumAsByte(ECroaksState::Morph_Loop));
+		});
+		State_Morph_Outro->OnAnimFinished.Bind([&](){
+			SlotMachine.SetActive(true);
+			SlotMachine.SetState(EnumAsByte(ESlotMachineState::Intro));
+			Croaks.SetActive(false);
 		});
 
 		State_Attack_Fan_Start->OnAnimFinished.Bind([this](){

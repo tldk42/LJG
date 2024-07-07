@@ -7,6 +7,7 @@ namespace LJG
 	class UImage : public USceneComponent
 	{
 	public:
+		explicit UImage(const WText& InKey);
 		explicit UImage(const WText& InKey, const WText& InPath, const float InZOrder);
 		~UImage() override;
 
@@ -22,6 +23,7 @@ namespace LJG
 
 		void SetWorldLocation(const FVector2f& InLocation) override;
 		void SetScale(const FVector2f& InScale) override;
+		void SetZOrder(const float_t InZOrder) const;
 
 	protected:
 		WText         mTexturePath;

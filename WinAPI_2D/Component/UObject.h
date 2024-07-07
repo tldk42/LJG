@@ -33,6 +33,7 @@ namespace LJG
 
 			std::unique_ptr<ReturnType> managedPtr = std::make_unique<ReturnType>(std::forward<Args>(args)...);
 			ReturnType*                 rawPtr     = managedPtr.get();
+
 			mChildObjects.try_emplace(rawPtr->GetName(), std::move(managedPtr));
 
 			return rawPtr;

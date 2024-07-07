@@ -31,17 +31,10 @@ namespace LJG
 		void    SetState(uint8_t NewState) override;
 #pragma endregion
 
-		inline bool        IsRibbyTurn() const { return bIsRibbyTurn; }
-		inline void        SetTurn() { bIsRibbyTurn = true; }
-		inline EGame2Phase GetCurrentPhase() const { return CurrentPhase; }
+		inline bool IsRibbyTurn() const { return bIsRibbyTurn; }
+		inline void SetTurn() { bIsRibbyTurn = true; }
 
 		inline float_t GetElapsedSeconds() { return mTimer.ElapsedSeconds(); }
-
-		inline void SetNextPhase()
-		{
-			mCurrentHP   = Game2MonsterHP[EnumAsByte(CurrentPhase)];
-			CurrentPhase = static_cast<EGame2Phase>(static_cast<uint8_t>(CurrentPhase) + 1);
-		}
 
 		void ResetCombo();
 		void TryAttack_Punch();
@@ -52,9 +45,7 @@ namespace LJG
 		void SpikeBall();
 
 	private:
-		AI::Game2BT* mBehaviorTree;
 
-		EGame2Phase CurrentPhase = EGame2Phase::Phase1;
 		ERibbyState mCurrentState;
 
 		FTimer  mTimer;
@@ -69,6 +60,7 @@ namespace LJG
 
 	private:
 		friend class ACroaks;
+		friend class Blackboard_Game2;
 		friend class TSingleton<ARibby>;
 
 		ARibby();

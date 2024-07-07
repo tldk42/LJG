@@ -32,5 +32,6 @@ namespace LJG
 	private:
 		Background_Game2* Obj_Background;
 		ACroaks*          Enemy_Croaks;
+		AI::Game2BT*      mBehaviorTree;
 	};
 }

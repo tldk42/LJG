@@ -1,10 +1,10 @@
 #pragma once
 #include <nlohmann/json.hpp>
-#include "CommonInclude.h"
+#include "Component/UObject.h"
 
 namespace LJG
 {
-	class UScene : public ICoreAPI
+	class UScene : public UObject
 	{
 	public:
 		UScene(const WText& InKey);
@@ -22,10 +22,7 @@ namespace LJG
 		virtual void MoveScene(WTextView InNextScene);
 		virtual void EndScene();
 
-		inline const WText& GetName() const { return mSceneFile; }
-
 	protected:
-		WText          mSceneFile;
 		nlohmann::json mSavedData;
 	};
 

@@ -14,8 +14,8 @@
 
 namespace LJG::AI
 {
-	Game2BT::Game2BT(AActor* OwnerActor)
-		: BehaviorTree(OwnerActor) {}
+	Game2BT::Game2BT(const WText& InKey)
+		: BehaviorTree(InKey) {}
 
 	void Game2BT::SetupTree()
 	{
@@ -48,18 +48,13 @@ namespace LJG::AI
 					}, EGame2Phase::Phase2),
 				std::make_shared<Node_CheckPhase>(
 					"Phase3?", std::vector<NodeSPtr>{
-						std::make_shared<Selector>("Roll Or SlotMachine", std::vector<NodeSPtr>{
-						std::make_shared<Sequence>("Roll",
-							std::vector<NodeSPtr>{
+						std::make_shared<Selector>(
+							"Roll Or SlotMachine", std::vector<NodeSPtr>
+							{
 								std::make_shared<Ribby_Roll>("Change Roll!", false)
-								
-
-
+								// std::make_shared<>()
 							}),
-							
-							
-					}),
-						
+
 						/*std::make_shared<Sequence>(
 							"Phase2",
 							std::vector<NodeSPtr>{/* | Decorator  <Phase 2> |#1#

@@ -49,6 +49,7 @@ namespace LJG
 
 	private:
 		friend class ARibby;
+		friend class Blackboard_Game2;
 		friend class TSingleton<ACroaks>;
 
 		ACroaks();

@@ -14,33 +14,37 @@ namespace LJG
 {
 
 	UScene::UScene(const WText& InKey)
-		: mSceneFile(InKey)
+		: UObject(InKey)
 	{
-		mSavedData = EngineHelper::LoadFile(mSceneFile);
+		// mSavedData = EngineHelper::LoadFile(InKey);
 	}
 
 	UScene::~UScene() {}
 
 	void UScene::Initialize()
 	{
+		UObject::Initialize();
 		Manager_Collision.Initialize();
 	}
 
 	void UScene::Update(float DeltaTime)
 	{
+		UObject::Update(DeltaTime);
 		Manager_Object.Update(DeltaTime);
 		Manager_Collision.Update(DeltaTime);
 	}
 
 	void UScene::Render()
 	{
+		UObject::Render();
 		Manager_Object.Render();
 		Manager_Collision.Render();
 	}
 
 	void UScene::Release()
 	{
-		Manager_Collision.Release();
+		UObject::Release();
+		// Manager_Collision.Release();
 		Manager_Object.Release();
 		Manager_Audio.StopAll();
 	}

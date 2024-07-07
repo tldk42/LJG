@@ -1,5 +1,6 @@
 #include "Node_CheckPhase.h"
 
+#include "Blackboard_Game2.h"
 #include "Game/Object/Game_2/Enemy/ARibby.h"
 
 namespace LJG::AI
@@ -12,7 +13,7 @@ namespace LJG::AI
 	ENodeState Node_CheckPhase::Evaluate()
 	{
 		// Phase1 & HP > 0?
-		if (mPhase == Ribby.GetCurrentPhase() && Ribby.GetCurrentHealth() > 0.f)
+		if (mPhase == BB_Game2.CurrentPhase && BB_Game2.CurrentHP > 0.f)
 		{
 			for (const NodeSPtr& node : ChildNodes)
 			{

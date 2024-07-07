@@ -1,14 +1,17 @@
 #pragma once
-#include "Component/Actor/AActor.h"
+#include "Component/Actor/Interactable/AInteractObject.h"
 
 namespace LJG
 {
-
-	class AInteractObject : public AActor, public IInteractableAPI
+	class UImage;
+}
+namespace LJG
+{
+	class ExitDoor : public AInteractObject
 	{
 	public:
-		AInteractObject(const WText& InKey);
-		~AInteractObject() override;
+		ExitDoor(const WText& InKey);
+		~ExitDoor() override;
 
 	public:
 #pragma region Core Interface
@@ -23,8 +26,13 @@ namespace LJG
 		void OnEndInteract(struct FHitResult_Box2D& HitResult) override;
 #pragma endregion
 
-	protected:
-		UBoxComponent* mBoxComponent;
+		void SetWorldLocation(const FVector2f& InLocation) override;
+		void SetScale(const FVector2f& InScale) override;
+	public:
+		inline bool CanEnter() const { return bCanEnter; }
 
+	private:
+		UImage* mDoor;
+		bool    bCanEnter;
 	};
 }

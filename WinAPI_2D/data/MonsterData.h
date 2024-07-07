@@ -64,6 +64,7 @@ enum class ECroaksState : uint8_t
 	Attack_Fan_Loop2,
 	Attack_Fan_End,
 	Morph_Intro,
+	Morph_Loop,
 	Morph_Outro,
 	Dead,
 	End

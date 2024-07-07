@@ -4,6 +4,18 @@
 
 namespace LJG
 {
+	class ExitDoor;
+}
+namespace LJG
+{
+	class ParryCircle;
+}
+namespace LJG
+{
+	class AAnimatedImage;
+}
+namespace LJG
+{
 	class UImage;
 	class Ground;
 
@@ -22,9 +34,21 @@ namespace LJG
 		UImage* Image_BackgroundMask;
 
 		Ground* Ground_Cube;
+		Ground* Ground_Cube2;
+		Ground* Ground_Cube3;
+		Ground* Ground_Platform;
+		Ground* Ground_Cylinder;
 		Ground* Ground_InvisibleBox;
 
-		UImage* Image_Platform;
+		ParryCircle* ParryCircle1;
+		ParryCircle* ParryCircle2;
+		ParryCircle* ParryCircle3;
+
+		ExitDoor* Game2Door;
+
+		AAnimatedImage* BackgroundFX;
+
+		UImage* Image_Cube2Sign;
 		UImage* Image_ExitDoor;
 	};
 

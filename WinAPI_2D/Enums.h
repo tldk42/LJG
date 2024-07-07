@@ -70,6 +70,7 @@ namespace LJG
 		Projectile,
 		UI,
 		None,
+		Interact,
 		Max
 	};
 

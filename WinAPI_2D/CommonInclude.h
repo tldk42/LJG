@@ -95,8 +95,8 @@ namespace LJG
 	public:
 		virtual ~IInteractableAPI() = default;
 
-		virtual void OnBeginInteract() = 0;
-		virtual void OnEndInteract() = 0;
+		virtual void OnBeginInteract(struct FHitResult_Box2D& HitResult) = 0;
+		virtual void OnEndInteract(struct FHitResult_Box2D& HitResult) = 0;
 	};
 
 	class ICollisionAPI

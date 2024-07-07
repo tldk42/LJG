@@ -40,6 +40,10 @@ namespace LJG
 		USpriteAnimation* State_Attack_Fan_Loop2;
 		USpriteAnimation* State_Attack_Fan_End;
 
+		USpriteAnimation* State_Morph_Intro;
+		USpriteAnimation* State_Morph_Loop;
+		USpriteAnimation* State_Morph_Outro;
+
 		USpriteAnimation* State_Dead;
 	};
 }

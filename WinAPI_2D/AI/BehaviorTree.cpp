@@ -3,10 +3,9 @@
 namespace LJG::AI
 {
 
-	BehaviorTree::BehaviorTree(AActor* OwnerActor)
-	{
-		mOwnerActor = OwnerActor;
-	}
+	BehaviorTree::BehaviorTree(const WText& InKey)
+		: UObject(InKey)
+	{}
 
 	BehaviorTree::~BehaviorTree()
 	{
