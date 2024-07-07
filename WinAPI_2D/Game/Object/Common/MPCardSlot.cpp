@@ -9,10 +9,10 @@ namespace LJG
 	MPCardSlot::MPCardSlot()
 		: AAnimatedImage(std::format(L"MP Card {}", mCounter++))
 	{
-		mAnimator = CreateDefaultSubObject<UAnimator>();
+		USpriteAnimation* cardAnim = CreateSprite(L"hud_ch_card_flip");
+		cardAnim->SetSpeed(0.6f);
 		mAnimator->SetZOrder(0.01f);
-		mAnimator->SetOwnerActor(this);
-		mAnimator->AddState(0, CreateSprite(L"hud_ch_card_flip"));
+		mAnimator->SeteDefaultTrack(cardAnim);
 	}
 
 	MPCardSlot::~MPCardSlot() {}
@@ -24,17 +24,14 @@ namespace LJG
 
 	void MPCardSlot::Update(float DeltaTime)
 	{
+
 		AAnimatedImage::Update(DeltaTime);
 	}
 
 	void MPCardSlot::Render()
 	{
-		AAnimatedImage::Render();
 
-		if (mValue < mMaxValue)
-		{
-			mAnimator->RenderDefaultSprite();
-		}
+		AAnimatedImage::Render();
 	}
 
 	void MPCardSlot::Release()
@@ -42,5 +39,8 @@ namespace LJG
 		AAnimatedImage::Release();
 	}
 
-	void MPCardSlot::SetValue(const float_t InValue) {}
+	void MPCardSlot::SetValue(const float_t InValue)
+	{
+		mValue = InValue;
+	}
 }

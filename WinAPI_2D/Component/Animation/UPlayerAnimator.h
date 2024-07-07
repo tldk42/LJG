@@ -40,6 +40,15 @@ namespace LJG
 		USpriteAnimation* State_Attack_Move_Diagonal;
 		USpriteAnimation* State_Attack_Duck;
 
+
+		USpriteAnimation* Montage_ExecSkill_Straight;
+		USpriteAnimation* Montage_ExecSkill_Up;
+		USpriteAnimation* Montage_ExecSkill_Diagonal;
+
+		USpriteAnimation* Montage_Hit;
+
+
+
 		bool bParryAnimApplied;
 	};
 }

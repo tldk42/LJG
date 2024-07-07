@@ -10,7 +10,9 @@ namespace LJG
 	void ObjectManager::Update(float DeltaTime)
 	{
 		std::vector<UObject*> defferedDeSpawnObj;
-		for (const auto& object : mManagedList | std::views::values)
+		std::vector<WText>    defferedRemoveObj;
+
+		for (const auto& [key, object] : mManagedList)
 		{
 			if (object)
 			{
@@ -23,10 +25,18 @@ namespace LJG
 					defferedDeSpawnObj.emplace_back(object.get());
 				}
 			}
+			else
+			{
+				defferedRemoveObj.emplace_back(key);
+			}
 		}
 		for (UObject* obj : defferedDeSpawnObj)
 		{
 			DeSpawn(obj);
+		}
+		for (WText& key : defferedRemoveObj)
+		{
+			TrySafeRemove(key);
 		}
 	}
 
@@ -34,7 +44,7 @@ namespace LJG
 	{
 		for (const auto& object : mManagedList | std::views::values)
 		{
-			if (object->bActive)
+			if (object && object->bActive)
 			{
 				object->Render();
 			}

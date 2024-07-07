@@ -5,6 +5,7 @@
 #include "FTimer.h"
 #include "Anim/URibbyAnimator.h"
 #include "Component/Manager/AnimManager.h"
+#include "Game/AI/Test/Blackboard_Game2.h"
 #include "Game/AI/Test/Game2BT.h"
 #include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
@@ -22,7 +23,6 @@ namespace LJG
 
 	ARibby::~ARibby()
 	{
-		mBehaviorTree->Release();
 	}
 
 	void ARibby::Initialize()
@@ -36,10 +36,7 @@ namespace LJG
 
 		SetWorldLocation({208.f * 1.5f, -157.f * 1.5f});
 
-		mDebugBox->SetScale({280.f, 300.f});
-
-		mBehaviorTree = CreateDefaultSubObject<AI::Game2BT>(this);
-		mBehaviorTree->Initialize();
+		mDebugBox->SetScale({110.f, 270.f});
 
 		mTimer.Reset();
 
@@ -60,27 +57,11 @@ namespace LJG
 	{
 		AEnemy::OnHit(InDamage);
 
-		mCurrentHP -= InDamage;
+		BB_Game2.CurrentHP -= InDamage;
 
-		if (mCurrentHP <= 0)
+		if (BB_Game2.CurrentHP <= 0)
 		{
-			switch (CurrentPhase)
-			{
-			case EGame2Phase::Phase1:
-				// Ribby Roll
-				SetState(EnumAsByte(ERibbyState::Roll_Intro_Start));
-				Croaks.SetState(EnumAsByte(ECroaksState::Idle));
-				break;
-			case EGame2Phase::Phase2:
-				SetState(EnumAsByte(ERibbyState::Roll_Intro_Start));
-				break;
-			case EGame2Phase::Phase3:
-				break;
-			case EGame2Phase::End:
-				break;
-			}
-
-			SetNextPhase();
+			BB_Game2.ChangePhase();
 		}
 	}
 
@@ -226,6 +207,7 @@ namespace LJG
 		}
 		if (!bLeft && (mRollTarget - GetWorldLocation()).GetLength() < 110.f)
 		{
+			Croaks.SetState(EnumAsByte(ECroaksState::Morph_Outro));
 			SetActive(false);
 		}
 	}

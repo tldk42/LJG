@@ -1,7 +1,12 @@
 #pragma once
 #include "AActor.h"
 #include "FTimer.h"
+#include "Component/Animation/USpriteAnimation.h"
 
+namespace LJG
+{
+	class AAnimatedImage;
+}
 namespace LJG
 {
 	class USpriteAnimation;
@@ -36,6 +41,7 @@ namespace LJG
 		void AddWorldLocation(const FVector2f& InAddLocation) override;
 		void SetWorldLocation(const FVector2f& InLocation) override;
 		void SetWorldRotation(const float InDegree) override;
+
 		void Launch();
 
 	public:
@@ -45,9 +51,12 @@ namespace LJG
 		void SetDamage(const float_t InDamage);
 		void SetVelocity(const FVector2f& InVelocity);
 		void SetCollisionBoxSize(const FVector2f& InSize) const;
+
 		void SetAnimation(const struct FAnimData& InAnimData) const;
+		void SetHitAnimation(const struct FAnimData& InAnimData) const;
 
 	protected:
+		virtual void SpawnHitParticle();
 		virtual void OnCollisionEnter(FHitResult_Box2D& HitResult);
 
 	protected:
@@ -62,9 +71,9 @@ namespace LJG
 		//====================== Resource =========================
 		XSprite2DUPtr     mSprite2D;
 		USpriteAnimation* mAnim;
+		USpriteAnimation* mHit_Effect;
 		UBoxComponent*    mBoxComponent; // Default Size 80,40
-
-		FTimer timer;
+		FTimer            timer;
 
 	private:
 		static int32_t mObjectNum;

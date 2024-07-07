@@ -36,8 +36,6 @@ namespace LJG
 	{
 		UObject::Update(DeltaTime);
 
-		HandleJumpAction(DeltaTime);
-
 		const FVector2f ownerLocation = mOwnerActor->GetWorldLocation();
 
 		const auto newVelocity = (ownerLocation - mPreviousLocation) / DeltaTime;
@@ -120,10 +118,18 @@ namespace LJG
 				return;
 			}
 
+			FBox2f groundBox = HitResult.Dest->GetBox();
+			FBox2f ownerBox  = mOwnerPawn->mDebugBox->GetBox();
 
-			if (HitResult.Dest->GetBox().Max.Y <= mPreviousLocation.Y)
+			if ((groundBox.Min.X - ownerBox.Max.X) >= -0.1f)
 			{
-				float_t groundPos = HitResult.Dest->GetBox().Max.Y + mOwnerPawn->mDebugBox->GetScale().Y / 2;
+				mOwnerPawn->SetWorldLocation(mOwnerPawn->GetWorldLocation());
+			}
+
+
+			if (groundBox.Max.Y <= mPreviousLocation.Y)
+			{
+				float_t groundPos = groundBox.Max.Y + mOwnerPawn->mDebugBox->GetScale().Y / 2;
 				mOwnerActor->SetWorldLocation({
 					mOwnerPawn->GetWorldLocation().X, groundPos
 				});

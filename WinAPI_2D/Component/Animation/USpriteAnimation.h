@@ -68,7 +68,7 @@ namespace LJG
 		void Pause();
 		void Stop();
 
-		XTexture* GetCurrentTexture() const { return mAnimationData.Textures[mCurrentFrame]; }
+		XTexture*  GetCurrentTexture() const;
 
 	public:
 		void SetAnimData(const FAnimData& InAnimData)

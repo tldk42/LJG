@@ -2,6 +2,7 @@
 
 #include "FTimer.h"
 #include "Component/Actor/AActor.h"
+#include "Component/Actor/APlayerCharacter.h"
 
 namespace LJG
 {
@@ -17,7 +18,12 @@ namespace LJG
 	{
 		UPawnMovementComponent2D::Update(DeltaTime);
 
-		HandleDash(DeltaTime);
+		if (!LocalPlayer.IsSkillExecuted())
+		{
+			HandleJumpAction(DeltaTime);
+
+			HandleDash(DeltaTime);
+		}
 	}
 
 	void UPlayerMovementComponent::Dash()

@@ -25,8 +25,11 @@ namespace LJG
 
 	private:
 		static int32_t mCounter;
-		float_t        mValue    = 0.f;
-		float_t        mMaxValue = 100.f;
+
+		float_t mValue       = 0.f;
+		float_t mMaxValue    = 100.f;
+		float_t mInitialYLoc = -450.f;
+		float_t mTargetYLoc  = -420.f;
 	};
 
 }

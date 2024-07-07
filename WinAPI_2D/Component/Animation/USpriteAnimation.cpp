@@ -135,7 +135,18 @@ namespace LJG
 	{
 		bIsPlaying = false;
 		bIsPaused  = false;
+
 		OnAnimBlendOut.Execute();
+	}
+
+	XTexture* USpriteAnimation::GetCurrentTexture() const
+	{
+		if (bIsPlaying)
+		{
+			return mAnimationData.Textures[mCurrentFrame];
+		}
+
+		return nullptr;
 	}
 
 	void USpriteAnimation::AddTransition(const uint8_t InState, const std::function<bool()>& InCond)

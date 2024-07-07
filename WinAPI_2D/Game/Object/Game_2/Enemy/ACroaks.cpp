@@ -6,6 +6,7 @@
 #include "FTimer.h"
 #include "Anim/UCroaksAnimator.h"
 #include "Component/Animation/UAnimator.h"
+#include "Game/AI/Test/Blackboard_Game2.h"
 #include "Helper/EngineHelper.h"
 #include "Shape/UBoxComponent.h"
 
@@ -27,8 +28,8 @@ namespace LJG
 
 		APawn::Initialize();
 
-		SetWorldLocation({232.f * 1.5f, -127.9f * 1.5f});
-		mDebugBox->SetScale({300.f, 420.f});
+		SetWorldLocation({250.f * 1.5f, -127.9f * 1.5f});
+		mDebugBox->SetScale({200.f, 400.f});
 
 		mWindImage = CreateDefaultSubObject<AWindSprite>();
 		mWindImage->SetActive(false);
@@ -53,7 +54,13 @@ namespace LJG
 	{
 		AEnemy::OnHit(InDamage);
 
-		Ribby.OnHit(InDamage);
+		BB_Game2.CurrentHP -= InDamage;
+
+		if (BB_Game2.CurrentHP <= 0)
+		{
+			BB_Game2.ChangePhase();
+		}
+
 	}
 
 	uint8_t ACroaks::GetState()
@@ -107,7 +114,16 @@ namespace LJG
 			break;
 		case ECroaksState::End:
 			break;
-
+		case ECroaksState::Morph_Intro:
+			mAnimator->SetState(NewState, false);
+			mWindImage->SetActive(false);
+			break;
+		case ECroaksState::Morph_Loop:
+			mAnimator->SetState(NewState, true);
+			break;
+		case ECroaksState::Morph_Outro:
+			mAnimator->SetState(NewState, false);
+			break;
 		}
 	}
 

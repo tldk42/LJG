@@ -13,10 +13,11 @@ namespace LJG
 	int32_t AFirefly::mObjectNum = 0;
 
 	AFirefly::AFirefly()
-		: AEnemy(std::format(L"Firefly_{}", mObjectNum++).c_str()),
-		  mLife(2)
+		: AEnemy(std::format(L"Firefly_{}", mObjectNum++).c_str())
 	{
 		bIsPoolManaged = true;
+
+		mCurrentHP = 40.f;
 
 		mDebugBox = CreateDefaultSubObject<UBoxComponent>(L"DebugBox", ETraceType::Pawn);
 		mDebugBox->SetScale({100.f, 100.f});
@@ -45,7 +46,7 @@ namespace LJG
 	void AFirefly::Initialize()
 	{
 		mTimer.Reset();
-		mLife             = 2;
+		mCurrentHP        = 40.f;
 		bTargetSkyReached = false;
 	}
 
@@ -82,8 +83,8 @@ namespace LJG
 
 	void AFirefly::OnHit(float InDamage)
 	{
-		mLife--;
-		if (mLife <= 0)
+		mCurrentHP -= InDamage;
+		if (mCurrentHP <= 0)
 		{
 			OnDead();
 		}

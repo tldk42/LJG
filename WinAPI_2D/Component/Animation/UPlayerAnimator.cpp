@@ -6,7 +6,6 @@
 #include "USpriteAnimation.h"
 #include "Component/Movement/UPlayerMovementComponent.h"
 #include "Component/Actor/APlayerCharacter.h"
-#include "Component/Actor/AProjectile.h"
 #include "Component/Manager/AnimManager.h"
 #include "Helper/EngineHelper.h"
 
@@ -14,13 +13,12 @@ namespace LJG
 {
 	UPlayerAnimator::UPlayerAnimator()
 	{
-		State_Idle        = CreateSprite(L"cuphead_idle");
-		State_Move_Ground = CreateSprite(L"cuphead_run");
-		State_Move_Air    = CreateSprite(L"PA_Move_Air");
-		State_Dash_Ground = CreateSprite(L"cuphead_dash");
-		State_Dash_Air    = CreateSprite(L"cuphead_dash_air");
-		State_Jump        = CreateSprite(L"cuphead_jump");
-		// State_Parry                = CreateSprite(L"cuphead_parry");
+		State_Idle                 = CreateSprite(L"cuphead_idle");
+		State_Move_Ground          = CreateSprite(L"cuphead_run");
+		State_Move_Air             = CreateSprite(L"PA_Move_Air");
+		State_Dash_Ground          = CreateSprite(L"cuphead_dash");
+		State_Dash_Air             = CreateSprite(L"cuphead_dash_air");
+		State_Jump                 = CreateSprite(L"cuphead_jump");
 		State_Duck_Start           = CreateSprite(L"cuphead_duck");
 		State_Duck_Loop            = CreateSprite(L"cuphead_duck_idle");
 		State_Attack_Idle          = CreateSprite(L"cuphead_shoot_straight");
@@ -29,22 +27,47 @@ namespace LJG
 		State_Attack_Move_Diagonal = CreateSprite(L"cuphead_run_shoot_diagonal_up");
 		State_Attack_Duck          = CreateSprite(L"cuphead_duck_shoot");
 
+		Montage_ExecSkill_Straight = CreateSprite(L"cuphead_ex_straight");
+		Montage_ExecSkill_Up       = CreateSprite(L"cuphead_ex_up");
+		Montage_ExecSkill_Diagonal = CreateSprite(L"cuphead_ex_diagonal_up");
+		Montage_Hit                = CreateSprite(L"cuphead_hit");
+
+
+		mMontages.try_emplace(EnumAsByte(EPlayerMontages::Exec_Straight), Montage_ExecSkill_Straight);
+		mMontages.try_emplace(EnumAsByte(EPlayerMontages::Exec_Up), Montage_ExecSkill_Up);
+		mMontages.try_emplace(EnumAsByte(EPlayerMontages::Exec_Diagonal), Montage_ExecSkill_Diagonal);
+		mMontages.try_emplace(EnumAsByte(EPlayerMontages::Hit), Montage_Hit);
+
+		for (USpriteAnimation* sprite : mMontages | std::views::values)
+		{
+			sprite->OnAnimFinished.Bind([&](){ LocalPlayer.ResetSkill(); });
+		}
+
+		// Blink Effect
+		Montage_Hit->OnAnimNotifyBegin[0].Bind([&](){ mSprite2D->AdjustRGBA(FLinearColor::White); });
+		Montage_Hit->OnAnimNotifyBegin[1].Bind([&](){ mSprite2D->AdjustRGBA(FLinearColor::White_HalfAlpha); });
+		Montage_Hit->OnAnimNotifyBegin[2].Bind([&](){ mSprite2D->AdjustRGBA(FLinearColor::White); });
+		Montage_Hit->OnAnimNotifyBegin[3].Bind([&](){ mSprite2D->AdjustRGBA(FLinearColor::White_HalfAlpha); });
+		Montage_Hit->OnAnimNotifyBegin[4].Bind([&](){ mSprite2D->AdjustRGBA(FLinearColor::White); });
+
 		State_Attack_Idle->SetSpeed(1.5f);
 		State_Attack_Move->SetSpeed(1.5f);
 		State_Attack_Duck->SetSpeed(1.5f);
 
 		State_Duck_Start->SetLoop(false);
 
-		State_Attack_Idle->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Up->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Duck->OnAnimNotifyBegin[1].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+		State_Move_Ground->OnAnimNotifyBegin[4].Bind(std::bind(&APlayerCharacter::PlayDust, &LocalPlayer));
+		State_Move_Ground->OnAnimNotifyBegin[11].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
+		State_Attack_Move_Diagonal->OnAnimNotifyBegin[4].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
+		State_Attack_Move_Diagonal->OnAnimNotifyBegin[11].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[11].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[5].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
+		State_Attack_Move->OnAnimNotifyBegin[12].Bind(std::bind(&APlayerCharacter::PlayDust,  &LocalPlayer));
 
-		State_Attack_Move->OnAnimNotifyBegin[5].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Move->OnAnimNotifyBegin[10].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Move->OnAnimNotifyBegin[15].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Move_Diagonal->OnAnimNotifyBegin[5].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Move_Diagonal->OnAnimNotifyBegin[10].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
-		State_Attack_Move_Diagonal->OnAnimNotifyBegin[15].Bind(std::bind(&APlayerCharacter::Shoot, &LocalPlayer));
+
+		Montage_ExecSkill_Straight->OnAnimNotifyBegin[6].Bind(std::bind(&APlayerCharacter::ShootEx, &LocalPlayer));
+		Montage_ExecSkill_Up->OnAnimNotifyBegin[6].Bind(std::bind(&APlayerCharacter::ShootEx, &LocalPlayer));
+		Montage_ExecSkill_Diagonal->OnAnimNotifyBegin[6].Bind(std::bind(&APlayerCharacter::ShootEx, &LocalPlayer));
 
 		AddState(EnumAsByte(EPlayerAnimState::Idle), State_Idle);
 		AddState(EnumAsByte(EPlayerAnimState::Move), State_Move_Ground);
@@ -59,6 +82,8 @@ namespace LJG
 		// AddState(EnumAsByte(EPlayerAnimState::Parry), State_Parry);
 		AddState(EnumAsByte(EPlayerAnimState::Move_Shoot_Diagonal), State_Attack_Move_Diagonal);
 		AddState(EnumAsByte(EPlayerAnimState::Shoot_Up), State_Attack_Up);
+
+		SetState(0, true);
 	}
 
 	UPlayerAnimator::~UPlayerAnimator() {}
@@ -90,9 +115,10 @@ namespace LJG
 		auto IsJumping    = [this](){ return mOwnerMovementComp->IsJumping(); };
 		auto IsCrouching  = [this](){ return mOwnerMovementComp->IsCrouching(); };
 		auto IsAttacking  = [this](){ return LocalPlayer.IsAttacking(); };
-		auto IsDashing    = [this](){ return mOwnerMovementComp->IsDashing(); };
 		auto IsUp         = [this](){ return LocalPlayer.IsAttackingUp(); };
 		auto IsDiagonalUp = [this](){ return LocalPlayer.IsAttackingDiagonalUp(); };
+		auto IsDashing    = [this](){ return mOwnerMovementComp->IsDashing(); };
+
 
 #pragma region Idle ->
 		AddTransition(EnumAsByte(EPlayerAnimState::Idle), EnumAsByte(EPlayerAnimState::Move),
@@ -104,10 +130,9 @@ namespace LJG
 		AddTransition(EnumAsByte(EPlayerAnimState::Idle), EnumAsByte(EPlayerAnimState::Dash_Ground),
 					  IsDashing);
 		AddTransition(EnumAsByte(EPlayerAnimState::Idle), EnumAsByte(EPlayerAnimState::Shoot_Up),
-					  IsUp);
+					  [IsAttacking, IsUp](){ return IsAttacking() && IsUp(); });
 		AddTransition(EnumAsByte(EPlayerAnimState::Idle), EnumAsByte(EPlayerAnimState::Shoot),
 					  IsAttacking);
-
 #pragma endregion
 
 #pragma region Move ->
@@ -120,7 +145,7 @@ namespace LJG
 		AddTransition(EnumAsByte(EPlayerAnimState::Move), EnumAsByte(EPlayerAnimState::Move_Shoot),
 					  IsAttacking);
 		AddTransition(EnumAsByte(EPlayerAnimState::Move), EnumAsByte(EPlayerAnimState::Move_Shoot_Diagonal),
-					  IsDiagonalUp);
+					  [IsAttacking, IsDiagonalUp](){ return IsAttacking() && IsDiagonalUp(); });
 		AddTransition(EnumAsByte(EPlayerAnimState::Move), EnumAsByte(EPlayerAnimState::Dash_Ground),
 					  IsDashing);
 #pragma endregion

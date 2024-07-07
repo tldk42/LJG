@@ -22,11 +22,15 @@ namespace LJG
 
 	public:
 		void OnHPChanged(const int32_t InHP) const;
-		void OnMPChanged(const int32_t InMP) const;
+		void OnMPChanged(const int32_t InMP);
 
 	private:
 		UImage*     mHP;
 		MPCardSlot* mMPCards[5];
+
+		const FVector2f mHPOffset = {-580.f, -320.f};
+
+		int32_t mCurrentMPCardNum = 0;
 
 	private:
 		friend class TSingleton<InGame_HUD>;

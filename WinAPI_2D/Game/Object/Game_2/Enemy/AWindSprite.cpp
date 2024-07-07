@@ -11,10 +11,8 @@ namespace LJG
 	AWindSprite::AWindSprite()
 		: AAnimatedImage(L"Croak's Wind Sprite")
 	{
-		mAnimator = CreateDefaultSubObject<UAnimator>();
 		mAnimator->SetZOrder(0.3f);
-		mAnimator->SetOwnerActor(this);
-		mAnimator->AddState(0, CreateSprite(L"tallfrog_fan_wind"));
+		mAnimator->SeteDefaultTrack(CreateSprite(L"tallfrog_fan_wind"));
 	}
 
 	AWindSprite::~AWindSprite() {}
@@ -44,6 +42,7 @@ namespace LJG
 	{
 		AAnimatedImage::Release();
 	}
+
 
 	void AWindSprite::Play(bool bReverse, bool bEnableLoop)
 	{

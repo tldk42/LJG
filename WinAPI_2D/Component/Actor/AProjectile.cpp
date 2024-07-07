@@ -1,4 +1,8 @@
 #include "AProjectile.h"
+
+#include "AAnimatedImage.h"
+#include "APlayerCharacter.h"
+#include "AProjectileHitImage.h"
 #include "Component/Animation/USpriteAnimation.h"
 #include "Component/Manager/AnimManager.h"
 #include "Game/Actor/AEnemy.h"
@@ -29,6 +33,8 @@ namespace LJG
 		mAnim = CreateSprite(L"projectile_shoot");
 		mAnim->SetOwnerActor(this);
 
+		mHit_Effect = CreateDefaultSubObject<USpriteAnimation>(L"projectile_hit");
+		mHit_Effect->SetOwnerActor(this);
 	}
 
 	AProjectile::AProjectile(const FAnimData& InAnimData, const FVector2f& InSize, const FVector2f& InVelocity)
@@ -46,6 +52,7 @@ namespace LJG
 
 	void AProjectile::Initialize()
 	{
+		bLaunched = false;
 		timer.Reset();
 
 		AActor::Initialize();
@@ -55,26 +62,27 @@ namespace LJG
 
 	void AProjectile::Update(float DeltaTime)
 	{
-		if (bLaunched && bActive)
+		AActor::Update(DeltaTime);
+
+		if (bLaunched)
 		{
 			if (timer.ElapsedSeconds() >= mLifeTime)
 			{
 				bLaunched = false;
 				SetActive(false);
 			}
-			AActor::Update(DeltaTime);
 
-			AddWorldLocation(mVelocity * DeltaTime);
 			mSprite2D->Update(DeltaTime);
+			AddWorldLocation(mVelocity * DeltaTime);
 		}
 	}
 
 	void AProjectile::Render()
 	{
-		if (bLaunched && bActive)
-		{
-			AActor::Render();
+		AActor::Render();
 
+		if (bLaunched)
+		{
 			mSprite2D->SetTexture(mAnim->GetCurrentTexture());
 			mSprite2D->Render();
 		}
@@ -112,6 +120,8 @@ namespace LJG
 	{
 		Initialize();
 
+		SetTransform(mWorldTransform);
+
 		bLaunched = true;
 		mAnim->Play(true);
 	}
@@ -141,6 +151,25 @@ namespace LJG
 		mAnim->SetAnimData(InAnimData);
 	}
 
+	void AProjectile::SetHitAnimation(const FAnimData& InAnimData) const
+	{
+		mHit_Effect->SetAnimData(InAnimData);
+	}
+
+	void AProjectile::SpawnHitParticle()
+	{
+		// if (AProjectileHitImage* hitParticle = Manager_Object.Spawn<AProjectileHitImage>())
+		// {
+		// 	FTimer::SetTimer([&hitParticle](){
+		// 		hitParticle->SetActive(false);
+		// 	}, 1.f);
+		// 	hitParticle->SetAnimation(mHit_Effect);
+		// 	hitParticle->SetWorldLocation(GetWorldLocation());
+		// 	hitParticle->Play();
+		// }
+		SetActive(false);
+	}
+
 	void AProjectile::OnCollisionEnter(FHitResult_Box2D& HitResult)
 	{
 		if (HitResult.Dest->GetTraceType() == ETraceType::Pawn)
@@ -151,7 +180,8 @@ namespace LJG
 				{
 					enemy->OnHit(mDamage);
 					LOG_CORE_INFO("Hit ID:{} Damage:{}", WText2Text(enemy->GetName()), enemy->GetCurrentHealth());
-					Manager_Object.DeSpawn(this);
+					LocalPlayer.AddMP(10.f);
+					SpawnHitParticle();
 				}
 			}
 		}

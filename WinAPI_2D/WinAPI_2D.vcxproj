@@ -329,6 +329,7 @@
     <ClCompile Include="Component\Actor\ACharacter.cpp" />
     <ClCompile Include="Component\Actor\APlayerCharacter.cpp" />
     <ClCompile Include="Component\Actor\AProjectile.cpp" />
+    <ClCompile Include="Component\Actor\AProjectileHitImage.cpp" />
     <ClCompile Include="Component\Actor\Interactable\AInteractObject.cpp" />
     <ClCompile Include="Component\Animation\UPlayerAnimator.cpp" />
     <ClCompile Include="Component\Animation\UAnimator.cpp">
@@ -1716,6 +1717,7 @@
     </ClCompile>
     <ClCompile Include="DirectX\XZBuffer.cpp" />
     <ClCompile Include="Game\Actor\AEnemy.cpp" />
+    <ClCompile Include="Game\AI\Test\Blackboard_Game2.cpp" />
     <ClCompile Include="Game\AI\Test\Check_IsAlive.cpp" />
     <ClCompile Include="Game\AI\Test\Croaks_Phase2.cpp" />
     <ClCompile Include="Game\AI\Test\Node_CheckPhase.cpp" />
@@ -1890,13 +1892,17 @@
     <ClCompile Include="Game\Object\Game_2\Enemy\ACroaks.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\Anim\UFireflyAnimator.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\Anim\URibbyAnimator.cpp" />
+    <ClCompile Include="Game\Object\Game_2\Enemy\Anim\USlotMachineAnimator.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\ASlotMachine.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\FrogProjectile.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\ARibby.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\Movement\UFlyingMovementComponent.cpp" />
     <ClCompile Include="Game\Object\Game_2\Enemy\AWindSprite.cpp" />
     <ClCompile Include="Game\Object\Tutorial\Background_Tut.cpp" />
+    <ClCompile Include="Game\Object\Tutorial\Objects\ExitDoor.cpp" />
+    <ClCompile Include="Game\Object\Tutorial\Objects\ParryCircle.cpp" />
     <ClCompile Include="Game\Player\PeaShooter.cpp" />
+    <ClCompile Include="Game\Player\PeaShoot_Ex.cpp" />
     <ClCompile Include="Game\Scene\Game1Scene.cpp" />
     <ClCompile Include="Game\Scene\Game2Scene.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -2550,6 +2556,7 @@
     <ClInclude Include="Component\Actor\ACharacter.h" />
     <ClInclude Include="Component\Actor\APlayerCharacter.h" />
     <ClInclude Include="Component\Actor\AProjectile.h" />
+    <ClInclude Include="Component\Actor\AProjectileHitImage.h" />
     <ClInclude Include="Component\Actor\Interactable\AInteractObject.h" />
     <ClInclude Include="Component\Animation\UPlayerAnimator.h" />
     <ClInclude Include="Component\Animation\UAnimator.h" />
@@ -2587,6 +2594,7 @@
     <ClInclude Include="DirectX\XWorldBuffer.h" />
     <ClInclude Include="DirectX\XZBuffer.h" />
     <ClInclude Include="Game\Actor\AEnemy.h" />
+    <ClInclude Include="Game\AI\Test\Blackboard_Game2.h" />
     <ClInclude Include="Game\AI\Test\Check_IsAlive.h" />
     <ClInclude Include="Game\AI\Test\Croaks_Phase2.h" />
     <ClInclude Include="Game\AI\Test\Node_CheckPhase.h" />
@@ -2610,13 +2618,17 @@
     <ClInclude Include="Game\Object\Game_2\Enemy\ACroaks.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\Anim\UFireflyAnimator.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\Anim\URibbyAnimator.h" />
+    <ClInclude Include="Game\Object\Game_2\Enemy\Anim\USlotMachineAnimator.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\ASlotMachine.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\FrogProjectile.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\ARibby.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\Movement\UFlyingMovementComponent.h" />
     <ClInclude Include="Game\Object\Game_2\Enemy\AWindSprite.h" />
     <ClInclude Include="Game\Object\Tutorial\Background_Tut.h" />
+    <ClInclude Include="Game\Object\Tutorial\Objects\ExitDoor.h" />
+    <ClInclude Include="Game\Object\Tutorial\Objects\ParryCircle.h" />
     <ClInclude Include="Game\Player\PeaShooter.h" />
+    <ClInclude Include="Game\Player\PeaShoot_Ex.h" />
     <ClInclude Include="Game\Scene\Game1Scene.h" />
     <ClInclude Include="Game\Scene\Game2Scene.h" />
     <ClInclude Include="Game\Scene\IntroScene.h" />

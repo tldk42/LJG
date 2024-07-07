@@ -9,6 +9,8 @@ namespace LJG
 		  A(static_cast<float>(Color.A) * (1.0f / 255.0f))
 	{}
 
+	FLinearColor FLinearColor::White(1, 1, 1, 1);
+	FLinearColor FLinearColor::White_HalfAlpha(1, 1, 1, .5);
 	FLinearColor FLinearColor::Red(1, 0, 0, 1);
 	FLinearColor FLinearColor::Green(0, 1, 0, 1);
 	FLinearColor FLinearColor::Blue(0, 0, 1, 1);

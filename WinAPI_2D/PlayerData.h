@@ -15,5 +15,17 @@ enum class EPlayerAnimState : uint8_t
 	Duck_Shoot,
 	Dash_Ground,
 	Dash_Air,
+	ExecSkill_Straight,
+	ExecSkill_Up,
+	ExecSkill_Diagonal,
+	Hit,
 	End
+};
+
+enum class EPlayerMontages : uint8_t
+{
+	Exec_Straight,
+	Exec_Up,
+	Exec_Diagonal,
+	Hit
 };

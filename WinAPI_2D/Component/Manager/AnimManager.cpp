@@ -81,12 +81,38 @@ namespace LJG
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_straight_", 3, 9.f,
 															  true)));
+		mManagedList.try_emplace(L"cuphead_shoot_particle_head",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/PeaShoottSheet_Start_", 4, 12.f,
+															  true)));
+		mManagedList.try_emplace(L"cuphead_shoot_particle_hit",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/PeaShoottSheet_Hit_", 6, 12.f,
+															  true)));
+		mManagedList.try_emplace(L"cuphead_shoot_particle_ex_hit",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/PeaShoottSheet_Ex_Hit_", 9, 12.f,
+															  true)));
+
+		mManagedList.try_emplace(L"cuphead_dust",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/DustA_", 16, 32.f,
+															  true)));
+		mManagedList.try_emplace(L"cuphead_dust_jump",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/DustSheetJumpSheet_", 14, 28.f,
+															  true)));
+
+
 		mManagedList.try_emplace(L"cuphead_shoot_up",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_shoot_up_", 3, 9.f, true)));
 		mManagedList.try_emplace(L"projectile_shoot",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/PeaShoottSheet_", 8, 8.f, true)));
+		mManagedList.try_emplace(L"PeaShoot_Ex",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/PeaShoottSheet_Ex_", 8, 8.f, true)));
 		mManagedList.try_emplace(L"cuphead_title_screen",
 								 std::make_unique<FAnimData>(
 									 AnimUtil::LoadAnimations(L"rsc/CupHead/Anim/cuphead_title_screen_", 34, 34.f, true)));
@@ -291,32 +317,64 @@ namespace LJG
 
 
 		//============================================== Slot Machine =====================================================//
-		// mManagedList.try_emplace(L"tallfrog_morph_start",
-		// 						 std::make_unique<FAnimData>(
-		// 							 AnimUtil::LoadAnimations(
-		// 								 CroaksPath + L"Slot Machine/Morph/Intro/tallfrog_morph_start_",
-		// 								 3, 9.f, true)));
-		//
-		// mManagedList.try_emplace(L"tallfrog_morph_loop",
-		// 						 std::make_unique<FAnimData>(
-		// 							 AnimUtil::LoadAnimations(
-		// 								 CroaksPath + L"Slot Machine/Morph/Intro/Loop/tallfrog_morph_loop_",
-		// 								 3, 9.f, true)));
-		//
-		// mManagedList.try_emplace(L"tallfrog_morph_end",
-		// 						 std::make_unique<FAnimData>(
-		// 							 AnimUtil::LoadAnimations(
-		// 								 CroaksPath + L"Slot Machine/Morph/Intro/Outro/tallfrog_morph_end_",
-		// 								 25, 25.f, true)));
-		//
-		// mManagedList.try_emplace(L"firefly_dead",
-		// 						 std::make_unique<FAnimData>(
-		// 							 AnimUtil::LoadAnimations(
-		// 								 CroaksPath + L"Firefly/Death/tallfrog_firefly_death_",
-		// 								 9, 9.f, true)));
+		mManagedList.try_emplace(L"tallfrog_morph_start",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Morph/Intro/tallfrog_morph_start_",
+										 3, 9.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_morph_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Morph/Intro/Loop/tallfrog_morph_loop_",
+										 3, 9.f, true)));
+
+		mManagedList.try_emplace(L"tallfrog_morph_end",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Morph/Outro/tallfrog_morph_end_",
+										 24, 24.f, true)));
+
+		mManagedList.try_emplace(L"slotmachine_idle",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Idle/tallfrog_slotman_idle_",
+										 3, 6.f, true)));
+		mManagedList.try_emplace(L"slotmachine_open",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Initial Open/tallfrog_slotman_initial_open_",
+										 5, 5.f, true)));
+		mManagedList.try_emplace(L"tallfrog_slotman_coin",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Spit/Coin/tallfrog_slotman_coin_",
+										 4, 4.f, true)));
+		mManagedList.try_emplace(L"tallfrog_slotman_arm_move_intro",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Arm Move/Move/tallfrog_slotman_arm_move_",
+										 11, 11.f, true)));
+		mManagedList.try_emplace(L"tallfrog_slotman_arm_loop",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Slot Machine/Arm Move/Loop(pink)/tallfrog_slotman_arm_loop_",
+										 3, 3.f, true)));
+
+		mManagedList.try_emplace(L"firefly_dead",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 CroaksPath + L"Firefly/Death/tallfrog_firefly_death_",
+										 9, 9.f, true)));
 
 		//============================================== Slot Machine =====================================================//
 
+
+		mManagedList.try_emplace(L"cuphead_screen_fx",
+								 std::make_unique<FAnimData>(
+									 AnimUtil::LoadAnimations(
+										 L"rsc/Texture/cuphead_screen_fx_",
+										 127, 127.f, true)));
 #pragma endregion
 	}
 }

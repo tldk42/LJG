@@ -1,4 +1,7 @@
 #include "UAnimator.h"
+
+#include <ranges>
+
 #include "Component/Actor/AActor.h"
 #include "USpriteAnimation.h"
 #include "DirectX/XSprite2D.h"
@@ -19,13 +22,27 @@ namespace LJG
 	void UAnimator::Initialize()
 	{
 		UObject::Initialize();
+
+		for (USpriteAnimation* montage : mMontages | std::views::values)
+		{
+			montage->OnAnimFinished.Bind([&](){
+				bIsMontagePlaying = false;
+				mMontageState     = MAXUINT8;
+				mSprite2D->SetTexture(mStateMachine[mCurrentState]->GetCurrentTexture());
+			});
+		}
 	}
 
 	void UAnimator::Update(float DeltaTime)
 	{
 		if (!bIsPlaying)
 			return;
-		// ???? StateMachine ???
+
+		if (bIsMontagePlaying && mMontages.contains(mMontageState))
+		{
+			mSprite2D->SetTexture(mMontages[mMontageState]->GetCurrentTexture());
+			mMontages[mMontageState]->Update(DeltaTime);
+		}
 		if (mStateMachine.contains(mCurrentState))
 		{
 			USpriteAnimation* currentAnim = mStateMachine[mCurrentState];
@@ -39,18 +56,19 @@ namespace LJG
 			{
 				SetState(currentAnim->GetNextAnim(), mStateMachine[currentAnim->GetNextAnim()]->IsLoopAnim());
 			}
-			mSprite2D->SetTexture(currentAnim->GetCurrentTexture());
-
-
+			if (!bIsMontagePlaying)
+			{
+				mSprite2D->SetTexture(currentAnim->GetCurrentTexture());
+			}
 		}
-
 	}
 
 	void UAnimator::Render()
 	{
 		if (!bIsPlaying)
 			return;
-		if (mStateMachine.contains(mCurrentState))
+
+		if (bIsMontagePlaying || mStateMachine.contains(mCurrentState))
 		{
 			mSprite2D->Render();
 		}
@@ -73,23 +91,42 @@ namespace LJG
 		}
 	}
 
+	void UAnimator::SetMontageTrack(const uint8_t InType, USpriteAnimation* InAnimation)
+	{
+		mMontages.insert_or_assign(InType, InAnimation);
+	}
+
+	void UAnimator::SeteDefaultTrack(USpriteAnimation* InAnimation)
+	{
+		mStateMachine.insert_or_assign(0, InAnimation);
+	}
+
 	void UAnimator::PlayDefaultTrack(bool bReverse, bool bLoop)
 	{
-		bIsPlaying = true;
-		mSprite2D->SetTexture(mStateMachine[mCurrentState]->GetCurrentTexture());
-		if (bReverse)
+		if (mStateMachine.contains(0))
 		{
-			mStateMachine[mCurrentState]->PlayReverse(bLoop);
+			bIsPlaying = true;
+			mSprite2D->SetTexture(mStateMachine[0]->GetCurrentTexture());
+			if (bReverse)
+			{
+				mStateMachine[0]->PlayReverse(bLoop);
+			}
+			else
+			{
+				mStateMachine[0]->Play(bLoop);
+			}
 		}
-		else
-		{
-			mStateMachine[mCurrentState]->Play(bLoop);
-		}
+
 	}
 
 	void UAnimator::AddTransition(const uint8_t InSrc, const uint8_t InDest, const std::function<bool()>& InCond)
 	{
 		mStateMachine[InSrc]->AddTransition(InDest, InCond);
+	}
+
+	void UAnimator::SetScale(const FVector2f& InScale) const
+	{
+		mSprite2D->SetScale(InScale);
 	}
 
 	void UAnimator::SetZOrder(const float_t InZOrder) const
@@ -112,6 +149,24 @@ namespace LJG
 				mStateMachine[mCurrentState]->Play(bLoop);
 			}
 		}
+	}
+
+	void UAnimator::PlayMontageAnim(const uint8_t MontageType)
+	{
+		if (mMontages.contains(MontageType))
+		{
+			bIsPlaying        = true;
+			bIsMontagePlaying = true;
+			mMontageState     = MontageType;
+			mMontages[mMontageState]->Play(false);
+			mSprite2D->SetTexture(mMontages[mMontageState]->GetCurrentTexture());
+		}
+	}
+
+	void UAnimator::BlinkEffect()
+	{
+
+		mSprite2D->AdjustRGBA(FLinearColor::White);
 	}
 
 	void UAnimator::AddState(const uint8_t InState, USpriteAnimation* InAnimation)

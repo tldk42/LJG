@@ -26,6 +26,9 @@ namespace LJG
 			AdjustTextureSize();
 		}
 
+		void AdjustRGBA(const FLinearColor& InColor);
+		void AdjustRGBA(float R, float G, float B, float A);
+
 	private:
 		void AdjustTextureSize();
 

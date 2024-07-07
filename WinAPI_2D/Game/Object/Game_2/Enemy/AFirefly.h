@@ -32,9 +32,7 @@ namespace LJG
 		static int32_t mObjectNum;
 
 		FTimer mTimer;
-
-		int32_t mLife;
-
+		
 		bool      bTargetSkyReached;
 		FVector2f mTargetSky; // 목표 공중 지점
 		FVector2f mTarget; // 목표 지상 지점

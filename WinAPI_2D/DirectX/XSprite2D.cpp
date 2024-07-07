@@ -60,13 +60,16 @@ namespace LJG
 
 	void XSprite2D::Render()
 	{
-		XVertex2D::Render();
+		if (mTexture)
+		{
+			XVertex2D::Render();
 
-		mTexture->Render();
-		mSamplerState->Render();
-		mBlendState_AlphaBlend->Render();
+			mTexture->Render();
+			mSamplerState->Render();
+			mBlendState_AlphaBlend->Render();
 
-		Context::GetDeviceContext()->DrawIndexed(6, 0, 0);
+			Context::GetDeviceContext()->DrawIndexed(6, 0, 0);
+		}
 	}
 
 	void XSprite2D::Release()
@@ -78,6 +81,27 @@ namespace LJG
 		mSamplerState = nullptr;
 
 		mBlendState_AlphaBlend = nullptr;
+	}
+
+	void XSprite2D::AdjustRGBA(const FLinearColor& InColor)
+	{
+		for (FVertexBase& vertex : mVertexBufferArray)
+		{
+			vertex.Color = InColor;
+		}
+		SetShaderParams();
+	}
+
+	void XSprite2D::AdjustRGBA(float R, float G, float B, float A)
+	{
+		for (FVertexBase& vertex : mVertexBufferArray)
+		{
+			vertex.Color.R = R;
+			vertex.Color.G = G;
+			vertex.Color.B = B;
+			vertex.Color.A = A;
+		}
+		SetShaderParams();
 	}
 
 	void XSprite2D::AdjustTextureSize()

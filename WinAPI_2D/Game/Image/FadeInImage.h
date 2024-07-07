@@ -10,8 +10,5 @@ namespace LJG
 	public:
 		explicit FadeInImage(const WText& InName);
 		~FadeInImage() override;
-
-	public:
-		USpriteAnimation* State_Default;
 	};
 }

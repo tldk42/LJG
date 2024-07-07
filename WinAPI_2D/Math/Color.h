@@ -23,6 +23,8 @@ namespace LJG
 			float RGBA[4];
 		};
 
+		static FLinearColor White;
+		static FLinearColor White_HalfAlpha;
 		static FLinearColor Red;
 		static FLinearColor Green;
 		static FLinearColor Blue;
